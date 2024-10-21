@@ -1,5 +1,7 @@
 PAD PROJECT
+
 Application Name: FindMyRoommate
+
 Collaborators:
 - Hamza Triki
 - Gonzalo Martinez
