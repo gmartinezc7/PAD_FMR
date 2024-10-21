@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">v3FindMyRoommate</string>
-    <string name="title_activity_lobby">Lobby</string>
-    <string name="title_home">Home</string>
-    <string name="title_misviviendas">MisViviendas</string>
-    <string name="title_misfavs">MisFavs</string>
-    <string name="title_chats">Chats</string>
-    <string name="title_config">Config</string>
-</resources>
