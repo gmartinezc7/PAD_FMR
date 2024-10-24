@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Prueba GitHub
-        Button loginButton = findViewById(R.id.login);
+        Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -33,10 +34,20 @@ public class MainActivity extends AppCompatActivity {
                 openLoginView();
             }
         });
+        TextView signUP = findViewById(R.id.signUP);
+        signUP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {openSignUPView();}
+        });
     }
 
     public void openLoginView(){
         Intent intent =  new Intent(MainActivity.this, Lobby.class);
+        startActivity(intent);
+
+    }
+    public void openSignUPView(){
+        Intent intent =  new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
 
     }
