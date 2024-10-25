@@ -10,14 +10,14 @@
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="login">login</string>
-    <string name="dont_have_acount">Don\'t have an acount</string>
+    <string name="dont_have_account">Don\'t have an account</string>
     <string name="sign_up">sing up</string>
     <string name="sign_in">sing in</string>
     <string name="name">Name</string>
     <string name="last_name">Last name</string>
     <string name="confirm_password_hint">Confirm Password</string>
-    <string name="create_acount">Create acount</string>
     <string name="already_have_an_acount">Already have an acount</string>
     <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
     <string name="create_account">Create account</string>
+    <string name="personal_information_message">Let’s know more about yourself</string>
 </resources>

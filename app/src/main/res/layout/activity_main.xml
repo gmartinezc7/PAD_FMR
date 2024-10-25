@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome_message"
         android:textStyle="bold"
-        android:textSize="40sp"
+        android:textSize="45sp"
         app:layout_constraintVertical_bias="0.40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
         app:layout_constraintStart_toStartOf="@+id/welcomeMessage"
         app:layout_constraintEnd_toEndOf="@+id/welcomeMessage"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:inputType="textPassword"
         android:hint="@string/password_hint"/>
 
@@ -61,7 +61,7 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="@+id/welcomeMessage"
         app:layout_constraintStart_toStartOf="@+id/welcomeMessage"
@@ -70,22 +70,22 @@
 
     <TextView
         android:id="@+id/dontHaveAcount"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/dont_have_acount"
-        android:layout_marginStart="40dp"
+        android:text="@string/dont_have_account"
+        android:layout_marginStart="70dp"
         app:layout_constraintStart_toStartOf="@+id/welcomeMessage"
-        app:layout_constraintEnd_toStartOf="@+id/signUP"
         app:layout_constraintTop_toBottomOf="@+id/loginButton"/>
 
     <TextView
         android:id="@+id/signUP"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="@string/sign_up"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/dontHaveAcount"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 
