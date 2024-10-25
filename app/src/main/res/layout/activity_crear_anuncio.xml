@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Título del anuncio"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_ubicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ubicación"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_metros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Metros cuadrados"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/edit_precio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Precio"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btn_guardar_anuncio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar anuncio"
+        android:backgroundTint="#208944"
+        android:layout_gravity="center" />
+
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:backgroundTint="#208944"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
