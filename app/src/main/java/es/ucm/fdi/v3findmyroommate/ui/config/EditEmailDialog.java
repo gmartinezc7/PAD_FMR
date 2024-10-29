@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +21,10 @@ public class EditEmailDialog extends DialogFragment {
 
     private TextView emailTextView;
     private EditText emailEditText;
+
+
+    private static final String NULL_EMAIL_TOAST_TEXT = "El email no puede ser nulo";
+    private static final String INVALID_EMAIL_TOAST_TEXT = "La dirección de correo ha de ser válida";
 
     @NonNull
     @Override
@@ -32,23 +38,46 @@ public class EditEmailDialog extends DialogFragment {
         this.emailEditText = view.findViewById(R.id.edit_email_edittext);
 
         // Builds the dialog.
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(view)
-                        .setTitle("Editar correo electrónico")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Handles the OK button click.
-                        String newEmail = EditEmailDialog.this.emailEditText.getText().toString();
-                        Log.i("Configuration", "New email address: " + newEmail);;
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setTitle("Editar dirección de correo")
+                .setPositiveButton("Aceptar", null)
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         EditEmailDialog.this.dismiss();
                         Log.i("Configuration", "Canceled email update");
                     }
-                })
-                .create();
-    }
-}
+                });
 
+        AlertDialog editEmailDialog = builder.create(); // Creates the AlertDialog
+
+        editEmailDialog.setOnShowListener(dialogInterface -> {
+            Button button = editEmailDialog.getButton(AlertDialog.BUTTON_POSITIVE); // Gets the positive button
+            button.setOnClickListener(view1 -> {
+                String newEmail = this.emailEditText.getText().toString();
+                if (newEmail.isEmpty()) {
+                    // Shows void email error toast.
+                    Toast nullEmailToast = Toast.makeText(getActivity(), NULL_EMAIL_TOAST_TEXT,
+                            Toast.LENGTH_SHORT);
+                    nullEmailToast.show();
+                    Log.e("Configuration", "Email can't be void");
+                }
+                else if (!newEmail.contains("@")) {
+                    // Shows invalid email error toast.
+                    Toast invalidEmailToast = Toast.makeText(getActivity(), INVALID_EMAIL_TOAST_TEXT,
+                            Toast.LENGTH_SHORT);
+                    invalidEmailToast.show();
+                    Log.e("Configuration", "Email address must be a valid address");
+                }
+                else {
+                    Log.i("Configuration", "New email: " + newEmail);
+                    editEmailDialog.dismiss();
+                }
+            });
+        });
+
+        return editEmailDialog;
+    }
+
+
+}
