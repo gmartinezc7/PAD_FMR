@@ -25,6 +25,11 @@ public class ConfigFragment extends Fragment {
 
     private FragmentConfigBinding binding;
 
+    private static final int NEW_USERNAME_OPTION = 0;
+    private static final int NEW_EMAIL_OPTION = 1;
+    private static final int NEW_PASSWORD_OPTION = 2;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ConfigViewModel configViewModel =
@@ -50,47 +55,41 @@ public class ConfigFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // Con switch evalúas la posición del item seleccionado y dependiendo
-                // de la posicion seleccionada lanzas la actividad.
-                switch(position) {
-
-                    case 0:
-                        Log.d("Firebase", "Option 0 selected");
-                        System.out.println("DSOFSIDOFHOIASDHFOISHDFIOHDSIOFSD");
-                        EditUsernameDialog newDialog = new EditUsernameDialog();
-                        newDialog.show(getParentFragmentManager(), "EditUsernameDialogFragment");
+                switch(position) {  // Decides what action takes place, depending on the item clicked.
+                    case NEW_USERNAME_OPTION:
+                        Log.i("Configuration", "Set new username");
+                        EditUsernameDialog newUsernameDialog = new EditUsernameDialog();
+                        newUsernameDialog.show(getParentFragmentManager(), "EditUsernameDialogFragment");
                         break;
-                    case 1:
-                        // Lanzas la actividad 2
-                        Log.d("Firebase", "Option 1 selected");
-                        System.out.println("DSOFSIDOFHOIASDHFOISHDFIOHDSIOFSD");
+                    case NEW_EMAIL_OPTION:
+                        Log.i("Configuration", "Set new email");
+                        EditEmailDialog newEmailDialog = new EditEmailDialog();
+                        newEmailDialog.show(getParentFragmentManager(), "EditEmailDialogFragment");
                         break;
-                    case 2:
-                        // Lanzas la actividad 3
-                        Log.d("Firebase", "Option 2 selected");
-                        System.out.println("DSOFSIDOFHOIASDHFOISHDFIOHDSIOFSD");
+                    case NEW_PASSWORD_OPTION:
+                        Log.i("Configuration", "Set new password");
                         break;
                 }
             }
         });
 
-        // Write a message to the database
+        // Obtains the database reference object used to modify and retrieve data from such database.
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference();
 
 
-        // Upload the user to the "users" node in the database
-        myRef.child("users").push().setValue("NnewF")
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Data uploaded successfully
-                        Log.d("Firebase", "User uploaded successfully.");
-                    } else {
-                        // Data upload failed
-                        Log.e("Firebase", "User upload failed.", task.getException());
-                    }
-                });
-
+        // Uploads the user "Juan" to the "users" node in the database
+        ConfigListItem it = new ConfigListItem("NN", "mm");
+        myRef.child("Nuevo item").push().setValue(it);
+        myRef.child("users").push().setValue("Juan").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Data uploaded successfully
+                Log.d("Firebase", "User uploaded successfully.");
+            } else {
+                // Data upload failed
+                Log.e("Firebase", "User upload failed.", task.getException());
+            }
+        });
 
         return root;
     }
