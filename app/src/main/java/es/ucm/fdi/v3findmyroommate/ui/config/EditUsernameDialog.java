@@ -23,27 +23,29 @@ public class EditUsernameDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Inflate the layout
+
+        // Inflates the layout.
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_username, null); // Use your XML layout name
 
         this.usernameTextView = view.findViewById(R.id.new_username_label);
         this.usernameEditText = view.findViewById(R.id.edit_username_edittext);
 
-        // Build the dialog
+        // Builds the dialog.
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle("Editar nombre de usuario")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Handle the OK button click
+                        // Handles the OK button click.
                         String newUsername = EditUsernameDialog.this.usernameEditText.getText().toString();
-                        Log.i("New username", newUsername);
+                        Log.i("Configuration", "New username: " + newUsername);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         EditUsernameDialog.this.dismiss();
+                        Log.i("Configuration", "Canceled username update");
                     }
                 })
                 .create();

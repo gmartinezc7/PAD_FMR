@@ -23,6 +23,7 @@ public class EditEmailDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         // Inflates the layout.
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_edit_email, null);
@@ -36,14 +37,15 @@ public class EditEmailDialog extends DialogFragment {
                         .setTitle("Editar correo electrónico")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // Handle the OK button click
+                        // Handles the OK button click.
                         String newEmail = EditEmailDialog.this.emailEditText.getText().toString();
-                        Log.i("New email", newEmail);
+                        Log.i("Configuration", "New email address: " + newEmail);;
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         EditEmailDialog.this.dismiss();
+                        Log.i("Configuration", "Canceled email update");
                     }
                 })
                 .create();
