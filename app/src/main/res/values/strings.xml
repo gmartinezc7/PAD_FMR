@@ -20,4 +20,5 @@
     <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
     <string name="create_account">Create account</string>
     <string name="personal_information_message">Let’s know more about yourself</string>
+    <string name="continue_">Continue</string>
 </resources>

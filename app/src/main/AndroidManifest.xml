@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUp"/>
+        <activity android:name=".PreferencesFragment.PreferenceUser"/>
     </application>
 
 </manifest>

@@ -1,54 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:padding="16dp">
 
+    <!-- Personal Information Message -->
     <TextView
         android:id="@+id/personalInformationMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text= "@string/personal_information_message"
+        android:text="@string/personal_information_message"
         android:textStyle="bold"
         android:textSize="25sp"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/genderButtonToggle"
+    <!-- Gender Header -->
+    <TextView
+        android:id="@+id/genderHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Gender"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/personalInformationMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Gender Selector -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/genderChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/genderHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personalInformationMessage"
-        android:layout_marginTop="20dp">
-        <Button
-            style="?attr/materialButtonOutlinedStyle"
-            android:id="@+id/button1"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
-            />
-        <Button
-            style="?attr/materialButtonOutlinedStyle"
-            android:id="@+id/button2"
+            android:textSize="16sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
-            />
+            android:textSize="16sp" />
+    </com.google.android.material.chip.ChipGroup>
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+    <!-- Age Header -->
+    <TextView
+        android:id="@+id/ageHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Age"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/genderChipGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Age Selector -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/ageChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ageHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp">
+
+       >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip18To25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18-25"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip25To35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25-35"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip35To45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="35-45"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipOver45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="> 45"
+            android:textSize="18sp" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Marital Status Header -->
+    <TextView
+        android:id="@+id/maritalStatusHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Marital Status"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/ageChipGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Marital Status Selector -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/maritalStatusChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/maritalStatusHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Single"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipInARelationship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In a Relationship"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMarried"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Married"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPreferNotToSay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prefer Not to Say"
+            android:textSize="18sp" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Occupation Header -->
+    <TextView
+        android:id="@+id/occupationHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Occupation"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/maritalStatusChipGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Occupation Selector -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/occupationChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/occupationHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipEmployed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Employed"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipUnemployed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unemployed"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStudent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student"
+            android:textSize="18sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipRetired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retired"
+            android:textSize="18sp" />
+    </com.google.android.material.chip.ChipGroup>
 
 
-
-
-
-
-
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintStart_toStartOf="@+id/personalInformationMessage"
+        app:layout_constraintEnd_toEndOf="@+id/personalInformationMessage"
+        android:layout_marginTop="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
