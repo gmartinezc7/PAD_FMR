@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <EditTextPreference
         android:id="@+id/username_preference"
         android:key="username_preference"
+        android:icon="@drawable/person_icon"
         android:title="Nombre de usuario"
         android:summary="Editar el nombre de usuario"
         android:dialogTitle="Nombre de usuario"
@@ -11,6 +13,7 @@
     <EditTextPreference
         android:id="@+id/email_preference"
         android:key="email_preference"
+        android:icon="@drawable/mail_icon"
         android:title="Email"
         android:summary="Editar la dirección de correo electrónico"
         android:dialogTitle="Email"
@@ -19,6 +22,7 @@
     <EditTextPreference
         android:id="@+id/password_preference"
         android:key="password_preference"
+        android:icon="@drawable/key_icon"
         android:title="Contraseña"
         android:summary="Cambiar la contraseña de usuario"
         android:dialogTitle="Nueva contraseña"
@@ -27,6 +31,7 @@
     <EditTextPreference
         android:id="@+id/description_preference"
         android:key="description_preference"
+        android:icon="@drawable/description_icon"
         android:title="Descripción"
         android:summary="Editar la descripción personal"
         android:dialogTitle="Descripción"
