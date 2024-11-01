@@ -2,6 +2,7 @@ package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,10 +70,10 @@ public class MisViviendasFragment extends Fragment {
                         String ubicacion = data.getStringExtra("ubicacion");
                         String metros = data.getStringExtra("metros");
                         String precio = data.getStringExtra("precio");
-
+                        Uri imagenUri = data.getParcelableExtra("imagenUri");
                         String nuevoAnuncio = "Título: " + titulo + "\nUbicación: " + ubicacion +
                                 "\nMetros cuadrados: " + metros + "\nPrecio: " + precio;
-                        misViviendasViewModel.addAnuncio(nuevoAnuncio);
+                        misViviendasViewModel.addAnuncio(nuevoAnuncio, imagenUri);
                     }
                 }
         );

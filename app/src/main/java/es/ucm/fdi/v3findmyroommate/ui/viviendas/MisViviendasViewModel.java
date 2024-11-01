@@ -1,14 +1,18 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.net.Uri;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MisViviendasViewModel extends ViewModel {
 
-    private final MutableLiveData<List<String>> anuncios;
+    private final MutableLiveData<List<Anuncio>> anuncios;
     private final List<Integer> availableIds; // Para almacenar IDs eliminados
     private int contadorAnuncios; // Para seguir el último ID usado
 
@@ -17,49 +21,42 @@ public class MisViviendasViewModel extends ViewModel {
         availableIds = new ArrayList<>(); // Inicializa la lista de IDs disponibles
         contadorAnuncios = 1; // Comenzar desde 1
 
-        List<String> listaInicial = new ArrayList<>();
+        List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
     }
 
-    public LiveData<List<String>> getAnuncios() {
+    public LiveData<List<Anuncio>> getAnuncios() {
         return anuncios;
     }
 
-    public void addAnuncio(String nuevo) {
-        List<String> listaActual = anuncios.getValue();
+    public void addAnuncio(String nuevo, Uri imagenUri) {
+        List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null) {
-            int nuevoId;
-            if (!availableIds.isEmpty()) {
-                nuevoId = availableIds.remove(availableIds.size() - 1); // Reutiliza un ID disponible
-            } else {
-                nuevoId = contadorAnuncios++; // Usa el contador actual y lo incrementa
-            }
-            String nuevoAnuncio = "Anuncio " + nuevoId + ": \n" + nuevo;
+            int nuevoId = !availableIds.isEmpty() ? availableIds.remove(availableIds.size() - 1) : contadorAnuncios++;
+            Anuncio nuevoAnuncio = new Anuncio(nuevoId, nuevo, imagenUri);
             listaActual.add(nuevoAnuncio);
             anuncios.setValue(listaActual);
         }
     }
 
+
     public void eliminarAnuncio(int position) {
-        List<String> listaActual = anuncios.getValue();
+        List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
             // Extraer el anuncio que se va a eliminar
-            String anuncioEliminado = listaActual.get(position);
+            Anuncio anuncioEliminado = listaActual.get(position);
 
             // Extraer el ID del anuncio que se va a eliminar
-            // El ID es la parte después de "Anuncio " y antes de ":"
-            int idEliminado = Integer.parseInt(anuncioEliminado.split(" ")[1].replace(":", ""));
+            int idEliminado = anuncioEliminado.getId();
 
             // Elimina el anuncio
             listaActual.remove(position);
 
             // Actualiza los números de los anuncios restantes
             for (int i = position; i < listaActual.size(); i++) {
-                String anuncioActual = listaActual.get(i);
-                // Extraer el número actual del anuncio
-                int numeroActual = Integer.parseInt(anuncioActual.split(" ")[1].replace(":", ""));
-                // Reemplazar el número con el decrementar el ID
-                listaActual.set(i, anuncioActual.replace("Anuncio " + numeroActual, "Anuncio " + (numeroActual - 1)));
+                Anuncio anuncioActual = listaActual.get(i);
+                // Actualiza el ID
+                listaActual.set(i, new Anuncio(anuncioActual.getId() - 1, anuncioActual.getDetalle(), anuncioActual.getImagenUri()));
             }
 
             // Actualiza el contador si es necesario

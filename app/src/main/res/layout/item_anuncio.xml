@@ -39,11 +39,20 @@
      </LinearLayout>
     </ScrollView>
 
-    <View
+    <FrameLayout
         android:id="@+id/preview_rect"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@drawable/border_rectangle" />
+        android:background="@drawable/border_rectangle"
+        android:padding="8dp">
+
+        <!-- ImageView para la imagen del anuncio -->
+        <ImageView
+            android:id="@+id/image_view_anuncio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
 
     <Button
         android:id="@+id/btn_eliminar"

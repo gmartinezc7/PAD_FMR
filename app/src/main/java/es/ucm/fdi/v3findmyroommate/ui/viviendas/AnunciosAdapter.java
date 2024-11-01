@@ -1,9 +1,11 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +17,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.AnuncioViewHolder> {
 
-    private List<String> anuncios = new ArrayList<>();
+    private List<Anuncio> anuncios = new ArrayList<>();
     private MisViviendasViewModel viewModel;
 
     public AnunciosAdapter(MisViviendasViewModel viewModel) {
@@ -23,7 +25,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     }
 
     // Método para actualizar la lista de anuncios
-    public void setAnuncios(List<String> nuevosAnuncios) {
+    public void setAnuncios(List<Anuncio> nuevosAnuncios) {
         this.anuncios = nuevosAnuncios;
         notifyDataSetChanged(); // Notifica al RecyclerView que los datos han cambiado
     }
@@ -36,26 +38,30 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         return new AnuncioViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull AnuncioViewHolder holder, int position) {
+        Anuncio anuncio = anuncios.get(position);
 
+        // Mostrar el ID y los detalles del anuncio
+        holder.textViewAnuncioId.setText(anuncio.getId() + ":");
+        holder.textViewAnuncioDetalle.setText(anuncio.getDetalle());
 
-        String anuncio = anuncios.get(position);
-        String[] partes = anuncio.split(": \n", 2);
-        if (partes.length > 1) {
-            holder.textViewAnuncioId.setText(partes[0]); // Anuncio X:
-            holder.textViewAnuncioDetalle.setText(partes[1]); // Detalles del anuncio
-        }
-
+        // Establecer la visibilidad de previewRect si es necesario
         holder.previewRect.setVisibility(View.VISIBLE);
 
-        // Añadir un listener al botón de eliminar en cada anuncio
+
+        // Asignar la imagen usando el URI de la imagen del anuncio
+        if (anuncio.getImagenUri() != null) {
+            holder.imageViewAnuncio.setImageURI(anuncio.getImagenUri());
+            // Alternativamente, puedes usar Glide
+            // Glide.with(holder.itemView.getContext()).load(anuncio.getImageUri()).into(holder.imageViewAnuncio);
+        }
+
+        // Listener para el botón de eliminar
         holder.btnEliminar.setOnClickListener(v -> {
-            // Aquí llamamos al método de eliminar del ViewModel
-            viewModel.eliminarAnuncio(position);
+            viewModel.eliminarAnuncio(position); // Llama al método de eliminar en el ViewModel
         });
-
-
     }
 
     @Override
@@ -68,17 +74,17 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
         TextView textViewAnuncioId;
         TextView textViewAnuncioDetalle;
-
         Button btnEliminar;
         View previewRect;
+        ImageView imageViewAnuncio;
 
         public AnuncioViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewAnuncioId = itemView.findViewById(R.id.text_view_anuncio_id);
             textViewAnuncioDetalle = itemView.findViewById(R.id.text_view_anuncio_detalle);
-
             btnEliminar = itemView.findViewById(R.id.btn_eliminar);
             previewRect = itemView.findViewById(R.id.preview_rect);
+            imageViewAnuncio = itemView.findViewById(R.id.image_view_anuncio);
         }
     }
 }
