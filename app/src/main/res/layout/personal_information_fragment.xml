@@ -40,12 +40,14 @@
         app:layout_constraintTop_toBottomOf="@+id/genderHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipMale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="Male"
             android:textSize="16sp" />
 
@@ -54,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
+            android:checkable="true"
             android:textSize="16sp" />
     </com.google.android.material.chip.ChipGroup>
 
@@ -77,9 +80,8 @@
         app:layout_constraintTop_toBottomOf="@+id/ageHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp">
-
-       >
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip18To25"
@@ -120,46 +122,53 @@
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/ageChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"/>
 
-    <!-- Marital Status Selector -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/maritalStatusChipGroup"
-        android:layout_width="wrap_content"
+    <!-- Marital Status Selector with HorizontalScrollView -->
+    <HorizontalScrollView
+        android:id="@+id/horizontalMaritalStatusHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/maritalStatusHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipSingle"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/maritalStatusChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Single"
-            android:textSize="18sp" />
+            app:singleSelection="true">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipInARelationship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="In a Relationship"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSingle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Single"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipMarried"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Married"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipInARelationship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In a Relationship"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipPreferNotToSay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prefer Not to Say"
-            android:textSize="18sp" />
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMarried"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Married"
+                android:textSize="18sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPreferNotToSay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prefer Not to Say"
+                android:textSize="18sp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
     <!-- Occupation Header -->
     <TextView
@@ -169,62 +178,69 @@
         android:text="Occupation"
         android:textStyle="bold"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/maritalStatusChipGroup"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalMaritalStatusHeader"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"/>
 
-    <!-- Occupation Selector -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/occupationChipGroup"
-        android:layout_width="wrap_content"
+    <!-- Occupation Selector with HorizontalScrollView -->
+    <HorizontalScrollView
+        android:id="@+id/horizontalOccupationChipGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/occupationHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipEmployed"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/occupationChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Employed"
-            android:textSize="18sp" />
+            app:singleSelection="true">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipUnemployed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Unemployed"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEmployed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Employed"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipStudent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Student"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipUnemployed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unemployed"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipRetired"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retired"
-            android:textSize="18sp" />
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStudent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student"
+                android:textSize="18sp" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipRetired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retired"
+                android:textSize="18sp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
     <!-- Save Button -->
     <Button
         android:id="@+id/continueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/continue_"
-        android:textSize="30sp"
+        android:text="Continue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.9"
         app:layout_constraintStart_toStartOf="@+id/personalInformationMessage"
         app:layout_constraintEnd_toEndOf="@+id/personalInformationMessage"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30sp"
+        app:layout_constraintVertical_bias="0.95"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

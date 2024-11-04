@@ -10,21 +10,28 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.SharedViewModel;
 
 public class PersonalInformationFragment extends BaseFragment {
     private Button continueButton;
     private ChipGroup genderChipGroup;
     private ChipGroup ageChipGroup;
+    private SharedViewModel sharedViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Infla el layout del fragmento
         View view = inflater.inflate(R.layout.personal_information_fragment, container, false);
+
+        // Inicializa el ViewModel compartido
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         // Configuración de ChipGroup para selección de género
         genderChipGroup = view.findViewById(R.id.genderChipGroup);
@@ -35,32 +42,61 @@ public class PersonalInformationFragment extends BaseFragment {
         ageChipGroup.setOnCheckedChangeListener(this::handleAgeSelection);
 
         // Configura el botón Continuar
-        continueButton = view.findViewById(R.id.continueButton); // Asegúrate de que este ID coincide con tu layout
+        continueButton = view.findViewById(R.id.continueButton);
         continueButton.setOnClickListener(v -> loadNextFragment(getNextFragment()));
 
         return view;
     }
 
     private void handleGenderSelection(ChipGroup group, int checkedId) {
-        if (checkedId != -1) { // -1 indica que no hay chip seleccionado
-            if (checkedId == R.id.chipMale) {
-                Log.d("GenderSelection", "Male selected");
-            } else if (checkedId == R.id.chipFemale) {
-                Log.d("GenderSelection", "Female selected");
-            }
+        // Si no hay selección, se hace return
+        if (checkedId == -1) return;
+
+        String gender = null;
+        updateChipColors(group, checkedId);
+        if (checkedId == R.id.chipMale) {
+            gender = "Male";
+        } else if (checkedId == R.id.chipFemale) {
+            gender = "Female";
+        }
+        if (gender != null) {
+            sharedViewModel.setGender(gender); // Guarda en el ViewModel
+            Log.d("GenderSelection", gender + " selected");
         }
     }
 
     private void handleAgeSelection(ChipGroup group, int checkedId) {
-        if (checkedId != -1) { // -1 indica que no hay chip seleccionado
-             if (checkedId == R.id.chip18To25) {
-                Log.d("AgeSelection", "18-25 selected");
-            } else if (checkedId == R.id.chip25To35) {
-                Log.d("AgeSelection", "25-35 selected");
-            } else if (checkedId == R.id.chip35To45) {
-                Log.d("AgeSelection", "35-45 selected");
-            } else if (checkedId == R.id.chipOver45) {
-                Log.d("AgeSelection", ">45 selected");
+        // Si no hay selección, se hace return
+        if (checkedId == -1) return;
+
+        String ageRange = null;
+        updateChipColors(group, checkedId);
+        if (checkedId == R.id.chip18To25) {
+            ageRange = "18-25";
+        } else if (checkedId == R.id.chip25To35) {
+            ageRange = "25-35";
+        } else if (checkedId == R.id.chip35To45) {
+            ageRange = "35-45";
+        } else if (checkedId == R.id.chipOver45) {
+            ageRange = ">45";
+        }
+        if (ageRange != null) {
+            sharedViewModel.setAgeRange(ageRange); // Guarda en el ViewModel
+            Log.d("AgeSelection", ageRange + " selected");
+        }
+    }
+
+    private void updateChipColors(ChipGroup group, int checkedId) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View chip = group.getChildAt(i);
+            if (chip instanceof Chip) {
+                if (chip.getId() == checkedId) {
+                    // Chip seleccionado
+                    chip.setBackgroundColor(getResources().getColor(R.color.chipSelectedColor));
+                } else {
+                    // Chip no seleccionado
+                    chip.setBackgroundColor(getResources().getColor(R.color.chipDefaultColor));
+                }
             }
         }
     }

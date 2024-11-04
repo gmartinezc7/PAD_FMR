@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/propertyTypeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/property_type_message"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/propertyTypeChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/propertyTypeMessage"
+        app:layout_constraintEnd_toEndOf="@+id/propertyTypeMessage"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeMessage"
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/houseChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="House"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/roomChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Room"/>
+    </com.google.android.material.chip.ChipGroup>
+<!--
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/maxBudgetTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/propertyTypeMessage"
+        app:layout_constraintEnd_toEndOf="@id/propertyTypeMessage"
+        app:layout_constraintTop_toBottomOf="@+id/propertyTypeChipGroup"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/maxBudgetInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your max budget"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
