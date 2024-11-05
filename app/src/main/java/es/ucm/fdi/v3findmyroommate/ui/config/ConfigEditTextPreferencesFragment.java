@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import es.ucm.fdi.v3findmyroommate.R;
@@ -11,11 +12,16 @@ import es.ucm.fdi.v3findmyroommate.R;
 public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
 
     private ConfigViewModel preferencesViewModel;
+    private EditTextPreference usernamePref, emailPref, passwordPref, descriptionPref;
+    private ListPreference ageRangePreference, genderPreference;
 
     private static final String NULL_USERNAME_TOAST_TEXT = "El nombre de usuario no puede estar vacío";
     private static final String NULL_EMAIL_TOAST_TEXT = "El email no puede ser nulo";
     private static final String NULL_PASSWORD_TOAST_TEXT = "Debe tener una contraseña";
     private static final String INVALID_EMAIL_TOAST_TEXT = "La dirección de correo ha de ser válida";
+
+    private static final CharSequence[] AGE_ENTRIES_ARRAY = {"18-25", "25-35", "35-45", ">45"};
+    private static final CharSequence[] GENDER_ENTRIES_ARRAY = {"Male", "Female"};
 
 
     public ConfigEditTextPreferencesFragment(ConfigViewModel configViewModel) {
@@ -27,17 +33,31 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        // Gets references to the preferences.
-        EditTextPreference usernamePref = findPreference("username_preference");
-        EditTextPreference emailPref = findPreference("email_preference");
-        EditTextPreference passwordPref = findPreference("password_preference");
-        EditTextPreference descriptionPref = findPreference("description_preference");
+        linkPreferencesToCode();
+        configurePreferences();
 
-        setUsernamePreference(usernamePref);
-        setEmailPreference(emailPref);
-        setPasswordPreference(passwordPref);
-        setDescriptionPreference(descriptionPref);
+    }
 
+
+    // Links XML layout preferences with their respective java objects.
+    private void linkPreferencesToCode() {
+        this.usernamePref = findPreference("username_preference");
+        this.emailPref = findPreference("email_preference");
+        this.passwordPref = findPreference("password_preference");
+        this.descriptionPref = findPreference("description_preference");
+        this.ageRangePreference = findPreference("age_range_preference");
+        this.genderPreference = findPreference("gender_preference");
+    }
+
+
+    // Configures each preference, along with its changeListener.
+    private void configurePreferences() {
+        setUsernamePreference(this.usernamePref);
+        setEmailPreference(this.emailPref);
+        setPasswordPreference(this.passwordPref);
+        setDescriptionPreference(this.descriptionPref);
+        setAgeRangePreference(this.ageRangePreference);
+        setGenderPreference(this.genderPreference);
     }
 
 
@@ -142,7 +162,39 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Configures the words in each button of the given reference.
+    // Sets up age range preference change listeners.
+    private void setAgeRangePreference(ListPreference ageRangePreference) {
+        if (ageRangePreference != null) {
+            ageRangePreference.setEntries(AGE_ENTRIES_ARRAY);
+            ageRangePreference.setEntryValues(AGE_ENTRIES_ARRAY);
+
+            ageRangePreference.setOnPreferenceChangeListener((preference, newAgeRangeValue) -> {
+                String ageRangeSelected = (String) newAgeRangeValue;
+                this.preferencesViewModel.updateAgeRange(ageRangeSelected);
+                Log.i("AgeRangePreference", "New age range selected: " + ageRangeSelected);
+                return true;
+            });
+        }
+    }
+
+
+    // Sets up gender preference change listeners.
+    private void setGenderPreference(ListPreference genderPref) {
+        if (genderPref != null) {
+            genderPref.setEntries(GENDER_ENTRIES_ARRAY);
+            genderPref.setEntryValues(GENDER_ENTRIES_ARRAY);
+
+            genderPref.setOnPreferenceChangeListener((preference, newGenderValue) -> {
+                String genderSelected = (String) newGenderValue;
+                this.preferencesViewModel.updateGender(genderSelected);
+                Log.i("GenderPreference", "New gender selected: " + genderSelected);
+                return true;
+            });
+        }
+    }
+
+
+    // Configures the words in each button of the given reference (valid only for EditTextPreferences).
     private void setEditTextPreferenceButtonText(EditTextPreference currentPref) {
         currentPref.setPositiveButtonText("Aceptar");
         currentPref.setNegativeButtonText("Cancelar");

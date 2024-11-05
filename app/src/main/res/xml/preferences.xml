@@ -37,5 +37,21 @@
         android:dialogTitle="Descripción"
         android:inputType="text" />
 
+    <ListPreference
+        android:id="@+id/age_range_preference"
+        android:key="age_range_preference"
+        android:icon="@drawable/age_diversity_icon"
+        android:title="Edad"
+        android:summary="Selecciona tu rango de edad"
+        android:dialogTitle="Edad"/>
+
+    <ListPreference
+        android:id="@+id/gender_preference"
+        android:key="gender_preference"
+        android:icon="@drawable/female_gender_icon"
+        android:title="Género"
+        android:summary="Selecciona tu género"
+        android:dialogTitle="Género"/>
+
 
 </PreferenceScreen>

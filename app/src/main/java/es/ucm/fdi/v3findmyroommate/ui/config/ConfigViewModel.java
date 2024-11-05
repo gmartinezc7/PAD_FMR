@@ -67,5 +67,13 @@ public class ConfigViewModel extends AndroidViewModel {
         this.databaseUserReference.child("description").setValue(newDescription);
     }
 
+    public void updateAgeRange(String newAgeRange) {
+        this.databaseUserReference.child("age_range").setValue(newAgeRange);
+    }
+
+    public void updateGender(String newGender) {
+        this.databaseUserReference.child("gender").setValue(newGender);
+    }
+
 
 }
