@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,16 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         holder.btnEliminar.setOnClickListener(v -> {
             viewModel.eliminarAnuncio(position); // Llama al método de eliminar en el ViewModel
         });
+
+        //boton "Ver"
+        holder.btnVer.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), AnuncioDetalleActivity.class);
+            intent.putExtra("id", anuncio.getId());
+            intent.putExtra("detalle", anuncio.getDetalle());
+            intent.putExtra("imagenUri", anuncio.getImagenUri());
+
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -75,6 +86,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         TextView textViewAnuncioId;
         TextView textViewAnuncioDetalle;
         Button btnEliminar;
+        Button btnVer;
         View previewRect;
         ImageView imageViewAnuncio;
 
@@ -83,6 +95,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
             textViewAnuncioId = itemView.findViewById(R.id.text_view_anuncio_id);
             textViewAnuncioDetalle = itemView.findViewById(R.id.text_view_anuncio_detalle);
             btnEliminar = itemView.findViewById(R.id.btn_eliminar);
+            btnVer =  itemView.findViewById(R.id.btn_ver);
             previewRect = itemView.findViewById(R.id.preview_rect);
             imageViewAnuncio = itemView.findViewById(R.id.image_view_anuncio);
         }

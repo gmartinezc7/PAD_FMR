@@ -54,11 +54,26 @@
             android:scaleType="centerCrop" />
     </FrameLayout>
 
-    <Button
-        android:id="@+id/btn_eliminar"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Eliminar"
-        android:backgroundTint="#208944"
-        android:layout_gravity="end"/>
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+
+        <Button
+            android:id="@+id/btn_ver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver"
+            android:backgroundTint="#208944"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:backgroundTint="#208944"
+            android:layout_marginEnd="8dp"/>
+    </LinearLayout>
 </LinearLayout>

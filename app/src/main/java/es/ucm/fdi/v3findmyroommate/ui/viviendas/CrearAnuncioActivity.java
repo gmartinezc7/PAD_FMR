@@ -35,7 +35,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
     private ImageView imagenAnuncio;
     private Uri photoUri;
-
+    private Uri previewPhotoUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +50,8 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         btnCancelar = findViewById(R.id.btn_cancelar);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
+        photoUri = null;
+        previewPhotoUri = null;
 
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
@@ -62,15 +64,21 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             String ubicacion = editUbicacion.getText().toString();
             String metros = editMetros.getText().toString();
             String precio = editPrecio.getText().toString();
+            // Verifica si todos los campos están llenos
+            if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
+                    || precio.isEmpty() || photoUri == null ) {
+                Toast.makeText(this, "Debes rellenar toda la información " +
+                        "para poder crear un anuncio", Toast.LENGTH_LONG).show();
+                return; // Detiene el flujo y no continúa con la creación del anuncio
+            }
+
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("titulo", titulo);
             resultIntent.putExtra("ubicacion", ubicacion);
             resultIntent.putExtra("metros", metros);
             resultIntent.putExtra("precio", precio);
-             if (photoUri != null) {
-                resultIntent.putExtra("imagenUri", photoUri);
-            }
+            resultIntent.putExtra("imagenUri", photoUri);
 
             setResult(RESULT_OK, resultIntent);
             finish();
@@ -115,8 +123,8 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
             if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                previewPhotoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, previewPhotoUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         } else {
@@ -137,11 +145,16 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (photoUri != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK && previewPhotoUri != null) {
+                // El usuario tomó la foto correctamente
+                photoUri = previewPhotoUri; //EN ESTE CASO SE CONFIRMA LA PHOTOURI CORRECTA PARA EVITAR ERRORES
                 imagenAnuncio.setImageURI(photoUri);
+
             } else {
-                Toast.makeText(this, "No se obtuvo la URI de la imagen", Toast.LENGTH_SHORT).show();
+                    // El usuario no tomó una foto o canceló
+                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                    previewPhotoUri = null; // Restablece previewPhotoUri para que no sea considerada válida
             }
         }
     }
