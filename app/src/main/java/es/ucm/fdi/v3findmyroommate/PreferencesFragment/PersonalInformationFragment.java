@@ -23,6 +23,8 @@ public class PersonalInformationFragment extends BaseFragment {
     private ChipGroup genderChipGroup;
     private ChipGroup ageChipGroup;
     private SharedViewModel sharedViewModel;
+    private ChipGroup maritalStatusChipGroup;
+    private ChipGroup occupationChipGroup;
 
     @Nullable
     @Override
@@ -40,6 +42,14 @@ public class PersonalInformationFragment extends BaseFragment {
         // Configuración de ChipGroup para selección de edad
         ageChipGroup = view.findViewById(R.id.ageChipGroup);
         ageChipGroup.setOnCheckedChangeListener(this::handleAgeSelection);
+
+        // Configuración de ChipGroup para selección de estado civil
+        maritalStatusChipGroup = view.findViewById(R.id.maritalStatusChipGroup);
+        maritalStatusChipGroup.setOnCheckedChangeListener(this::handleMaritalStatusSelection);
+
+        // Configuración de ChipGroup para selección de ocupación
+        occupationChipGroup = view.findViewById(R.id.occupationChipGroup);
+        occupationChipGroup.setOnCheckedChangeListener(this::handleOccupationSelection);
 
         // Configura el botón Continuar
         continueButton = view.findViewById(R.id.continueButton);
@@ -85,6 +95,47 @@ public class PersonalInformationFragment extends BaseFragment {
             Log.d("AgeSelection", ageRange + " selected");
         }
     }
+
+    private void handleMaritalStatusSelection(ChipGroup group, int checkedId) {
+        if (checkedId == -1) return;
+
+        String maritalStatus = null;
+        updateChipColors(group, checkedId);
+        if (checkedId == R.id.chipSingle) {
+            maritalStatus = "Single";
+        } else if (checkedId == R.id.chipInARelationship) {
+            maritalStatus = "In a Relationship";
+        } else if (checkedId == R.id.chipMarried) {
+            maritalStatus = "Married";
+        } else if (checkedId == R.id.chipPreferNotToSay) {
+            maritalStatus = "Prefer Not to Say";
+        }
+        if (maritalStatus != null) {
+            sharedViewModel.setMaritalStatus(maritalStatus);
+            Log.d("MaritalStatusSelection", maritalStatus + " selected");
+        }
+    }
+
+    private void handleOccupationSelection(ChipGroup group, int checkedId) {
+        if (checkedId == -1) return;
+
+        String occupation = null;
+        updateChipColors(group, checkedId);
+        if (checkedId == R.id.chipEmployed) {
+            occupation = "Employed";
+        } else if (checkedId == R.id.chipUnemployed) {
+            occupation = "Unemployed";
+        } else if (checkedId == R.id.chipStudent) {
+            occupation = "Student";
+        } else if (checkedId == R.id.chipRetired) {
+            occupation = "Retired";
+        }
+        if (occupation != null) {
+            sharedViewModel.setOccupation(occupation);
+            Log.d("OccupationSelection", occupation + " selected");
+        }
+    }
+
 
     private void updateChipColors(ChipGroup group, int checkedId) {
         for (int i = 0; i < group.getChildCount(); i++) {

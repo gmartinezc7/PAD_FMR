@@ -87,6 +87,7 @@
             android:id="@+id/chip18To25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="18-25"
             android:textSize="18sp" />
 
@@ -94,6 +95,7 @@
             android:id="@+id/chip25To35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="25-35"
             android:textSize="18sp" />
 
@@ -101,6 +103,7 @@
             android:id="@+id/chip35To45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="35-45"
             android:textSize="18sp" />
 
@@ -108,6 +111,7 @@
             android:id="@+id/chipOver45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="> 45"
             android:textSize="18sp" />
     </com.google.android.material.chip.ChipGroup>
@@ -144,6 +148,7 @@
                 android:id="@+id/chipSingle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="Single"
                 android:textSize="18sp" />
 
@@ -152,6 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="In a Relationship"
+                android:checkable="true"
                 android:textSize="18sp" />
 
             <com.google.android.material.chip.Chip
@@ -159,6 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Married"
+                android:checkable="true"
                 android:textSize="18sp" />
 
             <com.google.android.material.chip.Chip
@@ -166,6 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Prefer Not to Say"
+                android:checkable="true"
                 android:textSize="18sp" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
@@ -203,6 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Employed"
+                android:checkable="true"
                 android:textSize="18sp" />
 
             <com.google.android.material.chip.Chip
@@ -210,6 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unemployed"
+                android:checkable="true"
                 android:textSize="18sp" />
 
             <com.google.android.material.chip.Chip
@@ -217,6 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Student"
+                android:checkable="true"
                 android:textSize="18sp" />
 
             <com.google.android.material.chip.Chip
@@ -224,6 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Retired"
+                android:checkable="true"
                 android:textSize="18sp" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

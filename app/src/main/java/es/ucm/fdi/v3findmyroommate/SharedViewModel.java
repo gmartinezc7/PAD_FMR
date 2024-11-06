@@ -32,5 +32,22 @@ public class SharedViewModel extends ViewModel {
             user.setValue(currentUser); // Actualizamos el MutableLiveData con el nuevo valor
         }
     }
+    // Método para actualizar solo el estado civil del usuario
+    public void setMaritalStatus(String maritalStatus) {
+        User currentUser = user.getValue();
+        if (currentUser != null) {
+            currentUser.setMaritalStatus(maritalStatus);
+            user.setValue(currentUser);
+        }
+    }
+
+    // Método para actualizar solo la ocupación del usuario
+    public void setOccupation(String occupation) {
+        User currentUser = user.getValue();
+        if (currentUser != null) {
+            currentUser.setOccupation(occupation);
+            user.setValue(currentUser);
+        }
+    }
 }
 
