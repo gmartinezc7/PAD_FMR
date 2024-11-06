@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:id="@+id/username_preference"
+        android:key="username_preference"
+        android:icon="@drawable/person_icon"
+        android:title="Nombre de usuario"
+        android:summary="Editar el nombre de usuario"
+        android:dialogTitle="Nombre de usuario"
+        android:inputType="text" />
+
+    <EditTextPreference
+        android:id="@+id/email_preference"
+        android:key="email_preference"
+        android:icon="@drawable/mail_icon"
+        android:title="Email"
+        android:summary="Editar la dirección de correo electrónico"
+        android:dialogTitle="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditTextPreference
+        android:id="@+id/password_preference"
+        android:key="password_preference"
+        android:icon="@drawable/key_icon"
+        android:title="Contraseña"
+        android:summary="Cambiar la contraseña de usuario"
+        android:dialogTitle="Nueva contraseña"
+        android:inputType="textPassword" />
+
+    <EditTextPreference
+        android:id="@+id/description_preference"
+        android:key="description_preference"
+        android:icon="@drawable/description_icon"
+        android:title="Descripción"
+        android:summary="Editar la descripción personal"
+        android:dialogTitle="Descripción"
+        android:inputType="text" />
+
+    <ListPreference
+        android:id="@+id/age_range_preference"
+        android:key="age_range_preference"
+        android:icon="@drawable/age_diversity_icon"
+        android:title="Edad"
+        android:summary="Selecciona tu rango de edad"
+        android:dialogTitle="Edad"/>
+
+    <ListPreference
+        android:id="@+id/gender_preference"
+        android:key="gender_preference"
+        android:icon="@drawable/female_gender_icon"
+        android:title="Género"
+        android:summary="Selecciona tu género"
+        android:dialogTitle="Género"/>
+
+
+</PreferenceScreen>

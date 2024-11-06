@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "662369363528",
+    "project_id": "findmyroommate-86cbe",
+    "storage_bucket": "findmyroommate-86cbe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662369363528:android:47de8e3c0bf88bac151a7d",
+        "android_client_info": {
+          "package_name": "es.ucm.fdi.v3findmyroommate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjo-Lxdn_fkvegIpxjy5iYZkJj6U2zu1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
