@@ -28,4 +28,5 @@ public class Lobby extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_lobby);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
+
 }
