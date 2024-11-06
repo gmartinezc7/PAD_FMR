@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- LinearLayout para el texto y el botón -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/text_view_anuncio_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#357B39"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp" />
+
+        <TextView
+            android:id="@+id/text_view_anuncio_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4CAF50"
+            android:textSize="14sp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp" />
+     </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/preview_rect"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/border_rectangle"
+        android:padding="8dp">
+
+        <!-- ImageView para la imagen del anuncio -->
+        <ImageView
+            android:id="@+id/image_view_anuncio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+
+        <Button
+            android:id="@+id/btn_ver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver"
+            android:backgroundTint="#208944"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:backgroundTint="#208944"
+            android:layout_marginEnd="8dp"/>
+    </LinearLayout>
+</LinearLayout>
