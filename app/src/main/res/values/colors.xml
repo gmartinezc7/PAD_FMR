@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="chipSelectedColor">#FF6200EE</color> <!-- Color para el chip seleccionado -->
+    <color name="chipDefaultColor">#FFBDBDBD</color> <!-- Color por defecto para los chips -->
+
+
 </resources>
