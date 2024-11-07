@@ -30,7 +30,8 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 public class CrearAnuncioActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
     private EditText editTitulo, editUbicacion, editMetros, editPrecio;
     private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
     private ImageView imagenAnuncio;
@@ -92,8 +93,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.CAMERA
             }, 100);
-        } else {
-            openCamera(); // Abre la cámara si los permisos ya están concedidos
+        }
+        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, 101);
+        }
+        else {
+            openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
         }
     }
 
@@ -102,35 +109,94 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 100) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera(); // Abre la cámara si se concede el permiso
+                openImageSelector(); // Abre selector si se concede el permiso
             } else {
                 Toast.makeText(this, "Permiso de cámara no concedido", Toast.LENGTH_SHORT).show();
             }
         }
+        else if(requestCode == 101){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openImageSelector(); // Abre selector si se concede el permiso
+            } else {
+                Toast.makeText(this, "Permiso de almacenamiento no concedido", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    private void openCamera() {
+    private void openImageSelector() {
+
+        // Intent para tomar una foto con la cámara JUNTO AL PROCESO DE CREACION DE LA IMAGEN
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
-
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
                 Toast.makeText(this, "Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
             }
-
-
             if (photoFile != null) {
                 previewPhotoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, previewPhotoUri);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         } else {
             Toast.makeText(this, "No se encontró aplicación de cámara", Toast.LENGTH_SHORT).show();
         }
+
+
+
+        // Intent para seleccionar una imagen de la galería
+        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // Crear un "chooser" que permite elegir entre la cámara o la galería
+        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, "Selecciona una imagen");
+
+        // Añadir la opción de tomar una foto con la cámara
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
+
+        // Llamar al "chooser" para que el usuario elija
+        imagePickerLauncher.launch(chooserIntent);
     }
+
+
+
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+
+        if (result.getResultCode() == RESULT_OK) {
+
+            if (result != null && result.getData() != null) {
+                previewPhotoUri = result.getData().getData(); // URI de la imagen seleccionada (galería)
+                imagenAnuncio.setImageURI(previewPhotoUri);
+                photoUri = previewPhotoUri; // Guardamos la URI de la imagen seleccionada
+
+
+            } else { //EN CASO DE QUE SEA NULL ES PORQUE LA IMAGEN QUE SE HA ESCOGIDO ES DE LA CAMARA
+
+                if (previewPhotoUri != null) { //SE COMPRUEBA QUE EFECTIVAMENTE SER HAYA ELEGIDO UNA IMAGEN UNA VEZ ABEIRTA LA CAMARA
+                    // El usuario tomó la foto correctamente
+                    photoUri = previewPhotoUri; //EN ESTE CASO SE CONFIRMA LA PHOTOURI CORRECTA PARA EVITAR ERRORES
+                    imagenAnuncio.setImageURI(photoUri);
+
+                } else {
+                    // El usuario no tomó una foto o canceló
+                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+        else{
+            // Si no se seleccionó ninguna imagen o se canceló
+            Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+             previewPhotoUri = null; // Restablecemos previewPhotoUri
+        }
+
+
+});
+
+
 
     private File createImageFile() throws IOException {
 
@@ -140,22 +206,5 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         return File.createTempFile(imageFileName, ".jpg", storageDir);
 
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (resultCode == RESULT_OK && previewPhotoUri != null) {
-                // El usuario tomó la foto correctamente
-                photoUri = previewPhotoUri; //EN ESTE CASO SE CONFIRMA LA PHOTOURI CORRECTA PARA EVITAR ERRORES
-                imagenAnuncio.setImageURI(photoUri);
-
-            } else {
-                    // El usuario no tomó una foto o canceló
-                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
-                    previewPhotoUri = null; // Restablece previewPhotoUri para que no sea considerada válida
-            }
-        }
     }
 }
