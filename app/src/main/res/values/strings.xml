@@ -63,4 +63,29 @@
         <item>Privado</item>
         <item>Compartido</item>
     </string-array>
+    <string name="database_url" translatable="false">https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/</string>
+    <string name="null_username_toast_text">El nombre de usuario no puede estar vacío</string>
+    <string name="null_email_toast_text">El email no puede ser nulo</string>
+    <string name="null_password_toast_text">Todo usuario debe tener una contraseña</string>
+    <string name="invalid_email_toast_text">La dirección de correo ha de ser válida</string>
+    <string name="username_preference_title">Nombre de usuario</string>
+    <string name="username_preference_summary">Editar el nombre de usuario</string>
+    <string name="email_preference_title">Email</string>
+    <string name="email_preference_summary">Editar la dirección de correo electrónico</string>
+    <string name="description_preference_title">Descripción</string>
+    <string name="description_preference_summary">Editar la descripción personal</string>
+    <string name="age_range_preference_title">Edad</string>
+    <string name="age_range_preference_summary">Seleccionar tu rango de edad</string>
+    <string name="gender_preference_title">Género</string>
+    <string name="gender_preference_summary">Seleccionar tu género</string>
+    <string name="password_preference_title">Contraseña</string>
+    <string name="password_preference_summary">Cambiar la contraseña de la cuenta</string>
+    <string name="password_preference_new_password_label">Nueva contraseña</string>
+    <string name="user_preferences_file" translatable="false">preferences</string>
+    <string name="username_preference_key" translatable="false">username_preference</string>
+    <string name="email_preference_key" translatable="false">email_preference</string>
+    <string name="password_preference_key" translatable="false">password_preference</string>
+    <string name="description_preference_key" translatable="false">description_preference</string>
+    <string name="age_range_preference_key" translatable="false">age_range_preference</string>
+    <string name="gender_preference_key" translatable="false">gender_preference</string>
 </resources>

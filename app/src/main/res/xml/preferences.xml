@@ -3,55 +3,55 @@
 
     <EditTextPreference
         android:id="@+id/username_preference"
-        android:key="username_preference"
+        android:key="@string/username_preference_key"
         android:icon="@drawable/person_icon"
-        android:title="Nombre de usuario"
-        android:summary="Editar el nombre de usuario"
-        android:dialogTitle="Nombre de usuario"
+        android:title="@string/username_preference_title"
+        android:summary="@string/username_preference_summary"
+        android:dialogTitle="@string/username_preference_title"
         android:inputType="text" />
 
     <EditTextPreference
         android:id="@+id/email_preference"
-        android:key="email_preference"
+        android:key="@string/email_preference_key"
         android:icon="@drawable/mail_icon"
-        android:title="Email"
-        android:summary="Editar la dirección de correo electrónico"
-        android:dialogTitle="Email"
+        android:title="@string/email_preference_title"
+        android:summary="@string/email_preference_summary"
+        android:dialogTitle="@string/email_preference_title"
         android:inputType="textEmailAddress" />
 
     <EditTextPreference
         android:id="@+id/password_preference"
-        android:key="password_preference"
+        android:key="@string/password_preference_key"
         android:icon="@drawable/key_icon"
-        android:title="Contraseña"
-        android:summary="Cambiar la contraseña de usuario"
-        android:dialogTitle="Nueva contraseña"
+        android:title="@string/password_preference_title"
+        android:summary="@string/password_preference_summary"
+        android:dialogTitle="@string/password_preference_new_password_label"
         android:inputType="textPassword" />
 
     <EditTextPreference
         android:id="@+id/description_preference"
-        android:key="description_preference"
+        android:key="@string/description_preference_key"
         android:icon="@drawable/description_icon"
-        android:title="Descripción"
-        android:summary="Editar la descripción personal"
-        android:dialogTitle="Descripción"
+        android:title="@string/description_preference_title"
+        android:summary="@string/description_preference_summary"
+        android:dialogTitle="@string/description_preference_title"
         android:inputType="text" />
 
     <ListPreference
         android:id="@+id/age_range_preference"
-        android:key="age_range_preference"
+        android:key="@string/age_range_preference_key"
         android:icon="@drawable/age_diversity_icon"
-        android:title="Edad"
-        android:summary="Selecciona tu rango de edad"
-        android:dialogTitle="Edad"/>
+        android:title="@string/age_range_preference_title"
+        android:summary="@string/age_range_preference_summary"
+        android:dialogTitle="@string/age_range_preference_title"/>
 
     <ListPreference
         android:id="@+id/gender_preference"
-        android:key="gender_preference"
+        android:key="@string/gender_preference_key"
         android:icon="@drawable/female_gender_icon"
-        android:title="Género"
-        android:summary="Selecciona tu género"
-        android:dialogTitle="Género"/>
+        android:title="@string/gender_preference_title"
+        android:summary="@string/gender_preference_summary"
+        android:dialogTitle="@string/gender_preference_title"/>
 
 
 </PreferenceScreen>

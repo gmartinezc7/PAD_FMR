@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.config;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class ConfigFragment extends Fragment {
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
         // Add preferences fragment here instead of on item click
         getChildFragmentManager()
                 .beginTransaction()
@@ -33,6 +35,8 @@ public class ConfigFragment extends Fragment {
 
         return root;
     }
+
+
 
     @Override
     public void onDestroyView() {
