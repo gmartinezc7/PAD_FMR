@@ -1,77 +1,54 @@
 package es.ucm.fdi.v3findmyroommate.ui.config;
 
 import android.app.Application;
-import android.util.Log;
+import android.content.SharedPreferences;
 import androidx.lifecycle.AndroidViewModel;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
+import androidx.preference.PreferenceManager;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import es.ucm.fdi.v3findmyroommate.R;
+
 public class ConfigViewModel extends AndroidViewModel {
 
-    private DatabaseReference databaseUserReference;
-    private PreferenceInitializationRepository preferenceRepository;
-
-    private String testUserID = "U-0001";
-    private static final String FMR_FIREBASE_DATABASE_URL =
-            "https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/";
-
+    private String userID;
+    private final DatabaseReference databaseUserReference;;
 
     public ConfigViewModel(Application application) {
         super(application);
-        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(FMR_FIREBASE_DATABASE_URL);
+        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.getResources().
+                getString(R.string.database_url));
+
+        SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(application
+                .getApplicationContext());
+        this.userID = userPreferences.getString("user_id", "0");
+
         this.databaseUserReference = databaseInstance.getReference("users")
-                .child(this.testUserID);
-
-        // Creates the repository to load the initial configuration.
-        this.preferenceRepository = new PreferenceInitializationRepository(application);
-        loadInitialPreferencesFromDatabase();
+                .child(this.userID);
     }
 
-    private void loadInitialPreferencesFromDatabase() {
-        // Using Task to retrieve data
-        Task<DataSnapshot> task = this.databaseUserReference.get();
-
-        task.addOnCompleteListener(taskResult -> {
-            if (taskResult.isSuccessful()) {
-                DataSnapshot dataSnapshot = taskResult.getResult();
-                if (dataSnapshot.exists()) {
-                    String username = dataSnapshot.child("username").getValue().toString();
-                    String email = dataSnapshot.child("email").getValue().toString();
-                    String password = dataSnapshot.child("password").getValue().toString();
-                    String description = dataSnapshot.child("description").getValue().toString();
-                    // Loads the user's preferences.
-                    this.preferenceRepository.setDefaultValues(username, email, password, description);
-                }
-            }
-            else {  // Errors in the database.
-                Log.e("FirebaseDatabase", "Error loading initial preferences");
-            }
-        });
-    }
-
-    public void updateUsername(String newUsername) {
+    public void updateUsernameInDatabase(String newUsername) {
         this.databaseUserReference.child("username").setValue(newUsername);
     }
 
-    public void updateEmail(String newEmail) {
+    public void updateEmailInDatabase(String newEmail) {
         this.databaseUserReference.child("email").setValue(newEmail);
     }
 
-    public void updatePassword(String newPassword) {
+    public void updatePasswordInDatabase(String newPassword) {
         this.databaseUserReference.child("password").setValue(newPassword);
     }
 
-    public void updateDescription(String newDescription) {
+    public void updateDescriptionInDatabase(String newDescription) {
         this.databaseUserReference.child("description").setValue(newDescription);
     }
 
-    public void updateAgeRange(String newAgeRange) {
+    public void updateAgeRangeInDatabase(String newAgeRange) {
         this.databaseUserReference.child("age_range").setValue(newAgeRange);
     }
 
-    public void updateGender(String newGender) {
+    public void updateGenderInDatabase(String newGender) {
         this.databaseUserReference.child("gender").setValue(newGender);
     }
 
