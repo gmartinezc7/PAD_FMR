@@ -12,7 +12,7 @@
     <string name="login">login</string>
     <string name="dont_have_account">Don\'t have an account</string>
     <string name="sign_up">sing up</string>
-    <string name="sign_in">sing in</string>
+    <string name="sign_in">sign in</string>
     <string name="name">Name</string>
     <string name="last_name">Last name</string>
     <string name="confirm_password_hint">Confirm Password</string>
@@ -22,4 +22,5 @@
     <string name="personal_information_message">Let’s know more about yourself</string>
     <string name="continue_">Continue</string>
     <string name="property_type_message">What are you looking for</string>
+    <string name="house_preferences">House Preferences</string>
 </resources>

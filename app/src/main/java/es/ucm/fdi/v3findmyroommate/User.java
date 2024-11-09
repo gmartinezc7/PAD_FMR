@@ -9,11 +9,20 @@ public class User {
     private String gender;
     private String maritalStatus;
     private String occupation;
+    private String propertyType;
+    private String maxRoomates;
+    private String roomateGender;
+    private String bathroomType;
+    private String rooms;
+    private String bathrooms;
+    private String orientation;
+    private String squareMeters;
+    private String maxBudget;
 
-    // Constructor por defecto
+    // Default constructor
     public User() {}
 
-    // Getters y Setters para cada atributo
+    // Getters and Setters for each attribute
     public String getName() {
         return name;
     }
@@ -77,4 +86,72 @@ public class User {
     public void setOccupation(String occupation) {
         this.occupation = occupation;
     }
+
+    public String getPropertyType() {
+        return propertyType;
+    }
+
+    public void setPropertyType(String propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public String getMaxRoommates() {
+        return maxRoomates;
+    }
+
+    public void setMaxRoommates(String maxRoommates) {
+        this.maxRoomates = maxRoommates;
+    }
+
+    public String getRoommateGender() {
+        return roomateGender;
+    }
+
+    public void setRoommateGender(String roommateGender) {
+        this.roomateGender = roommateGender;
+    }
+
+    public String getBathroomType() {
+        return bathroomType;
+    }
+
+    public void setBathroomType(String bathroomType) {
+        this.bathroomType = bathroomType;
+    }
+
+    public String getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(String rooms) {
+        this.rooms = rooms;
+    }
+
+    public String getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(String bathrooms) {
+        this.bathrooms = bathrooms;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
+    public String getSquareMeters() {
+        return squareMeters;
+    }
+
+    public void setSquareMeters(String squareMeters) {
+        this.squareMeters = squareMeters;
+    }
+
+    public void setMaxBudget(String maxBudget) {this.maxBudget = maxBudget; }
+
+    public String getmaxBudget() {return this.maxBudget ;  }
 }
