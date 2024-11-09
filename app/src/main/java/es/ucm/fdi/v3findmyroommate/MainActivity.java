@@ -2,6 +2,7 @@ package es.ucm.fdi.v3findmyroommate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,10 +84,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView signUP = findViewById(R.id.signUP);
+        signUP.setPaintFlags(signUP.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {openSignUPView();}
         });
+
     }
 
     public void openLoginView(){
