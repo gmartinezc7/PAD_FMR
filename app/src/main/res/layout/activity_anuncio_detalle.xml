@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Volver"
-        android:backgroundTint="#208944"
+        android:backgroundTint= "#04E4B7"
         android:layout_gravity="end"/>
 
 </LinearLayout>

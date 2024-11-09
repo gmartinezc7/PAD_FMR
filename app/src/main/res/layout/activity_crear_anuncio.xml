@@ -36,7 +36,8 @@
         android:id="@+id/btn_seleccionar_imagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen" />
+        android:text="Seleccionar Imagen"
+        android:backgroundTint="#04E4B7"/>
 
     <ImageView
         android:id="@+id/imagen_anuncio"
@@ -44,21 +45,29 @@
         android:layout_height="200dp"
         android:scaleType="centerCrop" />
 
-    <Button
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+    <!-- Botón Guardar Anuncio -->
+      <Button
         android:id="@+id/btn_guardar_anuncio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar anuncio"
-        android:backgroundTint="#208944"
-        android:layout_gravity="center" />
+        android:backgroundTint="#04E4B7"
+        android:layout_marginEnd="16dp" />
 
-
-    <Button
+    <!-- Botón Cancelar -->
+      <Button
         android:id="@+id/btn_cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancelar"
-        android:backgroundTint="#208944"
-        android:layout_gravity="center_horizontal" />
+        android:backgroundTint="#04E4B7" />
+    </LinearLayout>
 
 </LinearLayout>

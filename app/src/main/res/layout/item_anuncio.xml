@@ -1,43 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <!-- LinearLayout para el texto y el botón -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
-
-     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/text_view_anuncio_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#357B39"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-medium"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp" />
-
-        <TextView
-            android:id="@+id/text_view_anuncio_detalle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#4CAF50"
-            android:textSize="14sp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="4dp" />
-     </LinearLayout>
-    </ScrollView>
+    android:orientation="vertical"
+    android:layout_marginBottom="20dp">
 
     <FrameLayout
         android:id="@+id/preview_rect"
@@ -54,26 +22,65 @@
             android:scaleType="centerCrop" />
     </FrameLayout>
 
+
+    <!--  para el texto  -->
+   <HorizontalScrollView
+                android:id="@+id/horizontalDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/image_view_anuncio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/detailsChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="Vivienda: "
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipUbicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ubicación: "
+                        android:checkable="true"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipMetros"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Metros Cuadrados: "
+                        android:checkable="true"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipPrecio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Precio: "
+                        android:checkable="true"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.chip.ChipGroup>
+   </HorizontalScrollView>
+
+
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="end">
 
-        <Button
-            android:id="@+id/btn_ver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ver"
-            android:backgroundTint="#208944"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/btn_eliminar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eliminar"
-            android:backgroundTint="#208944"
-            android:layout_marginEnd="8dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -29,11 +30,11 @@ public class MisViviendasViewModel extends ViewModel {
         return anuncios;
     }
 
-    public void addAnuncio(String nuevo, Uri imagenUri) {
+    public void addAnuncio(Intent data) {
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null) {
             int nuevoId = !availableIds.isEmpty() ? availableIds.remove(availableIds.size() - 1) : contadorAnuncios++;
-            Anuncio nuevoAnuncio = new Anuncio(nuevoId, nuevo, imagenUri);
+            Anuncio nuevoAnuncio = new Anuncio(nuevoId, data);
             listaActual.add(nuevoAnuncio);
             anuncios.setValue(listaActual);
         }
@@ -56,7 +57,7 @@ public class MisViviendasViewModel extends ViewModel {
             for (int i = position; i < listaActual.size(); i++) {
                 Anuncio anuncioActual = listaActual.get(i);
                 // Actualiza el ID
-                listaActual.set(i, new Anuncio(anuncioActual.getId() - 1, anuncioActual.getDetalle(), anuncioActual.getImagenUri()));
+                listaActual.set(i, new Anuncio(anuncioActual.getId() - 1, anuncioActual.getData()));
             }
 
             // Actualiza el contador si es necesario

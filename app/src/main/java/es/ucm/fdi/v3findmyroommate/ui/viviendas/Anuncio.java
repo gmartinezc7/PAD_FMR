@@ -1,18 +1,38 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.content.Intent;
 import android.net.Uri;
 
 public class Anuncio {
     private int id;
-    private String detalle;
-    private Uri imagenUri;
+    private String todoCompleto;
 
-    public Anuncio(int id, String detalle, Uri imagenUri) {
+    private String titulo;
+    private String ubicacion;
+    private String metros;
+    private String precio;
+
+    private Uri imagenUri;
+    private Intent data;
+    public Anuncio(int id, Intent data) {
+
         this.id = id;
-        this.detalle = detalle;
-        this.imagenUri = imagenUri;
+        this.data = data;
+
+        this.titulo = data.getStringExtra("titulo");
+        this.ubicacion = data.getStringExtra("ubicacion");
+        this.metros = data.getStringExtra("metros");
+        this.precio = data.getStringExtra("precio");
+        this.imagenUri = data.getParcelableExtra("imagenUri");
+        this.todoCompleto = "Título: " + titulo + "\nUbicación: " + ubicacion +
+                "\nMetros cuadrados: " + metros + "\nPrecio: " + precio;
+
+
     }
 
+    public Intent getData() {
+        return data;
+    }
 
     public Uri getImagenUri() {
         return imagenUri;
@@ -23,11 +43,25 @@ public class Anuncio {
     }
 
     public String getDetalle() {
-        return detalle;
+        return todoCompleto;
+    }
+
+
+    public String getTitulo() {
+        return titulo;
+    }
+    public String getUbicacion() {
+        return ubicacion;
+    }
+    public String getMetros() {
+        return metros;
+    }
+    public String getPrecio() {
+        return precio;
     }
 
     @Override
     public String toString() {
-        return "Anuncio " + id + ": \n" + detalle;
+        return "Anuncio " + id + ": \n" + todoCompleto;
     }
 }

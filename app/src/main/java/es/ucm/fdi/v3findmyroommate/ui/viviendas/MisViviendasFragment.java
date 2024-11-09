@@ -66,14 +66,7 @@ public class MisViviendasFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        String titulo = data.getStringExtra("titulo");
-                        String ubicacion = data.getStringExtra("ubicacion");
-                        String metros = data.getStringExtra("metros");
-                        String precio = data.getStringExtra("precio");
-                        Uri imagenUri = data.getParcelableExtra("imagenUri");
-                        String nuevoAnuncio = "Título: " + titulo + "\nUbicación: " + ubicacion +
-                                "\nMetros cuadrados: " + metros + "\nPrecio: " + precio;
-                        misViviendasViewModel.addAnuncio(nuevoAnuncio, imagenUri);
+                        misViviendasViewModel.addAnuncio(data);
                     }
                 }
         );
