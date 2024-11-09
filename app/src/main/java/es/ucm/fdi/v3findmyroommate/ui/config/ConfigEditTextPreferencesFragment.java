@@ -25,7 +25,6 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         this.preferencesViewModel = configViewModel;
     }
 
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(
