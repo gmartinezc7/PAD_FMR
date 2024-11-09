@@ -47,4 +47,5 @@
     <string name="description_preference_key" translatable="false">description_preference</string>
     <string name="age_range_preference_key" translatable="false">age_range_preference</string>
     <string name="gender_preference_key" translatable="false">gender_preference</string>
+    <string name="logout_toast_text">Ha cerrado la sesión</string>
 </resources>
