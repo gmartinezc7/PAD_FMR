@@ -68,7 +68,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
             // "Ver"
             holder.imageViewAnuncio.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), AnuncioDetalleActivity.class);
-                intent.putExtra("id", anuncio.getId());
+                intent.putExtra("titulo", anuncio.getTitulo());
                 intent.putExtra("detalle", anuncio.getDetalle());
                 intent.putExtra("imagenUri", anuncio.getImagenUri());
 

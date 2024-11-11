@@ -32,7 +32,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
 
-    private EditText editTitulo, editUbicacion, editMetros, editPrecio;
+    private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
     private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
     private ImageView imagenAnuncio;
     private Uri photoUri;
@@ -47,6 +47,9 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         editUbicacion = findViewById(R.id.edit_ubicacion);
         editMetros = findViewById(R.id.edit_metros);
         editPrecio = findViewById(R.id.edit_precio);
+        editDescripcion = findViewById(R.id.edit_descripcion);
+
+
         btnGuardar = findViewById(R.id.btn_guardar_anuncio);
         btnCancelar = findViewById(R.id.btn_cancelar);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
@@ -65,6 +68,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             String ubicacion = editUbicacion.getText().toString();
             String metros = editMetros.getText().toString();
             String precio = editPrecio.getText().toString();
+            String descripcion = editDescripcion.getText().toString();
             // Verifica si todos los campos están llenos
             if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
                     || precio.isEmpty() || photoUri == null ) {
@@ -79,6 +83,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra("ubicacion", ubicacion);
             resultIntent.putExtra("metros", metros);
             resultIntent.putExtra("precio", precio);
+            resultIntent.putExtra("descripcion", descripcion);
             resultIntent.putExtra("imagenUri", photoUri);
 
             setResult(RESULT_OK, resultIntent);

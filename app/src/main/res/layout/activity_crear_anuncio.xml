@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -32,6 +36,17 @@
         android:layout_height="wrap_content"
         android:hint="Precio"
         android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edit_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción del anuncio"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:gravity="top"
+        android:scrollbars="vertical" />
+
     <Button
         android:id="@+id/btn_seleccionar_imagen"
         android:layout_width="wrap_content"
@@ -39,11 +54,21 @@
         android:text="Seleccionar Imagen"
         android:backgroundTint="#04E4B7"/>
 
-    <ImageView
-        android:id="@+id/imagen_anuncio"
+    <FrameLayout
+        android:id="@+id/preview_rect"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:background="@drawable/border_rectangle"
+        android:padding="8dp">
+
+      <ImageView
+        android:id="@+id/imagen_anuncio"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,4 +95,6 @@
         android:backgroundTint="#04E4B7" />
     </LinearLayout>
 
-</LinearLayout>
+ </LinearLayout>
+
+</ScrollView>

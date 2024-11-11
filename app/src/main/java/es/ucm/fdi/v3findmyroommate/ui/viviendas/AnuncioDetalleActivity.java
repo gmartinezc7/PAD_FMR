@@ -13,7 +13,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class AnuncioDetalleActivity extends AppCompatActivity {
-    private TextView idText;
+    private TextView tituloText;
     private TextView detalleText;
     private ImageView imagenAnuncio;
     private Button btnVolver;
@@ -23,18 +23,17 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_anuncio_detalle);
 
         // Inicializar vistas
-        idText = findViewById(R.id.id_text);
+        tituloText = findViewById(R.id.titulo_text);
         detalleText = findViewById(R.id.detalle_text);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
         btnVolver = findViewById(R.id.btn_volver);
         // Obtener el anuncio del intent
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", -1);
+        String titulo = intent.getStringExtra("titulo");
         String detalle = intent.getStringExtra("detalle");
         Uri imagenUri = intent.getParcelableExtra("imagenUri");
 
-        // Configurar los datos en las vistas
-        idText.setText("Tu Anuncio: " + id);
+        tituloText.setText(titulo);
         detalleText.setText(detalle);
         imagenAnuncio.setImageURI(imagenUri);
 

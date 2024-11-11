@@ -30,7 +30,6 @@ public class MisViviendasFragment extends Fragment {
     private MisViviendasViewModel misViviendasViewModel;
     private AnunciosAdapter adapter;
 
-
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
 
     @Nullable
