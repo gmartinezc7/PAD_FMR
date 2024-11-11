@@ -24,10 +24,10 @@ public class Anuncio {
 
         this.imagenUri = data.getParcelableExtra("imagenUri");
         this.todoCompleto =  "Ubicación: " + ubicacion +
-                "\nMetros cuadrados: " + metros + "\nPrecio: " + precio;
+                "\n\nMetros cuadrados: " + metros + "\n\nPrecio: " + precio;
 
         if(!this.descripcion.isEmpty()){
-            this.todoCompleto += "\nDescripción: \n " + descripcion;
+            this.todoCompleto += "\n\nDescripción:\n" + descripcion;
         }
 
     }

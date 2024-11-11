@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seleccionar Imagen"
-        android:backgroundTint="#04E4B7"/>
+        android:backgroundTint="#FFFFFF"/>
 
     <FrameLayout
         android:id="@+id/preview_rect"
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar anuncio"
-        android:backgroundTint="#04E4B7"
+        android:backgroundTint="#FFFFFF"
         android:layout_marginEnd="16dp" />
 
     <!-- Botón Cancelar -->
@@ -92,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancelar"
-        android:backgroundTint="#04E4B7" />
+        android:backgroundTint="#FFFFFF" />
     </LinearLayout>
 
  </LinearLayout>
