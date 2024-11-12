@@ -18,6 +18,8 @@ public class Lobby extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
 
         binding = ActivityLobbyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -28,4 +30,5 @@ public class Lobby extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_lobby);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
+
 }
