@@ -3,6 +3,9 @@ package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 import android.content.Intent;
 import android.net.Uri;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Anuncio {
     private String todoCompleto;
 
@@ -11,7 +14,7 @@ public class Anuncio {
     private String metros;
     private String precio;
     private String descripcion;
-    private Uri imagenUri;
+    private List<Uri> imagenesUri = new ArrayList<>();
 
     public Anuncio( Intent data) {
 
@@ -21,8 +24,9 @@ public class Anuncio {
         this.metros = data.getStringExtra("metros");
         this.precio = data.getStringExtra("precio");
         this.descripcion = data.getStringExtra("descripcion");
+        this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
 
-        this.imagenUri = data.getParcelableExtra("imagenUri");
+
         this.todoCompleto =  "Ubicación: " + ubicacion +
                 "\n\nMetros cuadrados: " + metros + "\n\nPrecio: " + precio;
 
@@ -33,8 +37,8 @@ public class Anuncio {
     }
 
 
-    public Uri getImagenUri() {
-        return imagenUri;
+    public  List<Uri> getImagenesUri() {
+        return imagenesUri;
     }
 
 
