@@ -41,7 +41,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     private ImageView imagenAnuncio;
 
 
-
     private List<Uri> imagenesUri = new ArrayList<>();
     private int imagenActualIndex = 0; // Índice de la imagen actual
     private ImageButton btnPrev, btnNext;
