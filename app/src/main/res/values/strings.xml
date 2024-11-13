@@ -22,4 +22,8 @@
     <string name="personal_information_message">Let’s know more about yourself</string>
     <string name="continue_">Continue</string>
     <string name="property_type_message">What are you looking for</string>
+    <!--Texto Chats -->
+    <string name="new_chat">Nuevo Chat</string>
+    <string name="send_message">Enviar mensaje</string>
+
 </resources>

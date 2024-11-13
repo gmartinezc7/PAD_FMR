@@ -4,34 +4,71 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import es.ucm.fdi.v3findmyroommate.databinding.FragmentChatsBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class ChatsFragment extends Fragment {
 
-    private FragmentChatsBinding binding;
+    private RecyclerView recyclerView;
+    private ChatAdapter chatAdapter;
+    private ArrayList<Chat> chatList;
+    private DatabaseReference chatRef;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ChatsViewModel chatsViewModel =
-                new ViewModelProvider(this).get(ChatsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_chats, container, false);
 
-        binding = FragmentChatsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        // Inicializar RecyclerView y configurar LayoutManager
+        recyclerView = root.findViewById(R.id.recyclerViewChats);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        final TextView textView = binding.textChats;
-        chatsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // Inicializar lista de chats y el adaptador
+        chatList = new ArrayList<>();
+        chatAdapter = new ChatAdapter(getContext(), chatList);
+        recyclerView.setAdapter(chatAdapter);
+
+        // Inicializar referencia de Firebase
+        chatRef = FirebaseDatabase.getInstance().getReference("chats");
+
+        // Cargar datos de Firebase
+        loadChatsFromFirebase();
+
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void loadChatsFromFirebase() {
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chatList.clear();  // Limpia la lista para evitar duplicados
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat != null) {
+                        chatList.add(chat);  // Añade el chat a la lista
+                    }
+                }
+                chatAdapter.notifyDataSetChanged();  // Notifica cambios al adaptador
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Error al cargar los chats", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
