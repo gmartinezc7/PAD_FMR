@@ -1,7 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <!-- Botón para crear un nuevo anuncio -->
@@ -10,10 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear nuevo anuncio"
-        android:backgroundTint="#208944"
+        android:backgroundTint="#FFFFFF"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp" />
 
     <!-- RecyclerView para mostrar los anuncios -->
     <androidx.recyclerview.widget.RecyclerView

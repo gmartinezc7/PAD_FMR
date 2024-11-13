@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -14,12 +15,10 @@ public class MisViviendasViewModel extends ViewModel {
 
     private final MutableLiveData<List<Anuncio>> anuncios;
     private final List<Integer> availableIds; // Para almacenar IDs eliminados
-    private int contadorAnuncios; // Para seguir el último ID usado
 
     public MisViviendasViewModel() {
         anuncios = new MutableLiveData<>();
         availableIds = new ArrayList<>(); // Inicializa la lista de IDs disponibles
-        contadorAnuncios = 1; // Comenzar desde 1
 
         List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
@@ -29,11 +28,10 @@ public class MisViviendasViewModel extends ViewModel {
         return anuncios;
     }
 
-    public void addAnuncio(String nuevo, Uri imagenUri) {
+    public void addAnuncio(Intent data) {
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null) {
-            int nuevoId = !availableIds.isEmpty() ? availableIds.remove(availableIds.size() - 1) : contadorAnuncios++;
-            Anuncio nuevoAnuncio = new Anuncio(nuevoId, nuevo, imagenUri);
+            Anuncio nuevoAnuncio = new Anuncio(data);
             listaActual.add(nuevoAnuncio);
             anuncios.setValue(listaActual);
         }
@@ -47,22 +45,9 @@ public class MisViviendasViewModel extends ViewModel {
             Anuncio anuncioEliminado = listaActual.get(position);
 
             // Extraer el ID del anuncio que se va a eliminar
-            int idEliminado = anuncioEliminado.getId();
 
             // Elimina el anuncio
             listaActual.remove(position);
-
-            // Actualiza los números de los anuncios restantes
-            for (int i = position; i < listaActual.size(); i++) {
-                Anuncio anuncioActual = listaActual.get(i);
-                // Actualiza el ID
-                listaActual.set(i, new Anuncio(anuncioActual.getId() - 1, anuncioActual.getDetalle(), anuncioActual.getImagenUri()));
-            }
-
-            // Actualiza el contador si es necesario
-            if (listaActual.size() < contadorAnuncios) {
-                contadorAnuncios--; // Actualiza el contador si hay anuncios eliminados
-            }
 
             // Actualiza la lista de anuncios en el MutableLiveData
             anuncios.setValue(listaActual); // Notifica el cambio

@@ -3,42 +3,82 @@ package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class AnuncioDetalleActivity extends AppCompatActivity {
-    private TextView idText;
+    private TextView tituloText;
     private TextView detalleText;
     private ImageView imagenAnuncio;
     private Button btnVolver;
+    private List<Uri> imagenesUri;
+    private int imagenActualIndex = 0;
+    private ImageButton btnPrev,btnNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncio_detalle);
 
         // Inicializar vistas
-        idText = findViewById(R.id.id_text);
+        tituloText = findViewById(R.id.titulo_text);
         detalleText = findViewById(R.id.detalle_text);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
         btnVolver = findViewById(R.id.btn_volver);
+        btnPrev = findViewById(R.id.btn_prev);
+        btnNext = findViewById(R.id.btn_next);
+
         // Obtener el anuncio del intent
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", -1);
+        String titulo = intent.getStringExtra("titulo");
         String detalle = intent.getStringExtra("detalle");
-        Uri imagenUri = intent.getParcelableExtra("imagenUri");
+        imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
 
-        // Configurar los datos en las vistas
-        idText.setText("Tu Anuncio: " + id);
+        tituloText.setText(titulo);
         detalleText.setText(detalle);
-        imagenAnuncio.setImageURI(imagenUri);
 
+
+
+        iniciarNavImagenes();
 
         btnVolver.setOnClickListener(v -> finish());
+    }
+
+
+    private void iniciarNavImagenes(){
+
+        imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+        btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+        btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+
+        // Navegar hacia la imagen anterior
+        btnPrev.setOnClickListener(v -> navigateImage( -1));
+
+        // Navegar hacia la imagen siguiente
+        btnNext.setOnClickListener(v -> navigateImage( 1));
+
+    }
+
+
+    private void navigateImage( int direction) {
+        int newIndex = imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < imagenesUri.size()) {
+            imagenActualIndex = newIndex;
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
     }
 }

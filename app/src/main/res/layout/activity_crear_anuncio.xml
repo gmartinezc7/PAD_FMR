@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -32,33 +36,87 @@
         android:layout_height="wrap_content"
         android:hint="Precio"
         android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edit_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción del anuncio"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:gravity="top"
+        android:scrollbars="vertical" />
+
     <Button
         android:id="@+id/btn_seleccionar_imagen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen" />
+        android:text="Seleccionar Imagen"
+        android:backgroundTint="#FFFFFF"/>
 
-    <ImageView
-        android:id="@+id/imagen_anuncio"
+    <FrameLayout
+        android:id="@+id/preview_rect"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:background="@drawable/border_rectangle"
+        android:padding="8dp">
 
-    <Button
+      <ImageView
+        android:id="@+id/imagen_anuncio"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          />
+
+        <!-- Flecha izquierda -->
+        <ImageButton
+            android:id="@+id/btn_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_flecha_izquierda"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
+
+        <!-- Flecha derecha -->
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_flecha_derecha"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+    <!-- Botón Guardar Anuncio -->
+      <Button
         android:id="@+id/btn_guardar_anuncio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar anuncio"
-        android:backgroundTint="#208944"
-        android:layout_gravity="center" />
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginEnd="16dp" />
 
-
-    <Button
+    <!-- Botón Cancelar -->
+      <Button
         android:id="@+id/btn_cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancelar"
-        android:backgroundTint="#208944"
-        android:layout_gravity="center_horizontal" />
+        android:backgroundTint="#FFFFFF" />
+    </LinearLayout>
 
-</LinearLayout>
+ </LinearLayout>
+
+</ScrollView>
