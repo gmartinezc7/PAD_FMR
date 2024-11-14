@@ -11,29 +11,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int currentTestId;
-
     private EditText emailEditText, passwordEditText;
     private FirebaseDatabase databaseInstance;
     private DatabaseReference databaseUserReference;
-
-    private static final int MAX_USER_ID = 30;
-    private static final int DEFAULT_USER_ID = 1;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +56,37 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.database_url));
 
         this.databaseUserReference = this.databaseInstance.getReference("users").
-                child(String.valueOf(this.currentTestId));
+                child(String.valueOf(1));
 
+        // Firebase Authentication services test
+        mAuth = FirebaseAuth.getInstance();
 
         Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                // Access database and searches for the user's email.
-                MainActivity.this.checkLoginCredentials();
+                String userEmail = MainActivity.this.emailEditText.getText().toString();
+                String userPassword = MainActivity.this.passwordEditText.getText().toString();
+
+                // Accesses database and searches for the user's email.
+                mAuth.signInWithEmailAndPassword(userEmail, userPassword)
+                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, updates UI with the signed-in user's information
+                            openLoginView(); // Goes to the next screen.
+                            Log.d("SignUp", "Sign up successful");
+                        }
+                        else {
+                            // If sign in fails, displays a message to the user.
+                            Toast signUpFailedToast = Toast.makeText(MainActivity.this,
+                                    R.string.sign_up_failed_toast_text, Toast.LENGTH_SHORT);
+                            signUpFailedToast.show();
+                            Log.w("SignUp", "Sign up failed", task.getException());
+                        }
+                    }
+                });
             }
         });
 
@@ -86,71 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void checkLoginCredentials() {
-        // Starts the search with the default first user ID.
-        this.currentTestId = DEFAULT_USER_ID;
-        checkNextUser();
-    }
-
-    private void checkNextUser() {
-        if (this.currentTestId > MAX_USER_ID) {
-            // If all users have been checked, shows a toast message.
-            Toast.makeText(MainActivity.this, "User not found", Toast.LENGTH_SHORT).show();
-            return; // Stops further execution.
-        }
-
-        // Gets a reference to the user in the Firebase database.
-        this.databaseUserReference = this.databaseInstance.getReference("users")
-                .child(String.valueOf(this.currentTestId));
-
-        // Performs the database query.
-        Task<DataSnapshot> task = databaseUserReference.get();
-        task.addOnCompleteListener(taskResult -> {
-            if (taskResult.isSuccessful()) {
-                DataSnapshot dataSnapshot = taskResult.getResult();
-                if (dataSnapshot.exists()) {
-                    // Gets user data from firebase database.
-                    String databaseEmail = dataSnapshot.child("email").getValue(String.class);
-                    String databasePassword = dataSnapshot.child("password").getValue(String.class);
-                    String inputEmail = emailEditText.getText().toString();
-                    String inputPassword = passwordEditText.getText().toString();
-
-                    if (databaseEmail != null && databasePassword != null &&
-                            databaseEmail.equals(inputEmail) && databasePassword.equals(inputPassword)) {
-                        // User found, load preferences and navigate to the next screen
-                        String databaseUsername = dataSnapshot.child("username").getValue(String.class);
-                        String databaseDescription = dataSnapshot.child("description").getValue(String.class);
-                        String databaseAgeRange = dataSnapshot.child("age_range").getValue(String.class);
-                        String databaseGender = dataSnapshot.child("gender").getValue(String.class);
-
-                        setInitialPreferences(databaseUsername, databaseEmail, databasePassword,
-                                databaseDescription, databaseAgeRange, databaseGender);
-
-                        openLoginView(); // Goes to the next screen.
-                    }
-                    else {
-                        // If the user's credentials don't match, increments the ID and try next user.
-                        this.currentTestId++;
-                        checkNextUser();
-                    }
-                }
-                else {
-                    // If user doesn't exist, try the next user.
-                    this.currentTestId++;
-                    checkNextUser();
-                }
-            }
-            else {
-                // Handle errors with the Firebase query
-                Log.e("FirebaseDatabase", "Error loading user data");
-                this.currentTestId++;
-                checkNextUser(); // Continue with the next user
-            }
-        });
-    }
-
-
     // Loads initial preferences.
     private void setInitialPreferences(String databaseUsername, String databaseEmail, String databasePassword,
                                        String databaseDescription, String databaseAgeRange, String databaseGender) {
@@ -166,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(getString(R.string.description_preference_key), databaseDescription);
         editor.putString(getString(R.string.age_range_preference_key), databaseAgeRange);
         editor.putString(getString(R.string.gender_preference_key), databaseGender);
-        editor.putString("user_id", String.valueOf(this.currentTestId));
+        editor.putString("user_id", String.valueOf(1));
 
         editor.apply();
     }

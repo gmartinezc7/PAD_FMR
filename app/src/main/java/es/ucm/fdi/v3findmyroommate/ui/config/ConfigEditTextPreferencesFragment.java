@@ -1,18 +1,34 @@
 package es.ucm.fdi.v3findmyroommate.ui.config;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
 
+    private String currentAuthenticationEmail;
     private ConfigViewModel preferencesViewModel;
     private EditTextPreference usernamePref, emailPref, passwordPref, descriptionPref;
     private ListPreference ageRangePreference, genderPreference;
@@ -27,27 +43,36 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(
-                getContext());
-        SharedPreferences.Editor editor = userPreferences.edit();
-        String username = userPreferences.getString(getString(R.string.username_preference_key),
-                "default_value");
-        String email = userPreferences.getString(getString(R.string.email_preference_key),
-                "default_value");
-        String password = userPreferences.getString(getString(R.string.password_preference_key),
-                "default_value");
-        String description = userPreferences.getString(getString(R.string.description_preference_key),
-                "default_value");
-        String ageRange = userPreferences.getString(getString(R.string.age_range_preference_key),
-                "default_value");
-        String gender = userPreferences.getString(getString(R.string.gender_preference_key),
-                "default_value");
+        Context currentContext = getContext();
+        SharedPreferences userPreferences;
+        if (currentContext != null) {
+            userPreferences = PreferenceManager.getDefaultSharedPreferences(
+                    getContext());
 
-        setPreferencesFromResource(R.xml.preferences, rootKey);
-        setDefaultValues(username, email, password, description, ageRange, gender);
-        linkPreferencesToCode();
-        configurePreferences();
+            this.currentAuthenticationEmail = userPreferences.getString(getString(R.string.email_preference_key), "");
 
+            SharedPreferences.Editor editor = userPreferences.edit();
+            String username = userPreferences.getString(getString(R.string.username_preference_key),
+                    "default_value");
+            String email = userPreferences.getString(getString(R.string.email_preference_key),
+                    "default_value");
+            String password = userPreferences.getString(getString(R.string.password_preference_key),
+                    "default_value");
+            String description = userPreferences.getString(getString(R.string.description_preference_key),
+                    "default_value");
+            String ageRange = userPreferences.getString(getString(R.string.age_range_preference_key),
+                    "default_value");
+            String gender = userPreferences.getString(getString(R.string.gender_preference_key),
+                    "default_value");
+
+            editor.apply();
+
+            setPreferencesFromResource(R.xml.preferences, rootKey);
+            setDefaultValues(username, email, password, description, ageRange, gender);
+            linkPreferencesToCode();
+            configurePreferences();
+
+        }
     }
 
 
@@ -110,7 +135,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     nullUsernameToast.show();
                     Log.e("UsernamePreference", "Username can't be void");
                     return false;
-                } else {
+                }
+                else {
                     this.preferencesViewModel.updateUsernameInDatabase(usernameWritten);
                     Log.i("UsernamePreference", "New username: " + usernameWritten);
                     return true;
@@ -135,7 +161,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     nullEmailToast.show();
                     Log.e("EmailPreference", "Email can't be void");
                     return false;
-                } else if (!emailWritten.contains("@")) {
+                }
+                else if (!emailWritten.contains("@")) {
                     // Shows invalid email error toast.
                     Toast invalidEmailToast = Toast.makeText(getActivity(),
                             getActivity().getResources().getString(R.string.invalid_email_toast_text),
@@ -143,12 +170,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     invalidEmailToast.show();
                     Log.e("EmailPreference", "Email address must be a valid address");
                     return false;
-                } else {
-                    this.preferencesViewModel.updateEmailInDatabase(emailWritten);
-                    Log.i("EmailPreference", "New email: " + emailWritten);
+                }
+                else {
+                    openAuthenticationDialog(emailWritten, UpdateProfileAction.UPDATE_EMAIL);
                     return true;
                 }
-
             });
         }
 
@@ -169,9 +195,9 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     nullPasswordToast.show();
                     Log.e("PasswordPreference", "Password can't be void");
                     return false;
-                } else {
-                    this.preferencesViewModel.updatePasswordInDatabase(passwordWritten);
-                    Log.i("PasswordPreference", "New password: " + passwordWritten);
+                }
+                else {
+                    openAuthenticationDialog(passwordWritten, UpdateProfileAction.UPDATE_PASSWORD);
                     return true;
                 }
             });
@@ -225,10 +251,104 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
+    // Method that displays the authentication dialog and updates the particular element of the profile
+    // that was selected.
+    private void openAuthenticationDialog(String itemWritten, UpdateProfileAction action) {
+        // Inflates the custom layout.
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View customView = inflater.inflate(R.layout.reauthentication_dialog, null);
+
+        // Finds the views inside the custom layout.
+        EditText passwordEditText = customView.findViewById(R.id.reauth_dialog_password_edittext);
+        Button submitButton = customView.findViewById(R.id.reauth_dialog_button);
+
+        // Creates a dialog with the custom view.
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(customView);
+
+        builder.setNegativeButton(R.string.cancel_text, (dialog, which) -> dialog.dismiss());
+
+        // Creates and show the dialog.
+        AlertDialog dialog = builder.create();
+
+        // Sets an action for the submit button.
+        submitButton.setOnClickListener(v -> {
+
+            String currentPassword = passwordEditText.getText().toString();
+
+            if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
+                    !currentPassword.isEmpty()) {
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                AuthCredential credential = EmailAuthProvider.getCredential(
+                        ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail, currentPassword);
+                if (user != null) {
+                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            Log.d("Reauthentication", "User re-authenticated.");
+
+                            FirebaseUser reAuthUser = FirebaseAuth.getInstance().getCurrentUser();
+                            if (reAuthUser != null) {
+                                // Decides which element of the user's profile to update
+                                switch(action) {
+                                    case UPDATE_EMAIL:
+                                        reAuthUser.updateEmail(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateEmailPreference(itemWritten);
+                                                    Log.d("UserEmail", "User's email successfully updated");
+                                                }
+                                            }
+                                        });
+                                        break;
+
+                                    case UPDATE_PASSWORD:
+                                        reAuthUser.updatePassword(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel.updatePasswordPreference(itemWritten);
+                                                    Log.d("UserPassword", "User's password successfully updated");
+                                                }
+                                            }
+                                        });
+                                        break;
+
+                                    case UPDATE_IMAGE:
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                            }
+                        }
+                    });
+                }
+                dialog.dismiss(); // Close the dialog
+            }
+
+
+
+            else {
+                // Shows a message if fields are empty.
+                Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Shows the dialog.
+        dialog.show();
+    }
+
+
     // Configures the words in each button of the given reference (valid only for EditTextPreferences).
     private void setEditTextPreferenceButtonText(EditTextPreference currentPref) {
-        currentPref.setPositiveButtonText("Aceptar");
-        currentPref.setNegativeButtonText("Cancelar");
+        currentPref.setPositiveButtonText(R.string.accept_text);
+        currentPref.setNegativeButtonText(R.string.cancel_text);
     }
 
 
