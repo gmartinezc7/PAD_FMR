@@ -53,4 +53,5 @@
     <string name="cancel_text">Cancelar</string>
     <string name="input_current_password_text">Introduce tu contraseña actual</string>
     <string name="current_password_text">Contraseña actual</string>
+    <string name="fill_all_fields_toast_text">Llene todos los campos</string>
 </resources>

@@ -289,42 +289,37 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                         public void onComplete(@NonNull Task<Void> task) {
 
                             Log.d("Reauthentication", "User re-authenticated.");
-
-                            FirebaseUser reAuthUser = FirebaseAuth.getInstance().getCurrentUser();
-                            if (reAuthUser != null) {
-                                // Decides which element of the user's profile to update
-                                switch(action) {
-                                    case UPDATE_EMAIL:
-                                        reAuthUser.updateEmail(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateEmailPreference(itemWritten);
-                                                    Log.d("UserEmail", "User's email successfully updated");
-                                                }
+                            // Decides which element of the user's profile to update
+                            switch(action) {
+                                case UPDATE_EMAIL:
+                                    user.updateEmail(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateEmailPreference(itemWritten);
+                                                Log.d("UserEmail", "User's email successfully updated");
                                             }
-                                        });
-                                        break;
+                                        }
+                                    });
+                                    break;
 
-                                    case UPDATE_PASSWORD:
-                                        reAuthUser.updatePassword(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel.updatePasswordPreference(itemWritten);
-                                                    Log.d("UserPassword", "User's password successfully updated");
-                                                }
+                                case UPDATE_PASSWORD:
+                                    user.updatePassword(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updatePasswordPreference(itemWritten);
+                                                Log.d("UserPassword", "User's password successfully updated");
                                             }
-                                        });
-                                        break;
+                                        }
+                                    });
+                                    break;
 
-                                    case UPDATE_IMAGE:
-                                        break;
+                                case UPDATE_IMAGE:
+                                    break;
 
-                                    default:
-                                        break;
-                                }
-
+                                default:
+                                    break;
                             }
                         }
                     });
@@ -332,11 +327,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 dialog.dismiss(); // Close the dialog
             }
 
-
-
             else {
                 // Shows a message if fields are empty.
-                Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Toast fill_all_fields_toast = Toast.makeText(getContext(), R.string.fill_all_fields_toast_text,
+                        Toast.LENGTH_SHORT);
+                fill_all_fields_toast.show();
             }
         });
 
