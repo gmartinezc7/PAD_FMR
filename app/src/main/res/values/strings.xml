@@ -48,4 +48,9 @@
     <string name="age_range_preference_key" translatable="false">age_range_preference</string>
     <string name="gender_preference_key" translatable="false">gender_preference</string>
     <string name="logout_toast_text">Ha cerrado la sesión</string>
+    <string name="sign_up_failed_toast_text">Usuario o contraseña incorrectos</string>
+    <string name="accept_text">Aceptar</string>
+    <string name="cancel_text">Cancelar</string>
+    <string name="input_current_password_text">Introduce tu contraseña actual</string>
+    <string name="current_password_text">Contraseña actual</string>
 </resources>
