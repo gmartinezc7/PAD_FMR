@@ -32,12 +32,13 @@ import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
+
 public class CrearAnuncioActivity extends AppCompatActivity {
 
 
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
-    private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
+   private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
     private ImageView imagenAnuncio;
 
 
@@ -54,11 +55,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_crear_anuncio);
 
         // Inicialización de vistas
-        editTitulo = findViewById(R.id.edit_titulo);
-        editUbicacion = findViewById(R.id.edit_ubicacion);
-        editMetros = findViewById(R.id.edit_metros);
-        editPrecio = findViewById(R.id.edit_precio);
-        editDescripcion = findViewById(R.id.edit_descripcion);
+        editTitulo = findViewById(R.id.create_titulo);
+        editUbicacion = findViewById(R.id.create_ubicacion);
+        editMetros = findViewById(R.id.create_metros);
+        editPrecio = findViewById(R.id.create_precio);
+        editDescripcion = findViewById(R.id.create_descripcion);
 
 
         btnGuardar = findViewById(R.id.btn_guardar_anuncio);

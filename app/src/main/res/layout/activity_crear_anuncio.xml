@@ -9,36 +9,45 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+     <TextView
+         android:id="@+id/titulo_editar"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Crear Anuncio"
+         android:textSize="20sp"
+         android:layout_marginBottom="16dp"
+         android:gravity="center"/>
+
     <EditText
-        android:id="@+id/edit_titulo"
+        android:id="@+id/create_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Título del anuncio"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/edit_ubicacion"
+        android:id="@+id/create_ubicacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Ubicación"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/edit_metros"
+        android:id="@+id/create_metros"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Metros cuadrados"
         android:inputType="number" />
 
     <EditText
-        android:id="@+id/edit_precio"
+        android:id="@+id/create_precio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Precio"
         android:inputType="numberDecimal" />
 
     <EditText
-        android:id="@+id/edit_descripcion"
+        android:id="@+id/create_descripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripción del anuncio"

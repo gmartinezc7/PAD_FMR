@@ -19,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import java.util.ArrayList;
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -30,7 +30,9 @@ public class MisViviendasFragment extends Fragment {
     private MisViviendasViewModel misViviendasViewModel;
     private AnunciosAdapter adapter;
 
+    private int posicionCambioActual;
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
+    private ActivityResultLauncher<Intent> verAnuncioLauncher;
 
     @Nullable
     @Override
@@ -47,14 +49,13 @@ public class MisViviendasFragment extends Fragment {
 
         // INICIAMOS EL ADAPTER Y LE ASIGNAMOS EL ADAPTADOR PARA MOSTRAR LOS DATOS, CUANDO SE VAYA A ACTUALIZAR,
         //USARÁ A ESTE ADPATADOR PARA MOSTRAR LOS DATOS
-        adapter = new AnunciosAdapter(misViviendasViewModel);
+        adapter = new AnunciosAdapter(misViviendasViewModel, this);
         recyclerView.setAdapter(adapter);
 
         // CON ESTO PODREMOS OBSERVAR LOS DATOS ACTUALIZADOS DE LOS ANUNCIOS A TIEMPO REAL,
         // DE MANERA QUE SI SE PRODUCE ALGUN CAMBIO EN LA LISTA DE ANUNCIOS, SE NOTIFICARÁ
         //AUTOMATICAMENTE AQUÍ Y SE REALIZARÁ EL CAMBIO EN EL ADAPTADOR
         misViviendasViewModel.getAnuncios().observe(getViewLifecycleOwner(), anuncios -> {
-
             adapter.setAnuncios(anuncios);
         });
 
@@ -71,6 +72,17 @@ public class MisViviendasFragment extends Fragment {
         );
 
 
+        // Inicializar el ActivityResultLauncher
+        verAnuncioLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
+                        misViviendasViewModel.actualizarAnuncio(posicionCambioActual, data);
+                    }
+                }
+        );
+
 
         // Botón de crear anuncio
         btnCrearAnuncio = view.findViewById(R.id.btn_crear_anuncio);
@@ -85,4 +97,25 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
+
+    public void lanzarVerAnuncio(int position){
+
+        this.posicionCambioActual = position;
+
+
+        Anuncio anuncio = misViviendasViewModel.getAnuncio(posicionCambioActual);
+
+        Intent intent = new Intent(getContext(), AnuncioDetalleActivity.class);
+
+        intent.putExtra("titulo", anuncio.getTitulo());
+        intent.putExtra("ubicacion", anuncio.getUbicacion());
+        intent.putExtra("metros", anuncio.getMetros());
+        intent.putExtra("precio", anuncio.getPrecio());
+        intent.putExtra("descripcion", anuncio.getDescripcion());
+        intent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(anuncio.getImagenesUri()));
+
+
+        verAnuncioLauncher.launch(intent);
+
+    }
 }

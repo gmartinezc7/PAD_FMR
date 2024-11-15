@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Anuncio {
-    private String todoCompleto;
 
     private String titulo;
     private String ubicacion;
@@ -26,27 +25,15 @@ public class Anuncio {
         this.descripcion = data.getStringExtra("descripcion");
         this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
 
-
-        this.todoCompleto =  "Ubicación: " + ubicacion +
-                "\n\nMetros cuadrados: " + metros + "\n\nPrecio: " + precio;
-
-        if(!this.descripcion.isEmpty()){
-            this.todoCompleto += "\n\nDescripción:\n" + descripcion;
-        }
-
     }
+
+
+
 
 
     public  List<Uri> getImagenesUri() {
         return imagenesUri;
     }
-
-
-    public String getDetalle() {
-        return todoCompleto;
-    }
-
-
     public String getTitulo() {
         return titulo;
     }
@@ -64,8 +51,31 @@ public class Anuncio {
     }
 
 
-    @Override
-    public String toString() {
-        return todoCompleto;
+    public void setTitulo(String titulo){
+
+        this.titulo = titulo;
+
     }
+
+    public void setUbicacion(String ubicacion){
+
+        this.ubicacion = ubicacion;
+
+    }
+
+    public void setMetros(String metros){
+
+        this.metros = metros;
+
+    }
+
+    public void setPrecio(String precio){
+        this.precio = precio;
+    }
+
+    public void setDescripcion(String descripcion){
+      this.descripcion = descripcion;
+    }
+
+
 }

@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
@@ -27,8 +29,12 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
     private List<Anuncio> anuncios = new ArrayList<>();
     private MisViviendasViewModel viewModel;
+    private MisViviendasFragment fragment;
 
-    public AnunciosAdapter(MisViviendasViewModel viewModel) {
+
+
+    public AnunciosAdapter(MisViviendasViewModel viewModel, MisViviendasFragment fragment) {
+        this.fragment = fragment;
         this.viewModel = viewModel;
     }
 
@@ -41,7 +47,8 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     @NonNull
     @Override
     public AnuncioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflar el layout del item (aquí podrías inflar tu layout personalizado)
+
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
         return new AnuncioViewHolder(view);
     }
@@ -55,11 +62,11 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         setAnuncioDetails(holder, anuncio);
 
         // Configurar la imagen y la navegación entre imágenes
-        setImageNavigation(holder, anuncio);
+        setImageNavigation(holder, anuncio, position);
 
 
         // Configurar el clic largo para eliminar
-        setLongClickListener(holder, position, anuncio);
+        setLongClickListener(holder, position);
 
     }
 
@@ -73,7 +80,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     }
 
 
-    private void setImageNavigation(AnuncioViewHolder holder, Anuncio anuncio) {
+    private void setImageNavigation(AnuncioViewHolder holder, Anuncio anuncio, int position) {
         if (!anuncio.getImagenesUri().isEmpty()) {
             holder.imagenesUri = new ArrayList<>(anuncio.getImagenesUri());
             holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
@@ -87,7 +94,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
             holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
 
             // Clic en la imagen para ver detalles
-            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(holder, anuncio));
+            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(holder, anuncio, position));
         }
     }
 
@@ -102,17 +109,17 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     }
 
 
-    private void showAnuncioDetail(AnuncioViewHolder holder, Anuncio anuncio) {
-        Intent intent = new Intent(holder.itemView.getContext(), AnuncioDetalleActivity.class);
-        intent.putExtra("titulo", anuncio.getTitulo());
-        intent.putExtra("detalle", anuncio.getDetalle());
-        intent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(anuncio.getImagenesUri()));
-        holder.itemView.getContext().startActivity(intent);
+    private void showAnuncioDetail(AnuncioViewHolder holder, Anuncio anuncio, int position) {
+
+
+        this.fragment.lanzarVerAnuncio(position);
+
+
     }
 
 
 
-    private void setLongClickListener(AnuncioViewHolder holder, int position, Anuncio anuncio) {
+    private void setLongClickListener(AnuncioViewHolder holder, int position) {
         holder.imageViewAnuncio.setOnLongClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
                     .setTitle("Eliminar anuncio")
