@@ -7,7 +7,7 @@
         android:icon="@drawable/person_icon"
         android:title="@string/username_preference_title"
         android:summary="@string/username_preference_summary"
-        android:dialogTitle="@string/username_preference_title"
+        android:dialogTitle="@string/username_preference_dialog_text"
         android:inputType="text" />
 
     <EditTextPreference
@@ -16,7 +16,7 @@
         android:icon="@drawable/mail_icon"
         android:title="@string/email_preference_title"
         android:summary="@string/email_preference_summary"
-        android:dialogTitle="@string/email_preference_title"
+        android:dialogTitle="@string/email_preference_dialog_text"
         android:inputType="textEmailAddress" />
 
     <EditTextPreference

@@ -39,7 +39,7 @@
     <string name="gender_preference_summary">Seleccionar tu género</string>
     <string name="password_preference_title">Contraseña</string>
     <string name="password_preference_summary">Cambiar la contraseña de la cuenta</string>
-    <string name="password_preference_new_password_label">Nueva contraseña</string>
+    <string name="password_preference_new_password_label">Introduzca su nueva contraseña</string>
     <string name="user_preferences_file" translatable="false">preferences</string>
     <string name="username_preference_key" translatable="false">username_preference</string>
     <string name="email_preference_key" translatable="false">email_preference</string>
@@ -54,4 +54,6 @@
     <string name="input_current_password_text">Introduce tu contraseña actual</string>
     <string name="current_password_text">Contraseña actual</string>
     <string name="fill_all_fields_toast_text">Llene todos los campos</string>
+    <string name="username_preference_dialog_text">Introduzca su nuevo nombre de usuario</string>
+    <string name="email_preference_dialog_text">Introduzca su nuevo correo electrónico</string>
 </resources>

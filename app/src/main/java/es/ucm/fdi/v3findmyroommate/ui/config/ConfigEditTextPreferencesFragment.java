@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -121,32 +122,6 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Sets up user preference change listeners.
-    private void setUsernamePreferenceListener(EditTextPreference usernamePref) {
-        if (usernamePref != null) {
-            setEditTextPreferenceButtonText(usernamePref);
-            usernamePref.setOnPreferenceChangeListener((preference, newUsernameValue) -> {
-                String usernameWritten = (String) newUsernameValue;
-                if (usernameWritten.isEmpty()) {
-                    // Shows void username error toast.
-                    Toast nullUsernameToast = Toast.makeText(getActivity(),
-                            getActivity().getResources().getString(R.string.null_username_toast_text),
-                            Toast.LENGTH_SHORT);
-                    nullUsernameToast.show();
-                    Log.e("UsernamePreference", "Username can't be void");
-                    return false;
-                }
-                else {
-                    this.preferencesViewModel.updateUsernameInDatabase(usernameWritten);
-                    Log.i("UsernamePreference", "New username: " + usernameWritten);
-                    return true;
-                }
-            });
-        }
-
-    }
-
-
     // Sets up email preference change listeners.
     private void setEmailPreferenceListener(EditTextPreference emailPref) {
         if (emailPref != null) {
@@ -172,12 +147,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     return false;
                 }
                 else {
-                    openAuthenticationDialog(emailWritten, UpdateProfileAction.UPDATE_EMAIL);
+                    openAuthenticationDialog(emailWritten, UpdateCredentialsAction.UPDATE_EMAIL);
                     return true;
                 }
             });
         }
-
     }
 
 
@@ -197,7 +171,51 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     return false;
                 }
                 else {
-                    openAuthenticationDialog(passwordWritten, UpdateProfileAction.UPDATE_PASSWORD);
+                    openAuthenticationDialog(passwordWritten, UpdateCredentialsAction.UPDATE_PASSWORD);
+                    return true;
+                }
+            });
+        }
+    }
+
+
+    // Sets up user preference change listeners.
+    private void setUsernamePreferenceListener(EditTextPreference usernamePref) {
+        if (usernamePref != null) {
+            setEditTextPreferenceButtonText(usernamePref);
+            usernamePref.setOnPreferenceChangeListener((preference, newUsernameValue) -> {
+                String usernameWritten = (String) newUsernameValue;
+                if (usernameWritten.isEmpty()) {
+                    // Shows void username error toast.
+                    Toast nullUsernameToast = Toast.makeText(getActivity(),
+                            getActivity().getResources().getString(R.string.null_username_toast_text),
+                            Toast.LENGTH_SHORT);
+                    nullUsernameToast.show();
+                    Log.e("UsernamePreference", "Username can't be void");
+                    return false;
+                }
+                else {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(usernameWritten).build();
+
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        user.updateProfile(profileUpdates).addOnCompleteListener(
+                            new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel
+                                            .updateUserUsername(usernameWritten);
+                                    Log.d("UserUsername", "User's username successfully updated");
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        Log.e("UserPreferences", "Can't find current user");
+                        throw new NullPointerException("User found to be null");
+                    }
                     return true;
                 }
             });
@@ -211,7 +229,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             setEditTextPreferenceButtonText(descriptionPref);
             descriptionPref.setOnPreferenceChangeListener((preference, newDescriptionValue) -> {
                 String descriptionWritten = (String) newDescriptionValue;
-                this.preferencesViewModel.updateDescriptionInDatabase(descriptionWritten);
+                this.preferencesViewModel.updateUserDescription(descriptionWritten);
                 Log.i("DescriptionPreference", "New description: " + descriptionWritten);
                 return true;
             });
@@ -224,11 +242,9 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         if (ageRangePreference != null) {
             ageRangePreference.setEntries(AGE_ENTRIES_ARRAY);
             ageRangePreference.setEntryValues(AGE_ENTRIES_ARRAY);
-
             ageRangePreference.setOnPreferenceChangeListener((preference, newAgeRangeValue) -> {
                 String ageRangeSelected = (String) newAgeRangeValue;
-                this.preferencesViewModel.updateAgeRangeInDatabase(ageRangeSelected);
-                Log.i("AgeRangePreference", "New age range selected: " + ageRangeSelected);
+                this.preferencesViewModel.updateUserAgeRange(ageRangeSelected);
                 return true;
             });
         }
@@ -240,11 +256,9 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         if (genderPref != null) {
             genderPref.setEntries(GENDER_ENTRIES_ARRAY);
             genderPref.setEntryValues(GENDER_ENTRIES_ARRAY);
-
             genderPref.setOnPreferenceChangeListener((preference, newGenderValue) -> {
                 String genderSelected = (String) newGenderValue;
-                this.preferencesViewModel.updateGenderInDatabase(genderSelected);
-                Log.i("GenderPreference", "New gender selected: " + genderSelected);
+                this.preferencesViewModel.updateUserGender(genderSelected);
                 return true;
             });
         }
@@ -253,7 +267,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
 
     // Method that displays the authentication dialog and updates the particular element of the profile
     // that was selected.
-    private void openAuthenticationDialog(String itemWritten, UpdateProfileAction action) {
+    private void openAuthenticationDialog(String itemWritten, UpdateCredentialsAction action) {
         // Inflates the custom layout.
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customView = inflater.inflate(R.layout.reauthentication_dialog, null);
@@ -296,7 +310,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateEmailPreference(itemWritten);
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateUserEmail(itemWritten);
                                                 Log.d("UserEmail", "User's email successfully updated");
                                             }
                                         }
@@ -308,14 +322,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updatePasswordPreference(itemWritten);
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateUserPassword(itemWritten);
                                                 Log.d("UserPassword", "User's password successfully updated");
                                             }
                                         }
                                     });
-                                    break;
-
-                                case UPDATE_IMAGE:
                                     break;
 
                                 default:
