@@ -4,25 +4,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
         this.emailEditText = findViewById(R.id.emailEditText);
         this.passwordEditText = findViewById(R.id.passwordEditText);
 
@@ -53,40 +47,31 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Button loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String userEmail = MainActivity.this.emailEditText.getText().toString();
-                String userPassword = MainActivity.this.passwordEditText.getText().toString();
+        loginButton.setOnClickListener(view -> {
+            String userEmail = MainActivity.this.emailEditText.getText().toString();
+            String userPassword = MainActivity.this.passwordEditText.getText().toString();
 
-                // Accesses database and searches for the user's email.
-                mAuth.signInWithEmailAndPassword(userEmail, userPassword)
-                    .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // If the sign in is successful, updates preferences signed-in user's information.
-                            setInitialPreferences();
-                            openLoginView(); // Goes to the next screen.
-                            Log.d("SignUp", "Sign up successful");
-                        }
-                        else {
-                            // If the sign in fails, displays a message to the user.
-                            Toast signUpFailedToast = Toast.makeText(MainActivity.this,
-                                    R.string.sign_up_failed_toast_text, Toast.LENGTH_SHORT);
-                            signUpFailedToast.show();
-                            Log.w("SignUp", "Sign up failed", task.getException());
-                        }
+            // Accesses database and searches for the user's email.
+            mAuth.signInWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(MainActivity.this, task -> {
+                    if (task.isSuccessful()) {
+                        // If the sign in is successful, updates preferences signed-in user's information.
+                        setInitialPreferences();
+                        openLoginView(); // Goes to the next screen.
+                        Log.d("SignUp", "Sign up successful");
+                    }
+                    else {
+                        // If the sign in fails, displays a message to the user.
+                        Toast signUpFailedToast = Toast.makeText(MainActivity.this,
+                                R.string.sign_up_failed_toast_text, Toast.LENGTH_SHORT);
+                        signUpFailedToast.show();
+                        Log.w("SignUp", "Sign up failed", task.getException());
                     }
                 });
-            }
         });
 
         TextView signUP = findViewById(R.id.signUP);
-        signUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {openSignUPView();}
-        });
+        signUP.setOnClickListener(view -> openSignUPView());
     }
 
     public void openLoginView(){
