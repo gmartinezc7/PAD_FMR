@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
-    private FirebaseDatabase databaseInstance;
     private DatabaseReference databaseUserReference;
     private FirebaseAuth mAuth;
 
@@ -50,15 +49,7 @@ public class MainActivity extends AppCompatActivity {
         this.emailEditText = findViewById(R.id.emailEditText);
         this.passwordEditText = findViewById(R.id.passwordEditText);
 
-
         FirebaseApp.initializeApp(this);
-        this.databaseInstance = FirebaseDatabase.getInstance(this.getResources().
-                getString(R.string.database_url));
-
-        this.databaseUserReference = this.databaseInstance.getReference("users").
-                child(String.valueOf(1));
-
-        // Firebase Authentication services test
         mAuth = FirebaseAuth.getInstance();
 
         Button loginButton = findViewById(R.id.loginButton);
@@ -74,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, updates UI with the signed-in user's information
+                            // If the sign in is successful, updates preferences signed-in user's information.
+                            setInitialPreferences();
                             openLoginView(); // Goes to the next screen.
                             Log.d("SignUp", "Sign up successful");
                         }
                         else {
-                            // If sign in fails, displays a message to the user.
+                            // If the sign in fails, displays a message to the user.
                             Toast signUpFailedToast = Toast.makeText(MainActivity.this,
                                     R.string.sign_up_failed_toast_text, Toast.LENGTH_SHORT);
                             signUpFailedToast.show();
@@ -109,23 +101,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Loads initial preferences.
-    private void setInitialPreferences(String databaseUsername, String databaseEmail, String databasePassword,
-                                       String databaseDescription, String databaseAgeRange, String databaseGender) {
+    private void setInitialPreferences() {
 
-        SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(
-                MainActivity.this);
-        SharedPreferences.Editor editor = userPreferences.edit();
-        editor.clear();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
 
-        editor.putString(getString(R.string.username_preference_key), databaseUsername);
-        editor.putString(getString(R.string.email_preference_key), databaseEmail);
-        editor.putString(getString(R.string.password_preference_key), databasePassword);
-        editor.putString(getString(R.string.description_preference_key), databaseDescription);
-        editor.putString(getString(R.string.age_range_preference_key), databaseAgeRange);
-        editor.putString(getString(R.string.gender_preference_key), databaseGender);
-        editor.putString("user_id", String.valueOf(1));
+            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(getApplication().
+                    getApplicationContext().getString(R.string.database_url));
+            this.databaseUserReference = databaseInstance.getReference("users")
+                    .child(user.getUid());
 
-        editor.apply();
+            this.databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    String databaseEmail = user.getEmail();
+                    String databaseUsername = user.getDisplayName();
+                    String databaseAgeRange = snapshot.child("age_range").getValue(String.class);
+                    String databaseGender = snapshot.child("gender").getValue(String.class);
+
+                    // Stores the data in SharedPreferences.
+                    SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SharedPreferences.Editor editor = userPreferences.edit();
+                    editor.clear();
+
+                    editor.putString(getString(R.string.email_preference_key), databaseEmail);
+                    editor.putString(getString(R.string.username_preference_key), databaseUsername);
+                    editor.putString(getString(R.string.age_range_preference_key), databaseAgeRange);
+                    editor.putString(getString(R.string.gender_preference_key), databaseGender);
+
+                    editor.apply();
+                }
+                else {
+                    Log.e("Firebase", "Failed to retrieve user data", task.getException());
+                }
+            });
+        }
+        else {
+            Log.e("UserPreferences", "Can't find current user");
+            throw new NullPointerException("User found to be null");
+        }
     }
 
 }
