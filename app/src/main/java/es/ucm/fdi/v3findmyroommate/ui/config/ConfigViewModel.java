@@ -38,50 +38,56 @@ public class ConfigViewModel extends AndroidViewModel {
     }
 
 
-    public void updateUserEmail(String newEmail) {
+    public void updateSelectedPreference(String newValue, String preferenceKey) {
         SharedPreferences.Editor editor = this.userPreferences.edit();
-        editor.putString(getApplication().getString(R.string.email_preference_key), newEmail);
+
+        // Updates email.
+        if (preferenceKey.equals(getApplication().getString(R.string.email_preference_key))) {
+            editor.putString(getApplication().getString(R.string.email_preference_key), newValue);
+            Log.i("EmailPreference", "New email: " + newValue);
+        }
+
+        // Updates password.
+        else if (preferenceKey.equals(getApplication().getString(R.string.password_preference_key))) {
+            editor.putString(getApplication().getString(R.string.password_preference_key), newValue);
+            Log.i("PasswordPreference", "New password: " + newValue);
+        }
+
+        // Updates username.
+        else if (preferenceKey.equals(getApplication().getString(R.string.username_preference_key))) {
+            editor.putString(getApplication().getString(R.string.username_preference_key), newValue);
+            Log.i("UsernamePreference", "New username: " + newValue);
+        }
+
+        // Updates gender.
+        else if (preferenceKey.equals(getApplication().getString(R.string.gender_preference_key))) {
+            this.databaseUserReference.child(getApplication().getString(R.string.gender_db_label)).setValue(newValue);
+            editor.putString(getApplication().getString(R.string.gender_preference_key), newValue);
+            Log.i("GenderPreference", "New gender selected: " + newValue);
+        }
+
+        // Updates age range.
+        else if (preferenceKey.equals(getApplication().getString(R.string.age_range_preference_key))) {
+            this.databaseUserReference.child(getApplication().getString(R.string.age_range_db_label)).setValue(newValue);
+            editor.putString(getApplication().getString(R.string.age_range_preference_key), newValue);
+            Log.i("AgeRangePreference", "New age range selected: " + newValue);
+        }
+
+        // Updates marital status.
+        else if (preferenceKey.equals(getApplication().getString(R.string.marital_status_preference_key))) {
+            this.databaseUserReference.child(getApplication().getString(R.string.marital_status_db_label)).setValue(newValue);
+            editor.putString(getApplication().getString(R.string.marital_status_preference_key), newValue);
+            Log.i("MaritalStatusPreference", "New marital status selected: " + newValue);
+        }
+
+        // Updates occupation.
+        else if (preferenceKey.equals(getApplication().getString(R.string.occupation_preference_key))) {
+            this.databaseUserReference.child(getApplication().getString(R.string.occupation_db_label)).setValue(newValue);
+            editor.putString(getApplication().getString(R.string.occupation_preference_key), newValue);
+            Log.i("OccupationPreference", "New occupation selected: " + newValue);
+        }
+
         editor.apply();
-        Log.i("EmailPreference", "New email: " + newEmail);
-    }
-
-
-    public void updateUserPassword(String newPassword) {
-        SharedPreferences.Editor editor = this.userPreferences.edit();
-        editor.putString(getApplication().getString(R.string.password_preference_key), newPassword);
-        editor.apply();
-        Log.i("PasswordPreference", "New password: " + newPassword);
-    }
-
-
-    public void updateUserUsername(String newUsername) {
-        SharedPreferences.Editor editor = this.userPreferences.edit();
-        editor.putString(getApplication().getString(R.string.username_preference_key), newUsername);
-        editor.apply();
-        Log.i("UsernamePreference", "New username: " + newUsername);
-    }
-
-
-    public void updateUserDescription(String newDescription) {
-        this.databaseUserReference.child("description").setValue(newDescription);
-    }
-
-
-    public void updateUserAgeRange(String newAgeRange) {
-        this.databaseUserReference.child("age_range").setValue(newAgeRange);
-        SharedPreferences.Editor editor = this.userPreferences.edit();
-        editor.putString(getApplication().getString(R.string.age_range_preference_key), newAgeRange);
-        editor.apply();
-        Log.i("AgeRangePreference", "New age range selected: " + newAgeRange);
-    }
-
-
-    public void updateUserGender(String newGender) {
-        this.databaseUserReference.child("gender").setValue(newGender);
-        SharedPreferences.Editor editor = this.userPreferences.edit();
-        editor.putString(getApplication().getString(R.string.gender_preference_key), newGender);
-        editor.apply();
-        Log.i("GenderPreference", "New gender selected: " + newGender);
     }
 
 

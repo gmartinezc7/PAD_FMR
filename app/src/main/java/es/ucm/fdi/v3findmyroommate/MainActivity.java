@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
                     String databaseUsername = user.getDisplayName();
                     String databaseAgeRange = snapshot.child("age_range").getValue(String.class);
                     String databaseGender = snapshot.child("gender").getValue(String.class);
+                    String databaseMaritalStatus = snapshot.child("marital_status").getValue(String.class);
+                    String databaseOccupation = snapshot.child("occupation").getValue(String.class);
 
                     // Stores the data in SharedPreferences.
                     SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -114,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString(getString(R.string.username_preference_key), databaseUsername);
                     editor.putString(getString(R.string.age_range_preference_key), databaseAgeRange);
                     editor.putString(getString(R.string.gender_preference_key), databaseGender);
+                    editor.putString(getString(R.string.marital_status_preference_key), databaseMaritalStatus);
+                    editor.putString(getString(R.string.occupation_preference_key), databaseOccupation);
 
                     editor.apply();
                 }

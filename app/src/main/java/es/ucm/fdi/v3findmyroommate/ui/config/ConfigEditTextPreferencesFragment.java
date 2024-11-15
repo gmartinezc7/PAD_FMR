@@ -30,12 +30,14 @@ import es.ucm.fdi.v3findmyroommate.R;
 public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
 
     private String currentAuthenticationEmail;
-    private ConfigViewModel preferencesViewModel;
-    private EditTextPreference usernamePref, emailPref, passwordPref, descriptionPref;
-    private ListPreference ageRangePreference, genderPreference;
+    private final ConfigViewModel preferencesViewModel;
+    private EditTextPreference usernamePreference, emailPreference, passwordPreference;
+    private ListPreference ageRangePreference, genderPreference, maritalStatusPreference, occupationPreference;
 
-    private static final CharSequence[] AGE_ENTRIES_ARRAY = {"18-25", "25-35", "35-45", ">45"};
-    private static final CharSequence[] GENDER_ENTRIES_ARRAY = {"Male", "Female"};
+    private final CharSequence[] gender_entries = new CharSequence[2];
+    private final CharSequence[] age_entries = new CharSequence[4];
+    private final CharSequence[] marital_status_entries = new CharSequence[4];
+    private final CharSequence[] occupation_entries = new CharSequence[4];
 
 
     public ConfigEditTextPreferencesFragment(ConfigViewModel configViewModel) {
@@ -51,25 +53,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     getContext());
 
             this.currentAuthenticationEmail = userPreferences.getString(getString(R.string.email_preference_key), "");
-
-            SharedPreferences.Editor editor = userPreferences.edit();
-            String username = userPreferences.getString(getString(R.string.username_preference_key),
-                    "default_value");
-            String email = userPreferences.getString(getString(R.string.email_preference_key),
-                    "default_value");
-            String password = userPreferences.getString(getString(R.string.password_preference_key),
-                    "default_value");
-            String description = userPreferences.getString(getString(R.string.description_preference_key),
-                    "default_value");
-            String ageRange = userPreferences.getString(getString(R.string.age_range_preference_key),
-                    "default_value");
-            String gender = userPreferences.getString(getString(R.string.gender_preference_key),
-                    "default_value");
-
-            editor.apply();
-
             setPreferencesFromResource(R.xml.preferences, rootKey);
-            setDefaultValues(username, email, password, description, ageRange, gender);
+            setListPreferencesArrays();
             linkPreferencesToCode();
             configurePreferences();
 
@@ -77,56 +62,61 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
+    public void setListPreferencesArrays() {
+        // Edit the gender entries array.
+        this.gender_entries[0] = getString(R.string.male_label);
+        this.gender_entries[1] = getString(R.string.female_label);
+
+        // Edit the age entries array.
+        this.age_entries[0] = getString(R.string.young_adult_age_label);
+        this.age_entries[1] = getString(R.string.adult_age_label);
+        this.age_entries[2] = getString(R.string.grown_up_age_label);
+        this.age_entries[3] = getString(R.string.senior_age_label);
+
+        // Edit the marital status entries array.
+        this.marital_status_entries[0] = getString(R.string.single_status_label);
+        this.marital_status_entries[1] = getString(R.string.relationship_status_label);
+        this.marital_status_entries[2] = getString(R.string.married_status_label);
+        this.marital_status_entries[3] = getString(R.string.prefer_not_say_status_label);
+
+        // Edit the occupation entries array.
+        this.occupation_entries[0] = getString(R.string.employed_status_label);
+        this.occupation_entries[1] = getString(R.string.unemployed_status_label);
+        this.occupation_entries[2] = getString(R.string.student_status_label);
+        this.occupation_entries[3] = getString(R.string.retired_status_label);
+
+    }
+
+
     // Links XML layout preferences with their respective java objects.
     private void linkPreferencesToCode() {
-        this.usernamePref = findPreference(getString(R.string.username_preference_key));
-        this.emailPref = findPreference(getString(R.string.email_preference_key));
-        this.passwordPref = findPreference(getString(R.string.password_preference_key));
-        this.descriptionPref = findPreference(getString(R.string.description_preference_key));
+        this.usernamePreference = findPreference(getString(R.string.username_preference_key));
+        this.emailPreference = findPreference(getString(R.string.email_preference_key));
+        this.passwordPreference = findPreference(getString(R.string.password_preference_key));
         this.ageRangePreference = findPreference(getString(R.string.age_range_preference_key));
         this.genderPreference = findPreference(getString(R.string.gender_preference_key));
-
-        String ageRange = ageRangePreference.getValue();  // Get current value
-        Log.d("PreferenceValue", "Current age range: " + ageRange);
+        this.maritalStatusPreference = findPreference(getString(R.string.marital_status_preference_key));
+        this.occupationPreference = findPreference(getString(R.string.occupation_preference_key));
     }
 
 
     // Configures each preference's changeListener.
     private void configurePreferences() {
-        setUsernamePreferenceListener(this.usernamePref);
-        setEmailPreferenceListener(this.emailPref);
-        setPasswordPreferenceListener(this.passwordPref);
-        setDescriptionPreferenceListener(this.descriptionPref);
+        setEmailPreferenceListener(this.emailPreference);
+        setPasswordPreferenceListener(this.passwordPreference);
+        setUsernamePreferenceListener(this.usernamePreference);
         setAgeRangePreferenceListener(this.ageRangePreference);
         setGenderPreferenceListener(this.genderPreference);
+        setMaritalStatusPreferenceListener(this.maritalStatusPreference);
+        setOccupationPreferenceListener(this.occupationPreference);
     }
 
 
-    // Sets the default values of the preferences.
-    public void setDefaultValues(String username, String email, String password, String description,
-                                 String ageRange, String gender) {
-
-        SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(
-                getContext());
-        SharedPreferences.Editor editor = userPreferences.edit();
-        editor.clear();
-
-        editor.putString(getString(R.string.username_preference_key), username);
-        editor.putString(getString(R.string.email_preference_key), email);
-        editor.putString(getString(R.string.password_preference_key), password);
-        editor.putString(getString(R.string.description_preference_key), description);
-        editor.putString(getString(R.string.age_range_preference_key), ageRange);
-        editor.putString(getString(R.string.gender_preference_key), gender);
-
-        editor.apply();
-    }
-
-
-    // Sets up email preference change listeners.
-    private void setEmailPreferenceListener(EditTextPreference emailPref) {
-        if (emailPref != null) {
-            setEditTextPreferenceButtonText(emailPref);
-            emailPref.setOnPreferenceChangeListener((preference, newEmailValue) -> {
+    // Sets up email preference change listener.
+    private void setEmailPreferenceListener(EditTextPreference emailPreference) {
+        if (emailPreference != null) {
+            setEditTextPreferenceButtonText(emailPreference);
+            emailPreference.setOnPreferenceChangeListener((preference, newEmailValue) -> {
                 String emailWritten = (String) newEmailValue;
                 if (emailWritten.isEmpty()) {
                     // Shows void email error toast.
@@ -134,7 +124,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                             getActivity().getResources().getString(R.string.null_email_toast_text),
                             Toast.LENGTH_SHORT);
                     nullEmailToast.show();
-                    Log.e("EmailPreference", "Email can't be void");
+                    Log.e("emailPreference", "Email can't be void");
                     return false;
                 }
                 else if (!emailWritten.contains("@")) {
@@ -143,7 +133,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                             getActivity().getResources().getString(R.string.invalid_email_toast_text),
                             Toast.LENGTH_SHORT);
                     invalidEmailToast.show();
-                    Log.e("EmailPreference", "Email address must be a valid address");
+                    Log.e("emailPreference", "Email address must be a valid address");
                     return false;
                 }
                 else {
@@ -155,11 +145,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Sets up password preference change listeners.
-    private void setPasswordPreferenceListener(EditTextPreference passwordPref) {
-        if (passwordPref != null) {
-            setEditTextPreferenceButtonText(passwordPref);
-            passwordPref.setOnPreferenceChangeListener((preference, newPasswordValue) -> {
+    // Sets up password preference change listener.
+    private void setPasswordPreferenceListener(EditTextPreference passwordPreference) {
+        if (passwordPreference != null) {
+            setEditTextPreferenceButtonText(passwordPreference);
+            passwordPreference.setOnPreferenceChangeListener((preference, newPasswordValue) -> {
                 String passwordWritten = (String) newPasswordValue;
                 if (passwordWritten.isEmpty()) {
                     // Shows void password error toast.
@@ -167,7 +157,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                             getActivity().getResources().getString(R.string.null_password_toast_text),
                             Toast.LENGTH_SHORT);
                     nullPasswordToast.show();
-                    Log.e("PasswordPreference", "Password can't be void");
+                    Log.e("passwordPreference", "Password can't be void");
                     return false;
                 }
                 else {
@@ -179,11 +169,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Sets up user preference change listeners.
-    private void setUsernamePreferenceListener(EditTextPreference usernamePref) {
-        if (usernamePref != null) {
-            setEditTextPreferenceButtonText(usernamePref);
-            usernamePref.setOnPreferenceChangeListener((preference, newUsernameValue) -> {
+    // Sets up user preference change listener.
+    private void setUsernamePreferenceListener(EditTextPreference usernamePreference) {
+        if (usernamePreference != null) {
+            setEditTextPreferenceButtonText(usernamePreference);
+            usernamePreference.setOnPreferenceChangeListener((preference, newUsernameValue) -> {
                 String usernameWritten = (String) newUsernameValue;
                 if (usernameWritten.isEmpty()) {
                     // Shows void username error toast.
@@ -191,7 +181,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                             getActivity().getResources().getString(R.string.null_username_toast_text),
                             Toast.LENGTH_SHORT);
                     nullUsernameToast.show();
-                    Log.e("UsernamePreference", "Username can't be void");
+                    Log.e("usernamePreference", "Username can't be void");
                     return false;
                 }
                 else {
@@ -206,7 +196,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     ConfigEditTextPreferencesFragment.this.preferencesViewModel
-                                            .updateUserUsername(usernameWritten);
+                                            .updateSelectedPreference(usernameWritten,
+                                            getString(R.string.username_preference_key));
                                     Log.d("UserUsername", "User's username successfully updated");
                                 }
                             }
@@ -223,42 +214,60 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Sets up description preference change listeners.
-    private void setDescriptionPreferenceListener(EditTextPreference descriptionPref) {
-        if (descriptionPref != null) {
-            setEditTextPreferenceButtonText(descriptionPref);
-            descriptionPref.setOnPreferenceChangeListener((preference, newDescriptionValue) -> {
-                String descriptionWritten = (String) newDescriptionValue;
-                this.preferencesViewModel.updateUserDescription(descriptionWritten);
-                Log.i("DescriptionPreference", "New description: " + descriptionWritten);
+    // Sets up gender preference change listener.
+    private void setGenderPreferenceListener(ListPreference genderPreference) {
+        if (genderPreference != null) {
+            genderPreference.setEntries(this.gender_entries);
+            genderPreference.setEntryValues(this.gender_entries);
+            genderPreference.setOnPreferenceChangeListener((preference, newGenderValue) -> {
+                String genderSelected = (String) newGenderValue;
+                this.preferencesViewModel.updateSelectedPreference(genderSelected, getString(
+                        R.string.gender_preference_key));
                 return true;
             });
         }
     }
 
 
-    // Sets up age range preference change listeners.
+    // Sets up age range preference change listener.
     private void setAgeRangePreferenceListener(ListPreference ageRangePreference) {
         if (ageRangePreference != null) {
-            ageRangePreference.setEntries(AGE_ENTRIES_ARRAY);
-            ageRangePreference.setEntryValues(AGE_ENTRIES_ARRAY);
+            ageRangePreference.setEntries(this.age_entries);
+            ageRangePreference.setEntryValues(this.age_entries);
             ageRangePreference.setOnPreferenceChangeListener((preference, newAgeRangeValue) -> {
                 String ageRangeSelected = (String) newAgeRangeValue;
-                this.preferencesViewModel.updateUserAgeRange(ageRangeSelected);
+                this.preferencesViewModel.updateSelectedPreference(ageRangeSelected, getString(
+                        R.string.age_range_preference_key));
                 return true;
             });
         }
     }
 
 
-    // Sets up gender preference change listeners.
-    private void setGenderPreferenceListener(ListPreference genderPref) {
-        if (genderPref != null) {
-            genderPref.setEntries(GENDER_ENTRIES_ARRAY);
-            genderPref.setEntryValues(GENDER_ENTRIES_ARRAY);
-            genderPref.setOnPreferenceChangeListener((preference, newGenderValue) -> {
-                String genderSelected = (String) newGenderValue;
-                this.preferencesViewModel.updateUserGender(genderSelected);
+    // Sets up marital status preference change listener.
+    private void setMaritalStatusPreferenceListener(ListPreference maritalStatusPreference) {
+        if (maritalStatusPreference != null) {
+            maritalStatusPreference.setEntries(this.marital_status_entries);
+            maritalStatusPreference.setEntryValues(this.marital_status_entries);
+            maritalStatusPreference.setOnPreferenceChangeListener((preference, newMaritalStatusValue) -> {
+                String maritalStatusSelected = (String) newMaritalStatusValue;
+                this.preferencesViewModel.updateSelectedPreference(maritalStatusSelected, getString(
+                        R.string.marital_status_preference_key));
+                return true;
+            });
+        }
+    }
+
+
+    // Sets up occupation preference change listener.
+    private void setOccupationPreferenceListener(ListPreference occupationPreference) {
+        if (occupationPreference != null) {
+            occupationPreference.setEntries(this.occupation_entries);
+            occupationPreference.setEntryValues(this.occupation_entries);
+            occupationPreference.setOnPreferenceChangeListener((preference, newOccupationValue) -> {
+                String occupationSelected = (String) newOccupationValue;
+                this.preferencesViewModel.updateSelectedPreference(occupationSelected, getString(
+                        R.string.occupation_preference_key));
                 return true;
             });
         }
@@ -310,7 +319,9 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateUserEmail(itemWritten);
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel
+                                                        .updateSelectedPreference(itemWritten,
+                                                        getString(R.string.email_preference_key));
                                                 Log.d("UserEmail", "User's email successfully updated");
                                             }
                                         }
@@ -322,7 +333,9 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateUserPassword(itemWritten);
+                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel
+                                                        .updateSelectedPreference(itemWritten,
+                                                        getString(R.string.password_preference_key));
                                                 Log.d("UserPassword", "User's password successfully updated");
                                             }
                                         }
@@ -335,7 +348,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                         }
                     });
                 }
-                dialog.dismiss(); // Close the dialog
+                dialog.dismiss(); // Closes the dialog.
             }
 
             else {
@@ -351,7 +364,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     }
 
 
-    // Configures the words in each button of the given reference (valid only for EditTextPreferences).
+    // Configures the words in each button of the given reference (valid only for EditTextPreference).
     private void setEditTextPreferenceButtonText(EditTextPreference currentPref) {
         currentPref.setPositiveButtonText(R.string.accept_text);
         currentPref.setNegativeButtonText(R.string.cancel_text);
