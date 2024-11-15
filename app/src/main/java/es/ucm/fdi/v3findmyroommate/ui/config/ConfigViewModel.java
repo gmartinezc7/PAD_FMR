@@ -15,8 +15,8 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 public class ConfigViewModel extends AndroidViewModel {
 
-    private SharedPreferences userPreferences;
-    private DatabaseReference databaseUserReference;
+    private final SharedPreferences userPreferences;
+    private final DatabaseReference databaseUserReference;
 
     public ConfigViewModel(Application application) {
         super(application);
