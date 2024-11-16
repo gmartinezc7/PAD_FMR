@@ -1,6 +1,8 @@
 package es.ucm.fdi.v3findmyroommate.ui.config;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -129,11 +131,14 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 }
                 else if (!emailWritten.contains("@")) {
                     // Shows invalid email error toast.
-                    Toast invalidEmailToast = Toast.makeText(getActivity(),
-                            getActivity().getResources().getString(R.string.invalid_email_toast_text),
-                            Toast.LENGTH_SHORT);
-                    invalidEmailToast.show();
-                    Log.e("emailPreference", "Email address must be a valid address");
+                    Context currentContext = getContext();
+                    if (currentContext != null) {
+                        Toast invalidEmailToast = Toast.makeText(getActivity(),
+                                currentContext.getResources().getString(R.string.invalid_email_toast_text),
+                                Toast.LENGTH_SHORT);
+                        invalidEmailToast.show();
+                        Log.e("emailPreference", "Email address must be a valid address");
+                    }
                     return false;
                 }
                 else {
@@ -191,17 +196,16 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) {
                         user.updateProfile(profileUpdates).addOnCompleteListener(
-                            new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            task -> {
                                 if (task.isSuccessful()) {
-                                    ConfigEditTextPreferencesFragment.this.preferencesViewModel
-                                            .updateSelectedPreference(usernameWritten,
-                                            getString(R.string.username_preference_key));
-                                    Log.d("UserUsername", "User's username successfully updated");
+                                    Activity currentActivity = ConfigEditTextPreferencesFragment.this.getActivity();
+                                    if (currentActivity != null) {
+                                        ConfigViewModel.updateSelectedPreference(usernameWritten,
+                                            getString(R.string.username_preference_key), currentActivity.getApplication());
+                                        Log.d("UserUsername", "User's username successfully updated");
+                                    }
                                 }
-                            }
-                        });
+                            });
                     }
                     else {
                         Log.e("UserPreferences", "Can't find current user");
@@ -221,8 +225,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             genderPreference.setEntryValues(this.gender_entries);
             genderPreference.setOnPreferenceChangeListener((preference, newGenderValue) -> {
                 String genderSelected = (String) newGenderValue;
-                this.preferencesViewModel.updateSelectedPreference(genderSelected, getString(
-                        R.string.gender_preference_key));
+                Application application = getActivity().getApplication();
+                if (application != null) {
+                    ConfigViewModel.updateSelectedPreference(genderSelected, getString(
+                            R.string.gender_preference_key), getActivity().getApplication());
+                }
                 return true;
             });
         }
@@ -236,8 +243,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             ageRangePreference.setEntryValues(this.age_entries);
             ageRangePreference.setOnPreferenceChangeListener((preference, newAgeRangeValue) -> {
                 String ageRangeSelected = (String) newAgeRangeValue;
-                this.preferencesViewModel.updateSelectedPreference(ageRangeSelected, getString(
-                        R.string.age_range_preference_key));
+                Application application = getActivity().getApplication();
+                if (application != null) {
+                    ConfigViewModel.updateSelectedPreference(ageRangeSelected, getString(
+                            R.string.age_range_preference_key), getActivity().getApplication());
+                }
                 return true;
             });
         }
@@ -251,8 +261,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             maritalStatusPreference.setEntryValues(this.marital_status_entries);
             maritalStatusPreference.setOnPreferenceChangeListener((preference, newMaritalStatusValue) -> {
                 String maritalStatusSelected = (String) newMaritalStatusValue;
-                this.preferencesViewModel.updateSelectedPreference(maritalStatusSelected, getString(
-                        R.string.marital_status_preference_key));
+                Application application = getActivity().getApplication();
+                if (application != null) {
+                    ConfigViewModel.updateSelectedPreference(maritalStatusSelected, getString(
+                            R.string.marital_status_preference_key), getActivity().getApplication());
+                }
                 return true;
             });
         }
@@ -266,8 +279,11 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             occupationPreference.setEntryValues(this.occupation_entries);
             occupationPreference.setOnPreferenceChangeListener((preference, newOccupationValue) -> {
                 String occupationSelected = (String) newOccupationValue;
-                this.preferencesViewModel.updateSelectedPreference(occupationSelected, getString(
-                        R.string.occupation_preference_key));
+                Application application = getActivity().getApplication();
+                if (application != null) {
+                    ConfigViewModel.updateSelectedPreference(occupationSelected, getString(
+                            R.string.occupation_preference_key), getActivity().getApplication());
+                }
                 return true;
             });
         }
@@ -299,8 +315,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             String currentPassword = passwordEditText.getText().toString();
             if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
                     !currentPassword.isEmpty()) {
-                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateProfile(itemWritten,
-                        currentPassword, action);
+                ConfigViewModel.updateProfile(itemWritten,
+                        currentPassword, action, getActivity().getApplication());
                 dialog.dismiss(); // Closes the dialog.
             }
             else {

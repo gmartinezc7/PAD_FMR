@@ -6,17 +6,17 @@
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
     <string name="title_config">Config</string>
-    <string name="welcome_message">Welcome Back!</string>
+    <string name="welcome_message">Bienvenid@!</string>
     <string name="email_hint">Email</string>
-    <string name="password_hint">Password</string>
-    <string name="login">login</string>
-    <string name="dont_have_account">Don\'t have an account</string>
-    <string name="sign_up">sing up</string>
-    <string name="sign_in">sign in</string>
-    <string name="name">Name</string>
-    <string name="last_name">Last name</string>
-    <string name="confirm_password_hint">Confirm Password</string>
-    <string name="already_have_an_acount">Already have an acount</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login">registro</string>
+    <string name="dont_have_account">No tienes una cuenta</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="confirm_password_hint">Confirma tu contraseña</string>
+    <string name="already_have_an_acount">Ya tienes una cuenta</string>
     <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
     <string name="create_account">Create account</string>
     <string name="personal_information_message">Let’s know more about yourself</string>
@@ -63,6 +63,9 @@
         <item>Privado</item>
         <item>Compartido</item>
     </string-array>
+    <string name="personal_information_message">Dinos más acerca de ti</string>
+    <string name="continue_">Continuar</string>
+    <string name="property_type_message">¿Qué estás buscando?</string>
     <string name="database_url" translatable="false">https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/</string>
     <string name="null_username_toast_text">El nombre de usuario no puede estar vacío</string>
     <string name="null_email_toast_text">El email no puede ser nulo</string>
@@ -85,16 +88,16 @@
     <string name="password_preference_key" translatable="false">password_preference</string>
     <string name="age_range_preference_key" translatable="false">age_range_preference</string>
     <string name="gender_preference_key" translatable="false">gender_preference</string>
-    <string name="logout_toast_text">Ha cerrado la sesión</string>
+    <string name="logout_toast_text">Has cerrado la sesión</string>
     <string name="sign_up_failed_toast_text">Usuario o contraseña incorrectos</string>
     <string name="accept_text">Aceptar</string>
     <string name="cancel_text">Cancelar</string>
     <string name="input_current_password_text">Introduce tu contraseña actual</string>
     <string name="current_password_text">Contraseña actual</string>
-    <string name="fill_all_fields_toast_text">Llene todos los campos</string>
-    <string name="username_preference_dialog_text">Introduzca su nuevo nombre de usuario</string>
-    <string name="email_preference_dialog_text">Introduzca su nuevo correo electrónico</string>
-    <string name="house_preferences">House Preferences</string>
+    <string name="fill_all_fields_toast_text">Llena todos los campos</string>
+    <string name="username_preference_dialog_text">Introduce tu nuevo nombre de usuario</string>
+    <string name="email_preference_dialog_text">Introduce tu nuevo correo electrónico</string>
+    <string name="house_preferences">Características de la casa</string>
     <string name="male_label">Hombre</string>
     <string name="female_label">Mujer</string>
     <string name="young_adult_age_label" translatable="false">18-25</string>
@@ -123,5 +126,11 @@
     <string name="room_property_type_label">Habitación</string>
     <string name="weak_password_text">La contraseña debe tener al menos 6 caracteres</string>
     <string name="duplicated_user_text">Ya hay un usuario registrado con ese correo electrónico</string>
-    <string name="user_auth_web_problem_text">Hubo un problema con la conexión. Inténtelo de nuevo más tarde</string>
+    <string name="user_auth_web_problem_text">Lo sentimos, hubo un problema con la conexión. Inténtelo de nuevo más tarde</string>
+    <string name="personal_information_gender_label">Género</string>
+    <string name="personal_information_age_label">Edad</string>
+    <string name="personal_information_marital_status_label">Estado Civil</string>
+    <string name="personal_information_occupation_label">Empleo</string>
+    <string name="max_budget_text">Introduce tu presupuesto máximo</string>
+    <string name="house_prefs_select_property_type_label">Selecciona el Tipo de Casa</string>
 </resources>
