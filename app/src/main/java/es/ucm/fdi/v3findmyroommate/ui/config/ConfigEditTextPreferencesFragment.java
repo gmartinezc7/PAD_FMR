@@ -296,61 +296,13 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
 
         // Sets an action for the submit button.
         submitButton.setOnClickListener(v -> {
-
             String currentPassword = passwordEditText.getText().toString();
-
             if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
                     !currentPassword.isEmpty()) {
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                AuthCredential credential = EmailAuthProvider.getCredential(
-                        ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail, currentPassword);
-                if (user != null) {
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            Log.d("Reauthentication", "User re-authenticated.");
-                            // Decides which element of the user's profile to update
-                            switch(action) {
-                                case UPDATE_EMAIL:
-                                    user.updateEmail(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel
-                                                        .updateSelectedPreference(itemWritten,
-                                                        getString(R.string.email_preference_key));
-                                                Log.d("UserEmail", "User's email successfully updated");
-                                            }
-                                        }
-                                    });
-                                    break;
-
-                                case UPDATE_PASSWORD:
-                                    user.updatePassword(itemWritten).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                ConfigEditTextPreferencesFragment.this.preferencesViewModel
-                                                        .updateSelectedPreference(itemWritten,
-                                                        getString(R.string.password_preference_key));
-                                                Log.d("UserPassword", "User's password successfully updated");
-                                            }
-                                        }
-                                    });
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }
-                    });
-                }
+                ConfigEditTextPreferencesFragment.this.preferencesViewModel.updateProfile(itemWritten,
+                        currentPassword, action);
                 dialog.dismiss(); // Closes the dialog.
             }
-
             else {
                 // Shows a message if fields are empty.
                 Toast fill_all_fields_toast = Toast.makeText(getContext(), R.string.fill_all_fields_toast_text,

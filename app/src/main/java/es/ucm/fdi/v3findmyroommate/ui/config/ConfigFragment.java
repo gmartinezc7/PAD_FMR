@@ -50,9 +50,9 @@ public class ConfigFragment extends Fragment {
             FragmentActivity currentActivity = getActivity();
             if (currentActivity != null) {
                 currentActivity.finish();
-                Toast logout_toast = Toast.makeText(getContext(), R.string.logout_toast_text,
+                Toast logoutToast = Toast.makeText(getContext(), R.string.logout_toast_text,
                         Toast.LENGTH_SHORT);
-                logout_toast.show();
+                logoutToast.show();
                 Log.e("Logout", "Logout successful");
             }
             else throw new NullPointerException("Error finishing activity");
