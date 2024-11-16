@@ -31,14 +31,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="House"/>
+            android:text="@string/house_property_type_label"/>
         <com.google.android.material.chip.Chip
             android:id="@+id/roomChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Room"/>
+            android:text="@string/room_property_type_label"/>
     </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.textfield.TextInputLayout

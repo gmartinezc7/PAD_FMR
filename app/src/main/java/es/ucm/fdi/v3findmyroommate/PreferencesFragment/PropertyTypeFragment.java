@@ -73,8 +73,8 @@ public class PropertyTypeFragment extends BaseFragment {
     @Override
     protected Fragment getNextFragment() {
 
-        propertyType =getPropertyType();
-        return propertyType.equals("House") ? new HousePreferencesFragment() : new RoomPreferencesFragment();
+        propertyType = getPropertyType();
+        return propertyType.equals(getString(R.string.house_property_type_label)) ? new HousePreferencesFragment() : new RoomPreferencesFragment();
     }
     private String getPropertyType(){
         ChipGroup propertyTypeChipGroup = view.findViewById(R.id.propertyTypeChipGroup);
@@ -84,4 +84,5 @@ public class PropertyTypeFragment extends BaseFragment {
 
         return propertyType;
     }
+
 }
