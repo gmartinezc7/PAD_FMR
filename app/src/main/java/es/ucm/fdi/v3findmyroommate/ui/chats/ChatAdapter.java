@@ -1,11 +1,13 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,12 +30,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return new ChatViewHolder(view);
     }
 
+//    @Override
+//    public void onBindViewHolder(ChatViewHolder holder, int position) {
+//        Chat chat = chatList.get(position);
+//        holder.userNameTextView.setText(chat.getUserName());
+//        holder.lastMessageTextView.setText(chat.getLastMessage());
+//    }
+
     @Override
-    public void onBindViewHolder(ChatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
-        holder.userNameTextView.setText(chat.getUserName());
-        holder.lastMessageTextView.setText(chat.getLastMessage());
+        holder.chatName.setText(chat.getChatId());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ChatDetailActivity.class);
+            intent.putExtra("chatId", chat.getChatId());
+            context.startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -41,6 +56,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
+        public Message chatName;
         TextView userNameTextView;
         TextView lastMessageTextView;
 

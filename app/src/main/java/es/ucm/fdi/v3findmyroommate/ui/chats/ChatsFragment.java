@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,14 +56,24 @@ public class ChatsFragment extends Fragment {
         chatRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                chatList.clear();  // Limpia la lista para evitar duplicados
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Chat chat = snapshot.getValue(Chat.class);
+                chatList.clear();
+                for (DataSnapshot chatSnapshot : dataSnapshot.getChildren()) {
+                    Chat chat = chatSnapshot.getValue(Chat.class);
                     if (chat != null) {
-                        chatList.add(chat);  // Añade el chat a la lista
+                        chatList.add(chat);
+
+                        // Iterar por mensajes del chat
+                        for (DataSnapshot messageSnapshot : chatSnapshot.child("messages").getChildren()) {
+                            Message message = messageSnapshot.getValue(Message.class);
+                            if (message != null) {
+                                Log.d("FirebaseMessage", "Mensaje cargado: " + message.getText());
+                            }else{
+                                Log.d("FirebaseMessage","No hay mensaje");
+                            }
+                        }
                     }
                 }
-                chatAdapter.notifyDataSetChanged();  // Notifica cambios al adaptador
+                chatAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -71,4 +82,5 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
+
 }
