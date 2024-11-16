@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:hint="Enter your max budget"
+            android:hint="@string/max_budget_text"
             android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -64,7 +64,7 @@
         android:id="@+id/continueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Continue"
+        android:text="@string/continue_"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/propertyTypeMessage"

@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage"
         android:layout_marginTop="16dp"
-        android:text="Select Property Type"
+        android:text="@string/house_prefs_select_property_type_label"
         android:textStyle="bold"
         android:textSize="20sp" />
 

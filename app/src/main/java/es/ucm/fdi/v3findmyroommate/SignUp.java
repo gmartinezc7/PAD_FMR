@@ -120,13 +120,14 @@ public class SignUp extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     ConfigViewModel.updateSelectedPreference(fullUsername,
-                                            getString(R.string.username_preference_key));
+                                            getString(R.string.username_preference_key), getApplication());
                                     if (task.isSuccessful()) {
                                         Log.d("UserUsername", "User username updated.");
                                     }
                                 }
                             });
                         }
+                        ConfigViewModel cVM = new ConfigViewModel(getApplication());
                         startActivity(intent);
                     }
                     else {
