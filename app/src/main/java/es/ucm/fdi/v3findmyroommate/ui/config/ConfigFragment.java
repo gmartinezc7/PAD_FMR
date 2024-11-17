@@ -27,9 +27,9 @@ public class ConfigFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ConfigViewModel configViewModel = new ViewModelProvider(this,
+        ConfigPreferencesModel ConfigPreferencesModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication()))
-                .get(ConfigViewModel.class);
+                .get(ConfigPreferencesModel.class);
 
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -39,7 +39,7 @@ public class ConfigFragment extends Fragment {
         // Adds preferences fragment here instead of on item click.
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.preferences_frame, new ConfigEditTextPreferencesFragment(configViewModel))
+                .replace(R.id.preferences_frame, new ConfigEditTextPreferencesFragment(ConfigPreferencesModel))
                 .commit();
 
         Button logoutButton = root.findViewById(R.id.log_out_button);

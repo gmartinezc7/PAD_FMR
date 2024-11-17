@@ -97,4 +97,8 @@ public abstract class BaseFragment extends Fragment {
 
     // Método abstracto que cada fragmento hijo deberá implementar para obtener el siguiente fragmento
     protected abstract Fragment getNextFragment();
+
+
+    // Method that's used in some of the fragments, to update the user's information to the database.
+    protected void updateUserInfoInDatabase() {}
 }

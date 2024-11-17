@@ -24,6 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
@@ -57,16 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(MainActivity.this, task -> {
                     if (task.isSuccessful()) {
                         // If the sign in is successful, updates preferences signed-in user's information.
-                        setInitialPreferences();
+                        ConfigPreferencesModel.setInitialPreferences(this.getApplication());
                         openLoginView(); // Goes to the next screen.
-                        Log.d("SignUp", "Sign up successful");
+                        Log.d("SignIn", "Sign in successful");
                     }
                     else {
                         // If the sign in fails, displays a message to the user.
-                        Toast signUpFailedToast = Toast.makeText(MainActivity.this,
-                                R.string.sign_up_failed_toast_text, Toast.LENGTH_SHORT);
-                        signUpFailedToast.show();
-                        Log.w("SignUp", "Sign up failed", task.getException());
+                        Toast signInFailedToast = Toast.makeText(MainActivity.this,
+                                R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
+                        signInFailedToast.show();
+                        Log.w("SignIn", "Sign in failed", task.getException());
                     }
                 });
         });
@@ -93,51 +95,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Loads initial preferences.
-    private void setInitialPreferences() {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-
-            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(getApplication().
-                    getApplicationContext().getString(R.string.database_url));
-            this.databaseUserReference = databaseInstance.getReference("users")
-                    .child(user.getUid());
-
-            this.databaseUserReference.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-
-                    String databaseEmail = user.getEmail();
-                    String databaseUsername = user.getDisplayName();
-                    String databaseAgeRange = snapshot.child("age_range").getValue(String.class);
-                    String databaseGender = snapshot.child("gender").getValue(String.class);
-                    String databaseMaritalStatus = snapshot.child("marital_status").getValue(String.class);
-                    String databaseOccupation = snapshot.child("occupation").getValue(String.class);
-
-                    // Stores the data in SharedPreferences.
-                    SharedPreferences userPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    SharedPreferences.Editor editor = userPreferences.edit();
-                    editor.clear();
-
-                    editor.putString(getString(R.string.email_preference_key), databaseEmail);
-                    editor.putString(getString(R.string.username_preference_key), databaseUsername);
-                    editor.putString(getString(R.string.age_range_preference_key), databaseAgeRange);
-                    editor.putString(getString(R.string.gender_preference_key), databaseGender);
-                    editor.putString(getString(R.string.marital_status_preference_key), databaseMaritalStatus);
-                    editor.putString(getString(R.string.occupation_preference_key), databaseOccupation);
-
-                    editor.apply();
-                }
-                else {
-                    Log.e("Firebase", "Failed to retrieve user data", task.getException());
-                }
-            });
-        }
-        else {
-            Log.e("UserPreferences", "Can't find current user");
-            throw new NullPointerException("User found to be null");
-        }
-    }
 
 }

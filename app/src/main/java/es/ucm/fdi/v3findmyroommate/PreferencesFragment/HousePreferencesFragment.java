@@ -33,6 +33,7 @@ import es.ucm.fdi.v3findmyroommate.Lobby;
 import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.SharedViewModel;
 import es.ucm.fdi.v3findmyroommate.User;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class HousePreferencesFragment extends PropertyTypeFragment {
 
@@ -78,13 +79,11 @@ public class HousePreferencesFragment extends PropertyTypeFragment {
                 String squareMeters = squareMetersInput.getText().toString();
                 sharedViewModel.setSquareMeters(squareMeters);
 
-                // Create an Intent to start the new Activity
-                Intent intent = new Intent(getActivity(), Lobby.class); // Replace with your target activity
-                startActivity(intent); // Launch the Activity
+                updateUserInfoInDatabase();
 
-                // Optionally, if you want to close the current fragment or activity, use:
-                getActivity().finish();
-
+                // Creates an intent to start the new activity.
+                Intent intent = new Intent(getActivity(), Lobby.class);
+                startActivity(intent); // Redirects the user to the app lobby.
             }
         });
 
@@ -94,7 +93,38 @@ public class HousePreferencesFragment extends PropertyTypeFragment {
 
     @Override
     protected Fragment getNextFragment() {
-        return null; // Replace with the actual next fragment
+        return null;    // Returns null since there are no more fragments to edit user's info.
+    }
+
+
+    // Method that updates the user's personal info and its preferences in the database.
+    protected void updateUserInfoInDatabase() {
+        User userObject = sharedViewModel.getUser().getValue(); // Get user object to obtain its info.
+
+        if (userObject != null) {
+            // Get the values for each of the user object's data fields.
+            String propertyType = sharedViewModel.getUser().getValue().getPropertyType();
+            String numberOfRooms = sharedViewModel.getUser().getValue().getRooms();
+            String numberOfBathrooms = sharedViewModel.getUser().getValue().getBathrooms();
+            String orientation = sharedViewModel.getUser().getValue().getOrientation();
+            String squareMeters = sharedViewModel.getUser().getValue().getSquareMeters();
+
+            Activity currentActivity = getActivity();
+            if (currentActivity != null) {
+                // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
+                ConfigPreferencesModel.updateSelectedPreference(propertyType, getString(R.string.property_type_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(numberOfRooms, getString(R.string.num_rooms_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(numberOfBathrooms, getString(R.string.num_bathrooms_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(orientation, getString(R.string.orientation_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(squareMeters, getString(R.string.square_meters_preference_key),
+                        currentActivity.getApplication());
+
+            }
+        }
     }
 
 
