@@ -32,7 +32,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
 
     private String currentAuthenticationEmail;
-    private final ConfigViewModel preferencesViewModel;
+    private final ConfigPreferencesModel preferencesViewModel;
     private EditTextPreference usernamePreference, emailPreference, passwordPreference;
     private ListPreference ageRangePreference, genderPreference, maritalStatusPreference, occupationPreference;
 
@@ -42,8 +42,8 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     private final CharSequence[] occupation_entries = new CharSequence[4];
 
 
-    public ConfigEditTextPreferencesFragment(ConfigViewModel configViewModel) {
-        this.preferencesViewModel = configViewModel;
+    public ConfigEditTextPreferencesFragment(ConfigPreferencesModel ConfigPreferencesModel) {
+        this.preferencesViewModel = ConfigPreferencesModel;
     }
 
     @Override
@@ -200,7 +200,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                                 if (task.isSuccessful()) {
                                     Activity currentActivity = ConfigEditTextPreferencesFragment.this.getActivity();
                                     if (currentActivity != null) {
-                                        ConfigViewModel.updateSelectedPreference(usernameWritten,
+                                        ConfigPreferencesModel.updateSelectedPreference(usernameWritten,
                                             getString(R.string.username_preference_key), currentActivity.getApplication());
                                         Log.d("UserUsername", "User's username successfully updated");
                                     }
@@ -227,7 +227,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 String genderSelected = (String) newGenderValue;
                 Application application = getActivity().getApplication();
                 if (application != null) {
-                    ConfigViewModel.updateSelectedPreference(genderSelected, getString(
+                    ConfigPreferencesModel.updateSelectedPreference(genderSelected, getString(
                             R.string.gender_preference_key), getActivity().getApplication());
                 }
                 return true;
@@ -245,7 +245,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 String ageRangeSelected = (String) newAgeRangeValue;
                 Application application = getActivity().getApplication();
                 if (application != null) {
-                    ConfigViewModel.updateSelectedPreference(ageRangeSelected, getString(
+                    ConfigPreferencesModel.updateSelectedPreference(ageRangeSelected, getString(
                             R.string.age_range_preference_key), getActivity().getApplication());
                 }
                 return true;
@@ -263,7 +263,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 String maritalStatusSelected = (String) newMaritalStatusValue;
                 Application application = getActivity().getApplication();
                 if (application != null) {
-                    ConfigViewModel.updateSelectedPreference(maritalStatusSelected, getString(
+                    ConfigPreferencesModel.updateSelectedPreference(maritalStatusSelected, getString(
                             R.string.marital_status_preference_key), getActivity().getApplication());
                 }
                 return true;
@@ -281,7 +281,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                 String occupationSelected = (String) newOccupationValue;
                 Application application = getActivity().getApplication();
                 if (application != null) {
-                    ConfigViewModel.updateSelectedPreference(occupationSelected, getString(
+                    ConfigPreferencesModel.updateSelectedPreference(occupationSelected, getString(
                             R.string.occupation_preference_key), getActivity().getApplication());
                 }
                 return true;
@@ -315,7 +315,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
             String currentPassword = passwordEditText.getText().toString();
             if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
                     !currentPassword.isEmpty()) {
-                ConfigViewModel.updateProfile(itemWritten,
+                ConfigPreferencesModel.updateProfile(itemWritten,
                         currentPassword, action, getActivity().getApplication());
                 dialog.dismiss(); // Closes the dialog.
             }

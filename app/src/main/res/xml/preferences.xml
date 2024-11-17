@@ -60,4 +60,5 @@
         android:summary="@string/occupation_preference_summary"
         android:dialogTitle="@string/occupation_preference_title"/>
 
+
 </PreferenceScreen>

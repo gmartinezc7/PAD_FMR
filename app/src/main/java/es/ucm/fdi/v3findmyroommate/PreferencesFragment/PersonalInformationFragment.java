@@ -20,7 +20,7 @@ import java.util.List;
 import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.SharedViewModel;
 import es.ucm.fdi.v3findmyroommate.User;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigViewModel;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class PersonalInformationFragment extends BaseFragment {
     private SharedViewModel sharedViewModel;
@@ -71,30 +71,29 @@ public class PersonalInformationFragment extends BaseFragment {
     }
 
 
-    private void updateUserInfoInDatabase() {
+    // Method that updates the user's personal info and its preferences in the database.
+    protected void updateUserInfoInDatabase() {
         User userObject = sharedViewModel.getUser().getValue(); // Get user object to obtain its info.
 
         if (userObject != null) {
             // Get the values for each of the user object's data fields.
             String gender = sharedViewModel.getUser().getValue().getGender();
-            String age_range = sharedViewModel.getUser().getValue().getRangeAge();
-            String marital_status = sharedViewModel.getUser().getValue().getMaritalStatus();
+            String ageRange = sharedViewModel.getUser().getValue().getRangeAge();
+            String maritalStatus = sharedViewModel.getUser().getValue().getMaritalStatus();
             String occupation = sharedViewModel.getUser().getValue().getOccupation();
 
             Activity currentActivity = getActivity();
             if (currentActivity != null) {
-                // Uses ConfigViewModel so that it updates both the shared preferences and the database values.
-                ConfigViewModel.updateSelectedPreference(gender, getString(R.string.gender_preference_key),
+                // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
+                ConfigPreferencesModel.updateSelectedPreference(gender, getString(R.string.gender_preference_key),
                         currentActivity.getApplication());
-                ConfigViewModel.updateSelectedPreference(age_range, getString(R.string.age_range_preference_key),
+                ConfigPreferencesModel.updateSelectedPreference(ageRange, getString(R.string.age_range_preference_key),
                         currentActivity.getApplication());
-                ConfigViewModel.updateSelectedPreference(marital_status, getString(R.string.marital_status_preference_key),
+                ConfigPreferencesModel.updateSelectedPreference(maritalStatus, getString(R.string.marital_status_preference_key),
                         currentActivity.getApplication());
-                ConfigViewModel.updateSelectedPreference(occupation, getString(R.string.occupation_preference_key),
+                ConfigPreferencesModel.updateSelectedPreference(occupation, getString(R.string.occupation_preference_key),
                         currentActivity.getApplication());
             }
-
-
         }
     }
 

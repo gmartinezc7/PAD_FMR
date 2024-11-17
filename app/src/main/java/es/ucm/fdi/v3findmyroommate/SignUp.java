@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import es.ucm.fdi.v3findmyroommate.PreferencesFragment.PreferenceUser;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigViewModel;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class SignUp extends AppCompatActivity {
     private static final String TAG = "SignUp";
@@ -119,7 +119,7 @@ public class SignUp extends AppCompatActivity {
                             user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    ConfigViewModel.updateSelectedPreference(fullUsername,
+                                    ConfigPreferencesModel.updateSelectedPreference(fullUsername,
                                             getString(R.string.username_preference_key), getApplication());
                                     if (task.isSuccessful()) {
                                         Log.d("UserUsername", "User username updated.");
@@ -127,7 +127,7 @@ public class SignUp extends AppCompatActivity {
                                 }
                             });
                         }
-                        ConfigViewModel cVM = new ConfigViewModel(getApplication());
+                        ConfigPreferencesModel cVM = new ConfigPreferencesModel(getApplication());
                         startActivity(intent);
                     }
                     else {
