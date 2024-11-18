@@ -55,7 +55,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     EditText editMetros ;
     EditText editPrecio ;
     EditText editDescripcion ;
-    private Button btnSeleccionarImagen;
+    private Button btnSeleccionarImagen, btnEliminarImagen;
     private Uri previewPhotoUri;
 
     @Override
@@ -76,6 +76,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         btnPrev = findViewById(R.id.btn_prev);
         btnNext = findViewById(R.id.btn_next);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
+        btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
 
             // Llenar los campos con la información del anuncio
              editTitulo = findViewById(R.id.edit_titulo);
@@ -106,6 +107,12 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             // Verifica y solicita permisos
             requestPermissions();
         });
+
+        // Botón para eliminar imagen
+        btnEliminarImagen.setOnClickListener(v -> {
+            eliminarImagenSeleccionada();
+        });
+
 
 
         // Botón de cancelar
@@ -200,10 +207,31 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
             });
 
+
+
     private void agregarImagen(Uri uri) {
         imagenesUri.add(uri);
         imagenActualIndex = imagenesUri.size() - 1;
         actualizarImagen();
+    }
+
+
+
+    private void eliminarImagenSeleccionada(){
+
+        if (imagenesUri != null && !imagenesUri.isEmpty() && imagenActualIndex >= 0) {
+            // Eliminar la imagen actual de la lista
+            imagenesUri.remove(imagenActualIndex);
+
+            // Ajustar el índice actual si es necesario
+            if (imagenActualIndex >= imagenesUri.size()) {
+                imagenActualIndex = imagenesUri.size() - 1; // Mover al último índice disponible
+            }
+
+            // Actualizar la imagen mostrada
+            actualizarImagen();
+        }
+
     }
 
     private File createImageFile() throws IOException {
@@ -217,11 +245,18 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     }
 
 
+
+
     private void actualizarImagen() {
         if (!imagenesUri.isEmpty()) {
             imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        } else {
+            // Si la lista está vacía, restablecer la vista
+            imagenAnuncio.setImageDrawable(null); // Limpia la imagen
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
         }
     }
 

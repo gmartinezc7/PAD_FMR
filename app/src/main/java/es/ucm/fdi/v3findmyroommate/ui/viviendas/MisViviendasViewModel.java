@@ -12,21 +12,28 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//CLASE QUE CONTIENE LA LISTA DE ANUNCIOS "MIS ANUNCIOS"
+/*
+
+TIENE DIFERENTES FUNCIONES QUE PERMITEN EL CORRECTO FUNCIONAMIENTO DE LA LISTA
+ESTA LISTA SERÁ "OBSERVADA" A TRAVÉS DEL RECYCLERVIEW, POR ESO USAREMOS
+MutableLiveData<List<Anuncio>> anuncios PARA LA LISTA DE ANUNCIOS
+
+SIEMPRE QUE REALIZAMOS UN CAMBIO EN LA LISTA, AL FINAL USAMOS  anuncios.setValue(listaActual);
+PARA NOTIFICAR DEL CAMBIO
+ */
 public class MisViviendasViewModel extends ViewModel {
 
     private final MutableLiveData<List<Anuncio>> anuncios;
-    private final List<Integer> availableIds; // Para almacenar IDs eliminados
 
     public MisViviendasViewModel() {
         anuncios = new MutableLiveData<>();
-        availableIds = new ArrayList<>(); // Inicializa la lista de IDs disponibles
-
         List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
     }
 
     public LiveData<List<Anuncio>> getAnuncios() {
-
         return anuncios;
     }
 
@@ -54,16 +61,9 @@ public class MisViviendasViewModel extends ViewModel {
     public void eliminarAnuncio(int position) {
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
-            // Extraer el anuncio que se va a eliminar
-            Anuncio anuncioEliminado = listaActual.get(position);
 
-            // Extraer el ID del anuncio que se va a eliminar
-
-            // Elimina el anuncio
             listaActual.remove(position);
-
-            // Actualiza la lista de anuncios en el MutableLiveData
-            anuncios.setValue(listaActual); // Notifica el cambio
+            anuncios.setValue(listaActual);
         }
     }
 
@@ -73,7 +73,7 @@ public class MisViviendasViewModel extends ViewModel {
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
             Anuncio anuncioActualizado = new Anuncio(data);
             listaActual.set(position, anuncioActualizado);
-            anuncios.setValue(listaActual); // Notifico el cambio
+            anuncios.setValue(listaActual);
         }
     }
 }

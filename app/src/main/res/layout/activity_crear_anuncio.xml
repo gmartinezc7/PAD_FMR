@@ -56,12 +56,32 @@
         android:gravity="top"
         android:scrollbars="vertical" />
 
-    <Button
-        android:id="@+id/btn_seleccionar_imagen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen"
-        android:backgroundTint="#FFFFFF"/>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center"
+         android:layout_marginTop="20dp">
+
+         <Button
+
+             android:id="@+id/btn_seleccionar_imagen"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Añadir Imagen"
+             android:backgroundTint="#FFFFFF"
+             android:layout_marginEnd="16dp" />
+
+
+         <Button
+             android:id="@+id/btn_eliminar_imagen"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Eliminar Imagen"
+             android:backgroundTint="#FFFFFF"
+             android:layout_marginEnd="16dp" />
+
+     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/preview_rect"

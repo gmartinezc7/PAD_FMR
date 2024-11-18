@@ -38,7 +38,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
-   private Button btnGuardar, btnCancelar, btnSeleccionarImagen;
+    private Button btnGuardar, btnCancelar, btnSeleccionarImagen, btnEliminarImagen ;
     private ImageView imagenAnuncio;
 
 
@@ -65,6 +65,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         btnGuardar = findViewById(R.id.btn_guardar_anuncio);
         btnCancelar = findViewById(R.id.btn_cancelar);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
+        btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
 
         btnPrev = findViewById(R.id.btn_prev);
@@ -82,6 +83,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             // Verifica y solicita permisos
             requestPermissions();
         });
+
+        // Botón para eliminar imagen
+        btnEliminarImagen.setOnClickListener(v -> {
+            eliminarImagenSeleccionada();
+        });
+
 
         btnGuardar.setOnClickListener(v -> {
             guardarAnuncio();
@@ -143,10 +150,31 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        } else {
+            // Si la lista está vacía, restablecer la vista
+            imagenAnuncio.setImageDrawable(null); // Limpia la imagen
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
         }
     }
 
 
+    private void eliminarImagenSeleccionada(){
+
+        if (imagenesUri != null && !imagenesUri.isEmpty() && imagenActualIndex >= 0) {
+            // Eliminar la imagen actual de la lista
+            imagenesUri.remove(imagenActualIndex);
+
+            // Ajustar el índice actual si es necesario
+            if (imagenActualIndex >= imagenesUri.size()) {
+                imagenActualIndex = imagenesUri.size() - 1; // Mover al último índice disponible
+            }
+
+            // Actualizar la imagen mostrada
+            actualizarImagen();
+        }
+
+    }
 
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

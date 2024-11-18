@@ -38,10 +38,10 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         this.viewModel = viewModel;
     }
 
-    // Método para actualizar la lista de anuncios
+    // METODO PARA ACTUALIZAR LA LISTA DE ANUNCIOS
     public void setAnuncios(List<Anuncio> nuevosAnuncios) {
         this.anuncios = nuevosAnuncios;
-        notifyDataSetChanged(); // Notifica al RecyclerView que los datos han cambiado
+        notifyDataSetChanged(); // NOTIFICAMOS AL RECYCLERVIEW DE QUE LOS DATOS HAN CAMBIADO
     }
 
     @NonNull
@@ -51,21 +51,28 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
         return new AnuncioViewHolder(view);
+
     }
 
+    /*
+    CONFIGURAMOS TODOS LOS "DETALLES" DEL ANUNCIO EN EL RECYCLERVIEW,
+    COMO POR EJEMPLO LAS FLECHAS HACIA LOS LADOS PARA DESPLAZAR LA IMAGEN,
+    LAS ETIQUETAS "CHIP" CON LA INFORMACIÓN, EL DIÁLOGO DE ELIMINADO AL DEJAR PULSADO,
+    ETC.
 
+     */
     @Override
     public void onBindViewHolder(@NonNull AnuncioViewHolder holder, int position) {
         Anuncio anuncio = anuncios.get(position);
 
-        // Configurar detalles del anuncio
+        // CONFIGURAR LA INFORMACIÓN
         setAnuncioDetails(holder, anuncio);
 
-        // Configurar la imagen y la navegación entre imágenes
+        // CONFIGURAR LA IMAGEN (CLICK) Y LA NAVEGACIÓN ENTRE ELLAS
         setImageNavigation(holder, anuncio, position);
 
 
-        // Configurar el clic largo para eliminar
+        // CLICK LARGO PARA ELIMIANR
         setLongClickListener(holder, position);
 
     }
@@ -87,14 +94,14 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
             holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
 
-            // Navegar hacia la imagen anterior
+            // NAVEGAR A LA IMAGEN ANTERIOR
             holder.btnPrev.setOnClickListener(v -> navigateImage(holder, -1));
 
-            // Navegar hacia la imagen siguiente
+            // NAVEGAR A LA SIGUIENTE
             holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
 
-            // Clic en la imagen para ver detalles
-            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(holder, anuncio, position));
+            // CLICK EN LA IMAGEN PARA VER LOS DETALLES
+            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(position));
         }
     }
 
@@ -109,9 +116,13 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     }
 
 
-    private void showAnuncioDetail(AnuncioViewHolder holder, Anuncio anuncio, int position) {
 
 
+    //IMPORTANTE !!!!!
+    private void showAnuncioDetail(int position) {
+
+       // (LLAMA AL FRAGMENT PARA DESPUÉS PODER MANEJAR LOS POSIBLES CAMBIOS EN LA LISTA
+        // ( "EDITAR" DENTRO DE "ANUNCIODETALLE"))
         this.fragment.lanzarVerAnuncio(position);
 
 
@@ -125,7 +136,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
                     .setTitle("Eliminar anuncio")
                     .setMessage("¿Estás seguro de que deseas eliminar este anuncio?")
                     .setPositiveButton("Eliminar", (dialog, which) -> {
-                        viewModel.eliminarAnuncio(position);
+                        viewModel.eliminarAnuncio(position); //IMPORTANTE LA LLAMADA SIEMPRE A VIEWMODEL PARA MANEJAR LA LISTA
                         Toast.makeText(holder.itemView.getContext(), "Anuncio eliminado", Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
@@ -136,14 +147,15 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
 
 
+
     @Override
     public int getItemCount() {
-        return anuncios.size(); // Devuelve la cantidad de anuncios
+        return anuncios.size(); // DEVUELVE LA CANTIDAD DE ANUNCIOS
     }
 
-    // ViewHolder para manejar la vista de cada item
-    static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
+    // VIEWHOLDER PARA MANEJAR LA VISTA DE CADA ITEM
+    static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
 
         Chip chipTitulo;
@@ -160,7 +172,7 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
         public AnuncioViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Encuentra cada Chip por su ID
+            // BUSCAMOS CADA ELEMENTO POR SU ID
              chipTitulo = itemView.findViewById(R.id.chipTitulo);
              chipUbicacion = itemView.findViewById(R.id.chipUbicacion);
              chipMetros = itemView.findViewById(R.id.chipMetros);

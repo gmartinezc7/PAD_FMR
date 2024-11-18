@@ -23,6 +23,18 @@ import java.util.ArrayList;
 import es.ucm.fdi.v3findmyroommate.R;
 
 
+//ESTE FRAGMENT SIRVE COMO "CONECTOR" DE TODA LA PARTE DE "MISVIVIENDAS".
+/*
+SE VA A ENCARGAR DE MANEJAR DIRECTAMENTE PARTE DE LA LISTA DE ANUNCIOS CONTENIDA EN
+EL VIEW MODEL "MisViviendasViewModel", DE CREAR EL ADAPTER (RECYCLERVIEW) PRINCIPAL, EL CUAL
+CONTIENE TODA LA LISTA DE "MIS ANUNCIOS".
+
+ES MUY IMPORTANTE EL PAPEL QUE TIENE ESTE FRAGMENT A LA HORA DE MANEJAR TODOS LOS DATOS,
+TODAS LAS MODIFICACIONES REALIZADAS SOBRE ALGÚN ANUNCIO, LAS CUALES AFECTAN DIRECTAMENTE A LA LISTA DE ANUNCIOS,
+DEBEN PASAR POR AQUÍ, ES POR ESO QUE RECIBE VARIOS RESULTADOS DE ACTIVIDADES QUE MANEJAN CAMBIOS EN LOS ANUNCIOS
+(crearAnuncioLauncher Y verAnuncioLauncher), verAnuncioLauncher SE USA YA QUE DEVUELVE LOS CAMBIOS DE EDITAR UN
+ANUNCIO, ACTIVIDAD QUE SE LANZA DESDE verAnuncio (AnuncioDetalleActivity).
+ */
 public class MisViviendasFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -60,7 +72,7 @@ public class MisViviendasFragment extends Fragment {
         });
 
 
-        // Inicializar el ActivityResultLauncher
+        //INICIAMOS LOS RESULT LAUNCHERS
         crearAnuncioLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -71,8 +83,6 @@ public class MisViviendasFragment extends Fragment {
                 }
         );
 
-
-        // Inicializar el ActivityResultLauncher
         verAnuncioLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -84,7 +94,7 @@ public class MisViviendasFragment extends Fragment {
         );
 
 
-        // Botón de crear anuncio
+        // TAMBIÉN CONTIENE EL BOTÓN PRINCIPAL DE CREAR ANUNCIO
         btnCrearAnuncio = view.findViewById(R.id.btn_crear_anuncio);
         btnCrearAnuncio.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CrearAnuncioActivity.class);
@@ -97,7 +107,13 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
+   //FUNCIÓN LLAMADA DESDE EL ADAPTER, PARA PERMITIRNOS LANZAR verAnuncioLauncher DESDE AQUÍ Y ASÍ
+    //PODER "RECOGER" LOS RESULTADOS
 
+    /*
+    IMPORTANTE, EN ESTA FUNCIÓN OBTENDREMOS EL ANUNCIO DE LA LISTA DEL ViewModel
+    Y "ENVIAREMOS" LOS DATOS MEDIANTE EL LAUNCH EN EL INTENT, EXTRAYÉNDOLOS ANTES DEL ANUNCIO
+     */
     public void lanzarVerAnuncio(int position){
 
         this.posicionCambioActual = position;

@@ -24,6 +24,22 @@ import java.util.List;
 import es.ucm.fdi.v3findmyroommate.R;
 import androidx.lifecycle.ViewModelProvider;
 
+
+/*
+ACTIVIDAD UTILIZADA PARA MOSTRAR EN DETALLE LA INFORMACIÓN DEL ANUNCIO.
+NOS PERMITE VER INFORMACIÓN EXTRA QUE DESDE LA LISTA DE ANUNCIOS NO PODEMOS VER,
+COMO POR EJEMPLO LA DESCRIPCIÓN DEL ANUNCIO.
+
+TAMBIÉN TENEMOS ACCESO A "EditarAnuncioActivity" A TRAVÉS DEL BOTÓN "btnEditar"
+
+LA POSICIÓN DE ESTE BOTÓN EN ESTA VIEW ES MUY IMPORTANTE, YA QUE EXPLICA GRAN PARTE DEL FLUJO DE INFORMACIÓN
+QUE HAY EN ESTE APARTADO DE LA APLICACIÓN
+
+ESTE ES EL MOTIVO POR EL QUE SE CREA UN editarAnuncioLauncher, PARA PODER RECIBIR LOS DATOS RESULTANTES DE
+EDITAR UN ANUNCIO Y A SU VEZ, PODER PASARLOS DE VUELTA AL FRAGMENT CUANDO SE CIERRE ESTA ACTIVITY
+(RECORDAR EL "verAnuncioLauncher" DECLARADO EN "MisViviendasFragment"), PARA PODER RELAIZAR LOS CAMBIOS
+SOBRE LA LISTA DE ANUNCIOS DEL VIEWMODEL QUE TIENE EL FRAGMENT ("MisViviendasViewModel" DECLARADO EN "MisViviendasFragment").
+ */
 public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
@@ -56,7 +72,6 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncio_detalle);
 
-        // Inicializar vistas
         tituloText = findViewById(R.id.titulo_text);
         ubicacionText = findViewById(R.id.ubicacion_text);
         metrosText = findViewById(R.id.metros_text);

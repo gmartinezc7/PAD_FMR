@@ -6,6 +6,12 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//CLASE QUE NOS PERMITE MANEJAR ANUNCIOS, NOS GUSTARÍA QUE IMPLEMENTASE
+// "PARCELABLE" PARA PODER PASARLA MEDIANTE INTENTS, PERO TRAS MUCHAS PRUEBAS
+// Y ERROES QUE PERSISTÍAN, HEMOS DECIDIDO DEJARLA COMO UNA CLASE NORMAL, ES POR ESO QUE
+//EN OTRAS PARTES DEL CÓDIGO HEMOS TENIDO QUE TRANSFERIR LOS DATOS ATRIBUTO POR ATRIBUTO,
+//PERO COMO SON SOLO 6, EL PROBLEMA NO HA SIDO MUY GRANDE.
 public class Anuncio {
 
     private String titulo;
@@ -30,7 +36,6 @@ public class Anuncio {
 
 
 
-
     public  List<Uri> getImagenesUri() {
         return imagenesUri;
     }
@@ -51,31 +56,6 @@ public class Anuncio {
     }
 
 
-    public void setTitulo(String titulo){
-
-        this.titulo = titulo;
-
-    }
-
-    public void setUbicacion(String ubicacion){
-
-        this.ubicacion = ubicacion;
-
-    }
-
-    public void setMetros(String metros){
-
-        this.metros = metros;
-
-    }
-
-    public void setPrecio(String precio){
-        this.precio = precio;
-    }
-
-    public void setDescripcion(String descripcion){
-      this.descripcion = descripcion;
-    }
 
 
 }
