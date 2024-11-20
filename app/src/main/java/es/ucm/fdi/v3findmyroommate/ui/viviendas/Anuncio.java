@@ -53,7 +53,7 @@ public class Anuncio {
 
         if(this.categoria.equalsIgnoreCase("Casa")){
 
-            this.tipoCasa = data.getStringExtra("titulo");
+            this.tipoCasa = data.getStringExtra("tipoCasa");
             this.habitaciones = data.getStringExtra("habitaciones");
             this.banos = data.getStringExtra("banos");
             this.exteriorInterior = data.getStringExtra("exteriorInterior");

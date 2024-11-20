@@ -156,7 +156,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             opcionesHabitacion.setVisibility(View.GONE);
 
 
-            this.tipoCasa = intent.getStringExtra("titulo");
+            this.tipoCasa = intent.getStringExtra("tipoCasa");
             this.habitaciones = intent.getStringExtra("habitaciones");
             this.banos = intent.getStringExtra("banos");
             this.exteriorInterior = intent.getStringExtra("exteriorInterior");
