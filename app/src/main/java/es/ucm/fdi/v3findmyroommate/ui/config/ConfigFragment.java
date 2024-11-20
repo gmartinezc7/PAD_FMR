@@ -71,104 +71,10 @@ public class ConfigFragment extends Fragment {
 
         Button mofifyPreferencesButton = root.findViewById(R.id.modify_preferences_button);
         mofifyPreferencesButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ConfigFragment. this,PreferenceUser.class);
-            //Intent intent = new Intent(getContext(), PropertyTypeFragment.class);
-            //Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.preferences_fragment);
+            Intent intent = new Intent(this.getContext(), PreferenceUser.class);
+            intent.putExtra(getString(R.string.config_fragment_key), getString(R.string.property_type_fragment_key));
+            startActivity(intent);
 
-            //NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            //NavigationUI.setupActionBarWithNavController(this.getActivity(), navController);
-            //navController.navigate(R.id.propertyTypeFragment);
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.preferences_fragment, new PropertyTypeFragment())
-                    .commit();
-
-
-
-            /*
-            Fragment newFragment = new PropertyTypeFragment(); // Replace with your target fragment
-            //FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-
-            Fragment currentFragment = requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (currentFragment != null) {
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.remove(currentFragment);
-                transaction.commitNow(); // Commit immediately to ensure cleanup
-                transaction.show(newFragment);
-                transaction.commitNow(); // Commit immediately to ensure cleanup
-            }
-
-             */
-            /*
-            transaction.replace(R.id.fragment_container, newFragment);
-            transaction.addToBackStack(null); // Optional: Add to back stack for navigation
-            transaction.commit();
-
-             */
-
-
-            if (getActivity() != null) {
-                    /*
-
-                FragmentActivity activity = getActivity(); // Obtén la actividad actual
-                if (activity != null) {
-                    FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-
-                    // Reemplaza el fragmento padre (ConfigFragment) por PropertyTypeFragment
-                    transaction.replace(R.id.fragment_container, new PropertyTypeFragment());
-
-                    // Opcional: Añadir a la pila de retroceso
-                    transaction.addToBackStack(null);
-
-                    // Finaliza la transacción
-                    transaction.commit();
-                    Log.d("ModifyPreferences", "Parent fragment replaced successfully");
-                }
-                if (isAdded()) {
-                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-                    Fragment currentFragment = getChildFragmentManager().findFragmentById(R.id.preferences_frame);
-
-                    if (currentFragment != null) {
-                        transaction.remove(currentFragment);
-                    }
-
-                    transaction.replace(R.id.preferences_frame, new PropertyTypeFragment());
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-
-                     */
-
-                /*
-
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.preferences_fragment);
-                if (currentFragment != null) {
-                    transaction.detach(currentFragment);
-                }
-                transaction.replace(R.id.preferences_fragment, new PropertyTypeFragment());
-                transaction.addToBackStack(null);
-                transaction.setReorderingAllowed(true);
-                transaction.commit();
-                 */
-
-            }
-
-
-
-
-            //Intent intent = new Intent(getContext().getApplicationContext(), Lobby.class);
-            //startActivity(intent);
-            /*
-            FragmentActivity currentActivity = getActivity();
-            if (currentActivity != null) {
-                //currentActivity.finish();
-                Log.d("ModifyPreferences", "Successfully initialized the modification fragment");
-            }
-            else throw new NullPointerException("Error loading the preference's modification fragment");
-
-             */
         });
 
         return root;
