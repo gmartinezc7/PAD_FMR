@@ -9,16 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private Context context;
-    private List<Message> messageList;
+    private ArrayList<Message> messageList;
 
-    public MessageAdapter(Context context, List<Message> messageList) {
+    public MessageAdapter(Context context, ArrayList<Message> messageList) {
         this.context = context;
         this.messageList = messageList;
     }
@@ -26,15 +29,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.message_item, parent, false);
-        return new MessageViewHolder(view);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.message_item, parent, false);
+        return new MessageViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messageList.get(position);
-        holder.senderTextView.setText(message.getSender());
-        holder.messageTextView.setText(message.getText());
+        //TODO cuando se cambie al ver solo tus chat y no todos cambiarlo
+        //Remitente
+        holder.messageSender.setText(String.valueOf(message.getSenderId()));
+        //Texto
+        holder.messageText.setText(message.getText());
+        //Fecha
+        String formattedDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
+        holder.messageTimestamp.setText(formattedDate);
     }
 
     @Override
@@ -43,13 +52,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
-
-        TextView senderTextView, messageTextView;
+        TextView messageSender, messageText, messageTimestamp;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            senderTextView = itemView.findViewById(R.id.messageSender);
-            messageTextView = itemView.findViewById(R.id.messageText);
+            messageSender = itemView.findViewById(R.id.messageSender);
+            messageText = itemView.findViewById(R.id.messageText);
+            messageTimestamp = itemView.findViewById(R.id.messageTimestamp);
         }
     }
 }

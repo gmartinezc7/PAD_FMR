@@ -1,24 +1,38 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
+import java.util.Map;
+
 public class Message {
-    private String sender;
+    private String messageId;
+    private String senderId;
     private String text;
     private long timestamp;
+    private Map<String, Object> participantes;
 
     public Message() {}
 
-    public Message(String sender, String text, long timestamp) {
-        this.sender = sender;
+    public Message(String messageId, String senderId, String text, long timestamp) {
+        this.messageId = messageId;
+        this.senderId = senderId;
         this.text = text;
         this.timestamp = timestamp;
+        this.participantes = participantes;
     }
 
-    public String getSender() {
-        return sender;
+    public String getMessageId() {
+        return messageId;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
     public String getText() {
@@ -35,5 +49,13 @@ public class Message {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Map<String, Object> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipantes(Map<String, Object> participantes) {
+        this.participantes = participantes;
     }
 }
