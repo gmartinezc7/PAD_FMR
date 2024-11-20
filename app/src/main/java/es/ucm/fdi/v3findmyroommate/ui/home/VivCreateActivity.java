@@ -1,4 +1,4 @@
-package es.ucm.fdi.v3findmyroommate;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.os.Bundle;
 import android.content.Intent;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class VivCreateActivity extends AppCompatActivity {
 

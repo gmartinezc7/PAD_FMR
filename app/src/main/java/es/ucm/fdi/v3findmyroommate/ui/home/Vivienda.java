@@ -1,4 +1,4 @@
-package es.ucm.fdi.v3findmyroommate;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import java.io.Serializable;
 
@@ -10,6 +10,8 @@ public class Vivienda implements Serializable {
     private String description;
     private String address;
 
+
+    public Vivienda (){} // constructor que necesita Firebase
     public Vivienda (String name, double price, String description, String address){
         this.id = "00";
         this.name = name;

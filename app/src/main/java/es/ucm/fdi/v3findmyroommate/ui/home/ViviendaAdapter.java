@@ -1,4 +1,4 @@
-package es.ucm.fdi.v3findmyroommate;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {

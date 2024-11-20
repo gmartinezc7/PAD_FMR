@@ -28,7 +28,7 @@
             android:label="@string/title_activity_lobby" />
         <activity
             android:exported="false"
-            android:name=".VivCreateActivity" />
+            android:name=".ui.home.VivCreateActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
