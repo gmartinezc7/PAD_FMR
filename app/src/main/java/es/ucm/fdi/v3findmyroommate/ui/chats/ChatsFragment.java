@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigEditTextPreferencesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +49,21 @@ public class ChatsFragment extends Fragment {
                 bundle.putString("chatId", chat.getChatId());
                 chatFragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, chatFragment)
+                // Ocultar RecyclerView y mostrar el contenedor del fragmento
+                recyclerView.setVisibility(View.GONE);
+                View container = getView().findViewById(R.id.chatFragmentContainer);
+                if (container != null) {
+                    container.setVisibility(View.VISIBLE);
+                }
+
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.chatFragmentContainer, chatFragment)
                         .addToBackStack(null)
                         .commit();
             }
         });
+
         recyclerView.setAdapter(chatAdapter);
 
         chatRef = FirebaseDatabase.getInstance().getReference("chats");

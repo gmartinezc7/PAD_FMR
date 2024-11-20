@@ -57,7 +57,12 @@ public class ChatFragment extends Fragment {
         if (chatId != null) {
             chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
             loadMessages();
+        }else{
+            Toast.makeText(getContext(), "No se pudo cargar el chat", Toast.LENGTH_SHORT).show();
+            getParentFragmentManager().popBackStack();
+            return root;
         }
+
 
         sendMessageButton.setOnClickListener(v -> sendMessage());
 
