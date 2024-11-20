@@ -2,14 +2,10 @@ package es.ucm.fdi.v3findmyroommate.PreferencesFragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +19,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.SharedViewModel;
@@ -42,8 +37,8 @@ public class PropertyTypeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.property_type_fragment, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
         // Recuperar nuestros datos de user
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
@@ -51,8 +46,6 @@ public class PropertyTypeFragment extends BaseFragment {
 
 
         maxBudgetTextInputLayout = view.findViewById(R.id.maxBudgetTextInputLayout);
-        maxBudgetEditText = view.findViewById(R.id.maxBudgetInput);
-
         maxBudgetEditText = view.findViewById(R.id.maxBudgetInput);
 
         continueButton = view.findViewById(R.id.continueButton);

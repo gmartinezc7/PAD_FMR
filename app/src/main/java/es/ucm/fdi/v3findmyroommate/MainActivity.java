@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
 import com.google.firebase.FirebaseApp;
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -59,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // If the sign in is successful, updates preferences signed-in user's information.
                         ConfigPreferencesModel.setInitialPreferences(this.getApplication());
+//                        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                        //NavigationUI.setupActionBarWithNavController(this, navController);
                         openLoginView(); // Goes to the next screen.
                         Log.d("SignIn", "Sign in successful");
                     }
@@ -79,13 +86,22 @@ public class MainActivity extends AppCompatActivity {
     public void openLoginView(){
         Intent intent = new Intent(MainActivity.this, Lobby.class);
         startActivity(intent);
-
     }
+
+
     public void openSignUPView(){
         Intent intent = new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
-
     }
+
+/*
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+ */
 
 
 }

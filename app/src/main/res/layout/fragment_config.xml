@@ -9,11 +9,11 @@
 
 
     <TextView
-        android:id="@+id/titulo_configuracion"
+        android:id="@+id/configuration_title"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
-        android:text="Ajustes"
+        android:text="@string/settings_text"
         android:textSize="32dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,19 +30,38 @@
         app:layout_constraintBottom_toTopOf="@+id/preferences_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/titulo_configuracion"
+        app:layout_constraintStart_toEndOf="@+id/configuration_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <FrameLayout
         android:id="@+id/preferences_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titulo_configuracion">
-
+        app:layout_constraintTop_toBottomOf="@+id/configuration_title">
     </FrameLayout>
+
+    <Button
+        android:id="@+id/modify_preferences_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modificar tus preferencias"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/preferences_frame" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/configuration_title"
+        app:layout_constraintBottom_toTopOf="@+id/modify_preferences_button" />
 
 
 
