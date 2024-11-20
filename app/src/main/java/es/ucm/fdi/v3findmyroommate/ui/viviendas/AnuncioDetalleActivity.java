@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -63,6 +64,31 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private String precio;
     private String descripcion;
 
+    //TAGS
+    private String categoria;
+    private TextView categoriaText;
+
+    //Para la casa:
+    private String tipoCasa;
+    private String habitaciones;
+    private String banos;
+    private String exteriorInterior;
+    private TextView tipoCasaText;
+    private TextView numHabitacionesText;
+    private TextView numBanosText;
+    private TextView orientacionText;
+
+    //Para la habitación:
+    private String companeros;
+    private String genero;
+    private String tipoBano;
+    private TextView numCompanerosText;
+    private TextView generoHabitacionesText;
+    private TextView orientacionHabitacionText;
+    private TextView tipoBanoText;
+
+    LinearLayout opcionesCasa;
+    LinearLayout opcionesHabitacion;
 
     private ActivityResultLauncher<Intent> editarAnuncioLauncher;
 
@@ -86,6 +112,25 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         btnPrev = findViewById(R.id.btn_prev);
         btnNext = findViewById(R.id.btn_next);
 
+
+        opcionesCasa = findViewById(R.id.opciones_casa);
+        opcionesHabitacion = findViewById(R.id.opciones_habitacion);
+
+        categoriaText = findViewById(R.id.categoria_text);
+
+        tipoCasaText = findViewById(R.id.tipo_casa_text);
+        numHabitacionesText = findViewById(R.id.num_habitaciones_text);
+        numBanosText = findViewById(R.id.num_banos_text);
+        orientacionText = findViewById(R.id.orientacion_text);
+
+        numCompanerosText = findViewById(R.id.num_companeros_text);
+        generoHabitacionesText = findViewById(R.id.genero_habitantes_text);
+        orientacionHabitacionText = findViewById(R.id.orientacion_habitacion_text);
+        tipoBanoText = findViewById(R.id.tipo_bano_text);
+
+
+
+
         // Obtener el anuncio del intent
         Intent intent = getIntent();
         this.titulo = intent.getStringExtra("titulo");
@@ -95,12 +140,49 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         this.descripcion = intent.getStringExtra("descripcion");
         this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
 
+        //TAGS
+        this.categoria = intent.getStringExtra("categoria");
+        categoriaText.setText(this.categoria);
+
+        if(this.categoria.equalsIgnoreCase("Casa")){
+
+            opcionesCasa.setVisibility(View.VISIBLE);
+            opcionesHabitacion.setVisibility(View.GONE);
+
+            this.tipoCasa = intent.getStringExtra("tipoCasa");
+            this.habitaciones = intent.getStringExtra("habitaciones");
+            this.banos = intent.getStringExtra("banos");
+            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
+
+            tipoCasaText.setText(tipoCasa);
+            numHabitacionesText.setText( habitaciones);
+            numBanosText.setText( banos);
+            orientacionText.setText( exteriorInterior);
+
+        }
+        else if(categoria.equalsIgnoreCase("Habitación")){
+
+            opcionesCasa.setVisibility(View.GONE);
+            opcionesHabitacion.setVisibility(View.VISIBLE);
+
+            this.companeros = intent.getStringExtra("companeros");
+            this.genero = intent.getStringExtra("genero");
+            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
+            this.tipoBano = intent.getStringExtra("tipoBano");
+
+            numCompanerosText.setText(companeros);
+            generoHabitacionesText.setText( genero);
+            orientacionHabitacionText.setText( exteriorInterior);
+            tipoBanoText.setText( tipoBano);
+
+        }
+
 
         tituloText.setText(titulo);
-        ubicacionText.setText("Ubicación " + ubicacion);
-        metrosText.setText("Metros Cuadrados " + metros);
-        precioText.setText( "Precio " +precio);
-        descripcionText.setText("Descripción:\n" + descripcion);
+        ubicacionText.setText( ubicacion);
+        metrosText.setText( metros);
+        precioText.setText( precio);
+        descripcionText.setText(descripcion);
 
 
         iniciarNavImagenes();
@@ -123,10 +205,50 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
                         tituloText.setText(titulo);
-                        ubicacionText.setText("Ubicación " + ubicacion);
-                        metrosText.setText("Metros Cuadrados " + metros);
-                        precioText.setText( "Precio " +precio);
-                        descripcionText.setText("Descripción:\n" + descripcion);
+                        ubicacionText.setText( ubicacion);
+                        metrosText.setText( metros);
+                        precioText.setText( precio);
+                        descripcionText.setText( descripcion);
+
+
+
+                        //TAGS
+                        this.categoria = data.getStringExtra("categoria");
+                        categoriaText.setText(this.categoria);
+
+                        if(this.categoria.equalsIgnoreCase("Casa")){
+
+                            opcionesCasa.setVisibility(View.VISIBLE);
+                            opcionesHabitacion.setVisibility(View.GONE);
+
+                            this.tipoCasa = data.getStringExtra("tipoCasa");
+                            this.habitaciones = data.getStringExtra("habitaciones");
+                            this.banos = data.getStringExtra("banos");
+                            this.exteriorInterior = data.getStringExtra("exteriorInterior");
+
+                            tipoCasaText.setText(tipoCasa);
+                            numHabitacionesText.setText( habitaciones);
+                            numBanosText.setText( banos);
+                            orientacionText.setText( exteriorInterior);
+
+                        }
+                        else if(categoria.equalsIgnoreCase("Habitación")){
+
+                            opcionesCasa.setVisibility(View.GONE);
+                            opcionesHabitacion.setVisibility(View.VISIBLE);
+
+                            this.companeros = data.getStringExtra("companeros");
+                            this.genero = data.getStringExtra("genero");
+                            this.exteriorInterior = data.getStringExtra("exteriorInterior");
+                            this.tipoBano = data.getStringExtra("tipoBano");
+
+                            numCompanerosText.setText(companeros);
+                            generoHabitacionesText.setText( genero);
+                            orientacionHabitacionText.setText( exteriorInterior);
+                            tipoBanoText.setText( tipoBano);
+
+                        }
+
                     }
                 }
         );
@@ -146,6 +268,26 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         resultIntent.putExtra("descripcion", this.descripcion);
         resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
 
+
+        //TAGS
+        resultIntent.putExtra("categoria", categoria);
+
+        if (categoria.equalsIgnoreCase("Casa")) {
+
+            resultIntent.putExtra("tipoCasa", tipoCasa);
+            resultIntent.putExtra("habitaciones", habitaciones);
+            resultIntent.putExtra("banos", banos);
+            resultIntent.putExtra("exteriorInterior", exteriorInterior);
+        } else if (categoria.equalsIgnoreCase("Habitación")) {
+
+            resultIntent.putExtra("companeros", companeros);
+            resultIntent.putExtra("genero", genero);
+            resultIntent.putExtra("exteriorInterior", exteriorInterior);
+            resultIntent.putExtra("tipoBano", tipoBano);
+        }
+
+
+
         setResult(RESULT_OK, resultIntent);
         finish();
 
@@ -163,6 +305,25 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         intent.putExtra("precio", precio);
         intent.putExtra("descripcion", descripcion);
         intent.putParcelableArrayListExtra("imagenesUri",  new ArrayList<>(imagenesUri));
+
+
+        //TAGS
+        intent.putExtra("categoria", categoria);
+
+        if (categoria.equalsIgnoreCase("Casa")) {
+
+            intent.putExtra("tipoCasa", tipoCasa);
+            intent.putExtra("habitaciones", habitaciones);
+            intent.putExtra("banos", banos);
+            intent.putExtra("exteriorInterior", exteriorInterior);
+        } else if (categoria.equalsIgnoreCase("Habitación")) {
+
+            intent.putExtra("companeros", companeros);
+            intent.putExtra("genero", genero);
+            intent.putExtra("exteriorInterior", exteriorInterior);
+            intent.putExtra("tipoBano", tipoBano);
+        }
+
 
         editarAnuncioLauncher.launch(intent); // Usar el nuevo launcher
     }

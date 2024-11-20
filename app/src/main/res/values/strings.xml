@@ -22,4 +22,45 @@
     <string name="personal_information_message">Let’s know more about yourself</string>
     <string name="continue_">Continue</string>
     <string name="property_type_message">What are you looking for</string>
+
+
+
+    <string-array name="categorias_array">
+        <item>Casa</item>
+        <item>Habitación</item>
+    </string-array>
+    <string-array name="tipo_casa_array">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+    <string-array name="habitaciones_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="banos_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="companeros_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="genero_array">
+        <item>Solo Hombres</item>
+        <item>Solo Mujeres</item>
+        <item>Mixto</item>
+    </string-array>
+    <string-array name="exterior_interior_array">
+        <item>Exterior</item>
+        <item>Interior</item>
+    </string-array>
+    <string-array name="tipo_bano_array">
+        <item>Privado</item>
+        <item>Compartido</item>
+    </string-array>
 </resources>

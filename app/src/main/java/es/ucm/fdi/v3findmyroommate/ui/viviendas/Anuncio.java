@@ -21,6 +21,22 @@ public class Anuncio {
     private String descripcion;
     private List<Uri> imagenesUri = new ArrayList<>();
 
+
+    //TAGS
+    private String categoria;
+
+    //Para la casa:
+    private String tipoCasa;
+    private String habitaciones;
+    private String banos;
+    private String exteriorInterior;
+
+    //Para la habitación:
+    private String companeros;
+    private String genero;
+    private String tipoBano;
+
+
     public Anuncio( Intent data) {
 
 
@@ -31,6 +47,26 @@ public class Anuncio {
         this.descripcion = data.getStringExtra("descripcion");
         this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
 
+
+        //TAGS
+        this.categoria = data.getStringExtra("categoria");
+
+        if(this.categoria.equalsIgnoreCase("Casa")){
+
+            this.tipoCasa = data.getStringExtra("titulo");
+            this.habitaciones = data.getStringExtra("habitaciones");
+            this.banos = data.getStringExtra("banos");
+            this.exteriorInterior = data.getStringExtra("exteriorInterior");
+
+        }
+        else if(categoria.equalsIgnoreCase("Habitación")){
+
+            this.companeros = data.getStringExtra("companeros");
+            this.genero = data.getStringExtra("genero");
+            this.exteriorInterior = data.getStringExtra("exteriorInterior");
+            this.tipoBano = data.getStringExtra("tipoBano");
+
+        }
     }
 
 
@@ -56,6 +92,31 @@ public class Anuncio {
     }
 
 
+    public String getCategoria() {
+        return categoria;
+    }
 
+    public String getTipoCasa() {
+        return tipoCasa;
+    }
+    public String getHabitaciones() {
+        return habitaciones;
+    }
+    public String getBanos() {
+        return banos;
+    }
+    public String getExteriorInterior() {
+        return exteriorInterior;
+    }
+
+    public String getCompaneros() {
+        return companeros;
+    }
+    public String getGenero() {
+        return genero;
+    }
+    public String getTipoBano() {
+        return tipoBano;
+    }
 
 }

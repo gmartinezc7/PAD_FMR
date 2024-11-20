@@ -10,7 +10,7 @@
     android:padding="16dp">
 
      <TextView
-         android:id="@+id/titulo_editar"
+         android:id="@+id/titulo_crear"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:text="Crear Anuncio"
@@ -55,6 +55,7 @@
         android:minLines="5"
         android:gravity="top"
         android:scrollbars="vertical" />
+
 
      <LinearLayout
          android:layout_width="match_parent"
@@ -119,6 +120,189 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true" />
     </FrameLayout>
+
+
+
+
+     //---------------------------------------------------------------------------------------------------------
+
+     <!-- Espacio adicional antes del título -->
+     <View
+         android:layout_width="match_parent"
+         android:layout_height="30dp" />
+
+     <!-- Título centrado -->
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente"
+         android:textAlignment="center"
+         android:textSize="18sp"
+         android:textStyle="bold"
+         android:layout_marginBottom="16dp" />
+
+     <!-- Spinner Categoría -->
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Categoría"
+         android:textSize="12sp"
+         android:layout_marginBottom="5dp" />
+
+     <Spinner
+         android:id="@+id/spinner_categoria"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:entries="@array/categorias_array"
+         android:layout_marginBottom="30dp" />
+
+     <!-- Opciones para Casa -->
+     <LinearLayout
+         android:id="@+id/opciones_casa"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:visibility="gone">
+
+         <!-- Tipo de Casa -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Tipo de Casa"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_tipo_casa"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/tipo_casa_array"
+             android:layout_marginBottom="30dp" />
+
+         <!-- Habitaciones -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Número de Habitaciones"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_habitaciones"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/habitaciones_array"
+             android:layout_marginBottom="30dp" />
+
+
+         <!-- Baños -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Número de Baños"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_banos"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/banos_array"
+             android:layout_marginBottom="30dp" />
+
+         <!-- Interior/Exterior -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Orientación (Interior/Exterior)"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_exterior_interior_casa"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/exterior_interior_array"
+             android:layout_marginBottom="30dp" />
+
+     </LinearLayout>
+
+
+
+     <!-- Opciones para Habitación -->
+     <LinearLayout
+         android:id="@+id/opciones_habitacion"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:visibility="gone">
+
+         <!-- Compañeros -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Número de Compañeros"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_companeros"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/companeros_array"
+             android:layout_marginBottom="30dp" />
+
+         <!-- Género -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Género de los Habitantes"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+
+         <Spinner
+             android:id="@+id/spinner_genero"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/genero_array"
+             android:layout_marginBottom="30dp" />
+
+
+         <!-- Interior/Exterior -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Orientación (Interior/Exterior)"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+         <Spinner
+             android:id="@+id/spinner_exterior_interior_habitacion"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/exterior_interior_array"
+             android:layout_marginBottom="30dp" />
+
+         <!-- Tipo de Baño -->
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Tipo de Baño"
+             android:textSize="12sp"
+             android:layout_marginBottom="5dp" />
+         <Spinner
+             android:id="@+id/spinner_tipo_bano"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:entries="@array/tipo_bano_array"
+             android:layout_marginBottom="30dp" />
+     </LinearLayout>
+
+
+
+     //---------------------------------------------------------------------------------------------------------
+
+
+
 
 
     <LinearLayout

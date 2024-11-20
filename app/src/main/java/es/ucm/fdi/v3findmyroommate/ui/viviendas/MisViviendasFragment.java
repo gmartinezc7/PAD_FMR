@@ -131,6 +131,25 @@ public class MisViviendasFragment extends Fragment {
         intent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(anuncio.getImagenesUri()));
 
 
+        //TAGS
+        String categoria = anuncio.getCategoria();
+        intent.putExtra("categoria", categoria);
+
+
+        if (categoria.equalsIgnoreCase("Casa")) {
+
+            intent.putExtra("tipoCasa", anuncio.getTipoCasa());
+            intent.putExtra("habitaciones", anuncio.getHabitaciones());
+            intent.putExtra("banos", anuncio.getBanos());
+            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
+        } else if (categoria.equalsIgnoreCase("Habitación")) {
+
+            intent.putExtra("companeros", anuncio.getCompaneros());
+            intent.putExtra("genero", anuncio.getGenero());
+            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
+            intent.putExtra("tipoBano", anuncio.getTipoBano());
+        }
+
         verAnuncioLauncher.launch(intent);
 
     }

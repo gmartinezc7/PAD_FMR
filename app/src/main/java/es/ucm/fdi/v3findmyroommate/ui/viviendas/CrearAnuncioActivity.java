@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,6 +32,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+import android.widget.AdapterView;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -46,9 +51,17 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     private int imagenActualIndex = 0; // Índice de la imagen actual
     private ImageButton btnPrev, btnNext;
 
-
-
     private Uri previewPhotoUri;
+
+
+    Spinner spinnerCategoria;
+    LinearLayout opcionesCasa;
+    LinearLayout opcionesHabitacion;
+
+    Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
+    Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +91,24 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         previewPhotoUri = null;
 
 
+        spinnerCategoria = findViewById(R.id.spinner_categoria);
+        opcionesCasa = findViewById(R.id.opciones_casa);
+        opcionesHabitacion = findViewById(R.id.opciones_habitacion);
+
+        // Spinners de opciones Casa
+        spinnerTipoCasa = findViewById(R.id.spinner_tipo_casa);
+        spinnerHabitaciones = findViewById(R.id.spinner_habitaciones);
+        spinnerBanos = findViewById(R.id.spinner_banos);
+        spinnerExteriorInteriorCasa = findViewById(R.id.spinner_exterior_interior_casa);
+
+        // Spinners de opciones Habitación
+        spinnerCompaneros = findViewById(R.id.spinner_companeros);
+        spinnerGenero = findViewById(R.id.spinner_genero);
+        spinnerExteriorInteriorHabitacion = findViewById(R.id.spinner_exterior_interior_habitacion);
+        spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
+
+
+
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
             // Verifica y solicita permisos
@@ -98,6 +129,26 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
         btnPrev.setOnClickListener(v -> mostrarImagenAnterior());
         btnNext.setOnClickListener(v -> mostrarImagenSiguiente());
+
+
+        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) { // Casa
+                    opcionesCasa.setVisibility(View.VISIBLE);
+                    opcionesHabitacion.setVisibility(View.GONE);
+                } else if (position == 1) { // Habitación
+                    opcionesCasa.setVisibility(View.GONE);
+                    opcionesHabitacion.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                opcionesCasa.setVisibility(View.GONE);
+                opcionesHabitacion.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -123,6 +174,27 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra("precio", precio);
         resultIntent.putExtra("descripcion", descripcion);
         resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
+
+
+        //GUARDAMOS TAMBIÉN LAS ETIQUETAS
+        String categoria = spinnerCategoria.getSelectedItem().toString();
+        resultIntent.putExtra("categoria", categoria);
+
+        // Guardamos los datos específicos según la categoría
+        if (categoria.equalsIgnoreCase("Casa")) {
+
+            resultIntent.putExtra("tipoCasa", spinnerTipoCasa.getSelectedItem().toString());
+            resultIntent.putExtra("habitaciones", spinnerHabitaciones.getSelectedItem().toString());
+            resultIntent.putExtra("banos", spinnerBanos.getSelectedItem().toString());
+            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorCasa.getSelectedItem().toString());
+        } else if (categoria.equalsIgnoreCase("Habitación")) {
+
+            resultIntent.putExtra("companeros", spinnerCompaneros.getSelectedItem().toString());
+            resultIntent.putExtra("genero", spinnerGenero.getSelectedItem().toString());
+            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
+            resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
+        }
+
 
         setResult(RESULT_OK, resultIntent);
         finish();
