@@ -154,4 +154,6 @@
     <string name="bathroom_type_preference_key" translatable="false">bathroom_type_preference</string>
     <string name="bathroom_type_db_label" translatable="false">bathroom_type</string>
     <string name="settings_text">Ajustes</string>
+    <string name="config_fragment_key" translatable="false">config_fragment</string>
+    <string name="property_type_fragment_key" translatable="false">PropertyTypeFragment</string>
 </resources>
