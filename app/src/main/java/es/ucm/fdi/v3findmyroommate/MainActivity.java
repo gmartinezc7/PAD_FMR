@@ -1,13 +1,10 @@
 package es.ucm.fdi.v3findmyroommate;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -80,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView signUP = findViewById(R.id.signUP);
+        signUP.setOnClickListener(view -> openSignUPView());
+        signUP.setPaintFlags(signUP.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        signUP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {openSignUPView();}
+        });
+
         signUP.setOnClickListener(view -> openSignUPView());
     }
 

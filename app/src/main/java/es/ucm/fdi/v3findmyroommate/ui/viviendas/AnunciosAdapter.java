@@ -1,15 +1,24 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,84 +29,166 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
     private List<Anuncio> anuncios = new ArrayList<>();
     private MisViviendasViewModel viewModel;
+    private MisViviendasFragment fragment;
 
-    public AnunciosAdapter(MisViviendasViewModel viewModel) {
+
+
+    public AnunciosAdapter(MisViviendasViewModel viewModel, MisViviendasFragment fragment) {
+        this.fragment = fragment;
         this.viewModel = viewModel;
     }
 
-    // Método para actualizar la lista de anuncios
+    // METODO PARA ACTUALIZAR LA LISTA DE ANUNCIOS
     public void setAnuncios(List<Anuncio> nuevosAnuncios) {
         this.anuncios = nuevosAnuncios;
-        notifyDataSetChanged(); // Notifica al RecyclerView que los datos han cambiado
+        notifyDataSetChanged(); // NOTIFICAMOS AL RECYCLERVIEW DE QUE LOS DATOS HAN CAMBIADO
     }
 
     @NonNull
     @Override
     public AnuncioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflar el layout del item (aquí podrías inflar tu layout personalizado)
+
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
         return new AnuncioViewHolder(view);
+
     }
 
+    /*
+    CONFIGURAMOS TODOS LOS "DETALLES" DEL ANUNCIO EN EL RECYCLERVIEW,
+    COMO POR EJEMPLO LAS FLECHAS HACIA LOS LADOS PARA DESPLAZAR LA IMAGEN,
+    LAS ETIQUETAS "CHIP" CON LA INFORMACIÓN, EL DIÁLOGO DE ELIMINADO AL DEJAR PULSADO,
+    ETC.
 
+     */
     @Override
     public void onBindViewHolder(@NonNull AnuncioViewHolder holder, int position) {
         Anuncio anuncio = anuncios.get(position);
 
-        // Mostrar el ID y los detalles del anuncio
-        holder.textViewAnuncioId.setText(anuncio.getId() + ":");
-        holder.textViewAnuncioDetalle.setText(anuncio.getDetalle());
+        // CONFIGURAR LA INFORMACIÓN
+        setAnuncioDetails(holder, anuncio);
 
-        // Establecer la visibilidad de previewRect si es necesario
+        // CONFIGURAR LA IMAGEN (CLICK) Y LA NAVEGACIÓN ENTRE ELLAS
+        setImageNavigation(holder, anuncio, position);
+
+
+        // CLICK LARGO PARA ELIMIANR
+        setLongClickListener(holder, position);
+
+    }
+
+
+    private void setAnuncioDetails(AnuncioViewHolder holder, Anuncio anuncio) {
+        holder.chipTitulo.setText("Vivienda: " + anuncio.getTitulo());
+        holder.chipUbicacion.setText("Ubicación: " + anuncio.getUbicacion());
+        holder.chipMetros.setText("Metros Cuadrados: " + anuncio.getMetros());
+        holder.chipPrecio.setText("Precio: " + anuncio.getPrecio());
         holder.previewRect.setVisibility(View.VISIBLE);
+    }
 
 
-        // Asignar la imagen usando el URI de la imagen del anuncio
-        if (anuncio.getImagenUri() != null) {
-            holder.imageViewAnuncio.setImageURI(anuncio.getImagenUri());
-            // Alternativamente, puedes usar Glide
-            // Glide.with(holder.itemView.getContext()).load(anuncio.getImageUri()).into(holder.imageViewAnuncio);
+    private void setImageNavigation(AnuncioViewHolder holder, Anuncio anuncio, int position) {
+        if (!anuncio.getImagenesUri().isEmpty()) {
+            holder.imagenesUri = new ArrayList<>(anuncio.getImagenesUri());
+            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+            // NAVEGAR A LA IMAGEN ANTERIOR
+            holder.btnPrev.setOnClickListener(v -> navigateImage(holder, -1));
+
+            // NAVEGAR A LA SIGUIENTE
+            holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
+
+            // CLICK EN LA IMAGEN PARA VER LOS DETALLES
+            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(position));
         }
+    }
 
-        // Listener para el botón de eliminar
-        holder.btnEliminar.setOnClickListener(v -> {
-            viewModel.eliminarAnuncio(position); // Llama al método de eliminar en el ViewModel
-        });
+    private void navigateImage(AnuncioViewHolder holder, int direction) {
+        int newIndex = holder.imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < holder.imagenesUri.size()) {
+            holder.imagenActualIndex = newIndex;
+            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
 
-        //boton "Ver"
-        holder.btnVer.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), AnuncioDetalleActivity.class);
-            intent.putExtra("id", anuncio.getId());
-            intent.putExtra("detalle", anuncio.getDetalle());
-            intent.putExtra("imagenUri", anuncio.getImagenUri());
 
-            holder.itemView.getContext().startActivity(intent);
+
+
+    //IMPORTANTE !!!!!
+    private void showAnuncioDetail(int position) {
+
+       // (LLAMA AL FRAGMENT PARA DESPUÉS PODER MANEJAR LOS POSIBLES CAMBIOS EN LA LISTA
+        // ( "EDITAR" DENTRO DE "ANUNCIODETALLE"))
+        this.fragment.lanzarVerAnuncio(position);
+
+
+    }
+
+
+
+    private void setLongClickListener(AnuncioViewHolder holder, int position) {
+        holder.imageViewAnuncio.setOnLongClickListener(v -> {
+            new AlertDialog.Builder(holder.itemView.getContext())
+                    .setTitle("Eliminar anuncio")
+                    .setMessage("¿Estás seguro de que deseas eliminar este anuncio?")
+                    .setPositiveButton("Eliminar", (dialog, which) -> {
+                        viewModel.eliminarAnuncio(position); //IMPORTANTE LA LLAMADA SIEMPRE A VIEWMODEL PARA MANEJAR LA LISTA
+                        Toast.makeText(holder.itemView.getContext(), "Anuncio eliminado", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                    .show();
+            return true;
         });
     }
+
+
+
 
     @Override
     public int getItemCount() {
-        return anuncios.size(); // Devuelve la cantidad de anuncios
+        return anuncios.size(); // DEVUELVE LA CANTIDAD DE ANUNCIOS
     }
 
-    // ViewHolder para manejar la vista de cada item
+
+    // VIEWHOLDER PARA MANEJAR LA VISTA DE CADA ITEM
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewAnuncioId;
-        TextView textViewAnuncioDetalle;
-        Button btnEliminar;
-        Button btnVer;
+
+        Chip chipTitulo;
+        Chip chipUbicacion;
+        Chip chipMetros;
+        Chip chipPrecio;
+
         View previewRect;
         ImageView imageViewAnuncio;
+        List<Uri> imagenesUri = new ArrayList<>();
+        int imagenActualIndex = 0;
+        ImageButton btnPrev, btnNext;
 
         public AnuncioViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewAnuncioId = itemView.findViewById(R.id.text_view_anuncio_id);
-            textViewAnuncioDetalle = itemView.findViewById(R.id.text_view_anuncio_detalle);
-            btnEliminar = itemView.findViewById(R.id.btn_eliminar);
-            btnVer =  itemView.findViewById(R.id.btn_ver);
+
+            // BUSCAMOS CADA ELEMENTO POR SU ID
+             chipTitulo = itemView.findViewById(R.id.chipTitulo);
+             chipUbicacion = itemView.findViewById(R.id.chipUbicacion);
+             chipMetros = itemView.findViewById(R.id.chipMetros);
+             chipPrecio = itemView.findViewById(R.id.chipPrecio);
+
+
             previewRect = itemView.findViewById(R.id.preview_rect);
             imageViewAnuncio = itemView.findViewById(R.id.image_view_anuncio);
+            btnPrev = itemView.findViewById(R.id.btn_prev);
+            btnNext = itemView.findViewById(R.id.btn_next);
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
+
         }
     }
+
+
+
 }
