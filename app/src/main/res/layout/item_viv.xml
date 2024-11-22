@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="20dp">
 
+    <!-- Contenedor Imagen que tiene que meter Samuel -->
+    <FrameLayout
+        android:id="@+id/preview_rect"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/border_rectangle"
+        android:padding="8dp">
+        <!-- IMAGEN IRÍA AQUÍ -->
+    </FrameLayout>
+
+    <!-- Nombre de vivienda -->
     <TextView
         android:id="@+id/name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="18sp"
         android:text="Nombre de la vivienda"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="8dp" />
 
+    <!-- Location -->
     <TextView
         android:id="@+id/address"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:text="Dirección"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"/>
-    
+        android:layout_marginTop="4dp" />
+
+    <!-- Price -->
     <TextView
         android:id="@+id/price"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="Precio"
-        app:layout_constraintTop_toBottomOf="@id/address"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="4dp" />
 
-    <!-- Descripción -->
+    <!-- Description -->
     <TextView
         android:id="@+id/description"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:text="Descripción"
-        app:layout_constraintTop_toBottomOf="@id/price"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+</LinearLayout>

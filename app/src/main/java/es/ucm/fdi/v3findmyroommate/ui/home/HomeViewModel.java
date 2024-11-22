@@ -38,6 +38,7 @@ public class HomeViewModel extends ViewModel {
                     Vivienda vivienda = viviendas.getValue(Vivienda.class);
                     if (vivienda != null) {
                         lista.add(vivienda);
+                        System.out.println("Vivienda carga: " + vivienda.getTitle());
                     }
                 }
                 viviendas.setValue(lista);

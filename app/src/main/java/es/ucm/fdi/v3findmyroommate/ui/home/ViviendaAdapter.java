@@ -31,8 +31,8 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     @Override
     public void onBindViewHolder(@NonNull ViviendaAdapter.ViviendaViewHolder holder, int position) {
         Vivienda vivienda = listViv.get(position);
-        holder.name.setText(vivienda.getName());
-        holder.address.setText(vivienda.getAddress());
+        holder.name.setText(vivienda.getTitle());
+        holder.address.setText(vivienda.getLocation());
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice().toString());
     }
