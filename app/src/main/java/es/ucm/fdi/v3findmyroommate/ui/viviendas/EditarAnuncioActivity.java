@@ -9,10 +9,15 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -58,6 +63,31 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     private Button btnSeleccionarImagen, btnEliminarImagen;
     private Uri previewPhotoUri;
 
+
+    //TAGS
+    private String categoria;
+
+    //Para la casa:
+    private String tipoCasa;
+    private String habitaciones;
+    private String banos;
+    private String exteriorInterior;
+
+
+    //Para la habitación:
+    private String companeros;
+    private String genero;
+    private String tipoBano;
+
+    Spinner spinnerCategoria;
+    Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
+    Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
+
+    LinearLayout opcionesCasa;
+    LinearLayout opcionesHabitacion;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +100,8 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         this.precio = intent.getStringExtra("precio");
         this.descripcion = intent.getStringExtra("descripcion");
         this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
+
+
 
 
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
@@ -93,6 +125,88 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
         previewPhotoUri = null;
 
+
+
+
+
+        //TAGS
+        spinnerCategoria = findViewById(R.id.spinner_categoria);
+        opcionesCasa = findViewById(R.id.opciones_casa);
+        opcionesHabitacion = findViewById(R.id.opciones_habitacion);
+
+        // Spinners de opciones Casa
+        spinnerTipoCasa = findViewById(R.id.spinner_tipo_casa);
+        spinnerHabitaciones = findViewById(R.id.spinner_habitaciones);
+        spinnerBanos = findViewById(R.id.spinner_banos);
+        spinnerExteriorInteriorCasa = findViewById(R.id.spinner_exterior_interior_casa);
+
+        // Spinners de opciones Habitación
+        spinnerCompaneros = findViewById(R.id.spinner_companeros);
+        spinnerGenero = findViewById(R.id.spinner_genero);
+        spinnerExteriorInteriorHabitacion = findViewById(R.id.spinner_exterior_interior_habitacion);
+        spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
+
+
+        this.categoria = intent.getStringExtra("categoria");
+
+        if(this.categoria.equalsIgnoreCase("Casa")){
+
+            spinnerCategoria.setSelection(0);
+            opcionesCasa.setVisibility(View.VISIBLE);
+            opcionesHabitacion.setVisibility(View.GONE);
+
+
+            this.tipoCasa = intent.getStringExtra("tipoCasa");
+            this.habitaciones = intent.getStringExtra("habitaciones");
+            this.banos = intent.getStringExtra("banos");
+            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
+
+            setSpinnerValue(spinnerTipoCasa, tipoCasa);
+            setSpinnerValue(spinnerHabitaciones, habitaciones);
+            setSpinnerValue(spinnerBanos, banos);
+            setSpinnerValue(spinnerExteriorInteriorCasa, exteriorInterior);
+
+        }
+        else if(categoria.equalsIgnoreCase("Habitación")){
+
+            spinnerCategoria.setSelection(1);
+            opcionesCasa.setVisibility(View.GONE);
+            opcionesHabitacion.setVisibility(View.VISIBLE);
+
+            this.companeros = intent.getStringExtra("companeros");
+            this.genero = intent.getStringExtra("genero");
+            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
+            this.tipoBano = intent.getStringExtra("tipoBano");
+
+            setSpinnerValue(spinnerCompaneros, companeros);
+            setSpinnerValue(spinnerGenero, genero);
+            setSpinnerValue(spinnerExteriorInteriorHabitacion, exteriorInterior);
+            setSpinnerValue(spinnerTipoBano, tipoBano);
+
+        }
+
+
+        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) { // Casa
+                    opcionesCasa.setVisibility(View.VISIBLE);
+                    opcionesHabitacion.setVisibility(View.GONE);
+                } else if (position == 1) { // Habitación
+                    opcionesCasa.setVisibility(View.GONE);
+                    opcionesHabitacion.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                opcionesCasa.setVisibility(View.GONE);
+                opcionesHabitacion.setVisibility(View.GONE);
+            }
+        });
+
+
+
         iniciarNavImagenes();
 
 
@@ -114,11 +228,27 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         });
 
 
-
         // Botón de cancelar
         Button btnCancelar = findViewById(R.id.btn_cancelar);
         btnCancelar.setOnClickListener(v -> finish());
     }
+
+
+
+
+
+    private void setSpinnerValue(Spinner spinner, String value) {
+        if (value != null) {
+            ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
+            int position = adapter.getPosition(value);
+            if (position >= 0) {
+                spinner.setSelection(position);
+            }
+        }
+    }
+
+
+
 
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -284,6 +414,27 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra("precio", precio);
         resultIntent.putExtra("descripcion", descripcion);
         resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
+
+
+        //GUARDAMOS TAMBIÉN LAS ETIQUETAS
+        String categoria = spinnerCategoria.getSelectedItem().toString();
+        resultIntent.putExtra("categoria", categoria);
+
+        // Guardamos los datos específicos según la categoría
+        if (categoria.equalsIgnoreCase("Casa")) {
+
+            resultIntent.putExtra("tipoCasa", spinnerTipoCasa.getSelectedItem().toString());
+            resultIntent.putExtra("habitaciones", spinnerHabitaciones.getSelectedItem().toString());
+            resultIntent.putExtra("banos", spinnerBanos.getSelectedItem().toString());
+            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorCasa.getSelectedItem().toString());
+        } else if (categoria.equalsIgnoreCase("Habitación")) {
+
+            resultIntent.putExtra("companeros", spinnerCompaneros.getSelectedItem().toString());
+            resultIntent.putExtra("genero", spinnerGenero.getSelectedItem().toString());
+            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
+            resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
+        }
+
 
         setResult(RESULT_OK, resultIntent);
         finish();
