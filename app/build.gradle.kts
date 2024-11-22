@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
     implementation(libs.preference)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)

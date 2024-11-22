@@ -98,6 +98,9 @@
             android:text="@string/sign_up"
             android:textSize="18sp"
             android:textColor="@android:color/holo_blue_light" />
+
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

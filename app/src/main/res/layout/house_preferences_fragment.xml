@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage"
         android:layout_marginTop="16dp"
-        android:text="Select Property Type"
+        android:text="@string/house_prefs_select_property_type_label"
         android:textStyle="bold"
         android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/propertyTypeChipGroup"
         android:layout_marginTop="20dp"
-        android:text="Select Number of Rooms"
+        android:text="@string/house_prefs_select_number_of_rooms_label"
         android:textStyle="bold"
         android:textSize="20sp" />
 

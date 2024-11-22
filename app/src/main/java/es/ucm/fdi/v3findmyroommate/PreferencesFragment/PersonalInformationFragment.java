@@ -1,7 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.PreferencesFragment;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.SharedViewModel;
+import es.ucm.fdi.v3findmyroommate.User;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class PersonalInformationFragment extends BaseFragment {
-    private Button continueButton;
-    private ChipGroup genderChipGroup;
-    private ChipGroup ageChipGroup;
     private SharedViewModel sharedViewModel;
-    private ChipGroup maritalStatusChipGroup;
-    private ChipGroup occupationChipGroup;
 
     @Nullable
     @Override
@@ -46,7 +41,7 @@ public class PersonalInformationFragment extends BaseFragment {
         setupChipGroup(view, R.id.occupationChipGroup, (selectedValue) -> sharedViewModel.setOccupation(selectedValue));
 
         // Configura el botón Continuar
-        continueButton = view.findViewById(R.id.continueButton);
+        Button continueButton = view.findViewById(R.id.continueButton);
 
         continueButton.setOnClickListener(v -> {
             // Recopilar ChipGroups a validar
@@ -59,10 +54,10 @@ public class PersonalInformationFragment extends BaseFragment {
 
             // Validar antes de continuar
             if (validateSelections(requiredChipGroups, null)) {
+                updateUserInfoInDatabase(); // Calls the function that updates the user's info.
                 loadNextFragment(getNextFragment()); // Continuar si la validación es exitosa
             }
         });
-
 
         return view;
 
@@ -75,5 +70,31 @@ public class PersonalInformationFragment extends BaseFragment {
         return new PropertyTypeFragment();
     }
 
+
+    // Method that updates the user's personal info and its preferences in the database.
+    protected void updateUserInfoInDatabase() {
+        User userObject = sharedViewModel.getUser().getValue(); // Get user object to obtain its info.
+
+        if (userObject != null) {
+            // Get the values for each of the user object's data fields.
+            String gender = sharedViewModel.getUser().getValue().getGender();
+            String ageRange = sharedViewModel.getUser().getValue().getRangeAge();
+            String maritalStatus = sharedViewModel.getUser().getValue().getMaritalStatus();
+            String occupation = sharedViewModel.getUser().getValue().getOccupation();
+
+            Activity currentActivity = getActivity();
+            if (currentActivity != null) {
+                // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
+                ConfigPreferencesModel.updateSelectedPreference(gender, getString(R.string.gender_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(ageRange, getString(R.string.age_range_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(maritalStatus, getString(R.string.marital_status_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(occupation, getString(R.string.occupation_preference_key),
+                        currentActivity.getApplication());
+            }
+        }
+    }
 
 }

@@ -31,11 +31,26 @@ public class PreferenceUser extends AppCompatActivity {
         user.setPassword(password);
         sharedViewModel.setUser(user);
 
-        // Cargar el primer fragmento
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new PersonalInformationFragment())
-                    .commit();
+
+        Intent intent2 = getIntent();
+        String nombreActivity = intent2.getStringExtra(getString(R.string.config_fragment_key));
+
+        if (nombreActivity != null) {
+            // Loads new PropertyTypeFragment (comes from the Preferences screen).
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new PropertyTypeFragment())
+                        .commit();
+            }
+        }
+
+        else {
+            // Loads new PersonalInformationFragment.
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new PersonalInformationFragment())
+                        .commit();
+            }
         }
 
     }
