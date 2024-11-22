@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">FindMyRoommate</string>
     <string name="title_activity_lobby">Lobby</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Inicio</string>
     <string name="title_misviviendas">MisViviendas</string>
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
-    <string name="title_config">Config</string>
+    <string name="title_config">Configuración</string>
     <string name="welcome_message">Bienvenid@!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Contraseña</string>
@@ -19,50 +19,6 @@
     <string name="already_have_an_acount">Ya tienes una cuenta</string>
     <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
     <string name="create_account">Create account</string>
-    <string name="personal_information_message">Let’s know more about yourself</string>
-    <string name="continue_">Continue</string>
-    <string name="property_type_message">What are you looking for</string>
-
-
-
-    <string-array name="categorias_array">
-        <item>Casa</item>
-        <item>Habitación</item>
-    </string-array>
-    <string-array name="tipo_casa_array">
-        <item>Apartment</item>
-        <item>House</item>
-    </string-array>
-    <string-array name="habitaciones_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4+</item>
-    </string-array>
-    <string-array name="banos_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4+</item>
-    </string-array>
-    <string-array name="companeros_array">
-        <item>2</item>
-        <item>3</item>
-        <item>4+</item>
-    </string-array>
-    <string-array name="genero_array">
-        <item>Solo Hombres</item>
-        <item>Solo Mujeres</item>
-        <item>Mixto</item>
-    </string-array>
-    <string-array name="exterior_interior_array">
-        <item>Exterior</item>
-        <item>Interior</item>
-    </string-array>
-    <string-array name="tipo_bano_array">
-        <item>Privado</item>
-        <item>Compartido</item>
-    </string-array>
     <string name="personal_information_message">Dinos más acerca de ti</string>
     <string name="continue_">Continuar</string>
     <string name="property_type_message">¿Qué estás buscando?</string>
@@ -156,4 +112,48 @@
     <string name="settings_text">Ajustes</string>
     <string name="config_fragment_key" translatable="false">config_fragment</string>
     <string name="property_type_fragment_key" translatable="false">PropertyTypeFragment</string>
+
+
+
+
+    <string-array name="categorias_array">
+        <item>Casa</item>
+        <item>Habitación</item>
+    </string-array>
+    <string-array name="tipo_casa_array">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+    <string-array name="habitaciones_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="banos_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="companeros_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="genero_array">
+        <item>Solo Hombres</item>
+        <item>Solo Mujeres</item>
+        <item>Mixto</item>
+    </string-array>
+    <string-array name="exterior_interior_array">
+        <item>Exterior</item>
+        <item>Interior</item>
+    </string-array>
+    <string-array name="tipo_bano_array">
+        <item>Privado</item>
+        <item>Compartido</item>
+    </string-array>
+
+
 </resources>

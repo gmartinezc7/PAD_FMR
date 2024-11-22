@@ -70,4 +70,10 @@
     <string name="house_prefs_select_number_of_rooms_label">Select Number of Rooms</string>
     <string name="sign_in_failed_toast_text">User or password incorrect</string>
     <string name="settings_text">Settings</string>
+    <string name="title_activity_lobby">Lobby</string>
+    <string name="title_home">Home</string>
+    <string name="title_misviviendas">MyProperties</string>
+    <string name="title_misfavs">PyFavs</string>
+    <string name="title_chats">Chats</string>
+    <string name="title_config">Settings</string>
 </resources>
