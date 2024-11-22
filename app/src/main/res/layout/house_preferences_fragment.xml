@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/housePreferencesMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/house_preferences"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        />
+
+
+    <!-- Property Type Title -->
+    <TextView
+        android:id="@+id/propertyTypeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage"
+        android:layout_marginTop="16dp"
+        android:text="Select Property Type"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <!-- Property Type ChipGroup -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/propertyTypeChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/propertyTypeMessage"
+        app:layout_constraintEnd_toEndOf="@id/propertyTypeMessage"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeMessage"
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/apartmentChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="Apartment" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/houseChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:checkable="true"
+            android:text="House" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Rooms ChipGroup -->
+    <TextView
+        android:id="@+id/roomsMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeChipGroup"
+        android:layout_marginTop="20dp"
+        android:text="Select Number of Rooms"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/roomsChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/roomsMessage"
+        app:layout_constraintEnd_toEndOf="@id/roomsMessage"
+        app:layout_constraintTop_toBottomOf="@id/roomsMessage"
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/room1Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="1" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/room2Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="2" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/room3Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="3" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/room4Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="4+" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Bathrooms ChipGroup -->
+    <TextView
+        android:id="@+id/bathroomsMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/roomsChipGroup"
+        android:layout_marginTop="20dp"
+        android:text="Select Number of Bathrooms"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/bathroomsChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/bathroomsMessage"
+        app:layout_constraintEnd_toEndOf="@id/bathroomsMessage"
+        app:layout_constraintTop_toBottomOf="@id/bathroomsMessage"
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bathroom1Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="1" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bathroom2Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="2" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bathroom3Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="3" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/bathroom4Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="4+" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Exterior/Interior ChipGroup -->
+    <TextView
+        android:id="@+id/orientationMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bathroomsChipGroup"
+        android:layout_marginTop="20dp"
+        android:text="Select Orientation"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/orientationChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/orientationMessage"
+        app:layout_constraintEnd_toEndOf="@id/orientationMessage"
+        app:layout_constraintTop_toBottomOf="@id/orientationMessage"
+        android:layout_marginTop="10dp"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/exteriorChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="Exterior" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/interiorChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="16sp"
+            android:text="Interior" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Square Meters Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/squareMetersTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/housePreferencesMessage"
+        app:layout_constraintEnd_toEndOf="@+id/housePreferencesMessage"
+        app:layout_constraintTop_toBottomOf="@+id/orientationChipGroup"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/squareMetersInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter square meters"
+            android:textSize="16sp"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Continue Button -->
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/continue_"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="30sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
