@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,9 @@ public class ChatFragment extends Fragment {
                 messageList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Message message = messageSnapshot.getValue(Message.class);
+                    Log.e("ChatFragment", "senderId: " + message.getSender());
+                    Log.e("ChatFragment", "Timestamp: " + message.getTimestamp());
+                    Log.e("ChatFragment", "text: " + message.getText());
                     if (message != null) {
                         messageList.add(message);
                     }
@@ -92,27 +96,31 @@ public class ChatFragment extends Fragment {
     }
 
     private void sendMessage() {
-//
-//        String messageText = messageEditText.getText().toString().trim();
-//        if (!messageText.isEmpty()) {
-//            long timestamp = System.currentTimeMillis();
-//            //TODO poner el id del usuario que esta usando la aplicacion
-//            //String senderId = "user_id";
-//            int senderId = 99999;
-//            int reciverID = 100000;
-//            Message newMessage = new Message(senderId, reciverID, messageText, timestamp);
-//
-//            Map<String, Object> messageValues = new HashMap<>();
-//            messageValues.put(String.valueOf(timestamp), newMessage);
-//            chatMessagesRef.updateChildren(messageValues).addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    messageEditText.setText("");
-//                } else {
-//                    Toast.makeText(getContext(), "Error enviando el mensaje", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } else {
-//            Toast.makeText(getContext(), "El mensaje no puede estar vacío", Toast.LENGTH_SHORT).show();
-//        }
+        String messageText = messageEditText.getText().toString().trim();
+        if (!messageText.isEmpty()) {
+            long timestamp = System.currentTimeMillis();
+
+            String senderId = "user_id";
+
+            String receiverId = "receiver_id";
+
+            Message newMessage = new Message(String.valueOf(timestamp), senderId, messageText, timestamp);
+
+            // Preparar los datos para Firebase
+            Map<String, Object> messageValues = new HashMap<>();
+            messageValues.put(String.valueOf(timestamp), newMessage);
+
+            // Enviar el mensaje a Firebase
+            chatMessagesRef.updateChildren(messageValues).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    messageEditText.setText("");
+                } else {
+                    Toast.makeText(getContext(), "Error enviando el mensaje", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "El mensaje no puede estar vacío", Toast.LENGTH_SHORT).show();
+        }
     }
+
 }
