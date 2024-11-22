@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -253,6 +254,14 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
                 }
         );
 
+
+        // Registrar callback para manejar la acción de retroceso
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                terminarYRegresarInfo(); // Reutilizamos el método para guardar la información
+            }
+        });
 
         btnVolver.setOnClickListener(v -> terminarYRegresarInfo());
         btnEditar.setOnClickListener(v -> abrirEdicion());
