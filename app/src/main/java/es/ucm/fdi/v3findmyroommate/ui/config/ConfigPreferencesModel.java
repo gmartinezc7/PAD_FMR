@@ -126,6 +126,8 @@ public class ConfigPreferencesModel extends AndroidViewModel {
 
         // Updates user's username.
         else if (preferenceKey.equals(application.getString(R.string.username_preference_key))) {
+            ConfigPreferencesModel.databaseUserReference.child(
+                    application.getString(R.string.username_db_label)).setValue(newValue);
             editor.putString(application.getString(R.string.username_preference_key), newValue);
             Log.i("UsernamePreference", "New username: " + newValue);
         }

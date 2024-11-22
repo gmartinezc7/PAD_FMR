@@ -14,6 +14,8 @@ import java.util.List;
 //PERO COMO SON SOLO 6, EL PROBLEMA NO HA SIDO MUY GRANDE.
 public class Anuncio {
 
+    public static int generadorId = 0;
+    private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
@@ -39,7 +41,7 @@ public class Anuncio {
 
     public Anuncio( Intent data) {
 
-
+        this.idAnuncio = data.getStringExtra("id");
         this.titulo = data.getStringExtra("titulo");
         this.ubicacion = data.getStringExtra("ubicacion");
         this.metros = data.getStringExtra("metros");
@@ -74,6 +76,9 @@ public class Anuncio {
 
     public  List<Uri> getImagenesUri() {
         return imagenesUri;
+    }
+    public String getId() {
+        return idAnuncio;
     }
     public String getTitulo() {
         return titulo;

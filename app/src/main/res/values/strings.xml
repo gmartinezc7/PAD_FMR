@@ -157,6 +157,13 @@
         <item>Compartido</item>
     </string-array>
     <string name="passwords_dont_match_toast_text">Las contraseñas no coinciden</string>
+    <string name="add_title_db_label" translatable="false">title</string>
+    <string name="add_location_db_label" translatable="false">location</string>
+    <string name="add_square_meters_db_label" translatable="false">square_meters</string>
+    <string name="add_price_db_label" translatable="false">price</string>
+    <string name="add_description_db_label" translatable="false">description</string>
+    <string name="add_house_type_db_label" translatable="false">house_type</string>
+    <string name="username_db_label" translatable="false">username</string>
 
 
 </resources>
