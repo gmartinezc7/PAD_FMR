@@ -29,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:backgroundTint="#FFFFFF"
             android:text="Editar"/>
     </RelativeLayout>
 
@@ -293,7 +292,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Volver"
-        android:backgroundTint= "#FFFFFF"
         android:layout_gravity="end"/>
 
 </LinearLayout>

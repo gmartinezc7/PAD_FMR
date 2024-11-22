@@ -70,7 +70,6 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="Añadir Imagen"
-             android:backgroundTint="#FFFFFF"
              android:layout_marginEnd="16dp" />
 
 
@@ -79,7 +78,6 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="Eliminar Imagen"
-             android:backgroundTint="#FFFFFF"
              android:layout_marginEnd="16dp" />
 
      </LinearLayout>
@@ -318,7 +316,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar anuncio"
-        android:backgroundTint="#FFFFFF"
         android:layout_marginEnd="16dp" />
 
     <!-- Botón Cancelar -->
@@ -326,8 +323,7 @@
         android:id="@+id/btn_cancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancelar"
-        android:backgroundTint="#FFFFFF" />
+        android:text="Cancelar" />
     </LinearLayout>
 
  </LinearLayout>
