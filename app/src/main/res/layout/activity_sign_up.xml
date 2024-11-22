@@ -136,9 +136,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/createAcountButton"
-        app:layout_constraintStart_toStartOf="@+id/createAcountButton"
-        app:layout_constraintEnd_toEndOf="@+id/createAcountButton"
+        app:layout_constraintTop_toBottomOf="@+id/createAccountButton"
+        app:layout_constraintStart_toStartOf="@+id/createAccountButton"
+        app:layout_constraintEnd_toEndOf="@+id/createAccountButton"
         android:layout_marginTop="15dp">
 
         <!-- Ya tienes una cuenta -->
