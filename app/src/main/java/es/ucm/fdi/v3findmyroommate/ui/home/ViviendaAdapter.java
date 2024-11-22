@@ -35,6 +35,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         holder.address.setText(vivienda.getLocation());
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice().toString());
+        holder.metr.setText(vivienda.getMetr().toString());
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
 
     public static class ViviendaViewHolder extends RecyclerView.ViewHolder {
         TextView name, address, description, price;
+        TextView metr;
 
         public ViviendaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,6 +53,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             address = itemView.findViewById(R.id.address);
             price = itemView.findViewById(R.id.price);
             description = itemView.findViewById(R.id.description);
+            metr = itemView.findViewById(R.id.metr);
         }
     }
     public void updateList (List<Vivienda> newVivs){

@@ -20,11 +20,24 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent">
         <!-- IMAGEN IRÍA AQUÍ -->
+        <Button
+            android:id="@+id/button2"
+            android:tintMode="src_in"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/circular_button"
+            android:contentDescription="FavouriteButton"
+            android:elevation="4dp"
+            android:drawableStart="@drawable/ic_heart"
+            android:drawableTint="#F65454"
+            android:gravity="center"
+            android:padding="8dp" />
     </FrameLayout>
 
     <!-- Nombre de vivienda -->
-
-    <!-- Location -->
     <TextView
         android:id="@+id/name"
         android:layout_width="229dp"
@@ -38,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/preview_rect" />
 
-    <!-- Price -->
+
     <TextView
         android:id="@+id/address"
         android:layout_width="243dp"
@@ -51,8 +64,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
-    <!-- Description -->
 
+    <!-- Price -->
     <TextView
         android:id="@+id/price"
         android:layout_width="89dp"
@@ -62,20 +75,44 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/preview_rect" />
 
+    <!-- Description -->
     <TextView
         android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:layout_width="312dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
         android:text="Descripción"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price"/>
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+
+    <!-- Metros cuadrados -->
+    <TextView
+        android:id="@+id/metr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Metr"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+
+    <!-- Metros cuadrados m2 -->
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="32dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="m2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

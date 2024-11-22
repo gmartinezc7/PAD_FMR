@@ -1,6 +1,9 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import android.net.Uri;
+import java.util.List;
 
 public class Vivienda implements Serializable {
 
@@ -10,6 +13,7 @@ public class Vivienda implements Serializable {
     private String description;
     private String location;
     private int metr;
+    //private List<Uri> imagenesUri = new ArrayList<>();
 
 
     public Vivienda (){} // constructor que necesita Firebase
@@ -36,5 +40,5 @@ public class Vivienda implements Serializable {
     public Double getPrice() { return this.price;}
     public String getDescription() { return this.description;}
     public String getLocation() { return this.location;}
-    public int getMetr() { return this.metr; }
+    public Integer getMetr() { return this.metr; }
 }
