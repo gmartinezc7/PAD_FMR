@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // If the sign in is successful, updates preferences signed-in user's information.
                         ConfigPreferencesModel.setInitialPreferences(this.getApplication());
-//                        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-                        //NavigationUI.setupActionBarWithNavController(this, navController);
                         openLoginView(); // Goes to the next screen.
                         Log.d("SignIn", "Sign in successful");
                     }
