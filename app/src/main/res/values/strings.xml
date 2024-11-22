@@ -52,7 +52,7 @@
     <string name="cancel_text">Cancelar</string>
     <string name="input_current_password_text">Introduce tu contraseña actual</string>
     <string name="current_password_text">Contraseña actual</string>
-    <string name="fill_all_fields_toast_text">Llena todos los campos</string>
+    <string name="fill_all_fields_toast_text">Completa todos los campos</string>
     <string name="username_preference_dialog_text">Introduce tu nuevo nombre de usuario</string>
     <string name="email_preference_dialog_text">Introduce tu nuevo correo electrónico</string>
     <string name="house_preferences">Características de la casa</string>
@@ -156,6 +156,7 @@
         <item>Privado</item>
         <item>Compartido</item>
     </string-array>
+    <string name="passwords_dont_match_toast_text">Las contraseñas no coinciden</string>
 
 
 </resources>

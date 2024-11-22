@@ -38,7 +38,7 @@
     <string name="cancel_text">Cancel</string>
     <string name="input_current_password_text">Insert your current password</string>
     <string name="current_password_text">Current password</string>
-    <string name="fill_all_fields_toast_text">Fill all the fields</string>
+    <string name="fill_all_fields_toast_text">Enter all the fields</string>
     <string name="username_preference_dialog_text">Insert your new username</string>
     <string name="email_preference_dialog_text">Insert your new email</string>
     <string name="house_preferences">House Preferences</string>
@@ -76,4 +76,5 @@
     <string name="title_misfavs">PyFavs</string>
     <string name="title_chats">Chats</string>
     <string name="title_config">Settings</string>
+    <string name="passwords_dont_match_toast_text">Passwords don\'t match</string>
 </resources>
