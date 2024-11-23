@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- archivo para el fondo personalizaod del botón switch -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Funcionalidad para switch en ON -->
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape android:shape="oval"> <!-- Circulo gris -->
+                    <solid android:color="#CCCCCC" />
+                    <size android:width="50dp" android:height="50dp" />
+                </shape>
+            </item>
+            <item android:gravity="center">
+                <vector android:src="@drawable/ic_heart" android:tint="#FF0000" /> <!-- Corazon rojo -->
+            </item>
+        </layer-list>
+    </item>
+
+<!-- Funcionalidad para switch en OFF -->
+    <item>
+        <layer-list>
+            <item>
+                <shape android:shape="oval"> <!-- Circulo girs -->
+                    <solid android:color="#CCCCCC" />
+                    <size android:width="50dp" android:height="50dp" />
+                </shape>
+            </item>
+            <item android:gravity="center">
+                <vector android:src="@drawable/ic_heart" android:tint="#FFFFFF" /> <!-- Corazon blanco -->
+            </item>
+        </layer-list>
+    </item>
+</selector>

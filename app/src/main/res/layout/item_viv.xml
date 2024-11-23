@@ -19,22 +19,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent">
-        <!-- IMAGEN IRÍA AQUÍ -->
-        <Button
-            android:id="@+id/button2"
-            android:tintMode="src_in"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
+
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/toggle_button_bg"
+            android:checked="false"
+            android:textOff=""
+            android:textOn=""
+            android:focusable="false"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/circular_button"
-            android:contentDescription="FavouriteButton"
-            android:elevation="4dp"
-            android:drawableStart="@drawable/ic_heart"
-            android:drawableTint="#F65454"
-            android:gravity="center"
-            android:padding="8dp" />
+            android:clickable="true"/>
     </FrameLayout>
 
     <!-- Nombre de vivienda -->
