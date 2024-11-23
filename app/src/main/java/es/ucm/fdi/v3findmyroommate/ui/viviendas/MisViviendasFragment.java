@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.AsyncListUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +23,16 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 
 //ESTE FRAGMENT SIRVE COMO "CONECTOR" DE TODA LA PARTE DE "MISVIVIENDAS".
@@ -52,6 +58,11 @@ public class MisViviendasFragment extends Fragment {
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
     private ActivityResultLauncher<Intent> verAnuncioLauncher;
 
+    // Define the callback interface
+    public interface DataCallback<T> {
+        void onDataLoaded(T data);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,8 +81,10 @@ public class MisViviendasFragment extends Fragment {
         adapter = new AnunciosAdapter(misViviendasViewModel, this);
         recyclerView.setAdapter(adapter);
 
-        List<Anuncio> nuevaListaAnuncios = loadUserAdds();
-        adapter.setAnuncios(nuevaListaAnuncios);
+        loadUserAdds(anuncios -> {
+            adapter.setAnuncios(anuncios);
+            adapter.notifyDataSetChanged(); // Refresh the adapter
+        });
 
         // CON ESTO PODREMOS OBSERVAR LOS DATOS ACTUALIZADOS DE LOS ANUNCIOS A TIEMPO REAL,
         // DE MANERA QUE SI SE PRODUCE ALGUN CAMBIO EN LA LISTA DE ANUNCIOS, SE NOTIFICARÁ
@@ -164,21 +177,131 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Función que busca en la BD la lista de anuncios del usuario -por sus IDs de anuncio- y devuelve
-    // una lista con todos los anuncios del mismo.
-    private List<Anuncio> loadUserAdds() {
-        List<Anuncio> newAddList = new ArrayList<Anuncio>();
+    // Función que
+    private void loadUserAdds(DataCallback<List<Anuncio>> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Get current user
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
-        if (user != null) {
-            String idUsuario = user.getUid();
-
-
+        if (user == null) {
+            callback.onDataLoaded(new ArrayList<>()); // Return an empty list if the user is null
+            return;
         }
 
+        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(
+                requireContext().getString(R.string.database_url));
+
+        DatabaseReference databaseUserReference = databaseInstance.getReference("users").child(user.getUid());
+
+        databaseUserReference.get().addOnCompleteListener(firstTask -> {
+            if (firstTask.isSuccessful()) {
+                DataSnapshot firstSnapshot = firstTask.getResult();
+
+                List<String> userAddsIDListInDB = firstSnapshot.child(
+                                getContext().getString(R.string.user_adds_list_db_label))
+                        .getValue(new GenericTypeIndicator<List<String>>() {});
+
+                if (userAddsIDListInDB != null) {
+                    DatabaseReference databaseAddReference = databaseInstance.getReference("adds");
+
+                    List<Anuncio> newAddList = new ArrayList<>();
+                    for (String addID : userAddsIDListInDB) {
+                        databaseAddReference.child(addID).get().addOnCompleteListener(secondTask -> {
+                            if (secondTask.isSuccessful()) {
+                                DataSnapshot secondSnapshot = secondTask.getResult();
+
+                                String titulo = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_title_db_label)).getValue(String.class);
+                                String ubicacion = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_location_db_label)).getValue(String.class);
+                                String metros = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_square_meters_db_label)).getValue(String.class);
+                                String precio = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_price_db_label)).getValue(String.class);
+                                String descripcion = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_description_db_label)).getValue(String.class);
+                                String categoria = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.property_type_db_label)).getValue(String.class);
+
+                                // Obtiene la lista de imágenes del anuncio de la BD en formato String.
+                                List<String> listaImagenesFormatoString = secondSnapshot.child(getActivity().getApplication()
+                                        .getString(R.string.add_uri_list_db_label)).getValue
+                                        (new GenericTypeIndicator<List<String>>() {});
+
+                                // Convierte los valores de la lista recibida a formato Uri.
+                                List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
+
+                                // Introduce cada uno de los campos en un intent.
+                                Intent currentAddIntent = new Intent();
+                                currentAddIntent.putExtra("titulo", titulo);
+                                currentAddIntent.putExtra("ubicacion", ubicacion);
+                                currentAddIntent.putExtra("metros", metros);
+                                currentAddIntent.putExtra("precio", precio);
+                                currentAddIntent.putExtra("descripcion", descripcion);
+                                currentAddIntent.putExtra("categoria", categoria);
+                                currentAddIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(listaImagenesFormatoUri));
+
+                                if (categoria.equals(getContext().getApplicationContext().getString(
+                                        R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
+
+                                    String tipo_casa = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                                    String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                                    String num_banos = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                                    String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.orientation_db_label)).getValue(String.class);
+
+                                    // Guardamos los datos específicos, propios de una casa.
+                                    currentAddIntent.putExtra("tipoCasa", tipo_casa);
+                                    currentAddIntent.putExtra("habitaciones", num_habitaciones);
+                                    currentAddIntent.putExtra("banos", num_banos);
+                                    currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                }
+
+                                // Añade el anuncio a la lista del modelo.
+                                misViviendasViewModel.addAnuncio(currentAddIntent);
+
+                                // Crea un nuevo anuncio a partir del intent y lo guarda en la lista.
+                                Anuncio newAdd = new Anuncio(currentAddIntent);
+                                newAddList.add(newAdd);
+
+                                // Notify the callback when all ads are loaded
+                                if (newAddList.size() == userAddsIDListInDB.size()) {
+                                    callback.onDataLoaded(newAddList);
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    callback.onDataLoaded(new ArrayList<>()); // No ads found
+                }
+            }
+            else {
+                callback.onDataLoaded(new ArrayList<>()); // Task failed
+            }
+        });
+    }
 
 
-        return null;
+    // Función auxiliar que convierte una lista de Uris a otra de Strings
+    public static List<String> convierteListaUrisAListaStrings(List<Uri> urisList) {
+        List<String> stringsList = new ArrayList<>();
+        for (Uri uri : urisList) {
+            stringsList.add(uri.toString());
+        }
+        return stringsList;
+    }
+
+
+    // Función auxiliar que convierte una lista de Strings a otra de Uris.
+    public static List<Uri> convierteListaStringsAListaUris(List<String> stringsList) {
+        List<Uri> urisList = new ArrayList<>();
+        for (String str : stringsList) {
+            Uri newUri = Uri.parse(str);
+            urisList.add(newUri);
+        }
+        return urisList;
     }
 
 

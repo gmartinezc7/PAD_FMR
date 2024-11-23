@@ -167,7 +167,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String descripcion = editDescripcion.getText().toString();
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() ) {
+                || precio.isEmpty() /*|| imagenesUri.isEmpty()*/) {
             Toast.makeText(this, "Debes rellenar toda la información " +
                     "para poder crear un anuncio", Toast.LENGTH_LONG).show();
             return; // Detiene el flujo y no continúa con la creación del anuncio
@@ -222,11 +222,10 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                 getApplicationContext().getString(R.string.database_url));
 
         // Obtiene la referencia a la BD de anuncios.
-        String yo = nuevoAnuncio.getId();
         DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
                 .child(nuevoAnuncio.getId());
 
-        databaseAddReference.child(application.getString(R.string.add_title_db_label))
+            databaseAddReference.child(application.getString(R.string.add_title_db_label))
                 .setValue(nuevoAnuncio.getTitulo());
         databaseAddReference.child(application.getString((R.string.add_location_db_label)))
                 .setValue(nuevoAnuncio.getUbicacion());
@@ -237,13 +236,15 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         databaseAddReference.child(application.getString((R.string.add_description_db_label)))
                 .setValue(nuevoAnuncio.getDescripcion());
 
+        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
+        databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
+                .setValue(listaImagenesAnuncioFormatoString);
+
         String categoria = nuevoAnuncio.getCategoria();
         databaseAddReference.child(application.getString((R.string.property_type_db_label)))
                 .setValue(categoria);
 
         if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .removeValue();
             databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
                     .setValue(nuevoAnuncio.getTipoCasa());
             databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
@@ -287,23 +288,22 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                     DataSnapshot snapshot = task.getResult();
                     // Obtiene la lista actual de anuncios de ese usuario
                     List<String> userAddsIdsList = new ArrayList<String>();
-                    String pera = snapshot.child("pera").getValue(String.class);
 
                     List<String> userAddsInDB = snapshot.child(application
-                            .getString(R.string.user_adds_list_db_label)).getValue(
-                            new GenericTypeIndicator<List<String>>() {
-                            });
+                        .getString(R.string.user_adds_list_db_label)).getValue(
+                        new GenericTypeIndicator<List<String>>() {
+                        });
 
                     if (userAddsInDB != null) {
                         // Añade el ID del anuncio a la lista y la actualiza en la BD.
                         userAddsInDB.add(nuevoAnuncio.getId());
                         databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                                .setValue(userAddsInDB);
+                            .setValue(userAddsInDB);
                     }
                     else {
                         userAddsIdsList.add(nuevoAnuncio.getId());
                         databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                                .setValue(userAddsIdsList);
+                            .setValue(userAddsIdsList);
                     }
                 }
             });
@@ -476,6 +476,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
 
-
     }
+
 }
