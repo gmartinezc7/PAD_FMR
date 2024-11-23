@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 //CLASE QUE NOS PERMITE MANEJAR ANUNCIOS, NOS GUSTARÍA QUE IMPLEMENTASE
@@ -41,7 +42,12 @@ public class Anuncio {
 
     public Anuncio( Intent data) {
 
-        this.idAnuncio = data.getStringExtra("id");
+        // Genera un número aleatorio.
+        Random rand = new Random();
+        int randomIDNumber = rand.nextInt(Integer.MAX_VALUE);
+
+        // Crea el ID como un string basado en el número aleatorio creado anteriormente.
+        this.idAnuncio = "a" + String.valueOf(randomIDNumber);
         this.titulo = data.getStringExtra("titulo");
         this.ubicacion = data.getStringExtra("ubicacion");
         this.metros = data.getStringExtra("metros");

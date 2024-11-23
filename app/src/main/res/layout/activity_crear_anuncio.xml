@@ -3,333 +3,329 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-     <TextView
-         android:id="@+id/titulo_crear"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="Crear Anuncio"
-         android:textSize="20sp"
-         android:layout_marginBottom="16dp"
-         android:gravity="center"/>
-
-    <EditText
-        android:id="@+id/create_titulo"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Título del anuncio"
-        android:inputType="text" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/create_ubicacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ubicación"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/create_metros"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Metros cuadrados"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/create_precio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Precio"
-        android:inputType="numberDecimal" />
-
-    <EditText
-        android:id="@+id/create_descripcion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Descripción del anuncio"
-        android:inputType="textMultiLine"
-        android:minLines="5"
-        android:gravity="top"
-        android:scrollbars="vertical" />
-
-
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:gravity="center"
-         android:layout_marginTop="20dp">
-
-         <Button
-
-             android:id="@+id/btn_seleccionar_imagen"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Añadir Imagen"
-             android:backgroundTint="#FFFFFF"
-             android:layout_marginEnd="16dp" />
-
-
-         <Button
-             android:id="@+id/btn_eliminar_imagen"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Eliminar Imagen"
-             android:backgroundTint="#FFFFFF"
-             android:layout_marginEnd="16dp" />
-
-     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/preview_rect"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/border_rectangle"
-        android:padding="8dp">
-
-      <ImageView
-        android:id="@+id/imagen_anuncio"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:scaleType="centerCrop"
-          />
-
-        <!-- Flecha izquierda -->
-        <ImageButton
-            android:id="@+id/btn_prev"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/titulo_crear"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_flecha_izquierda"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+            android:text="Crear Anuncio"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"/>
 
-        <!-- Flecha derecha -->
-        <ImageButton
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/create_titulo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_flecha_derecha"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true" />
-    </FrameLayout>
+            android:hint="Título del anuncio"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/create_ubicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ubicación"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/create_metros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Metros cuadrados"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/create_precio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Precio"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/create_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción del anuncio"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:gravity="top"
+            android:scrollbars="vertical" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+
+                android:id="@+id/btn_seleccionar_imagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir Imagen"
+                android:layout_marginEnd="16dp" />
+
+
+            <Button
+                android:id="@+id/btn_eliminar_imagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eliminar Imagen"
+                android:layout_marginEnd="16dp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/preview_rect"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/border_rectangle"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/imagen_anuncio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+
+            <!-- Flecha izquierda -->
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_izquierda"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+
+            <!-- Flecha derecha -->
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_derecha"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+        </FrameLayout>
 
 
 
 
-     //---------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
 
-     <!-- Espacio adicional antes del título -->
-     <View
-         android:layout_width="match_parent"
-         android:layout_height="30dp" />
+        <!-- Espacio adicional antes del título -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
-     <!-- Título centrado -->
-     <TextView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente"
-         android:textAlignment="center"
-         android:textSize="18sp"
-         android:textStyle="bold"
-         android:layout_marginBottom="16dp" />
+        <!-- Título centrado -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
-     <!-- Spinner Categoría -->
-     <TextView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="Categoría"
-         android:textSize="12sp"
-         android:layout_marginBottom="5dp" />
+        <!-- Spinner Categoría -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría"
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
 
-     <Spinner
-         android:id="@+id/spinner_categoria"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:entries="@array/categorias_array"
-         android:layout_marginBottom="30dp" />
+        <Spinner
+            android:id="@+id/spinner_categoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/categorias_array"
+            android:layout_marginBottom="30dp" />
 
-     <!-- Opciones para Casa -->
-     <LinearLayout
-         android:id="@+id/opciones_casa"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         android:visibility="gone">
+        <!-- Opciones para Casa -->
+        <LinearLayout
+            android:id="@+id/opciones_casa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-         <!-- Tipo de Casa -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Tipo de Casa"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
+            <!-- Tipo de Casa -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Casa"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
 
-         <Spinner
-             android:id="@+id/spinner_tipo_casa"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/tipo_casa_array"
-             android:layout_marginBottom="30dp" />
+            <Spinner
+                android:id="@+id/spinner_tipo_casa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo_casa_array"
+                android:layout_marginBottom="30dp" />
 
-         <!-- Habitaciones -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Número de Habitaciones"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
+            <!-- Habitaciones -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Habitaciones"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
 
-         <Spinner
-             android:id="@+id/spinner_habitaciones"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/habitaciones_array"
-             android:layout_marginBottom="30dp" />
-
-
-         <!-- Baños -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Número de Baños"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
-
-         <Spinner
-             android:id="@+id/spinner_banos"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/banos_array"
-             android:layout_marginBottom="30dp" />
-
-         <!-- Interior/Exterior -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Orientación (Interior/Exterior)"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
-
-         <Spinner
-             android:id="@+id/spinner_exterior_interior_casa"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/exterior_interior_array"
-             android:layout_marginBottom="30dp" />
-
-     </LinearLayout>
+            <Spinner
+                android:id="@+id/spinner_habitaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/habitaciones_array"
+                android:layout_marginBottom="30dp" />
 
 
+            <!-- Baños -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Baños"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
 
-     <!-- Opciones para Habitación -->
-     <LinearLayout
-         android:id="@+id/opciones_habitacion"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         android:visibility="gone">
+            <Spinner
+                android:id="@+id/spinner_banos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/banos_array"
+                android:layout_marginBottom="30dp" />
 
-         <!-- Compañeros -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Número de Compañeros"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
 
-         <Spinner
-             android:id="@+id/spinner_companeros"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/companeros_array"
-             android:layout_marginBottom="30dp" />
+            <Spinner
+                android:id="@+id/spinner_exterior_interior_casa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/exterior_interior_array"
+                android:layout_marginBottom="30dp" />
 
-         <!-- Género -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Género de los Habitantes"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
-
-         <Spinner
-             android:id="@+id/spinner_genero"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/genero_array"
-             android:layout_marginBottom="30dp" />
-
-
-         <!-- Interior/Exterior -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Orientación (Interior/Exterior)"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
-         <Spinner
-             android:id="@+id/spinner_exterior_interior_habitacion"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/exterior_interior_array"
-             android:layout_marginBottom="30dp" />
-
-         <!-- Tipo de Baño -->
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Tipo de Baño"
-             android:textSize="12sp"
-             android:layout_marginBottom="5dp" />
-         <Spinner
-             android:id="@+id/spinner_tipo_bano"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:entries="@array/tipo_bano_array"
-             android:layout_marginBottom="30dp" />
-     </LinearLayout>
+        </LinearLayout>
 
 
 
-     //---------------------------------------------------------------------------------------------------------
+        <!-- Opciones para Habitación -->
+        <LinearLayout
+            android:id="@+id/opciones_habitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Compañeros -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Compañeros"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_companeros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/companeros_array"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Género -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Género de los Habitantes"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_genero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/genero_array"
+                android:layout_marginBottom="30dp" />
+
+
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <Spinner
+                android:id="@+id/spinner_exterior_interior_habitacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/exterior_interior_array"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Tipo de Baño -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Baño"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <Spinner
+                android:id="@+id/spinner_tipo_bano"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo_bano_array"
+                android:layout_marginBottom="30dp" />
+        </LinearLayout>
+
+
+
+        //---------------------------------------------------------------------------------------------------------
 
 
 
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
 
-    <!-- Botón Guardar Anuncio -->
-      <Button
-        android:id="@+id/btn_guardar_anuncio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar anuncio"
-        android:backgroundTint="#FFFFFF"
-        android:layout_marginEnd="16dp" />
+            <!-- Botón Guardar Anuncio -->
+            <Button
+                android:id="@+id/btn_guardar_anuncio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar anuncio"
+                android:layout_marginEnd="16dp" />
 
-    <!-- Botón Cancelar -->
-      <Button
-        android:id="@+id/btn_cancelar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancelar"
-        android:backgroundTint="#FFFFFF" />
+            <!-- Botón Cancelar -->
+            <Button
+                android:id="@+id/btn_cancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar" />
+        </LinearLayout>
+
     </LinearLayout>
-
- </LinearLayout>
 
 </ScrollView>

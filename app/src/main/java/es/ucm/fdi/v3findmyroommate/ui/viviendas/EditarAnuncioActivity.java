@@ -41,7 +41,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 public class EditarAnuncioActivity extends AppCompatActivity {
     private MisViviendasViewModel viewModel;
 
-
+    private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
@@ -94,6 +94,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editar_anuncio);
 
         Intent intent = getIntent();
+        this.idAnuncio = intent.getStringExtra("id");
         this.titulo = intent.getStringExtra("titulo");
         this.ubicacion = intent.getStringExtra("ubicacion");
         this.metros = intent.getStringExtra("metros");
@@ -408,6 +409,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
         Intent resultIntent = new Intent();
+        resultIntent.putExtra("id", idAnuncio);
         resultIntent.putExtra("titulo", titulo);
         resultIntent.putExtra("ubicacion", ubicacion);
         resultIntent.putExtra("metros", metros);
@@ -435,7 +437,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
         }
 
-
+        CrearAnuncioActivity.guardarAnuncioEnBD(new Anuncio(resultIntent), this.getApplication());
         setResult(RESULT_OK, resultIntent);
         finish();
     }

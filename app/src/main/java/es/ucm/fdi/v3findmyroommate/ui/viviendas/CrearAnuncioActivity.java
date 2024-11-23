@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,11 +37,12 @@ import android.widget.AdapterView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import es.ucm.fdi.v3findmyroommate.R;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 
 public class CrearAnuncioActivity extends AppCompatActivity {
@@ -175,8 +175,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
         Intent resultIntent = new Intent();
-        String idNuevoAnuncio = "a" + String.valueOf(Anuncio.generadorId++);
-        resultIntent.putExtra("id", idNuevoAnuncio);
         resultIntent.putExtra("titulo", titulo);
         resultIntent.putExtra("ubicacion", ubicacion);
         resultIntent.putExtra("metros", metros);
@@ -213,16 +211,18 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     }
 
 
+    // Función que guarda el anuncio en la base de datos.
     public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
-        // Obtiene el usuario actual.
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // Guarda el ID del anuncio en la lista de anuncios de este usuario.
+        CrearAnuncioActivity.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
 
         // Obtiene una instancia de la BD.
         FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
                 getApplicationContext().getString(R.string.database_url));
 
-        // Obtiene la referencia a la BD.
+        // Obtiene la referencia a la BD de anuncios.
+        String yo = nuevoAnuncio.getId();
         DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
                 .child(nuevoAnuncio.getId());
 
@@ -253,7 +253,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             databaseAddReference.child(application.getString(R.string.orientation_db_label))
                     .setValue(nuevoAnuncio.getExteriorInterior());
         }
-
         else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
             databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
                     .setValue(nuevoAnuncio.getCompaneros());
@@ -265,6 +264,50 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                     .setValue(nuevoAnuncio.getTipoBano());
         }
 
+    }
+
+
+    // Función que guarda el anuncio actual en la lista de anuncios del usuario.
+    private static void guardarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
+        // Obtiene el usuario actual.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            // Obtiene una instancia de la BD.
+            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                    getApplicationContext().getString(R.string.database_url));
+
+            // Obtiene la referencia a la BD de usuarios.
+            DatabaseReference databaseUserReference = databaseInstance.getReference("users")
+                    .child(user.getUid());
+
+            databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    // Obtiene la lista actual de anuncios de ese usuario
+                    List<String> userAddsIdsList = new ArrayList<String>();
+                    String pera = snapshot.child("pera").getValue(String.class);
+
+                    List<String> userAddsInDB = snapshot.child(application
+                            .getString(R.string.user_adds_list_db_label)).getValue(
+                            new GenericTypeIndicator<List<String>>() {
+                            });
+
+                    if (userAddsInDB != null) {
+                        // Añade el ID del anuncio a la lista y la actualiza en la BD.
+                        userAddsInDB.add(nuevoAnuncio.getId());
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                .setValue(userAddsInDB);
+                    }
+                    else {
+                        userAddsIdsList.add(nuevoAnuncio.getId());
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                .setValue(userAddsIdsList);
+                    }
+                }
+            });
+        }
     }
 
 

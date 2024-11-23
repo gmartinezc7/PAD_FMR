@@ -19,7 +19,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -63,6 +69,9 @@ public class MisViviendasFragment extends Fragment {
         //USARÁ A ESTE ADPATADOR PARA MOSTRAR LOS DATOS
         adapter = new AnunciosAdapter(misViviendasViewModel, this);
         recyclerView.setAdapter(adapter);
+
+        List<Anuncio> nuevaListaAnuncios = loadUserAdds();
+        adapter.setAnuncios(nuevaListaAnuncios);
 
         // CON ESTO PODREMOS OBSERVAR LOS DATOS ACTUALIZADOS DE LOS ANUNCIOS A TIEMPO REAL,
         // DE MANERA QUE SI SE PRODUCE ALGUN CAMBIO EN LA LISTA DE ANUNCIOS, SE NOTIFICARÁ
@@ -153,4 +162,24 @@ public class MisViviendasFragment extends Fragment {
         verAnuncioLauncher.launch(intent);
 
     }
+
+
+    // Función que busca en la BD la lista de anuncios del usuario -por sus IDs de anuncio- y devuelve
+    // una lista con todos los anuncios del mismo.
+    private List<Anuncio> loadUserAdds() {
+        List<Anuncio> newAddList = new ArrayList<Anuncio>();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
+        if (user != null) {
+            String idUsuario = user.getUid();
+
+
+        }
+
+
+
+        return null;
+    }
+
+
 }
