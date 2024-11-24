@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
+import java.io.Serializable;
 import java.util.Map;
 
 public class Chat {
@@ -58,4 +59,6 @@ public class Chat {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public Serializable getParticipants() { return (Serializable) participantes; }
 }

@@ -49,7 +49,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
 
-        // Firebase referencias
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String currentUserId = mAuth.getCurrentUser().getUid();
@@ -66,7 +65,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
 
         if (otherUserId != null) {
-            // Obtener el nombre del otro usuario desde la base de datos
             userRef.child(otherUserId).child("username").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
                     String otherUserName = task.getResult().getValue(String.class);
@@ -82,16 +80,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
 
 
-        // Último mensaje
+        //Último mensaje
         Message lastMessage = getLastMessage(chat.getMessages());
         holder.chatLastMessage.setText(lastMessage != null ? lastMessage.getText() : "Sin mensajes");
 
-        // Timestamp
+        //Timestamp
         long timestamp = lastMessage != null ? lastMessage.getTimestamp() : 0;
         String formattedTimestamp = formatTimestamp(timestamp);
         holder.chatTimestamp.setText(formattedTimestamp);
 
-        // Click sobre el chat lleva al chat
+        //Click sobre el chat lleva al chat
         holder.itemView.setOnClickListener(v -> chatClickListener.onChatClick(chat));
     }
 

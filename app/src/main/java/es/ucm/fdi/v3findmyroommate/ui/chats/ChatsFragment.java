@@ -23,6 +23,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigEditTextPreferencesFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +49,14 @@ public class ChatsFragment extends Fragment {
             public void onChatClick(Chat chat) {
                 ChatFragment chatFragment = new ChatFragment();
                 Bundle bundle = new Bundle();
+
+                //Detalles Chat
                 bundle.putString("chatId", chat.getChatId());
+                bundle.putString("lastMessage", chat.getLastMessage());
+                bundle.putSerializable("participants", (HashMap) chat.getParticipantes());
+
                 chatFragment.setArguments(bundle);
 
-                // Ocultar RecyclerView y mostrar el contenedor del fragmento
                 recyclerView.setVisibility(View.GONE);
                 View container = getView().findViewById(R.id.chatFragmentContainer);
                 if (container != null) {
@@ -65,6 +70,7 @@ public class ChatsFragment extends Fragment {
                         .commit();
             }
         });
+
 
         recyclerView.setAdapter(chatAdapter);
 

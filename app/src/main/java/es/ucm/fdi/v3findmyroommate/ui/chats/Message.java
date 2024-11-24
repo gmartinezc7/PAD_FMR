@@ -13,7 +13,6 @@ public class Message {
 
     public Message() {}
 
-    // Constructor modified to ensure senderId is passed correctly
     public Message(String messageId, String sender, String text, long timestamp) {
         this.messageId = messageId;
         this.sender = sender;
@@ -62,7 +61,6 @@ public class Message {
         this.participantes = participantes;
     }
 
-    // Firebase DataSnapshot processing if necessary (example):
     public static Message fromDataSnapshot(DataSnapshot snapshot) {
         Message message = snapshot.getValue(Message.class);
         if (message != null) {
@@ -70,4 +68,6 @@ public class Message {
         }
         return message;
     }
+
+    public String getSenderId() {return sender;}
 }
