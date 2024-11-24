@@ -48,6 +48,8 @@
 
 
     <!-- Price -->
+
+    <!-- Description -->
     <TextView
         android:id="@+id/price"
         android:layout_width="89dp"
@@ -59,7 +61,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/framefotos" />
 
-    <!-- Description -->
     <TextView
         android:id="@+id/description"
         android:layout_width="312dp"
