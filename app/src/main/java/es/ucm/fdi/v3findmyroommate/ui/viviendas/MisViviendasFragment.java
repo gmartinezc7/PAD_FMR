@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -145,6 +146,7 @@ public class MisViviendasFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), AnuncioDetalleActivity.class);
 
+        intent.putExtra("id", anuncio.getId());
         intent.putExtra("titulo", anuncio.getTitulo());
         intent.putExtra("ubicacion", anuncio.getUbicacion());
         intent.putExtra("metros", anuncio.getMetros());
@@ -204,73 +206,95 @@ public class MisViviendasFragment extends Fragment {
 
                     List<Anuncio> newAddList = new ArrayList<>();
                     for (String addID : userAddsIDListInDB) {
-                        databaseAddReference.child(addID).get().addOnCompleteListener(secondTask -> {
-                            if (secondTask.isSuccessful()) {
-                                DataSnapshot secondSnapshot = secondTask.getResult();
+                        if (addID != null) {
+                            databaseAddReference.child(addID).get().addOnCompleteListener(secondTask -> {
+                                if (secondTask.isSuccessful()) {
+                                    DataSnapshot secondSnapshot = secondTask.getResult();
 
-                                String titulo = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_title_db_label)).getValue(String.class);
-                                String ubicacion = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_location_db_label)).getValue(String.class);
-                                String metros = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_square_meters_db_label)).getValue(String.class);
-                                String precio = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_price_db_label)).getValue(String.class);
-                                String descripcion = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_description_db_label)).getValue(String.class);
-                                String categoria = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.property_type_db_label)).getValue(String.class);
+                                    String titulo = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_title_db_label)).getValue(String.class);
+                                    String ubicacion = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_location_db_label)).getValue(String.class);
+                                    String metros = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_square_meters_db_label)).getValue(String.class);
+                                    String precio = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_price_db_label)).getValue(String.class);
+                                    String descripcion = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_description_db_label)).getValue(String.class);
+                                    String categoria = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.property_type_db_label)).getValue(String.class);
 
-                                // Obtiene la lista de imágenes del anuncio de la BD en formato String.
-                                List<String> listaImagenesFormatoString = secondSnapshot.child(getActivity().getApplication()
-                                        .getString(R.string.add_uri_list_db_label)).getValue
-                                        (new GenericTypeIndicator<List<String>>() {});
+                                    // Obtiene la lista de imágenes del anuncio de la BD en formato String.
+                                    List<String> listaImagenesFormatoString = secondSnapshot.child(getActivity().getApplication()
+                                            .getString(R.string.add_uri_list_db_label)).getValue
+                                            (new GenericTypeIndicator<List<String>>() {});
 
-                                // Convierte los valores de la lista recibida a formato Uri.
-                                List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
+                                    // Convierte los valores de la lista recibida a formato Uri.
+                                    List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
 
-                                // Introduce cada uno de los campos en un intent.
-                                Intent currentAddIntent = new Intent();
-                                currentAddIntent.putExtra("titulo", titulo);
-                                currentAddIntent.putExtra("ubicacion", ubicacion);
-                                currentAddIntent.putExtra("metros", metros);
-                                currentAddIntent.putExtra("precio", precio);
-                                currentAddIntent.putExtra("descripcion", descripcion);
-                                currentAddIntent.putExtra("categoria", categoria);
-                                currentAddIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(listaImagenesFormatoUri));
+                                    // Introduce cada uno de los campos en un intent.
+                                    Intent currentAddIntent = new Intent();
+                                    currentAddIntent.putExtra("id", addID);
+                                    currentAddIntent.putExtra("titulo", titulo);
+                                    currentAddIntent.putExtra("ubicacion", ubicacion);
+                                    currentAddIntent.putExtra("metros", metros);
+                                    currentAddIntent.putExtra("precio", precio);
+                                    currentAddIntent.putExtra("descripcion", descripcion);
+                                    currentAddIntent.putExtra("categoria", categoria);
+                                    currentAddIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(listaImagenesFormatoUri));
 
-                                if (categoria.equals(getContext().getApplicationContext().getString(
-                                        R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
+                                    if (categoria.equals(getContext().getApplicationContext().getString(
+                                            R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
 
-                                    String tipo_casa = secondSnapshot.child(getActivity().getApplication()
-                                            .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
-                                    String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
-                                            .getString(R.string.num_rooms_db_label)).getValue(String.class);
-                                    String num_banos = secondSnapshot.child(getActivity().getApplication()
-                                            .getString(R.string.add_house_type_db_label)).getValue(String.class);
-                                    String orientacion = secondSnapshot.child(getActivity().getApplication()
-                                            .getString(R.string.orientation_db_label)).getValue(String.class);
+                                        String tipo_casa = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                                        String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                                        String num_banos = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.orientation_db_label)).getValue(String.class);
 
-                                    // Guardamos los datos específicos, propios de una casa.
-                                    currentAddIntent.putExtra("tipoCasa", tipo_casa);
-                                    currentAddIntent.putExtra("habitaciones", num_habitaciones);
-                                    currentAddIntent.putExtra("banos", num_banos);
-                                    currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                        // Guardamos los datos específicos, propios de una casa.
+                                        currentAddIntent.putExtra("tipoCasa", tipo_casa);
+                                        currentAddIntent.putExtra("habitaciones", num_habitaciones);
+                                        currentAddIntent.putExtra("banos", num_banos);
+                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                    }
+
+                                    else if (categoria.equals(getContext().getApplicationContext().getString(
+                                            R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
+
+                                        String max_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                                        String genero_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.orientation_db_label)).getValue(String.class);
+                                        String tipo_bano = secondSnapshot.child(getActivity().getApplication()
+                                                .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+
+                                        // Guardamos los datos específicos, propios de una casa.
+                                        currentAddIntent.putExtra("companeros", max_companeros);
+                                        currentAddIntent.putExtra("genero", genero_companeros);
+                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                        currentAddIntent.putExtra("tipoBano", tipo_bano);
+                                    }
+
+                                    // Añade el anuncio a la lista del modelo.
+                                    misViviendasViewModel.addAnuncio(currentAddIntent);
+
+                                    // Crea un nuevo anuncio a partir del intent y lo guarda en la lista.
+                                    Anuncio newAdd = new Anuncio(currentAddIntent);
+                                    newAddList.add(newAdd);
+
+                                    // Notify the callback when all ads are loaded
+                                    if (newAddList.size() == userAddsIDListInDB.size()) {
+                                        callback.onDataLoaded(newAddList);
+                                    }
                                 }
-
-                                // Añade el anuncio a la lista del modelo.
-                                misViviendasViewModel.addAnuncio(currentAddIntent);
-
-                                // Crea un nuevo anuncio a partir del intent y lo guarda en la lista.
-                                Anuncio newAdd = new Anuncio(currentAddIntent);
-                                newAddList.add(newAdd);
-
-                                // Notify the callback when all ads are loaded
-                                if (newAddList.size() == userAddsIDListInDB.size()) {
-                                    callback.onDataLoaded(newAddList);
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
                 else {
@@ -282,6 +306,159 @@ public class MisViviendasFragment extends Fragment {
             }
         });
     }
+
+
+    // Función que guarda un anuncio de nueva creación en la base de datos.
+    public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
+
+        // Guarda el ID del anuncio en la lista de anuncios de este usuario.
+        MisViviendasFragment.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
+
+        // Obtiene una instancia de la BD.
+        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                getApplicationContext().getString(R.string.database_url));
+
+        // Obtiene la referencia a la BD de anuncios.
+        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
+                .child(nuevoAnuncio.getId());
+
+        databaseAddReference.child(application.getString(R.string.add_title_db_label))
+                .setValue(nuevoAnuncio.getTitulo());
+        databaseAddReference.child(application.getString((R.string.add_location_db_label)))
+                .setValue(nuevoAnuncio.getUbicacion());
+        databaseAddReference.child(application.getString((R.string.add_square_meters_db_label)))
+                .setValue(nuevoAnuncio.getMetros());
+        databaseAddReference.child(application.getString((R.string.add_price_db_label)))
+                .setValue(nuevoAnuncio.getPrecio());
+        databaseAddReference.child(application.getString((R.string.add_description_db_label)))
+                .setValue(nuevoAnuncio.getDescripcion());
+
+        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
+        databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
+                .setValue(listaImagenesAnuncioFormatoString);
+
+        String categoria = nuevoAnuncio.getCategoria();
+        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
+                .setValue(categoria);
+
+        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
+            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
+                    .setValue(nuevoAnuncio.getTipoCasa());
+            databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
+                    .setValue(nuevoAnuncio.getHabitaciones());
+            databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                    .setValue(nuevoAnuncio.getBanos());
+            databaseAddReference.child(application.getString(R.string.orientation_db_label))
+                    .setValue(nuevoAnuncio.getExteriorInterior());
+        }
+        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
+            databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
+                    .setValue(nuevoAnuncio.getCompaneros());
+            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
+                    .setValue(nuevoAnuncio.getGenero());
+            databaseAddReference.child(application.getString(R.string.orientation_db_label))
+                    .setValue(nuevoAnuncio.getExteriorInterior());
+            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
+                    .setValue(nuevoAnuncio.getTipoBano());
+        }
+    }
+
+
+    // Función que actualiza un anuncio ya existente en la base de datos.
+    public static void actualizarAnuncioEnBD(Anuncio anuncioActualizado, Application application) {
+
+        // Obtiene una instancia de la BD.
+        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                getApplicationContext().getString(R.string.database_url));
+
+        // Obtiene la referencia a la BD de anuncios.
+        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
+                .child(anuncioActualizado.getId());
+
+        databaseAddReference.child(application.getString(R.string.add_title_db_label))
+                .setValue(anuncioActualizado.getTitulo());
+        databaseAddReference.child(application.getString((R.string.add_location_db_label)))
+                .setValue(anuncioActualizado.getUbicacion());
+        databaseAddReference.child(application.getString((R.string.add_square_meters_db_label)))
+                .setValue(anuncioActualizado.getMetros());
+        databaseAddReference.child(application.getString((R.string.add_price_db_label)))
+                .setValue(anuncioActualizado.getPrecio());
+        databaseAddReference.child(application.getString((R.string.add_description_db_label)))
+                .setValue(anuncioActualizado.getDescripcion());
+
+        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(anuncioActualizado.getImagenesUri());
+        databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
+                .setValue(listaImagenesAnuncioFormatoString);
+
+        String categoria = anuncioActualizado.getCategoria();
+        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
+                .setValue(categoria);
+
+        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
+            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
+                    .setValue(anuncioActualizado.getTipoCasa());
+            databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
+                    .setValue(anuncioActualizado.getHabitaciones());
+            databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                    .setValue(anuncioActualizado.getBanos());
+            databaseAddReference.child(application.getString(R.string.orientation_db_label))
+                    .setValue(anuncioActualizado.getExteriorInterior());
+        }
+        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
+            databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
+                    .setValue(anuncioActualizado.getCompaneros());
+            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
+                    .setValue(anuncioActualizado.getGenero());
+            databaseAddReference.child(application.getString(R.string.orientation_db_label))
+                    .setValue(anuncioActualizado.getExteriorInterior());
+            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
+                    .setValue(anuncioActualizado.getTipoBano());
+        }
+    }
+
+
+    // Función que guarda el ID del anuncio actual en la lista con los IDs de los anuncios del usuario.
+    private static void guardarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
+        // Obtiene el usuario actual.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            // Obtiene una instancia de la BD.
+            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                    getApplicationContext().getString(R.string.database_url));
+
+            // Obtiene la referencia a la BD de usuarios.
+            DatabaseReference databaseUserReference = databaseInstance.getReference("users")
+                    .child(user.getUid());
+
+            databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    // Obtiene la lista actual de anuncios de ese usuario
+                    List<String> userAddsIdsList = new ArrayList<String>();
+
+                    List<String> userAddsInDB = snapshot.child(application
+                            .getString(R.string.user_adds_list_db_label)).getValue(
+                            new GenericTypeIndicator<List<String>>() {
+                            });
+
+                    if (userAddsInDB != null) {
+                        // Añade el ID del anuncio a la lista y la actualiza en la BD.
+                        userAddsInDB.add(nuevoAnuncio.getId());
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                .setValue(userAddsInDB);
+                    }
+                    else {
+                        userAddsIdsList.add(nuevoAnuncio.getId());
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                .setValue(userAddsIdsList);
+                    }
+                }
+            });
+        }
+    }
+
 
 
     // Función auxiliar que convierte una lista de Uris a otra de Strings

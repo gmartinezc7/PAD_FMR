@@ -203,111 +203,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         }
 
         Anuncio nuevoAnuncio = new Anuncio(resultIntent);
-        CrearAnuncioActivity.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
+        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
 
 
         setResult(RESULT_OK, resultIntent);
         finish();
-    }
-
-
-    // Función que guarda el anuncio en la base de datos.
-    public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
-
-        // Guarda el ID del anuncio en la lista de anuncios de este usuario.
-        CrearAnuncioActivity.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
-
-        // Obtiene una instancia de la BD.
-        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
-                getApplicationContext().getString(R.string.database_url));
-
-        // Obtiene la referencia a la BD de anuncios.
-        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
-                .child(nuevoAnuncio.getId());
-
-            databaseAddReference.child(application.getString(R.string.add_title_db_label))
-                .setValue(nuevoAnuncio.getTitulo());
-        databaseAddReference.child(application.getString((R.string.add_location_db_label)))
-                .setValue(nuevoAnuncio.getUbicacion());
-        databaseAddReference.child(application.getString((R.string.add_square_meters_db_label)))
-                .setValue(nuevoAnuncio.getMetros());
-        databaseAddReference.child(application.getString((R.string.add_price_db_label)))
-                .setValue(nuevoAnuncio.getPrecio());
-        databaseAddReference.child(application.getString((R.string.add_description_db_label)))
-                .setValue(nuevoAnuncio.getDescripcion());
-
-        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
-        databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
-                .setValue(listaImagenesAnuncioFormatoString);
-
-        String categoria = nuevoAnuncio.getCategoria();
-        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
-                .setValue(categoria);
-
-        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
-            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoCasa());
-            databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
-                    .setValue(nuevoAnuncio.getHabitaciones());
-            databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
-                    .setValue(nuevoAnuncio.getBanos());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
-        }
-        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
-            databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
-                    .setValue(nuevoAnuncio.getCompaneros());
-            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
-                    .setValue(nuevoAnuncio.getGenero());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoBano());
-        }
-
-    }
-
-
-    // Función que guarda el anuncio actual en la lista de anuncios del usuario.
-    private static void guardarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
-        // Obtiene el usuario actual.
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-
-            // Obtiene una instancia de la BD.
-            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
-                    getApplicationContext().getString(R.string.database_url));
-
-            // Obtiene la referencia a la BD de usuarios.
-            DatabaseReference databaseUserReference = databaseInstance.getReference("users")
-                    .child(user.getUid());
-
-            databaseUserReference.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-                    // Obtiene la lista actual de anuncios de ese usuario
-                    List<String> userAddsIdsList = new ArrayList<String>();
-
-                    List<String> userAddsInDB = snapshot.child(application
-                        .getString(R.string.user_adds_list_db_label)).getValue(
-                        new GenericTypeIndicator<List<String>>() {
-                        });
-
-                    if (userAddsInDB != null) {
-                        // Añade el ID del anuncio a la lista y la actualiza en la BD.
-                        userAddsInDB.add(nuevoAnuncio.getId());
-                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                            .setValue(userAddsInDB);
-                    }
-                    else {
-                        userAddsIdsList.add(nuevoAnuncio.getId());
-                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                            .setValue(userAddsIdsList);
-                    }
-                }
-            });
-        }
     }
 
 

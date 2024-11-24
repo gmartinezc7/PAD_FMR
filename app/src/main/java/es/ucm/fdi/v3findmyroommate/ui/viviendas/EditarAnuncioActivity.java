@@ -437,7 +437,8 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
         }
 
-        CrearAnuncioActivity.guardarAnuncioEnBD(new Anuncio(resultIntent), this.getApplication());
+
+        MisViviendasFragment.actualizarAnuncioEnBD(new Anuncio(resultIntent), this.getApplication());
         setResult(RESULT_OK, resultIntent);
         finish();
     }

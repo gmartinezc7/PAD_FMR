@@ -55,13 +55,19 @@ public class Anuncio {
 
     public Anuncio(Intent data) {
 
+        this.idAnuncio = data.getStringExtra("id");
 
-        // Genera un número aleatorio.
-        Random rand = new Random();
-        int randomIDNumber = rand.nextInt(Integer.MAX_VALUE);
+        // Si el Intent no tiene un campo ID (cuando se crea el anuncio, por ejemplo):
+        if (this.idAnuncio == null) {
+            // Genera un número aleatorio.
+            Random rand = new Random();
+            int randomIDNumber = rand.nextInt(Integer.MAX_VALUE);
 
-        // Crea el ID como un string basado en el número aleatorio creado anteriormente.
-        this.idAnuncio = "a" + randomIDNumber;
+            // Crea el ID como un string basado en el número aleatorio creado anteriormente.
+            this.idAnuncio = "a" + randomIDNumber;
+        }
+
+
         this.titulo = data.getStringExtra("titulo");
         this.ubicacion = data.getStringExtra("ubicacion");
         this.metros = data.getStringExtra("metros");
@@ -92,7 +98,6 @@ public class Anuncio {
 
         }
     }
-
 
     public List<Uri> getImagenesUri() {
         return imagenesUri;

@@ -24,7 +24,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
-public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
+public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
 
     private String currentAuthenticationEmail;
     private final ConfigPreferencesModel preferencesViewModel;
@@ -37,7 +37,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     private final CharSequence[] occupation_entries = new CharSequence[4];
 
 
-    public ConfigEditTextPreferencesFragment(ConfigPreferencesModel ConfigPreferencesModel) {
+    public ConfigPreferencesFragment(ConfigPreferencesModel ConfigPreferencesModel) {
         this.preferencesViewModel = ConfigPreferencesModel;
     }
 
@@ -193,7 +193,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                         user.updateProfile(profileUpdates).addOnCompleteListener(
                             task -> {
                                 if (task.isSuccessful()) {
-                                    Activity currentActivity = ConfigEditTextPreferencesFragment.this.getActivity();
+                                    Activity currentActivity = ConfigPreferencesFragment.this.getActivity();
                                     if (currentActivity != null) {
                                         ConfigPreferencesModel.updateSelectedPreference(usernameWritten,
                                             getString(R.string.username_preference_key), currentActivity.getApplication());
@@ -308,7 +308,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         // Sets an action for the submit button.
         submitButton.setOnClickListener(v -> {
             String currentPassword = passwordEditText.getText().toString();
-            if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
+            if (ConfigPreferencesFragment.this.currentAuthenticationEmail != null &&
                     !currentPassword.isEmpty()) {
                 ConfigPreferencesModel.updateProfile(itemWritten,
                         currentPassword, action, getActivity().getApplication());
