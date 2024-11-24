@@ -23,9 +23,7 @@ public class MisFavoritosFragment extends Fragment {
 
         binding = FragmentMisFavoritosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textMisFavoritos;
-        misFavoritosViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //misFavoritosViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
