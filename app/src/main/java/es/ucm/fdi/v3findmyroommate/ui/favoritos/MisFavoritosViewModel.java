@@ -35,7 +35,7 @@ public class MisFavoritosViewModel extends ViewModel {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
 
         // Lista de favs de usuario
-        database.getReference("users").child(userId).child("listfavoritos").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("users").child(userId).child("listfavoritos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<String> favoritos = new ArrayList<>();
