@@ -1,4 +1,4 @@
-package es.ucm.fdi.v3findmyroommate;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {
@@ -29,10 +31,11 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     @Override
     public void onBindViewHolder(@NonNull ViviendaAdapter.ViviendaViewHolder holder, int position) {
         Vivienda vivienda = listViv.get(position);
-        holder.name.setText(vivienda.getName());
-        holder.address.setText(vivienda.getAddress());
+        holder.name.setText(vivienda.getTitle());
+        holder.address.setText(vivienda.getLocation());
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice().toString());
+        holder.metr.setText(vivienda.getMetr().toString());
     }
 
     @Override
@@ -42,6 +45,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
 
     public static class ViviendaViewHolder extends RecyclerView.ViewHolder {
         TextView name, address, description, price;
+        TextView metr;
 
         public ViviendaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -49,6 +53,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             address = itemView.findViewById(R.id.address);
             price = itemView.findViewById(R.id.price);
             description = itemView.findViewById(R.id.description);
+            metr = itemView.findViewById(R.id.metr);
         }
     }
     public void updateList (List<Vivienda> newVivs){
