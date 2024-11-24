@@ -1,25 +1,169 @@
 <resources>
     <string name="app_name">FindMyRoommate</string>
     <string name="title_activity_lobby">Lobby</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Inicio</string>
     <string name="title_misviviendas">MisViviendas</string>
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
-    <string name="title_config">Config</string>
-    <string name="welcome_message">Welcome Back!</string>
+    <string name="title_config">Configuración</string>
+    <string name="welcome_message">Bienvenid@!</string>
     <string name="email_hint">Email</string>
-    <string name="password_hint">Password</string>
-    <string name="login">login</string>
-    <string name="dont_have_account">Don\'t have an account</string>
-    <string name="sign_up">sing up</string>
-    <string name="sign_in">sing in</string>
-    <string name="name">Name</string>
-    <string name="last_name">Last name</string>
-    <string name="confirm_password_hint">Confirm Password</string>
-    <string name="already_have_an_acount">Already have an acount</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login">registro</string>
+    <string name="dont_have_account">No tienes una cuenta</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="confirm_password_hint">Confirma tu contraseña</string>
+    <string name="already_have_an_acount">Ya tienes una cuenta</string>
     <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
     <string name="create_account">Create account</string>
-    <string name="personal_information_message">Let’s know more about yourself</string>
-    <string name="continue_">Continue</string>
-    <string name="property_type_message">What are you looking for</string>
+    <!--Texto Chats -->
+
+    <string name="personal_information_message">Dinos más acerca de ti</string>
+    <string name="continue_">Continuar</string>
+    <string name="property_type_message">¿Qué estás buscando?</string>
+    <string name="database_url" translatable="false">https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/</string>
+    <string name="null_username_toast_text">El nombre de usuario no puede estar vacío</string>
+    <string name="null_email_toast_text">El email no puede ser nulo</string>
+    <string name="null_password_toast_text">Todo usuario debe tener una contraseña</string>
+    <string name="invalid_email_toast_text">La dirección de correo ha de ser válida</string>
+    <string name="username_preference_title">Nombre de usuario</string>
+    <string name="username_preference_summary">Editar el nombre de usuario</string>
+    <string name="email_preference_title">Email</string>
+    <string name="email_preference_summary">Editar la dirección de correo electrónico</string>
+    <string name="age_range_preference_title">Edad</string>
+    <string name="age_range_preference_summary">Seleccionar tu rango de edad</string>
+    <string name="gender_preference_title">Género</string>
+    <string name="gender_preference_summary">Seleccionar tu género</string>
+    <string name="password_preference_title">Contraseña</string>
+    <string name="password_preference_summary">Cambiar la contraseña de la cuenta</string>
+    <string name="password_preference_new_password_label">Introduzca su nueva contraseña</string>
+    <string name="user_preferences_file" translatable="false">preferences</string>
+    <string name="username_preference_key" translatable="false">username_preference</string>
+    <string name="email_preference_key" translatable="false">email_preference</string>
+    <string name="password_preference_key" translatable="false">password_preference</string>
+    <string name="age_range_preference_key" translatable="false">age_range_preference</string>
+    <string name="gender_preference_key" translatable="false">gender_preference</string>
+    <string name="logout_toast_text">Has cerrado la sesión</string>
+    <string name="sign_in_failed_toast_text">Usuario o contraseña incorrectos</string>
+    <string name="accept_text">Aceptar</string>
+    <string name="cancel_text">Cancelar</string>
+    <string name="input_current_password_text">Introduce tu contraseña actual</string>
+    <string name="current_password_text">Contraseña actual</string>
+    <string name="fill_all_fields_toast_text">Completa todos los campos</string>
+    <string name="username_preference_dialog_text">Introduce tu nuevo nombre de usuario</string>
+    <string name="email_preference_dialog_text">Introduce tu nuevo correo electrónico</string>
+    <string name="house_preferences">Características de la casa</string>
+    <string name="male_label">Hombre</string>
+    <string name="female_label">Mujer</string>
+    <string name="young_adult_age_label" translatable="false">18-25</string>
+    <string name="adult_age_label" translatable="false">25-35</string>
+    <string name="grown_up_age_label" translatable="false">35-45</string>
+    <string name="senior_age_label" translatable="false">> 45</string>
+    <string name="single_status_label">Solter@</string>
+    <string name="relationship_status_label">En una relación</string>
+    <string name="married_status_label">Casad@</string>
+    <string name="prefer_not_say_status_label">Prefiero no decirlo</string>
+    <string name="employed_status_label">Trabajando</string>
+    <string name="unemployed_status_label">Desempleado</string>
+    <string name="student_status_label">Estudiante</string>
+    <string name="retired_status_label">Jubilado</string>
+    <string name="marital_status_preference_key" translatable="false">marital_status_preference</string>
+    <string name="marital_status_preference_title">Estado civil</string>
+    <string name="marital_status_preference_summary">Seleccionar tu estado civil</string>
+    <string name="occupation_preference_key" translatable="false">occupation_preference</string>
+    <string name="occupation_preference_title">Ocupación</string>
+    <string name="occupation_preference_summary">Seleccionar tu ocupación</string>
+    <string name="gender_db_label" translatable="false">gender</string>
+    <string name="marital_status_db_label" translatable="false">marital_status</string>
+    <string name="occupation_db_label" translatable="false">occupation</string>
+    <string name="house_property_type_label">Casa</string>
+    <string name="room_property_type_label">Habitación</string>
+    <string name="weak_password_text">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="duplicated_user_text">Ya hay un usuario registrado con ese correo electrónico</string>
+    <string name="user_auth_web_problem_text">Lo sentimos, hubo un problema con la conexión. Inténtelo de nuevo más tarde</string>
+    <string name="personal_information_gender_label">Género</string>
+    <string name="personal_information_age_label">Edad</string>
+    <string name="personal_information_marital_status_label">Estado Civil</string>
+    <string name="personal_information_occupation_label">Empleo</string>
+    <string name="max_budget_text">Introduce tu presupuesto máximo</string>
+    <string name="house_prefs_select_property_type_label">Selecciona el Tipo de Casa</string>
+    <string name="property_type_preference_key" translatable="false">property_type_preference</string>
+    <string name="property_type_db_label" translatable="false">property_type</string>
+    <string name="max_budget_preference_key" translatable="false">max_budget_preference</string>
+    <string name="max_budget_db_label" translatable="false">max_budget</string>
+    <string name="num_rooms_preference_key" translatable="false">num_rooms_preference</string>
+    <string name="num_rooms_db_label" translatable="false">number_of_rooms</string>
+    <string name="num_bathrooms_preference_key" translatable="false">num_bathrooms_preference</string>
+    <string name="num_bathrooms_db_label" translatable="false">number_of_bathrooms</string>
+    <string name="orientation_preference_key" translatable="false">orientation_preference</string>
+    <string name="orientation_db_label" translatable="false">orientation</string>
+    <string name="square_meters_preference_key" translatable="false">square_meters_preference</string>
+    <string name="square_meters_db_label" translatable="false">square_meters</string>
+    <string name="house_prefs_select_number_of_rooms_label">Selecciona el Número de Habitaciones</string>
+    <string name="sign_up_failed_toast_text">Usuario o contraseña incorrectos</string>
+    <string name="age_range_db_label" translatable="false">age_range</string>
+    <string name="max_num_roommates_preference_key" translatable="false">max_num_roommates_preference</string>
+    <string name="max_num_roommates_db_label" translatable="false">maximum_number_of_roomates</string>
+    <string name="roommate_gender_preference_key" translatable="false">roomate_gender_preference</string>
+    <string name="roommate_gender_db_label" translatable="false">roommate_gender</string>
+    <string name="bathroom_type_preference_key" translatable="false">bathroom_type_preference</string>
+    <string name="bathroom_type_db_label" translatable="false">bathroom_type</string>
+    <string name="settings_text">Ajustes</string>
+    <string name="config_fragment_key" translatable="false">config_fragment</string>
+    <string name="property_type_fragment_key" translatable="false">PropertyTypeFragment</string>
+
+
+
+
+    <string-array name="categorias_array">
+        <item>Casa</item>
+        <item>Habitación</item>
+    </string-array>
+    <string-array name="tipo_casa_array">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+    <string-array name="habitaciones_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="banos_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="companeros_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="genero_array">
+        <item>Solo Hombres</item>
+        <item>Solo Mujeres</item>
+        <item>Mixto</item>
+    </string-array>
+    <string-array name="exterior_interior_array">
+        <item>Exterior</item>
+        <item>Interior</item>
+    </string-array>
+    <string-array name="tipo_bano_array">
+        <item>Privado</item>
+        <item>Compartido</item>
+    </string-array>
+    <string name="passwords_dont_match_toast_text">Las contraseñas no coinciden</string>
+    <string name="add_title_db_label" translatable="false">title</string>
+    <string name="add_location_db_label" translatable="false">location</string>
+    <string name="add_square_meters_db_label" translatable="false">square_meters</string>
+    <string name="add_price_db_label" translatable="false">price</string>
+    <string name="add_description_db_label" translatable="false">description</string>
+    <string name="add_house_type_db_label" translatable="false">house_type</string>
+    <string name="username_db_label" translatable="false">username</string>
+
+
 </resources>

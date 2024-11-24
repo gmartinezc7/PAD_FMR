@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,8 +6,7 @@
     android:id="@+id/signUpActivity"
     tools:context=".SignUp">
 
-
-
+    <!-- Título de la cuenta -->
     <TextView
         android:id="@+id/createAccountTextView"
         android:layout_width="0dp"
@@ -23,6 +21,7 @@
         android:textStyle="bold"
         />
 
+    <!-- Mensaje de cuenta -->
     <TextView
         android:id="@+id/createAccountMessageTextView"
         android:layout_width="0dp"
@@ -31,9 +30,10 @@
         app:layout_constraintTop_toBottomOf="@+id/createAccountTextView"
         app:layout_constraintStart_toStartOf="@+id/userNameEditText"
         app:layout_constraintEnd_toEndOf="@+id/userNameEditText"
-        android:text="@string/create_account_message"/>
+        android:text="@string/create_account_message"
+        />
 
-
+    <!-- Campos de entrada -->
     <EditText
         android:id="@+id/userNameEditText"
         android:layout_width="0dp"
@@ -47,7 +47,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.27"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"/>
+        android:layout_marginEnd="30dp"
+        />
 
     <EditText
         android:id="@+id/lastNameEditText"
@@ -61,7 +62,8 @@
         android:hint="@string/last_name"
         app:layout_constraintTop_toBottomOf="@+id/userNameEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <EditText
         android:id="@+id/userEmailEditText"
@@ -76,7 +78,9 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/lastNameEditText"
+        />
+
     <EditText
         android:id="@+id/userPasswordTextEdit"
         android:layout_width="0dp"
@@ -91,7 +95,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userEmailEditText"
-       />
+        />
+
     <EditText
         android:id="@+id/confirmUserPasswordEditText"
         android:layout_width="0dp"
@@ -105,9 +110,12 @@
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userPasswordTextEdit" />
+        app:layout_constraintTop_toBottomOf="@+id/userPasswordTextEdit"
+        />
+
+    <!-- Botón de crear cuenta -->
     <Button
-        android:id="@+id/createAcountButton"
+        android:id="@+id/createAccountButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:text="@string/create_account"
@@ -119,27 +127,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmUserPasswordEditText"
         android:onClick="createAccount"
-     />
-    <TextView
-        android:id="@+id/acountAlreadyExistingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/already_have_an_acount"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/createAcountButton"
-        app:layout_constraintEnd_toStartOf="@+id/signInTextView"
-        app:layout_constraintTop_toBottomOf="@+id/createAcountButton"
-        android:layout_marginStart="90dp"
-
         />
-    <TextView
-        android:id="@+id/signInTextView"
+
+    <!-- Contenedor horizontal para los textos "Ya tienes una cuenta" y "Iniciar sesión" -->
+    <LinearLayout
+        android:id="@+id/linearLayoutAccountCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in"
-        app:layout_constraintStart_toEndOf="@+id/acountAlreadyExistingTextView"
-        app:layout_constraintTop_toBottomOf="@id/createAcountButton"
-        android:layout_marginStart="3dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/createAccountButton"
+        app:layout_constraintStart_toStartOf="@+id/createAccountButton"
+        app:layout_constraintEnd_toEndOf="@+id/createAccountButton"
+        android:layout_marginTop="15dp">
 
+        <!-- Ya tienes una cuenta -->
+        <TextView
+            android:id="@+id/acountAlreadyExistingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_have_an_acount"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            android:layout_marginEnd="5dp" />
+
+        <!-- Iniciar sesión -->
+        <TextView
+            android:id="@+id/signInTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in"
+            android:textSize="18sp"
+            android:textColor="@android:color/holo_blue_light"
+            android:onClick="returnLogin"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,9 @@
 {
   "project_info": {
     "project_number": "662369363528",
+    "firebase_url": "https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "findmyroommate-86cbe",
-    "storage_bucket": "findmyroommate-86cbe.appspot.com"
+    "storage_bucket": "findmyroommate-86cbe.firebasestorage.app"
   },
   "client": [
     {
