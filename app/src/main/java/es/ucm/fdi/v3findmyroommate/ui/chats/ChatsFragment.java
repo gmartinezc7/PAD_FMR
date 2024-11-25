@@ -80,36 +80,18 @@ public class ChatsFragment extends Fragment {
     }
 
     private void loadChatsFromFirebase() {
-        chatRef.addValueEventListener(new ValueEventListener() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("chats");
+
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
 
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot chatSnapshot : dataSnapshot.getChildren()) {
-                        try {
-                            //Chat
-                            String chatId = chatSnapshot.getKey();
-                            Map<String, Object> chatData = (Map<String, Object>) chatSnapshot.getValue();
-
-                            //Participantes y mensajes
-                            Map<String, Object> participants = (Map<String, Object>) chatData.get("participants");
-                            Map<String, Object> messagesData = (Map<String, Object>) chatData.get("messages");
-                            String lastMessage = (String) chatData.get("lastMessage");
-
-                            Long timestampLong = (Long) chatData.get("timestamp");
-                            long timestamp = timestampLong != null ? timestampLong : System.currentTimeMillis();
-
-                            //Chat
-                            Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
-
-                            //Cargar datos nombres de los usuarios
-                            assignUsernames(participants, chat);
-
-                            chatList.add(chat);
-                        } catch (Exception e) {
-                            Log.e("FirebaseError", "Error al convertir el chat: " + e.getMessage());
-                        }
+                        String chatId = chatSnapshot.getKey();
+                        loadChatDetails(chatId);
                     }
                 }
                 chatAdapter.notifyDataSetChanged();
@@ -118,7 +100,36 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getContext(), "Error al cargar los chats", Toast.LENGTH_SHORT).show();
-                Log.e("FirebaseError", "Error al obtener los chats: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void loadChatDetails(String chatId) {
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Procesar los datos del chat
+                    Map<String, Object> chatData = (Map<String, Object>) dataSnapshot.getValue();
+                    String lastMessage = (String) chatData.get("lastMessage");
+                    Long timestamp = (Long) chatData.get("timestamp");
+                    Map<String, Object> participants = (Map<String, Object>) chatData.get("participants");
+                    Map<String, Object> messagesData = (Map<String, Object>) chatData.get("messages");
+
+                    // Crear y añadir el chat a la lista
+                    Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
+
+                    assignUsernames(participants, chat);
+
+                    chatList.add(chat);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FirebaseError", "Error al obtener detalles del chat: " + databaseError.getMessage());
             }
         });
     }
@@ -148,6 +159,25 @@ public class ChatsFragment extends Fragment {
                     Log.e("FirebaseError", "Error al obtener el usuario: " + error.getMessage());
                 }
             });
+        }
+    }
+
+    private void createNewChat(List<String> participantIds, String messageText) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String chatId = FirebaseDatabase.getInstance().getReference("chats").push().getKey();
+
+        Map<String, Object> chatData = new HashMap<>();
+        chatData.put("lastMessage", messageText);
+        chatData.put("timestamp", System.currentTimeMillis());
+
+        //Guardar el chat en Firebase
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+        chatRef.setValue(chatData);
+
+        //Añadir el chat a cada usuario
+        for (String participantId : participantIds) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId).child("chats");
+            userRef.child(chatId).setValue(true);
         }
     }
 
