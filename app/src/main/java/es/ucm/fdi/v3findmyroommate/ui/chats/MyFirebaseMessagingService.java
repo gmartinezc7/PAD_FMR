@@ -16,18 +16,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        // Guarda el token para cada usuario en la base de datos.
         Log.d("FCM Token", "Token: " + token);
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        // Maneja el mensaje recibido.
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
 
-        // Mostrar notificación (opcional).
         showNotification(title, body);
     }
 

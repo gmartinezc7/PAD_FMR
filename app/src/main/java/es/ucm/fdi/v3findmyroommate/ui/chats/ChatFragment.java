@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -20,8 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -35,53 +35,80 @@ public class ChatFragment extends Fragment {
     private EditText messageEditText;
     private ImageView sendMessageButton;
 
+    private String username;
+    private String otherUsername;
+    private String currentUserId;
+
+    private FirebaseAuth mAuth;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.activity_chat, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        //TODO hacer que el id venga de la sesion
-        chatId = getArguments() != null ? getArguments().getString("chatId") : null;
+        mAuth = FirebaseAuth.getInstance();
+        currentUserId = mAuth.getCurrentUser().getUid();
 
-        recyclerView = root.findViewById(R.id.recyclerViewMessages);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Obtener el chat pasado como argumento
+        Bundle args = getArguments();
+        if (args != null) {
+            Chat chat = (Chat) args.getSerializable("chat");
+            if (chat != null) {
+                chatId = chat.getChatId();
+                username = chat.getUsername();
+                otherUsername = chat.getOtherUsername();
+            }
+        }
 
-        messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(getContext(), messageList);
-        recyclerView.setAdapter(messageAdapter);
-
-        messageEditText = root.findViewById(R.id.editTextMessage);
-        sendMessageButton = root.findViewById(R.id.buttonSendMessage);
-
-        //Obtener los mensajes
-        if (chatId != null) {
-            chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
-            loadMessages();
-        }else{
+        // Si no se ha cargado el chat correctamente
+        if (chatId == null) {
             Toast.makeText(getContext(), "No se pudo cargar el chat", Toast.LENGTH_SHORT).show();
             getParentFragmentManager().popBackStack();
             return root;
         }
 
+        // Configuración de la vista
+        recyclerView = root.findViewById(R.id.recyclerViewMessages);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        sendMessageButton.setOnClickListener(v -> sendMessage());
+        messageList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(getContext(), messageList, username, otherUsername, currentUserId);
+        recyclerView.setAdapter(messageAdapter);
+
+        messageEditText = root.findViewById(R.id.inputMessage);
+        sendMessageButton = root.findViewById(R.id.buttonSend);
+
+        // Referencia a los mensajes del chat
+        chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
+        loadMessages();
+
+        // Enviar mensaje cuando el botón es presionado
+        sendMessageButton.setOnClickListener(v -> {
+            String messageText = messageEditText.getText().toString().trim();
+            if (!messageText.isEmpty()) {
+                sendMessage(chatId, messageText);
+                messageEditText.setText(""); // Limpiar el campo de mensaje
+            } else {
+                Toast.makeText(getContext(), "Escribe un mensaje", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return root;
     }
 
+    // Cargar los mensajes del chat
     private void loadMessages() {
         chatMessagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                messageList.clear();
+                messageList.clear();  // Limpiar los mensajes previos
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Message message = messageSnapshot.getValue(Message.class);
                     if (message != null) {
-                        messageList.add(message);
+                        messageList.add(message);  // Añadir los nuevos mensajes
                     }
                 }
-                messageAdapter.notifyDataSetChanged();
-                recyclerView.scrollToPosition(messageList.size() - 1);
+                messageAdapter.notifyDataSetChanged();  // Actualizar el adaptador
+                recyclerView.scrollToPosition(messageList.size() - 1);  // Desplazar al último mensaje
             }
 
             @Override
@@ -91,28 +118,19 @@ public class ChatFragment extends Fragment {
         });
     }
 
-    private void sendMessage() {
-//
-//        String messageText = messageEditText.getText().toString().trim();
-//        if (!messageText.isEmpty()) {
-//            long timestamp = System.currentTimeMillis();
-//            //TODO poner el id del usuario que esta usando la aplicacion
-//            //String senderId = "user_id";
-//            int senderId = 99999;
-//            int reciverID = 100000;
-//            Message newMessage = new Message(senderId, reciverID, messageText, timestamp);
-//
-//            Map<String, Object> messageValues = new HashMap<>();
-//            messageValues.put(String.valueOf(timestamp), newMessage);
-//            chatMessagesRef.updateChildren(messageValues).addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    messageEditText.setText("");
-//                } else {
-//                    Toast.makeText(getContext(), "Error enviando el mensaje", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } else {
-//            Toast.makeText(getContext(), "El mensaje no puede estar vacío", Toast.LENGTH_SHORT).show();
-//        }
+    private void sendMessage(String chatId, String messageText) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        long timestamp = System.currentTimeMillis();
+
+        // Crear el mensaje
+        Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
+        chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -45,10 +49,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
 
-        //ID del usuario
-        holder.chatUserId.setText("ID Usuario: " + chat.getChatId());
+        //Nombre del otro usuario
+        holder.chatUserId.setText(chat.getOtherUsername() != null ? chat.getOtherUsername() : "Usuario desconocido");
 
-        //Ultimo mensaje
+        //Último mensaje
         Message lastMessage = getLastMessage(chat.getMessages());
         holder.chatLastMessage.setText(lastMessage != null ? lastMessage.getText() : "Sin mensajes");
 
@@ -57,10 +61,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         String formattedTimestamp = formatTimestamp(timestamp);
         holder.chatTimestamp.setText(formattedTimestamp);
 
-        //TODO Esta mal
         //Click sobre el chat lleva al chat
         holder.itemView.setOnClickListener(v -> chatClickListener.onChatClick(chat));
     }
+
 
     @Override
     public int getItemCount() {
@@ -77,10 +81,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
                 String text = (String) messageData.get("text");
                 long timestamp = ((Number) messageData.get("timestamp")).longValue();
+                String senderID = (String) messageData.get("sender");
 
                 Message message = new Message();
                 message.setText(text);
                 message.setTimestamp(timestamp);
+                message.setSender(senderID);
 
                 if (timestamp > latestTimestamp) {
                     latestTimestamp = timestamp;
