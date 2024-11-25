@@ -3,10 +3,12 @@ package es.ucm.fdi.v3findmyroommate.ui.chats;
 import java.io.Serializable;
 import java.util.Map;
 
-public class Chat {
+public class Chat implements Serializable{
     private String chatId;
     private Map<String, Object> messages;
     private Map<String, Object> participantes;
+    private String otherUsename;
+    private String username;
     private String lastMessage;
     private long timestamp;
 
@@ -61,4 +63,21 @@ public class Chat {
     }
 
     public Serializable getParticipants() { return (Serializable) participantes; }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getOtherUsername() {
+        return otherUsename;
+    }
+
+    public void setOtherUsername(String otherUsername) {
+        this.otherUsename = otherUsername;
+    }
+
 }

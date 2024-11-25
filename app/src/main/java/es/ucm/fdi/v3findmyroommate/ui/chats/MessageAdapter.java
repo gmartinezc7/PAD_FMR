@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,35 +31,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private String currentUserName;
     private String otherUserName;
 
-    public MessageAdapter(Context context, ArrayList<Message> messageList) {
+    public MessageAdapter(Context context, ArrayList<Message> messageList, String currentUserName, String otherUserName, String currentUserId) {
         this.context = context;
         this.messageList = messageList;
-        this.currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        fetchCurrentUserInfo();
-    }
-
-    private void fetchCurrentUserInfo() {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
-        userRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().exists()) {
-                    currentUserName = task.getResult().child("username").getValue(String.class);
-                }
-            }
-        });
-    }
-
-    //TODO TEMPORAL
-    private void fetchOtherUserInfo(String id) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(id);
-        userRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().exists()) {
-                    otherUserName = task.getResult().child("username").getValue(String.class);
-                }
-            }
-        });
+        this.currentUserName = currentUserName;
+        this.otherUserName = otherUserName;
+        this.currentUserId = currentUserId;
     }
 
     @NonNull
@@ -72,10 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = messageList.get(position);
         String senderId = message.getSender();
-        fetchOtherUserInfo(message.getSenderId());
 
-
-        //Usuario Actual
         if (senderId.equals(currentUserId)) {
             holder.messageSender.setVisibility(View.VISIBLE);
             holder.messageContainerOther.setVisibility(View.GONE);
@@ -83,23 +58,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.messageSenderName.setText(currentUserName != null ? currentUserName : "You");
             holder.messageText.setText(message.getText());
 
-            String formattedDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
+            String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestamp.setText(formattedDate);
             holder.messageTimestamp.setGravity(Gravity.END);
         } else {
-            //Otro usuario
             holder.messageSender.setVisibility(View.GONE);
             holder.messageContainerOther.setVisibility(View.VISIBLE);
 
-            holder.messageOtherName.setText(otherUserName != null ? message.getSenderId() : "Unknown");
+            holder.messageOtherName.setText(otherUserName != null ? otherUserName : "Unknown");
             holder.messageTextOther.setText(message.getText());
 
-            String formattedDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
+            String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestampOther.setText(formattedDate);
             holder.messageTimestampOther.setGravity(Gravity.START);
         }
     }
-
 
     @Override
     public int getItemCount() {

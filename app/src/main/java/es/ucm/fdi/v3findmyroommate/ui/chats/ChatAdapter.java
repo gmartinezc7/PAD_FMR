@@ -49,36 +49,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserId = mAuth.getCurrentUser().getUid();
-        Log.d("ChatAdapter", "currentUserId: " + currentUserId);
-
-        Map<String, Object> participants = chat.getParticipantes();
-        String otherUserId = null;
-        for (String participantId : participants.keySet()) {
-            if (!participantId.equals(currentUserId)) {
-                otherUserId = participantId;
-                Log.d("ChatAdapter", "otherUserId: " + otherUserId);
-                break;
-            }
-        }
-
-        if (otherUserId != null) {
-            userRef.child(otherUserId).child("username").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    String otherUserName = task.getResult().getValue(String.class);
-                    Log.d("ChatAdapter", "otherUserName: " + otherUserName);
-                    holder.chatUserId.setText(otherUserName != null ? otherUserName : "Usuario desconocido");
-                } else {
-                    Log.e("ChatAdapter", "Error al cargar el nombre del usuario: " + task.getException());
-                    holder.chatUserId.setText("Error al cargar usuario");
-                }
-            });
-        } else {
-            holder.chatUserId.setText("Sin participantes");
-        }
-
+        //Nombre del otro usuario
+        holder.chatUserId.setText(chat.getOtherUsername() != null ? chat.getOtherUsername() : "Usuario desconocido");
 
         //Último mensaje
         Message lastMessage = getLastMessage(chat.getMessages());

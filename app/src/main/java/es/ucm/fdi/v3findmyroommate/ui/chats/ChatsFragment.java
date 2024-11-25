@@ -33,6 +33,7 @@ public class ChatsFragment extends Fragment {
     private ChatAdapter chatAdapter;
     private ArrayList<Chat> chatList;
     private DatabaseReference chatRef;
+    private DatabaseReference userRef;
     private FirebaseAuth mAuth;
 
     @Override
@@ -52,9 +53,7 @@ public class ChatsFragment extends Fragment {
 
                 //Detalles Chat
                 bundle.putString("chatId", chat.getChatId());
-                bundle.putString("lastMessage", chat.getLastMessage());
-                bundle.putSerializable("participants", (HashMap) chat.getParticipantes());
-
+                bundle.putSerializable("chat", chat);
                 chatFragment.setArguments(bundle);
 
                 recyclerView.setVisibility(View.GONE);
@@ -104,6 +103,9 @@ public class ChatsFragment extends Fragment {
                             //Chat
                             Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
 
+                            //Cargar datos nombres de los usuarios
+                            assignUsernames(participants, chat);
+
                             chatList.add(chat);
                         } catch (Exception e) {
                             Log.e("FirebaseError", "Error al convertir el chat: " + e.getMessage());
@@ -121,5 +123,32 @@ public class ChatsFragment extends Fragment {
         });
     }
 
+    private void assignUsernames(Map<String, Object> participants, Chat chat) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        for (String participantId : participants.keySet()) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String username = snapshot.child("username").getValue(String.class);
+                        Log.e("ChatsFragment", "usermane: " +  username);
+                        if (participantId.equals(currentUserId)) {
+                            chat.setUsername(username);
+                        } else {
+                            chat.setOtherUsername(username);
+                        }
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("FirebaseError", "Error al obtener el usuario: " + error.getMessage());
+                }
+            });
+        }
+    }
 
 }

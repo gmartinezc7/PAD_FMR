@@ -37,41 +37,57 @@ public class ChatFragment extends Fragment {
     private EditText messageEditText;
     private ImageView sendMessageButton;
 
+    private Chat chat;
+    private String username;
+    private String otherUsername;
+    private String currentUserId;
+
     //TODO cuando funcione refactorizar para guardar en una varible globar el id del usuario
     private FirebaseAuth mAuth;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUserId = mAuth.getCurrentUser().getUid();
 
         Bundle args = getArguments();
         if (args != null) {
-            chatId = args.getString("chatId");
+            Chat chat = (Chat) args.getSerializable("chat");
+            if (chat != null) {
+                chatId = chat.getChatId();
+                username = chat.getUsername();
+                otherUsername = chat.getOtherUsername();
+            }
+        }
+
+        if (chatId == null) {
+            Toast.makeText(getContext(), "No se pudo cargar el chat", Toast.LENGTH_SHORT).show();
+            getParentFragmentManager().popBackStack();
+            return root;
         }
 
         recyclerView = root.findViewById(R.id.recyclerViewMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(getContext(), messageList);
+        messageAdapter = new MessageAdapter(getContext(), messageList, username, otherUsername, currentUserId);
         recyclerView.setAdapter(messageAdapter);
+
 
         messageEditText = root.findViewById(R.id.inputMessage);
         sendMessageButton = root.findViewById(R.id.buttonSend);
 
-        if (chatId != null) {
-            chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
-            loadMessages();
-        } else {
-            Toast.makeText(getContext(), "No se pudo cargar el chat", Toast.LENGTH_SHORT).show();
-            getParentFragmentManager().popBackStack();
-        }
+        chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
+        loadMessages();
 
         sendMessageButton.setOnClickListener(v -> sendMessage());
 
         return root;
     }
+
+
 
     private void loadMessages() {
         chatMessagesRef.addValueEventListener(new ValueEventListener() {
@@ -80,9 +96,6 @@ public class ChatFragment extends Fragment {
                 messageList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Message message = messageSnapshot.getValue(Message.class);
-                    Log.e("ChatFragment", "senderId: " + message.getSender());
-                    Log.e("ChatFragment", "Timestamp: " + message.getTimestamp());
-                    Log.e("ChatFragment", "text: " + message.getText());
                     if (message != null) {
                         messageList.add(message);
                     }
@@ -103,52 +116,25 @@ public class ChatFragment extends Fragment {
         if (!messageText.isEmpty()) {
             long timestamp = System.currentTimeMillis();
 
-            mAuth = FirebaseAuth.getInstance();
-            String senderId = mAuth.getCurrentUser().getUid();
+            Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
 
-            chatMessagesRef.getParent().child("participants").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    Map<String, Boolean> participants = (Map<String, Boolean>) task.getResult().getValue();
-                    if (participants != null) {
-                        String receiverId = null;
-                        for (String participant : participants.keySet()) {
-                            if (!participant.equals(senderId)) {
-                                receiverId = participant;
-                                break;
-                            }
-                        }
+            chatMessagesRef.child(String.valueOf(timestamp))
+                    .setValue(newMessage)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            messageEditText.setText("");
 
-                        if (receiverId != null) {
-                            Message newMessage = new Message(String.valueOf(timestamp), senderId, messageText, timestamp);
-
-                            //Guardar el mensaje en firebase
-                            chatMessagesRef.child(String.valueOf(timestamp))
-                                    .setValue(newMessage)
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            messageEditText.setText("");
-
-                                            chatMessagesRef.getParent().updateChildren(Map.of(
-                                                    "lastMessage", messageText,
-                                                    "timestamp", timestamp
-                                            ));
-                                        } else {
-                                            Toast.makeText(getContext(), "Error enviando el mensaje", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                            chatMessagesRef.getParent().updateChildren(Map.of(
+                                    "lastMessage", messageText,
+                                    "timestamp", timestamp
+                            ));
                         } else {
-                            Toast.makeText(getContext(), "No se pudo identificar el receptor", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Error enviando el mensaje", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Error obteniendo los participantes", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    });
         } else {
             Toast.makeText(getContext(), "El mensaje no puede estar vacío", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
 }
