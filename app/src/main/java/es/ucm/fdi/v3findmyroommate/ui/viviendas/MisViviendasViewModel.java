@@ -66,7 +66,7 @@ public class MisViviendasViewModel extends AndroidViewModel {
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
 
             Application application = getApplication();
-            MisViviendasFragment.elminiarAnuncioEnBD(listaActual.get(position), this.getApplication());
+            MisViviendasFragment.eliminiarAnuncioEnBD(listaActual.get(position), this.getApplication());
             listaActual.remove(position);
             anuncios.setValue(listaActual);
         }

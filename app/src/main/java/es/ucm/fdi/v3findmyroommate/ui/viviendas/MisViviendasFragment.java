@@ -395,6 +395,37 @@ public class MisViviendasFragment extends Fragment {
                 .setValue(categoria);
 
         if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
+
+            // Elimina los campos que no sean de una casa (en el caso de que antes fuese un anuncio de una habitación).
+            databaseAddReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    // Elimina el campo de máximo número de compañeros de piso.
+                    String max_num_roomates = snapshot.child(application
+                            .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                    if (max_num_roomates != null)
+                        databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
+                                .removeValue();
+
+                    // Elimina el campo de preferencia de sexo de los compañeros.
+                    String roomate_gender = snapshot.child(application
+                            .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                    if (roomate_gender != null)
+                        databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
+                                .removeValue();
+
+                    // Elimina el campo de tipo de baño.
+                    String bathroom_type = snapshot.child(application
+                            .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+                    if (bathroom_type != null)
+                        databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
+                                .removeValue();
+
+                }
+            });
+
+            // Añade los campos propios del alquiler de una casa.
             databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
                     .setValue(anuncioActualizado.getTipoCasa());
             databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
@@ -403,8 +434,41 @@ public class MisViviendasFragment extends Fragment {
                     .setValue(anuncioActualizado.getBanos());
             databaseAddReference.child(application.getString(R.string.orientation_db_label))
                     .setValue(anuncioActualizado.getExteriorInterior());
+
         }
+
         else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
+
+            // Elminina los campos que no sean de una habitación (en el casod e que antes fuese un anuncio de una casa).
+            databaseAddReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    // Elimina el campo de tipo de casa.
+                    String house_type = snapshot.child(application
+                            .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                    if (house_type != null)
+                        databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
+                                .removeValue();
+
+                    // Elimina el campo de número de habitaciones.
+                    String num_rooms = snapshot.child(application
+                            .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                    if (num_rooms != null)
+                        databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
+                                .removeValue();
+
+                    // Elimina el campo de número de baños.
+                    String num_bathroom = snapshot.child(application
+                            .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                    if (num_bathroom != null)
+                        databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                                .removeValue();
+
+                }
+            });
+
+            // Añade los campos propios del alquiler de una habitación.
             databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
                     .setValue(anuncioActualizado.getCompaneros());
             databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
@@ -413,12 +477,13 @@ public class MisViviendasFragment extends Fragment {
                     .setValue(anuncioActualizado.getExteriorInterior());
             databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
                     .setValue(anuncioActualizado.getTipoBano());
+
         }
     }
 
 
     // Función que elimina un anuncio de la base de datos.
-    public static void elminiarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
+    public static void eliminiarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
         // Obtiene una instancia de la BD.
         FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
