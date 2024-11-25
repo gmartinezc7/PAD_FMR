@@ -311,7 +311,7 @@ public class MisViviendasFragment extends Fragment {
     // Función que guarda un anuncio de nueva creación en la base de datos.
     public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
-        // Guarda el ID del anuncio en la lista de anuncios de este usuario.
+        // Guarda el ID del anuncio en la lista de IDs de anuncios de este usuario.
         MisViviendasFragment.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
 
         // Obtiene una instancia de la BD.
@@ -417,6 +417,25 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
+    // Función que elimina un anuncio de la base de datos.
+    public static void elminiarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
+
+        // Obtiene una instancia de la BD.
+        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                getApplicationContext().getString(R.string.database_url));
+
+        // Obtiene la referencia a la BD de anuncios.
+        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
+                .child(nuevoAnuncio.getId());
+
+        // Elmina el ID del anuncio de la lista de IDs de anuncios de este usuario.
+        MisViviendasFragment.eliminarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
+
+        // Eliminar la entrada del anuncio de la BD de anuncios.
+        databaseAddReference.removeValue();
+    }
+
+
     // Función que guarda el ID del anuncio actual en la lista con los IDs de los anuncios del usuario.
     private static void guardarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
         // Obtiene el usuario actual.
@@ -453,6 +472,44 @@ public class MisViviendasFragment extends Fragment {
                         userAddsIdsList.add(nuevoAnuncio.getId());
                         databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
                                 .setValue(userAddsIdsList);
+                    }
+                }
+            });
+        }
+    }
+
+
+    // Función que elimina el ID del anuncio a borrar de la lista con los IDs de los anuncios del usuario.
+    private static void eliminarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
+        // Obtiene el usuario actual.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            // Obtiene una instancia de la BD.
+            FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
+                    getApplicationContext().getString(R.string.database_url));
+
+            // Obtiene la referencia a la BD de usuarios.
+            DatabaseReference databaseUserReference = databaseInstance.getReference("users")
+                    .child(user.getUid());
+
+            databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    // Obtiene la lista actual de anuncios de ese usuario
+                    List<String> userAddsIdsList = new ArrayList<String>();
+
+                    List<String> userAddsInDB = snapshot.child(application
+                            .getString(R.string.user_adds_list_db_label)).getValue(
+                            new GenericTypeIndicator<List<String>>() {
+                            });
+
+                    if (userAddsInDB != null) { // Como hay al menos un anuncio en la lista, esta nunca será vacía en este momento.
+                        // Añade el ID del anuncio a la lista y la actualiza en la BD.
+                        userAddsInDB.remove(nuevoAnuncio.getId());
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                .setValue(userAddsInDB);
                     }
                 }
             });

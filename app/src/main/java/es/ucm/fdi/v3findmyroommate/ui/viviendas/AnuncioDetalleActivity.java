@@ -264,6 +264,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private void terminarYRegresarInfo(){
 
         Intent resultIntent = new Intent();
+        resultIntent.putExtra("id", this.idAnuncio);
         resultIntent.putExtra("titulo", this.titulo);
         resultIntent.putExtra("ubicacion",  this.ubicacion);
         resultIntent.putExtra("metros",this.metros);
