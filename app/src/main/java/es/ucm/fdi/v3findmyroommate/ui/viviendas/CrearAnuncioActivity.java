@@ -167,7 +167,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String descripcion = editDescripcion.getText().toString();
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() /*|| imagenesUri.isEmpty()*/) {
+                || precio.isEmpty() || imagenesUri.isEmpty()) {
             Toast.makeText(this, "Debes rellenar toda la información " +
                     "para poder crear un anuncio", Toast.LENGTH_LONG).show();
             return; // Detiene el flujo y no continúa con la creación del anuncio

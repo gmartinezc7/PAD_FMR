@@ -30,13 +30,14 @@ public class Anuncio {
     private List<Uri> imagenesUri = new ArrayList<>();
 
 
+    /*
     // TEST TEST TEST
     {
         Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
-
         this.imagenesUri.add(exampleUri);
     }
     // END OF TEST
+*/
 
     //TAGS
     private String categoria;
@@ -74,9 +75,11 @@ public class Anuncio {
         this.precio = data.getStringExtra("precio");
         this.descripcion = data.getStringExtra("descripcion");
 
+
         // TEST TEST TEST
-        //this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
+        this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
         // END TEST
+
 
         //TAGS
         this.categoria = data.getStringExtra("categoria");

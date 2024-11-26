@@ -82,16 +82,19 @@ public class MisViviendasFragment extends Fragment {
         adapter = new AnunciosAdapter(misViviendasViewModel, this);
         recyclerView.setAdapter(adapter);
 
+        // Cargar anuncios solo si es la primera vez
+        if (!misViviendasViewModel.isAnunciosCargados()) {
         loadUserAdds(anuncios -> {
-            adapter.setAnuncios(anuncios);
-            adapter.notifyDataSetChanged(); // Refresh the adapter
+            misViviendasViewModel.setAnunciosCargados(true);
         });
+        }
 
         // CON ESTO PODREMOS OBSERVAR LOS DATOS ACTUALIZADOS DE LOS ANUNCIOS A TIEMPO REAL,
         // DE MANERA QUE SI SE PRODUCE ALGUN CAMBIO EN LA LISTA DE ANUNCIOS, SE NOTIFICARÁ
         //AUTOMATICAMENTE AQUÍ Y SE REALIZARÁ EL CAMBIO EN EL ADAPTADOR
         misViviendasViewModel.getAnuncios().observe(getViewLifecycleOwner(), anuncios -> {
             adapter.setAnuncios(anuncios);
+            adapter.notifyDataSetChanged();
         });
 
 
@@ -311,6 +314,8 @@ public class MisViviendasFragment extends Fragment {
     // Función que guarda un anuncio de nueva creación en la base de datos.
     public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
+
+
         // Guarda el ID del anuncio en la lista de IDs de anuncios de este usuario.
         MisViviendasFragment.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
 
@@ -361,6 +366,8 @@ public class MisViviendasFragment extends Fragment {
             databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
                     .setValue(nuevoAnuncio.getTipoBano());
         }
+
+
     }
 
 
@@ -540,6 +547,8 @@ public class MisViviendasFragment extends Fragment {
                     }
                 }
             });
+
+
         }
     }
 
@@ -558,6 +567,11 @@ public class MisViviendasFragment extends Fragment {
             // Obtiene la referencia a la BD de usuarios.
             DatabaseReference databaseUserReference = databaseInstance.getReference("users")
                     .child(user.getUid());
+
+
+            // Escucha primero el estado de la base de datos para asegurar que se actualizó correctamente.
+            DatabaseReference anuncioReference = databaseInstance.getReference("adds")
+                    .child(nuevoAnuncio.getId());
 
             databaseUserReference.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {

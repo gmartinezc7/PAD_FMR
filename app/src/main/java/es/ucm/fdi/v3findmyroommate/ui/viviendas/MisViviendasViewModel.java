@@ -28,12 +28,21 @@ PARA NOTIFICAR DEL CAMBIO
 public class MisViviendasViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Anuncio>> anuncios;
+    private boolean anunciosCargados = false;
 
     public MisViviendasViewModel(Application application) {
         super(application);
         anuncios = new MutableLiveData<>();
         List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
+    }
+
+    public boolean isAnunciosCargados() {
+        return anunciosCargados;
+    }
+
+    public void setAnunciosCargados(boolean cargados) {
+        this.anunciosCargados = cargados;
     }
 
     public LiveData<List<Anuncio>> getAnuncios() {
