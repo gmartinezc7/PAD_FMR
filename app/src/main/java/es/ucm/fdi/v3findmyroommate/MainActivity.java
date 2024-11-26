@@ -85,10 +85,7 @@ public class MainActivity extends AppCompatActivity {
         signUP.setOnClickListener(view -> openSignUPView());
         signUP.setPaintFlags(signUP.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        signUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {openSignUPView();}
-        });
+        signUP.setOnClickListener(view -> openSignUPView());
 
         signUP.setOnClickListener(view -> openSignUPView());
     }
