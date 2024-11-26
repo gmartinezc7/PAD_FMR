@@ -1,13 +1,13 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +34,13 @@ import java.util.List;
 
 
 import android.widget.AdapterView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -160,7 +167,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String descripcion = editDescripcion.getText().toString();
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() || imagenesUri.isEmpty() ) {
+                || precio.isEmpty() /*|| imagenesUri.isEmpty()*/) {
             Toast.makeText(this, "Debes rellenar toda la información " +
                     "para poder crear un anuncio", Toast.LENGTH_LONG).show();
             return; // Detiene el flujo y no continúa con la creación del anuncio
@@ -194,6 +201,9 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
             resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
         }
+
+        Anuncio nuevoAnuncio = new Anuncio(resultIntent);
+        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
 
 
         setResult(RESULT_OK, resultIntent);
@@ -366,6 +376,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
 
-
     }
+
 }

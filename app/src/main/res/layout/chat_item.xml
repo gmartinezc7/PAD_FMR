@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- Imagen de perfil del usuario (si es necesario) -->
+    <ImageView
+        android:id="@+id/chatProfileImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/person_icon" />
+
+    <!-- Información del chat -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
+
+        <!-- ID del usuario -->
+        <TextView
+            android:id="@+id/chatUserId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID Usuario: "
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Último mensaje -->
+        <TextView
+            android:id="@+id/chatLastMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Último mensaje"
+            android:textSize="14sp"
+            android:textColor="#757575" />
+
+        <!-- Timestamp del último mensaje -->
+        <TextView
+            android:id="@+id/chatTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha"
+            android:textSize="12sp"
+            android:textColor="#757575" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.PreferencesFragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +20,11 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.Arrays;
 import java.util.List;
 
+import es.ucm.fdi.v3findmyroommate.Lobby;
 import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.SharedViewModel;
+import es.ucm.fdi.v3findmyroommate.User;
+import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class RoomPreferencesFragment extends BaseFragment {
     private Button continueButton;
@@ -53,7 +58,13 @@ public class RoomPreferencesFragment extends BaseFragment {
 
             // Validar antes de continuar
             if (validateSelections(requiredChipGroups, null)) {
-                loadNextFragment(getNextFragment()); // Continuar si la validación es exitosa
+
+
+                updateUserInfoInDatabase();
+
+                // Creates an intent to start the new activity.
+                Intent intent = new Intent(getActivity(), Lobby.class);
+                startActivity(intent); // Redirects the user to the app lobby.
             }
         });
 
@@ -63,7 +74,34 @@ public class RoomPreferencesFragment extends BaseFragment {
 
     @Override
     protected Fragment getNextFragment() {
-        return  new PersonalInformationFragment(); // Change this to the actual next fragment
+        return null;
+    }
+
+
+    // Method that updates the user's personal info and its preferences in the database.
+    protected void updateUserInfoInDatabase() {
+        User userObject = sharedViewModel.getUser().getValue(); // Get user object to obtain its info.
+
+        if (userObject != null) {
+            // Get the values for each of the user object's data fields.
+            String maxNumberOfRoommates = sharedViewModel.getUser().getValue().getMaxRoommates();
+            String roommateGender = sharedViewModel.getUser().getValue().getRoommateGender();
+            String orientation = sharedViewModel.getUser().getValue().getOrientation();
+            String bathroomType = sharedViewModel.getUser().getValue().getBathroomType();
+
+            Activity currentActivity = getActivity();
+            if (currentActivity != null) {
+                // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
+                ConfigPreferencesModel.updateSelectedPreference(maxNumberOfRoommates, getString(R.string.max_num_roommates_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(roommateGender, getString(R.string.roommate_gender_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(orientation, getString(R.string.orientation_preference_key),
+                        currentActivity.getApplication());
+                ConfigPreferencesModel.updateSelectedPreference(bathroomType, getString(R.string.bathroom_type_preference_key),
+                        currentActivity.getApplication());
+            }
+        }
     }
 
 

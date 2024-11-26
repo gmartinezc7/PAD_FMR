@@ -1,10 +1,16 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 
 //CLASE QUE NOS PERMITE MANEJAR ANUNCIOS, NOS GUSTARÍA QUE IMPLEMENTASE
@@ -14,6 +20,8 @@ import java.util.List;
 //PERO COMO SON SOLO 6, EL PROBLEMA NO HA SIDO MUY GRANDE.
 public class Anuncio {
 
+    public static int generadorId = 0;
+    private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
@@ -21,6 +29,14 @@ public class Anuncio {
     private String descripcion;
     private List<Uri> imagenesUri = new ArrayList<>();
 
+
+    // TEST TEST TEST
+    {
+        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
+
+        this.imagenesUri.add(exampleUri);
+    }
+    // END OF TEST
 
     //TAGS
     private String categoria;
@@ -37,7 +53,19 @@ public class Anuncio {
     private String tipoBano;
 
 
-    public Anuncio( Intent data) {
+    public Anuncio(Intent data) {
+
+        this.idAnuncio = data.getStringExtra("id");
+
+        // Si el Intent no tiene un campo ID (cuando se crea el anuncio, por ejemplo):
+        if (this.idAnuncio == null) {
+            // Genera un número aleatorio.
+            Random rand = new Random();
+            int randomIDNumber = rand.nextInt(Integer.MAX_VALUE);
+
+            // Crea el ID como un string basado en el número aleatorio creado anteriormente.
+            this.idAnuncio = "a" + randomIDNumber;
+        }
 
 
         this.titulo = data.getStringExtra("titulo");
@@ -45,8 +73,10 @@ public class Anuncio {
         this.metros = data.getStringExtra("metros");
         this.precio = data.getStringExtra("precio");
         this.descripcion = data.getStringExtra("descripcion");
-        this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
 
+        // TEST TEST TEST
+        //this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
+        // END TEST
 
         //TAGS
         this.categoria = data.getStringExtra("categoria");
@@ -69,11 +99,11 @@ public class Anuncio {
         }
     }
 
-
-
-
-    public  List<Uri> getImagenesUri() {
+    public List<Uri> getImagenesUri() {
         return imagenesUri;
+    }
+    public String getId() {
+        return idAnuncio;
     }
     public String getTitulo() {
         return titulo;
