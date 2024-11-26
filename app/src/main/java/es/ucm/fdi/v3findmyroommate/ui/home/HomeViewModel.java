@@ -17,6 +17,7 @@ import java.util.List;
 public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<List<Vivienda>> viviendas;
+    private List<Vivienda> viviendasini;
 
     public HomeViewModel() {
         viviendas = new MutableLiveData<>();
@@ -60,6 +61,7 @@ public class HomeViewModel extends ViewModel {
                         System.out.println("Vivienda carga: " + vivienda.getTitle());
                     }
                 }
+                viviendasini = new ArrayList<>(lista);
                 viviendas.setValue(lista);
             }
 
@@ -70,6 +72,49 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+
+    public void applyFiltersViewModel (String categoria, String tipoCasa, String comps, String genero){
+        List<Vivienda> filtered = new ArrayList<>();
+        for (Vivienda vivienda : viviendasini){
+            boolean filtrosOK = true;
+            // FILTRO CATEGORIA
+            if (categoria != null && !categoria.isEmpty()) {
+                if (!categoria.equals(vivienda.getCategoria() == null ? "" : vivienda.getCategoria())) {
+                    filtrosOK = false;
+                }
+            }
+
+            // FILTRO TIPO DE CASA
+            if (tipoCasa != null && !tipoCasa.isEmpty()) {
+                if (!tipoCasa.equals(vivienda.getTipoCasa() == null ? "" : vivienda.getTipoCasa())) {
+                    filtrosOK = false;
+                }
+            }
+
+            // FILTRO COMPAÑEROS
+            /*if (comps != null && !comps.isEmpty()) {
+                if (!comps.equals(vivienda.getCompaneros() == null ? "" : vivienda.getCompaneros())) {
+                    filtrosOK = false;
+                }
+            }
+
+            // FILTRO GÉNERO
+            if (genero != null && !genero.isEmpty()) {
+                if (!genero.equals(vivienda.getGenero() == null ? "" : vivienda.getGenero())) {
+                    filtrosOK = false;
+                }
+            }*/
+
+
+            if (filtrosOK) filtered.add(vivienda);
+        }
+
+        // Ahora actualizamos el LiveData con las viviendas filtradas
+        viviendas.setValue(filtered);
+
+    }
+
+
 
 
 }
