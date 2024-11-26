@@ -104,6 +104,7 @@ public class MisViviendasFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
+                        String id = data.getStringExtra("id");
                         misViviendasViewModel.addAnuncio(data);
                     }
                 }
@@ -123,8 +124,9 @@ public class MisViviendasFragment extends Fragment {
         // TAMBIÉN CONTIENE EL BOTÓN PRINCIPAL DE CREAR ANUNCIO
         btnCrearAnuncio = view.findViewById(R.id.btn_crear_anuncio);
         btnCrearAnuncio.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), CrearAnuncioActivity.class);
-           crearAnuncioLauncher.launch(intent); // Usar el nuevo launcher
+            //Intent intent = new Intent(getContext(), CrearAnuncioActivity.class);
+            //crearAnuncioLauncher.launch(intent); // Usar el nuevo launcher
+            CrearAnuncioActivity.startForResult(crearAnuncioLauncher, getContext());
         });
 
 
