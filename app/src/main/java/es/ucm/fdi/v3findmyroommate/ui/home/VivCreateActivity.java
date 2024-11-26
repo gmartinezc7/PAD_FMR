@@ -35,10 +35,12 @@ public class VivCreateActivity extends AppCompatActivity {
                 double p = Double.parseDouble(priceIn.getText().toString());
                 String d = descriptionIn.getText().toString();
 
-                Vivienda newViv = new Vivienda (n,p,d,a,0);
+
+                // ESTO ESTÁ COMENTADO PORQUE YA NO HACE FALTA CREAR VIVIENDA DESDE AQUÍ
+                //Vivienda newViv = new Vivienda (n,p,d,a,0);
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("newViv", newViv);
+                //resultIntent.putExtra("newViv", newViv);
                 setResult(RESULT_OK,resultIntent);
                 finish();
             }
