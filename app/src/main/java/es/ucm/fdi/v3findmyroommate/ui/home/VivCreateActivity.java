@@ -1,4 +1,4 @@
-package es.ucm.fdi.v3findmyroommate;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.os.Bundle;
 import android.content.Intent;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class VivCreateActivity extends AppCompatActivity {
 
@@ -33,10 +35,12 @@ public class VivCreateActivity extends AppCompatActivity {
                 double p = Double.parseDouble(priceIn.getText().toString());
                 String d = descriptionIn.getText().toString();
 
-                Vivienda newViv = new Vivienda (n,p,d,a);
+
+                // ESTO ESTÁ COMENTADO PORQUE YA NO HACE FALTA CREAR VIVIENDA DESDE AQUÍ
+                //Vivienda newViv = new Vivienda (n,p,d,a,0);
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("newViv", newViv);
+                //resultIntent.putExtra("newViv", newViv);
                 setResult(RESULT_OK,resultIntent);
                 finish();
             }

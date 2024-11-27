@@ -4,34 +4,60 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import java.util.ArrayList;
+import java.util.List;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import es.ucm.fdi.v3findmyroommate.databinding.FragmentMisFavoritosBinding;
+import es.ucm.fdi.v3findmyroommate.ui.home.Vivienda;
+import es.ucm.fdi.v3findmyroommate.ui.home.ViviendaAdapter;
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class MisFavoritosFragment extends Fragment {
 
-    private FragmentMisFavoritosBinding binding;
+    private RecyclerView recyclerView;
+    private FavoritoAdapter adapter;
+    private MisFavoritosViewModel misfavsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MisFavoritosViewModel misFavoritosViewModel =
-                new ViewModelProvider(this).get(MisFavoritosViewModel.class);
 
-        binding = FragmentMisFavoritosBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_mis_favoritos, container, false);
 
-        final TextView textView = binding.textMisFavoritos;
-        misFavoritosViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        recyclerView = root.findViewById(R.id.recyclerViewFavoritos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        List<Vivienda> viviendasfavs = new ArrayList<>();
+        adapter = new FavoritoAdapter(viviendasfavs);
+        recyclerView.setAdapter(adapter);
+
+        misfavsViewModel = new ViewModelProvider(this).get(MisFavoritosViewModel.class);
+        misfavsViewModel.getViviendas().observe(getViewLifecycleOwner(), new Observer<List<Vivienda>>() {
+            @Override
+            public void onChanged(List<Vivienda> lista) {
+                viviendasfavs.clear();
+                viviendasfavs.addAll(lista);
+                adapter.notifyDataSetChanged();
+            }
+
+        });
+
         return root;
+
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }

@@ -33,7 +33,17 @@
         android:id="@+id/navigation_config"
         android:name="es.ucm.fdi.v3findmyroommate.ui.config.ConfigFragment"
         android:label="@string/title_config"
-        tools:layout="@layout/fragment_config" />
+        tools:layout="@layout/fragment_config">
+        <action
+            android:id="@+id/action_config_to_property_type"
+            app:destination="@id/navigation_property_type" />
+        </fragment>
+
+    <fragment
+        android:id="@+id/navigation_property_type"
+        android:name="es.ucm.fdi.v3findmyroommate.PreferencesFragment.PropertyTypeFragment"
+        android:label="title_property_type"
+        tools:layout="@layout/property_type_fragment" />
 
 
 </navigation>

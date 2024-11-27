@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/propertyTypeFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -30,13 +31,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="House"/>
+            android:textSize="16sp"
+            android:text="@string/house_property_type_label"/>
         <com.google.android.material.chip.Chip
             android:id="@+id/roomChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Room"/>
+            android:textSize="16sp"
+            android:text="@string/room_property_type_label"/>
     </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +54,8 @@
             android:id="@+id/maxBudgetInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your max budget"
+            android:textSize="16dp"
+            android:hint="@string/max_budget_text"
             android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -61,7 +65,7 @@
         android:id="@+id/continueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Continue"
+        android:text="@string/continue_"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/propertyTypeMessage"
@@ -70,6 +74,8 @@
         android:layout_marginEnd="0dp"
         android:textSize="30sp"
         app:layout_constraintVertical_bias="0.95"/>
+
+
 
 
 

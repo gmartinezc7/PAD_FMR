@@ -4,77 +4,98 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Intent;
+import android.widget.Button;
+import android.widget.Spinner;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import es.ucm.fdi.v3findmyroommate.VivCreateActivity;
+
+
+import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.databinding.FragmentHomeBinding;
-import es.ucm.fdi.v3findmyroommate.Vivienda;
-import es.ucm.fdi.v3findmyroommate.ViviendaAdapter;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
-    private List<Vivienda> listViv;
+    private RecyclerView recyclerView;
     private ViviendaAdapter adapter;
-    private ActivityResultLauncher<Intent> createViviendaLauncher;
+    private HomeViewModel homeViewModel;
+    private Spinner sCategoria, sTipoCasa;
+    private ChipGroup chipGroupComps, chipGroupGenero;
+    private Button buttonApplyFilters;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        recyclerView = root.findViewById(R.id.recyclerViewViviendas);
+        sCategoria = root.findViewById(R.id.spinnerCategorias);
+        sTipoCasa = root.findViewById(R.id.spinnerTipoCasas);
+        //chipGroupComps = root.findViewById(R.id.chipGroupCompaneros);
+        //chipGroupGenero = root.findViewById(R.id.chipGroupGenero);
+        buttonApplyFilters = root.findViewById(R.id.buttonApplyFilters);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        List<Vivienda> viviendas = new ArrayList<>();
+        adapter = new ViviendaAdapter(viviendas);
+        recyclerView.setAdapter(adapter);
 
-        listViv =  new ArrayList<>();
-        adapter = new ViviendaAdapter(listViv);
-
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(adapter);
-
-        createViviendaLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
-                    if (data.hasExtra("newViv")) {
-                        Vivienda newViv = (Vivienda) data.getSerializableExtra("newViv");
-                        if (newViv != null) {
-                            listViv.add(newViv);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                }
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel.getViviendas().observe(getViewLifecycleOwner(), new Observer<List<Vivienda>>() {
+            @Override
+            public void onChanged(List<Vivienda> lista) {
+                viviendas.clear();
+                viviendas.addAll(lista);
+                adapter.notifyDataSetChanged();
             }
         });
 
-        // botón psra lanzar el VivCreateActivity
-        binding.btnAddVivienda.setOnClickListener(v -> {
-            // AÑADIR VIVIENDA
-            Intent intent = new Intent(getActivity(), VivCreateActivity.class);
-            createViviendaLauncher.launch(intent);
-        });
+        buttonApplyFilters.setOnClickListener(v -> applyFilters());
 
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+    }
+
+    private void applyFilters(){
+        // APLICAR LOS FILTROS
+        String fcategoria = sCategoria.getSelectedItem().toString();
+        String ftipocasa = sTipoCasa.getSelectedItem().toString();
+        //String fcomps = getSelectedChipText(chipGroupComps);
+        //String fgenero = getSelectedChipText(chipGroupGenero);
+
+        // Llamada a la construcción del ViewModel
+        System.out.println("FILTROS");
+        System.out.println("FCATEGORIA: " + fcategoria);
+        System.out.println("FTIPOCASA: " + ftipocasa);
+        //System.out.println("FCOMPS: " + fcomps);
+        //System.out.println("FGENERO: " + fgenero);
+        homeViewModel.applyFiltersViewModel(fcategoria, ftipocasa, "fcomps", "genero");
+    }
+
+    private String getSelectedChipText(ChipGroup cg) {
+        int selected = cg.getCheckedChipId();
+        if (selected != View.NO_ID){
+            Chip chip = cg.findViewById(selected);
+            return chip.getText().toString();
+        }
+        return null; // En caso de que no se haya seleccionado ningún chip
     }
 }
