@@ -324,6 +324,11 @@ public class MisViviendasFragment extends Fragment {
         DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
                 .child(nuevoAnuncio.getId());
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
+        if (user != null) {
+            databaseAddReference.child(application.getString(R.string.add_user_id_db_label))
+                    .setValue(user.getUid());
+        }
         databaseAddReference.child(application.getString(R.string.add_title_db_label))
                 .setValue(nuevoAnuncio.getTitulo());
         databaseAddReference.child(application.getString((R.string.add_location_db_label)))

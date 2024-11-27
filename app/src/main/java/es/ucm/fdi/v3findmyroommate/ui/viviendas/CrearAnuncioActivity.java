@@ -36,6 +36,9 @@ import java.util.List;
 
 import android.widget.AdapterView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -167,9 +170,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             return null; // Detiene el flujo y no continúa con la creación del anuncio
         }
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("titulo", titulo);
+        if (user != null) resultIntent.putExtra("idUsuario", user.getUid());
         resultIntent.putExtra("ubicacion", ubicacion);
         resultIntent.putExtra("metros", metros);
         resultIntent.putExtra("precio", precio);
