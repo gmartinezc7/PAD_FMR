@@ -124,8 +124,7 @@ public class MisViviendasFragment extends Fragment {
         // TAMBIÉN CONTIENE EL BOTÓN PRINCIPAL DE CREAR ANUNCIO
         btnCrearAnuncio = view.findViewById(R.id.btn_crear_anuncio);
         btnCrearAnuncio.setOnClickListener(v -> {
-            //Intent intent = new Intent(getContext(), CrearAnuncioActivity.class);
-            //crearAnuncioLauncher.launch(intent); // Usar el nuevo launcher
+
             CrearAnuncioActivity.startForResult(crearAnuncioLauncher, getContext());
         });
 
@@ -184,7 +183,12 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Función que
+
+
+
+
+   //---------------------------------BASE DE DATOS:--------------------------------------------------------------------
+
     private void loadUserAdds(DataCallback<List<Anuncio>> callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Get current user
 
@@ -290,7 +294,7 @@ public class MisViviendasFragment extends Fragment {
                                     misViviendasViewModel.addAnuncio(currentAddIntent);
 
                                     // Crea un nuevo anuncio a partir del intent y lo guarda en la lista.
-                                    Anuncio newAdd = new Anuncio(currentAddIntent);
+                                    Anuncio newAdd = new Anuncio(this.getContext(), currentAddIntent);
                                     newAddList.add(newAdd);
 
                                     // Notify the callback when all ads are loaded

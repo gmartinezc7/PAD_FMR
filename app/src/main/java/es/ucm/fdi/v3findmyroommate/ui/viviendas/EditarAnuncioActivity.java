@@ -39,20 +39,24 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class EditarAnuncioActivity extends AppCompatActivity {
-    private MisViviendasViewModel viewModel;
 
+
+    //STRINGS SIMPLEMENTE PARA MANEJAR LOS DATOS QUE VIENEN DE LOS INTENTS,
+    // PONERLOS EN LOS TEXTVIEWS O VOLVER A METERLO EN INTENTS.
     private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
     private String precio;
     private String descripcion;
+    //LISTA DE URIS PARA LAS IMAGENES, MINIMO OBLIGATORIO TENER 1
     private List<Uri> imagenesUri;
 
-
+    //IMAGEN DEL ANUNCIO QUE SE MUESTRA
     private ImageView imagenAnuncio;
+    //INDICE DE LA IMAGEN QUE SE MUESTRA
     private int imagenActualIndex = 0;
-    private ImageButton btnPrev,btnNext;
+
 
 
     EditText editTitulo ;
@@ -60,11 +64,18 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     EditText editMetros ;
     EditText editPrecio ;
     EditText editDescripcion ;
+
+    //BOTONES NECESARIOS, EL DE SELECCIONAR IMAGEN, ELIMINARLA  Y EL DE LAS FLECHAS PARA PASAR LAS IMAGENES
     private Button btnSeleccionarImagen, btnEliminarImagen;
+    private ImageButton btnPrev,btnNext;
+
+
+
     private Uri previewPhotoUri;
 
 
-    //TAGS
+    //------------------------------------------------------------------------------------------------
+    //PARTE DE LOS TAGS: (AL IGUAL QUE EN LO ANTERIOR, SE USAN STRINGS PARA GUARDAR LA INFO Y MANEJARLA)
     private String categoria;
 
     //Para la casa:
@@ -79,10 +90,12 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     private String genero;
     private String tipoBano;
 
+    //SPINNERS DE SELECCION PARA LOS TAGS
     Spinner spinnerCategoria;
     Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
+    //LINEARLAYOUTS QUE APARECEN O DESAPARECEN DEPENDIENDO DE SI LA OPCION ESCOGIDA ES UNA CASA O HABITACION
     LinearLayout opcionesCasa;
     LinearLayout opcionesHabitacion;
 
@@ -92,18 +105,29 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_anuncio);
+        previewPhotoUri = null;
 
-        Intent intent = getIntent();
-        this.idAnuncio = intent.getStringExtra("id");
-        this.titulo = intent.getStringExtra("titulo");
-        this.ubicacion = intent.getStringExtra("ubicacion");
-        this.metros = intent.getStringExtra("metros");
-        this.precio = intent.getStringExtra("precio");
-        this.descripcion = intent.getStringExtra("descripcion");
-        this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
+        enlazarIdsVista();
+
+        obtenerDatosAnuncioInicial();
 
 
 
+        establecerAccionesSpinners();
+
+
+        iniciarNavImagenes();
+
+
+        establecerAccionesBotones();
+
+
+
+    }
+
+
+
+    private void enlazarIdsVista(){
 
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
         btnPrev = findViewById(R.id.btn_prev);
@@ -111,24 +135,12 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
 
-            // Llenar los campos con la información del anuncio
-             editTitulo = findViewById(R.id.edit_titulo);
-             editUbicacion = findViewById(R.id.edit_ubicacion);
-             editMetros = findViewById(R.id.edit_metros);
-             editPrecio = findViewById(R.id.edit_precio);
-             editDescripcion = findViewById(R.id.edit_descripcion);
-
-            editTitulo.setText( this.titulo );
-            editUbicacion.setText(this.ubicacion);
-            editMetros.setText(String.valueOf(this.metros));
-            editPrecio.setText(String.valueOf(this.precio));
-            editDescripcion.setText(this.descripcion);
-
-        previewPhotoUri = null;
-
-
-
-
+        // Llenar los campos con la información del anuncio
+        editTitulo = findViewById(R.id.edit_titulo);
+        editUbicacion = findViewById(R.id.edit_ubicacion);
+        editMetros = findViewById(R.id.edit_metros);
+        editPrecio = findViewById(R.id.edit_precio);
+        editDescripcion = findViewById(R.id.edit_descripcion);
 
         //TAGS
         spinnerCategoria = findViewById(R.id.spinner_categoria);
@@ -146,6 +158,33 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         spinnerGenero = findViewById(R.id.spinner_genero);
         spinnerExteriorInteriorHabitacion = findViewById(R.id.spinner_exterior_interior_habitacion);
         spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
+
+
+    }
+
+
+    //SE RELLENAN LOS CUADROS Y SPINNERS CON LA INFORMACION QUE TENIA EL ANUNCIO
+    private void obtenerDatosAnuncioInicial(){
+
+        Intent intent = getIntent();
+        this.idAnuncio = intent.getStringExtra("id");
+        this.titulo = intent.getStringExtra("titulo");
+        this.ubicacion = intent.getStringExtra("ubicacion");
+        this.metros = intent.getStringExtra("metros");
+        this.precio = intent.getStringExtra("precio");
+        this.descripcion = intent.getStringExtra("descripcion");
+        this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
+
+
+
+
+        editTitulo.setText( this.titulo );
+        editUbicacion.setText(this.ubicacion);
+        editMetros.setText(String.valueOf(this.metros));
+        editPrecio.setText(String.valueOf(this.precio));
+        editDescripcion.setText(this.descripcion);
+
+
 
 
         this.categoria = intent.getStringExtra("categoria");
@@ -187,6 +226,15 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         }
 
 
+
+
+
+
+    }
+
+
+    private void establecerAccionesSpinners(){
+
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,16 +254,10 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             }
         });
 
+    }
 
 
-        iniciarNavImagenes();
-
-
-
-        Button btnGuardar = findViewById(R.id.btn_actualizar_anuncio);
-        btnGuardar.setOnClickListener(v -> {
-            actualizarAnuncio();
-        });
+    private void establecerAccionesBotones(){
 
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
@@ -228,11 +270,19 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             eliminarImagenSeleccionada();
         });
 
+        Button btnGuardar = findViewById(R.id.btn_actualizar_anuncio);
+        btnGuardar.setOnClickListener(v -> {
+            actualizarAnuncio();
+        });
+
 
         // Botón de cancelar
         Button btnCancelar = findViewById(R.id.btn_cancelar);
         btnCancelar.setOnClickListener(v -> finish());
+
+
     }
+
 
 
 
@@ -378,6 +428,34 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
 
+    private void iniciarNavImagenes(){
+
+        imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+        btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+        btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+
+        // Navegar hacia la imagen anterior
+        btnPrev.setOnClickListener(v -> navigateImage( -1));
+        // Navegar hacia la imagen siguiente
+        btnNext.setOnClickListener(v -> navigateImage( 1));
+
+
+    }
+
+
+    private void navigateImage( int direction) {
+        int newIndex = imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < imagenesUri.size()) {
+            imagenActualIndex = newIndex;
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+
+
     private void actualizarImagen() {
         if (!imagenesUri.isEmpty()) {
             imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
@@ -394,11 +472,13 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
     private void actualizarAnuncio() {
+
         String titulo = editTitulo.getText().toString();
         String ubicacion = editUbicacion.getText().toString();
         String metros = editMetros.getText().toString();
         String precio = editPrecio.getText().toString();
         String descripcion = editDescripcion.getText().toString();
+
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
                 || precio.isEmpty() || imagenesUri.isEmpty() ) {
@@ -438,7 +518,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         }
 
 
-        MisViviendasFragment.actualizarAnuncioEnBD(new Anuncio(resultIntent), this.getApplication());
+        MisViviendasFragment.actualizarAnuncioEnBD(new Anuncio(this, resultIntent), this.getApplication());
         setResult(RESULT_OK, resultIntent);
         finish();
     }
@@ -446,30 +526,6 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
 
-    private void iniciarNavImagenes(){
 
-        imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
-        btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
-        btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
-
-
-        // Navegar hacia la imagen anterior
-        btnPrev.setOnClickListener(v -> navigateImage( -1));
-        // Navegar hacia la imagen siguiente
-        btnNext.setOnClickListener(v -> navigateImage( 1));
-
-
-    }
-
-
-    private void navigateImage( int direction) {
-        int newIndex = imagenActualIndex + direction;
-        if (newIndex >= 0 && newIndex < imagenesUri.size()) {
-            imagenActualIndex = newIndex;
-            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
-            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
-            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
-        }
-    }
 
 }

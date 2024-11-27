@@ -168,4 +168,28 @@
     <string name="add_uri_list_db_label" translatable="false">uri_list</string>
 
 
+
+
+
+    --SAMUMA
+
+    <string name="key_id" translatable="false">id</string>
+    <string name="key_titulo" translatable="false">titulo</string>
+    <string name="key_ubicacion" translatable="false">ubicacion</string>
+    <string name="key_metros" translatable="false">metros</string>
+    <string name="key_precio" translatable="false">precio</string>
+    <string name="key_descripcion"  translatable="false">descripcion</string>
+    <string name="key_imagenes_uri"  translatable="false">imagenesUri</string>
+    <string name="key_categoria"  translatable="false">categoria</string>
+    <string name="key_tipo_casa"  translatable="false">tipoCasa</string>
+    <string name="key_habitaciones"  translatable="false">habitaciones</string>
+    <string name="key_banos"  translatable="false">banos</string>
+    <string name="key_exterior_interior"  translatable="false">exteriorInterior</string>
+    <string name="key_companeros"  translatable="false">companeros</string>
+    <string name="key_genero"  translatable="false">genero</string>
+    <string name="key_tipo_bano"  translatable="false">tipoBano</string>
+    <string name="category_casa"  translatable="false">Casa</string>
+    <string name="category_habitacion"  translatable="false">Habitación</string>
+
+
 </resources>

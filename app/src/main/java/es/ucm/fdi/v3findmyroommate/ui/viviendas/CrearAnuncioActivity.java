@@ -67,31 +67,34 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio);
+        previewPhotoUri = null;
 
-        // Inicialización de vistas
+
+        enlazarIdsVista();
+
+        establecerAccionesBotones();
+
+        establecerAccionesSpinners();
+
+    }
+
+
+    private void enlazarIdsVista(){
+
         editTitulo = findViewById(R.id.create_titulo);
         editUbicacion = findViewById(R.id.create_ubicacion);
         editMetros = findViewById(R.id.create_metros);
         editPrecio = findViewById(R.id.create_precio);
         editDescripcion = findViewById(R.id.create_descripcion);
-
-
         btnGuardar = findViewById(R.id.btn_guardar_anuncio);
         btnCancelar = findViewById(R.id.btn_cancelar);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
-
         btnPrev = findViewById(R.id.btn_prev);
         btnNext = findViewById(R.id.btn_next);
-
         btnPrev.setVisibility(View.INVISIBLE);
         btnNext.setVisibility(View.INVISIBLE);
-
-
-        previewPhotoUri = null;
-
-
         spinnerCategoria = findViewById(R.id.spinner_categoria);
         opcionesCasa = findViewById(R.id.opciones_casa);
         opcionesHabitacion = findViewById(R.id.opciones_habitacion);
@@ -109,6 +112,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
 
 
+    }
+
+
+
+    private void  establecerAccionesBotones(){
 
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
@@ -132,6 +140,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         btnNext.setOnClickListener(v -> mostrarImagenSiguiente());
 
 
+    }
+
+
+
+    private void establecerAccionesSpinners(){
+
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -153,7 +167,10 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     }
 
+
+
     private Intent guardarAnuncio() {
+
         String titulo = editTitulo.getText().toString();
         String ubicacion = editUbicacion.getText().toString();
         String metros = editMetros.getText().toString();
@@ -196,7 +213,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
         }
 
-        Anuncio nuevoAnuncio = new Anuncio(resultIntent);
+        Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
         MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
         resultIntent.putExtra("id", nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
@@ -204,6 +221,8 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         finish();
         return resultIntent;
     }
+
+
 
     public static void startForResult(ActivityResultLauncher<Intent> launcher, Context context) {
         Intent intent = new Intent(context, CrearAnuncioActivity.class);
@@ -258,6 +277,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+    //----------------------PERMISOS Y ACCESO A CAMARA/ALAMACENAMIENTO----------------------------------------------------------------------
+
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
@@ -273,6 +298,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -292,6 +318,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private void openImageSelector() {
 
@@ -343,7 +370,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
             } else { //EN CASO DE QUE SEA NULL ES PORQUE LA IMAGEN QUE SE HA ESCOGIDO ES DE LA CAMARA
 
-                if (previewPhotoUri != null) { //SE COMPRUEBA QUE EFECTIVAMENTE SER HAYA ELEGIDO UNA IMAGEN UNA VEZ ABEIRTA LA CAMARA
+                if (previewPhotoUri != null) { //SE COMPRUEBA QUE EFECTIVAMENTE SER HAYA ELEGIDO UNA IMAGEN UNA VEZ ABIERTA LA CAMARA
                     // El usuario tomó la foto correctamente
                      agregarImagen(previewPhotoUri);
 
@@ -363,11 +390,15 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 });
 
+
+
     private void agregarImagen(Uri uri) {
         imagenesUri.add(uri);
         imagenActualIndex = imagenesUri.size() - 1;
         actualizarImagen();
     }
+
+
 
     private File createImageFile() throws IOException {
 
