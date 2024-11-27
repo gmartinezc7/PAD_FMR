@@ -73,10 +73,14 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void applyFiltersViewModel (String categoria, String tipoCasa, String comps, String genero){
+    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano){
         List<Vivienda> filtered = new ArrayList<>();
         for (Vivienda vivienda : viviendasini){
             boolean filtrosOK = true;
+
+            // La linea que compara cada filtro con el elemento de la vivienda es para comprobar si es
+            // null, y en caso de serlo ser recibe una cadena vacía para poder compararlo
+
             // FILTRO CATEGORIA
             if (categoria != null && !categoria.isEmpty()) {
                 if (!categoria.equals(vivienda.getCategoria() == null ? "" : vivienda.getCategoria())) {
@@ -91,19 +95,47 @@ public class HomeViewModel extends ViewModel {
                 }
             }
 
-            // FILTRO COMPAÑEROS
-            /*if (comps != null && !comps.isEmpty()) {
-                if (!comps.equals(vivienda.getCompaneros() == null ? "" : vivienda.getCompaneros())) {
+            // FILTRO NUM HABITACIONES
+            if (numhabs != null && !numhabs.isEmpty()){
+                if (!numhabs.equals(vivienda.getHabitaciones() == null ? "" : vivienda.getHabitaciones())){
                     filtrosOK = false;
                 }
             }
 
-            // FILTRO GÉNERO
-            if (genero != null && !genero.isEmpty()) {
-                if (!genero.equals(vivienda.getGenero() == null ? "" : vivienda.getGenero())) {
+            // FILTRO NUM BANOS
+            if (numbanos != null && !numbanos.isEmpty()){
+                if (!numbanos.equals(vivienda.getBanos() == null ? "" : vivienda.getBanos())){
                     filtrosOK = false;
                 }
-            }*/
+            }
+
+            // FILTRO NUM COMPS
+            if (numComps != null && !numComps.isEmpty()){
+                if (!numComps.equals(vivienda.getCompaneros() == null ? "" : vivienda.getCompaneros())){
+                    filtrosOK = false;
+                }
+            }
+
+            //FILTRO GENERO
+            if(genero != null && !genero.isEmpty()){
+                if (!genero.equals(vivienda.getGenero() == null ? "" : vivienda.getGenero())){
+                    filtrosOK = false;
+                }
+            }
+
+            // FILTRO ORIENTACION
+            if (orientation != null && !orientation.isEmpty()){
+                if (!orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                    filtrosOK = false;
+                }
+            }
+
+            // FILTRO TIPOBANO
+            if (tipobano != null && !tipobano.isEmpty()){
+                if (!tipobano.equals(vivienda.getTipoBano() == null ? "" : vivienda.getTipoBano())){
+                    filtrosOK = false;
+                }
+            }
 
 
             if (filtrosOK) filtered.add(vivienda);

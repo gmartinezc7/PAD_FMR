@@ -25,12 +25,63 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/categorias_array" />
 
-            <!-- Filtro por tipo de casa -->
-            <Spinner
-                android:id="@+id/spinnerTipoCasas"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/tipo_casa_array" />
+                android:layout_height="wrap_content">
+                <!-- Filtro por tipo de casa -->
+                <Spinner
+                    android:id="@+id/spinnerTipoCasas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/tipo_casa_array" />
+
+                <!-- Filtro por num habitaciones -->
+                <Spinner
+                    android:id="@+id/spinnerNumHabs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/habitaciones_array" />
+
+                <!-- Filtro por num de banos -->
+                <Spinner
+                    android:id="@+id/spinnerNumBanos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/banos_array" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- Filtro por orientacion-->
+                <Spinner
+                    android:id="@+id/spinnerOrientacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/exterior_interior_array" />
+
+                <!-- Filtro por num de Companeros -->
+                <Spinner
+                    android:id="@+id/spinnerNumComps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/companeros_array" />
+
+                <!-- Filtro por genero -->
+                <Spinner
+                    android:id="@+id/spinnerGenero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/genero_array" />
+
+                <!-- Filtro por tipo bano -->
+                <Spinner
+                    android:id="@+id/spinnerTipoBano"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/tipo_bano_array" />
+            </LinearLayout>
+
         </LinearLayout>
 
 

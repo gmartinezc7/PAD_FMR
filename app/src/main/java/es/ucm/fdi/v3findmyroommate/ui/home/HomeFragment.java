@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ViviendaAdapter adapter;
     private HomeViewModel homeViewModel;
-    private Spinner sCategoria, sTipoCasa;
+    private Spinner sCategoria, sTipoCasa, sNumHabs, sNumBanos, sOrientacion, sNumComps, sGenero, sTipoBano;
     private ChipGroup chipGroupComps, chipGroupGenero;
     private Button buttonApplyFilters;
 
@@ -43,8 +43,13 @@ public class HomeFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recyclerViewViviendas);
         sCategoria = root.findViewById(R.id.spinnerCategorias);
         sTipoCasa = root.findViewById(R.id.spinnerTipoCasas);
-        //chipGroupComps = root.findViewById(R.id.chipGroupCompaneros);
-        //chipGroupGenero = root.findViewById(R.id.chipGroupGenero);
+        sNumHabs = root.findViewById(R.id.spinnerNumHabs);
+        sNumBanos = root.findViewById(R.id.spinnerNumBanos);
+        sOrientacion = root.findViewById(R.id.spinnerOrientacion);
+        sNumComps = root.findViewById(R.id.spinnerNumComps);
+        sGenero = root.findViewById(R.id.spinnerGenero);
+        sTipoBano = root.findViewById(R.id.spinnerTipoBano);
+
         buttonApplyFilters = root.findViewById(R.id.buttonApplyFilters);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -78,16 +83,20 @@ public class HomeFragment extends Fragment {
         // APLICAR LOS FILTROS
         String fcategoria = sCategoria.getSelectedItem().toString();
         String ftipocasa = sTipoCasa.getSelectedItem().toString();
-        //String fcomps = getSelectedChipText(chipGroupComps);
-        //String fgenero = getSelectedChipText(chipGroupGenero);
+        String fnumhabitaciones = sNumHabs.getSelectedItem().toString();
+        String fnumbanos = sNumBanos.getSelectedItem().toString();
+        String fnumComps = sNumComps.getSelectedItem().toString();
+        String fgenero = sGenero.getSelectedItem().toString();
+        String forientacion = sOrientacion.getSelectedItem().toString();
+        String fTipoBano = sTipoBano.getSelectedItem().toString();
 
         // Llamada a la construcción del ViewModel
-        System.out.println("FILTROS");
+        /*System.out.println("FILTROS");
         System.out.println("FCATEGORIA: " + fcategoria);
-        System.out.println("FTIPOCASA: " + ftipocasa);
+        System.out.println("FTIPOCASA: " + ftipocasa);*/
         //System.out.println("FCOMPS: " + fcomps);
         //System.out.println("FGENERO: " + fgenero);
-        homeViewModel.applyFiltersViewModel(fcategoria, ftipocasa, "fcomps", "genero");
+        homeViewModel.applyFiltersViewModel(fcategoria, ftipocasa, fnumhabitaciones, fnumbanos, fnumComps, fgenero, forientacion, fTipoBano);
     }
 
     private String getSelectedChipText(ChipGroup cg) {
