@@ -106,8 +106,8 @@
             android:layout_gravity="center_vertical|start"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_flecha_izquierda"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
 
         <!-- Flecha derecha -->
         <ImageButton
