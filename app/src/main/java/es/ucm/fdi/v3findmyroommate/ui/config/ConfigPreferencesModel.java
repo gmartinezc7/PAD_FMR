@@ -51,7 +51,7 @@ public class ConfigPreferencesModel extends AndroidViewModel {
     }
 
 
-    // Loads initial preferences.
+    // Function that loads the initial preferences.
     public static void setInitialPreferences(Application application) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
