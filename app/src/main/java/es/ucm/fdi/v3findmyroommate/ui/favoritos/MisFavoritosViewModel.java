@@ -29,7 +29,7 @@ public class MisFavoritosViewModel extends ViewModel {
         cargarViviendasFavs();
     }
 
-    public LiveData<List<Vivienda>> getViviendas () { return viviendasfavs; }
+    public MutableLiveData<List<Vivienda>> getViviendas () { return viviendasfavs; }
 
     private void cargarViviendasFavs (){
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -60,15 +60,30 @@ public class MisFavoritosViewModel extends ViewModel {
     private void cargarViviendasSegunFavoritos (List<String> favoritos){
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        database.getReference("viviendas").addValueEventListener(new ValueEventListener() {
+        database.getReference("adds").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Vivienda> lista = new ArrayList<>();
                 for (DataSnapshot viviendas : snapshot.getChildren()){
-                    Vivienda vivienda = viviendas.getValue(Vivienda.class);
-                    String vivID = viviendas.getKey(); // Obtiene key de la vivineda
+                    Vivienda vivienda = new Vivienda();
+                    String key = viviendas.getKey();
+                    vivienda.setId(key);
+                    vivienda.setTitle(viviendas.child("title").getValue(String.class));
+                    vivienda.setLocation(viviendas.child("location").getValue(String.class));
+                    vivienda.setMetr(viviendas.child("square_meters").getValue(String.class));
+                    vivienda.setPrice(viviendas.child("price").getValue(String.class));
+                    vivienda.setDescription(viviendas.child("description").getValue(String.class));
+                    vivienda.setCategoria(viviendas.child("property_type").getValue(String.class));
+                    vivienda.setTipoCasa(viviendas.child("house_type").getValue(String.class));
+                    vivienda.setHabitaciones(viviendas.child("number_of_rooms").getValue(String.class));
+                    vivienda.setBanos(viviendas.child("number_of_bathrooms").getValue(String.class));
+                    vivienda.setExteriorInterior(viviendas.child("orientation").getValue(String.class));
+                    vivienda.setCompaneros(viviendas.child("maximum_number_of_roomates").getValue(String.class));
+                    vivienda.setGenero(viviendas.child("roommate_gender").getValue(String.class));
+                    vivienda.setTipoBano(viviendas.child("bathroom_type").getValue(String.class));
                     System.out.println("LLEGA A CARGA DE FAVORITOS");
-                    if (vivienda != null && vivID != null && favoritos.contains(vivID) ){
+
+                    if (vivienda != null && vivienda.getId() != null && favoritos.contains(vivienda.getId()) ){
                         lista.add(vivienda);
                         System.out.println("Favorita carga: " + vivienda.getTitle());
                     }

@@ -4,6 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="chipSelectedColor">#FF6200EE</color> <!-- Color para el chip seleccionado -->
     <color name="chipDefaultColor">#FFBDBDBD</color> <!-- Color por defecto para los chips -->
+    <color name="primary_color">#6200EE</color>
+    <color name="secondary_color">#03DAC5</color>
+    <color name="gray">#B0B0B0</color>
+    <color name="teal_500">#008080</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="dark_gray">#424242</color>
+    <color name="light_gray">#E0E0E0</color>
 
 
 </resources>

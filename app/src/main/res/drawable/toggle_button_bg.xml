@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- ON -->
-    <item android:state_checked="true">
-        <shape android:shape="oval">
-            <solid android:color="#F7224C" />
-        </shape>
-    </item>
+    <item android:state_checked="true" android:drawable="@drawable/ic_heart_checked"/>
 
-    <!-- OFF -->
-    <item>
-        <shape android:shape="oval">
-            <solid android:color="#CCCCCC"/>
-        </shape>
-    </item>
+    <item android:drawable="@drawable/ic_heart" />
 
 </selector>
