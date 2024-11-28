@@ -2,6 +2,7 @@ package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleableRes;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -75,6 +76,9 @@ public class HomeViewModel extends ViewModel {
 
     public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano){
         List<Vivienda> filtered = new ArrayList<>();
+        // DEBUG
+        System.out.println("SE HA LLAMADO A LA FUNCIÓN applyFiltersViewModel con los valores: ");
+        System.out.println("Filtros: " + categoria + tipoCasa + numhabs + numbanos + numComps + genero + orientation + tipobano);
         for (Vivienda vivienda : viviendasini){
             boolean filtrosOK = true;
 
@@ -88,57 +92,66 @@ public class HomeViewModel extends ViewModel {
                 }
             }
 
-            // FILTRO TIPO DE CASA
-            if (tipoCasa != null && !tipoCasa.isEmpty()) {
-                if (!tipoCasa.equals(vivienda.getTipoCasa() == null ? "" : vivienda.getTipoCasa())) {
+            // FILTROS CATEGORIA CASA
+            if (categoria != null && categoria.equals("Casa")){
+                System.out.println("ES UNA CASAAAAAA");
+                System.out.println("Vivienda: " + vivienda.getId());
+
+                if (tipoCasa != null && !tipoCasa.isEmpty() && !tipoCasa.equals(vivienda.getTipoCasa() == null ? "" : vivienda.getTipoCasa())){
+                    System.out.println("tipoCasa no Coincide. TipoCasaFiltro: " + tipoCasa + " TipoCasaVivienda" + vivienda.getTipoCasa());
                     filtrosOK = false;
-                }
+                }else System.out.println("tipoCasa Coincide");
+
+                if (numhabs != null && !numhabs.isEmpty() && !numhabs.equals(vivienda.getHabitaciones() == null ? "" : vivienda.getHabitaciones())){
+                    System.out.println("numhabs no Coincide. NumHabsFiltro: " + numhabs + " NumHabsVivienda" + vivienda.getHabitaciones());
+                    filtrosOK = false;
+                }else System.out.println("numhabs Coincide");
+
+                if (numbanos != null && !numbanos.isEmpty() && !numbanos.equals(vivienda.getBanos() == null ? "" : vivienda.getBanos())){
+                    System.out.println("numbanos no Coincide. NumBanosFiltro: " + numbanos + " NumBanosVivienda: " + vivienda.getBanos());
+                    filtrosOK = false;
+                }else System.out.println("numbanos Coincide");
+
+                /*if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                    System.out.println("orientation no Coincide");
+                    filtrosOK = false;
+                }else System.out.println("orientation Coincide");*/
             }
 
-            // FILTRO NUM HABITACIONES
-            if (numhabs != null && !numhabs.isEmpty()){
-                if (!numhabs.equals(vivienda.getHabitaciones() == null ? "" : vivienda.getHabitaciones())){
-                    filtrosOK = false;
-                }
-            }
+            // Filtros Categoría Habitación
 
-            // FILTRO NUM BANOS
-            if (numbanos != null && !numbanos.isEmpty()){
-                if (!numbanos.equals(vivienda.getBanos() == null ? "" : vivienda.getBanos())){
-                    filtrosOK = false;
-                }
-            }
 
-            // FILTRO NUM COMPS
-            if (numComps != null && !numComps.isEmpty()){
-                if (!numComps.equals(vivienda.getCompaneros() == null ? "" : vivienda.getCompaneros())){
+            if (categoria != null && categoria.equals("Habitación")){
+                System.out.println("ES UNA HABITACIOOOOON");
+                System.out.println("Vivienda: " + vivienda.getId());
+                if (numComps != null && !numComps.isEmpty() && !numComps.equals(vivienda.getCompaneros() == null ? "" : vivienda.getCompaneros())){
+                    System.out.println("numcomps no Coincide. Numcompsfiltro: " + numComps + " numCompsVivienda: " + vivienda.getCompaneros());
                     filtrosOK = false;
-                }
-            }
+                }else System.out.println("numcomps Coincide");
 
-            //FILTRO GENERO
-            if(genero != null && !genero.isEmpty()){
-                if (!genero.equals(vivienda.getGenero() == null ? "" : vivienda.getGenero())){
+                if (genero != null && !genero.isEmpty() && !genero.equals(vivienda.getGenero() == null ? "" : vivienda.getGenero())){
+                    System.out.println("genero no Coincide. Generofiltro: " + genero + " Generovivienda: " + vivienda.getGenero());
                     filtrosOK = false;
-                }
-            }
+                }System.out.println("genero Coincide");
 
-            // FILTRO ORIENTACION
-            if (orientation != null && !orientation.isEmpty()){
-                if (!orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                if (tipobano != null && !tipobano.isEmpty() && !tipobano.equals(vivienda.getTipoBano() == null ? "" : vivienda.getTipoBano())){
+                    System.out.println("tipobano no Coincide. TipoBanoFiltro: " + tipobano + " TipoBanoVivienda: " + vivienda.getTipoBano());
                     filtrosOK = false;
-                }
-            }
+                }else System.out.println("tipobano Coincide");
 
-            // FILTRO TIPOBANO
-            if (tipobano != null && !tipobano.isEmpty()){
-                if (!tipobano.equals(vivienda.getTipoBano() == null ? "" : vivienda.getTipoBano())){
+                /*if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                    System.out.println("orientation no Coincide");
                     filtrosOK = false;
-                }
+                }else System.out.println("orientation Coincide");*/
             }
 
 
-            if (filtrosOK) filtered.add(vivienda);
+
+            if (filtrosOK){
+                filtered.add(vivienda);
+                System.out.println("FILTRADO");
+                vivienda.printVivienda();
+            }
         }
 
         // Ahora actualizamos el LiveData con las viviendas filtradas

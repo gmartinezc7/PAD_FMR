@@ -68,9 +68,9 @@ public class HomeFragment extends Fragment {
 
         openFilters.setOnClickListener(v -> {
             FiltersFragment dialog = new FiltersFragment();
-            dialog.setListenerFiltrosAplicados(((categoria, tipocasa, numHabs, numBanos, orientacion, genero, numComps, tipoBano) -> {
+            dialog.setListenerFiltrosAplicados(((categoria, tipocasa, numHabs, numBanos, numComps, genero, orientacion, tipoBano) -> {
                 // Llamada a viviendaViewModel para aplicar los filtros que se hanc reado
-                homeViewModel.applyFiltersViewModel(categoria,tipocasa,numHabs, numBanos, orientacion, genero, numComps, tipoBano);
+                homeViewModel.applyFiltersViewModel(categoria,tipocasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano);
             }));
             dialog.show(getParentFragmentManager(),"Filters");
         });
@@ -133,12 +133,5 @@ public class HomeFragment extends Fragment {
         homeViewModel.applyFiltersViewModel(fcategoria, ftipocasa, fnumhabitaciones, fnumbanos, fnumComps, fgenero, forientacion, fTipoBano);
     }
 
-    private String getSelectedChipText(ChipGroup cg) {
-        int selected = cg.getCheckedChipId();
-        if (selected != View.NO_ID){
-            Chip chip = cg.findViewById(selected);
-            return chip.getText().toString();
-        }
-        return null; // En caso de que no se haya seleccionado ningún chip
-    }
+
 }

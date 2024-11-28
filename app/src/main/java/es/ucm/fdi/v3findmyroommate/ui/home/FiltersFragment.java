@@ -46,6 +46,13 @@ public class FiltersFragment extends DialogFragment {
         filterscasa = view.findViewById(R.id.filtrosCasa);
         filtershabitacion = view.findViewById(R.id.filtrosHabitacion);
         sCategoria = view.findViewById(R.id.spinnerCategorias);
+        sTipoCasa = view.findViewById(R.id.spinnerTipoCasas);
+        sNumHabs = view.findViewById(R.id.spinnerNumHabs);
+        sNumBanos = view.findViewById(R.id.spinnerNumBanos);
+        sOrientacion = view.findViewById(R.id.spinnerOrientacion);
+        sGenero = view.findViewById(R.id.spinnerGenero);
+        sNumComps = view.findViewById(R.id.spinnerNumComps);
+        sTipoBano = view.findViewById(R.id.spinnerTipoBano);
         sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -77,8 +84,37 @@ public class FiltersFragment extends DialogFragment {
         Button cancel = view.findViewById(R.id.buttonCancelFilters);
 
         applyfiltersbutton.setOnClickListener(v -> {
+            String ftipocasa = "";
+            String fnumhabs = "";
+            String fnumbanos = "";
+            String forientacion = "";
+            String fgenero = "";
+            String fnumComps = "";
+            String ftipoBano = "";
             if (listener != null){
-                listener.filtrosAplicados(sCategoria.getSelectedItem().toString(), "Habitación", "2", "2", "Exterior", "Solo hombres", "2", "Privado");
+                if (sTipoCasa != null){
+                    ftipocasa = sTipoCasa.getSelectedItem() != null ? sTipoCasa.getSelectedItem().toString() : "";
+                }
+                if (sNumHabs != null){
+                    fnumhabs = sNumHabs.getSelectedItem() != null ? sNumHabs.getSelectedItem().toString() : "";
+                }
+                if (sNumBanos != null){
+                    fnumbanos = sNumBanos.getSelectedItem() != null ? sNumBanos.getSelectedItem().toString() : "";
+                }
+                if (sOrientacion != null){
+                    forientacion = sOrientacion.getSelectedItem() != null ? sOrientacion.getSelectedItem().toString() : "";
+                }
+                if (sGenero != null){
+                    fgenero = sGenero.getSelectedItem() != null ? sGenero.getSelectedItem().toString() : "";
+                }
+                if (sNumComps != null){
+                    fnumComps = sNumComps.getSelectedItem() != null ? sNumComps.getSelectedItem().toString() : "";
+                }
+                if (sTipoBano != null){
+                    ftipoBano = sTipoBano.getSelectedItem() != null ? sTipoBano.getSelectedItem().toString() : "";
+                }
+
+                listener.filtrosAplicados(sCategoria.getSelectedItem().toString(), ftipocasa, fnumhabs,fnumbanos, fnumComps,fgenero, forientacion,ftipoBano);
             }
             dismiss();
         });
