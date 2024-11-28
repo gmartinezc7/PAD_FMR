@@ -7,7 +7,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFavoritos"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="700dp"
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"

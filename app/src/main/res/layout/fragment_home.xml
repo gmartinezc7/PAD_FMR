@@ -5,115 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- FILTROS -->
-    <HorizontalScrollView
-        android:id="@+id/horizontalDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filtrosss"
+        android:layout_width="391dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <!-- Filtro por categoría -->
-            <Spinner
-                android:id="@+id/spinnerCategorias"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/categorias_array" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <!-- Filtro por tipo de casa -->
-                <Spinner
-                    android:id="@+id/spinnerTipoCasas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/tipo_casa_array" />
-
-                <!-- Filtro por num habitaciones -->
-                <Spinner
-                    android:id="@+id/spinnerNumHabs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/habitaciones_array" />
-
-                <!-- Filtro por num de banos -->
-                <Spinner
-                    android:id="@+id/spinnerNumBanos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/banos_array" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <!-- Filtro por orientacion-->
-                <Spinner
-                    android:id="@+id/spinnerOrientacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/exterior_interior_array" />
-
-                <!-- Filtro por num de Companeros -->
-                <Spinner
-                    android:id="@+id/spinnerNumComps"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/companeros_array" />
-
-                <!-- Filtro por genero -->
-                <Spinner
-                    android:id="@+id/spinnerGenero"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/genero_array" />
-
-                <!-- Filtro por tipo bano -->
-                <Spinner
-                    android:id="@+id/spinnerTipoBano"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/tipo_bano_array" />
-            </LinearLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/buttonOpenFilters"
+            android:layout_width="89dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="268dp"
+            android:text="Filtrar"
+            android:textSize="14sp"
+            app:cornerRadius="@dimen/cardview_default_radius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-    </HorizontalScrollView>
-
-    <!-- Filtros -->
-    <LinearLayout
-        android:id="@+id/filterPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-
-
-
-        <!-- Botón para aplicar los filtros -->
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewViviendas"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="666dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonApplyFilters" />
+        app:layout_constraintTop_toBottomOf="@+id/filtrosss" />
 
     <TextView
         android:id="@+id/textView"
@@ -128,13 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonApplyFilters"
-        android:layout_width="105dp"
-        android:layout_height="44dp"
-        android:layout_marginEnd="152dp"
-        android:text="Filtrar"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalDetails" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -32,25 +33,20 @@ public class HomeFragment extends Fragment {
     private ViviendaAdapter adapter;
     private HomeViewModel homeViewModel;
     private Spinner sCategoria, sTipoCasa, sNumHabs, sNumBanos, sOrientacion, sNumComps, sGenero, sTipoBano;
-    private ChipGroup chipGroupComps, chipGroupGenero;
     private Button buttonApplyFilters;
+
+
+    // variables para poder visualizar o no los filtros
+    private View filterscasa, filtershabitacion;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        recyclerView = root.findViewById(R.id.recyclerViewViviendas);
-        sCategoria = root.findViewById(R.id.spinnerCategorias);
-        sTipoCasa = root.findViewById(R.id.spinnerTipoCasas);
-        sNumHabs = root.findViewById(R.id.spinnerNumHabs);
-        sNumBanos = root.findViewById(R.id.spinnerNumBanos);
-        sOrientacion = root.findViewById(R.id.spinnerOrientacion);
-        sNumComps = root.findViewById(R.id.spinnerNumComps);
-        sGenero = root.findViewById(R.id.spinnerGenero);
-        sTipoBano = root.findViewById(R.id.spinnerTipoBano);
 
-        buttonApplyFilters = root.findViewById(R.id.buttonApplyFilters);
+        recyclerView = root.findViewById(R.id.recyclerViewViviendas);
+        Button openFilters = root.findViewById(R.id.buttonOpenFilters);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -69,7 +65,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        buttonApplyFilters.setOnClickListener(v -> applyFilters());
+
+        openFilters.setOnClickListener(v -> {
+            FiltersFragment dialog = new FiltersFragment();
+            dialog.setListenerFiltrosAplicados(((categoria, tipocasa, numHabs, numBanos, orientacion, genero, numComps, tipoBano) -> {
+                // Llamada a viviendaViewModel para aplicar los filtros que se hanc reado
+                homeViewModel.applyFiltersViewModel(categoria,tipocasa,numHabs, numBanos, orientacion, genero, numComps, tipoBano);
+            }));
+            dialog.show(getParentFragmentManager(),"Filters");
+        });
+        //buttonApplyFilters.setOnClickListener(v -> applyFilters());
 
         return root;
     }
@@ -82,13 +87,42 @@ public class HomeFragment extends Fragment {
     private void applyFilters(){
         // APLICAR LOS FILTROS
         String fcategoria = sCategoria.getSelectedItem().toString();
-        String ftipocasa = sTipoCasa.getSelectedItem().toString();
-        String fnumhabitaciones = sNumHabs.getSelectedItem().toString();
-        String fnumbanos = sNumBanos.getSelectedItem().toString();
-        String fnumComps = sNumComps.getSelectedItem().toString();
-        String fgenero = sGenero.getSelectedItem().toString();
-        String forientacion = sOrientacion.getSelectedItem().toString();
-        String fTipoBano = sTipoBano.getSelectedItem().toString();
+        System.out.println("CATEGORIA FILTRO: " + fcategoria);
+
+        String ftipocasa = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sTipoCasa.getSelectedItem().toString();
+        }
+
+        String fnumhabitaciones = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sNumHabs.getSelectedItem().toString();
+        }
+
+        String fnumbanos = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sNumBanos.getSelectedItem().toString();
+        }
+
+        String fnumComps = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sNumComps.getSelectedItem().toString();
+        }
+
+        String fgenero = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sGenero.getSelectedItem().toString();
+        }
+
+        String forientacion = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sOrientacion.getSelectedItem().toString();
+        }
+
+        String fTipoBano = null;
+        if (filterscasa.getVisibility() == View.VISIBLE){
+            sTipoBano.getSelectedItem().toString();
+        }
 
         // Llamada a la construcción del ViewModel
         /*System.out.println("FILTROS");
