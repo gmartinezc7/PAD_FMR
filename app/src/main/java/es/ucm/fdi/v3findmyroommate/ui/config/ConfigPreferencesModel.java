@@ -51,7 +51,7 @@ public class ConfigPreferencesModel extends AndroidViewModel {
     }
 
 
-    // Loads initial preferences.
+    // Function that loads the initial preferences.
     public static void setInitialPreferences(Application application) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -166,6 +166,7 @@ public class ConfigPreferencesModel extends AndroidViewModel {
 
         // Updates user's property type preference.
         else if (preferenceKey.equals(application.getString(R.string.property_type_preference_key))) {
+            ConfigPreferencesModel.deleteOldPropertyTypeFields(newValue, application);
             ConfigPreferencesModel.databaseUserReference.child(
                     application.getString(R.string.property_type_db_label)).setValue(newValue);
             editor.putString(application.getString(R.string.property_type_preference_key), newValue);
@@ -191,7 +192,7 @@ public class ConfigPreferencesModel extends AndroidViewModel {
         // Updates user's number of bathrooms preference.
         else if (preferenceKey.equals(application.getString(R.string.num_bathrooms_preference_key))) {
             ConfigPreferencesModel.databaseUserReference.child(
-                    application.getString(R.string.num_rooms_db_label)).setValue(newValue);
+                    application.getString(R.string.num_bathrooms_db_label)).setValue(newValue);
             editor.putString(application.getString(R.string.num_bathrooms_preference_key), newValue);
             Log.i("NumberOfBathroomsPreference", "New number of bathrooms selected: " + newValue);
         }
@@ -281,6 +282,83 @@ public class ConfigPreferencesModel extends AndroidViewModel {
                 }
             });
         }
+    }
+
+
+    // Auxiliary function that removes the fields corresponding to the previous property type preference.
+    private static void deleteOldPropertyTypeFields(String newValue, Application application) {
+
+        if (newValue.equals(application.getString(R.string.house_property_type_label))) {  // Si cambia a una casa.
+
+            // Elimina los campos que no sean de una casa (en el caso de que antes fuese un anuncio de una habitación).
+            ConfigPreferencesModel.databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    // Elimina el campo de máximo número de compañeros de piso.
+                    String max_num_roomates = snapshot.child(application
+                            .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                    if (max_num_roomates != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.max_num_roommates_db_label)).removeValue();
+
+                    // Elimina el campo de preferencia de sexo de los compañeros.
+                    String roomate_gender = snapshot.child(application
+                            .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                    if (roomate_gender != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.roommate_gender_db_label)).removeValue();
+
+                    // Elimina el campo de tipo de baño.
+                    String bathroom_type = snapshot.child(application
+                            .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+                    if (bathroom_type != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.bathroom_type_db_label)).removeValue();
+
+                }
+            });
+        }
+
+        else if (newValue.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
+
+            // Elminina los campos que no sean de una habitación (en el caso de que antes fuese un anuncio de una casa).
+            ConfigPreferencesModel.databaseUserReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+
+                    // Elimina el campo de tipo de casa.
+                    String house_type = snapshot.child(application
+                            .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                    if (house_type != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.add_house_type_db_label)).removeValue();
+
+                    // Elimina el campo de número de habitaciones.
+                    String num_rooms = snapshot.child(application
+                            .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                    if (num_rooms != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.num_rooms_db_label)).removeValue();
+
+                    // Elimina el campo de número de baños.
+                    String num_bathroom = snapshot.child(application
+                            .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                    if (num_bathroom != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.num_bathrooms_db_label)).removeValue();
+
+                    // Elimina el campo de metros cuadrados.
+                    String square_meters = snapshot.child(application
+                            .getString(R.string.square_meters_db_label)).getValue(String.class);
+                    if (square_meters != null)
+                        ConfigPreferencesModel.databaseUserReference.child(application.getString(
+                                R.string.square_meters_db_label)).removeValue();
+
+                }
+            });
+        }
+
     }
 
 

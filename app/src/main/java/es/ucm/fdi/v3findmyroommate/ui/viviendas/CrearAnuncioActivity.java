@@ -2,13 +2,13 @@ package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,11 +40,8 @@ import android.widget.AdapterView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import es.ucm.fdi.v3findmyroommate.R;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 
 public class CrearAnuncioActivity extends AppCompatActivity {
@@ -178,7 +175,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     }
 
-    private void guardarAnuncio() {
+    private Intent guardarAnuncio() {
         String titulo = editTitulo.getText().toString();
         String ubicacion = editUbicacion.getText().toString();
         String metros = editMetros.getText().toString();
@@ -186,17 +183,17 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String descripcion = editDescripcion.getText().toString();
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() ) {
+                || precio.isEmpty() /*|| imagenesUri.isEmpty()*/) {
             Toast.makeText(this, "Debes rellenar toda la información " +
                     "para poder crear un anuncio", Toast.LENGTH_LONG).show();
-            return; // Detiene el flujo y no continúa con la creación del anuncio
+            return null; // Detiene el flujo y no continúa con la creación del anuncio
         }
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
 
         Intent resultIntent = new Intent();
-        String idNuevoAnuncio = "a" + String.valueOf(Anuncio.generadorId++);
-        resultIntent.putExtra("id", idNuevoAnuncio);
         resultIntent.putExtra("titulo", titulo);
+        if (user != null) resultIntent.putExtra("idUsuario", user.getUid());
         resultIntent.putExtra("ubicacion", ubicacion);
         resultIntent.putExtra("metros", metros);
         resultIntent.putExtra("precio", precio);
@@ -224,66 +221,17 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         }
 
         Anuncio nuevoAnuncio = new Anuncio(resultIntent);
-        CrearAnuncioActivity.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
-
+        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
+        resultIntent.putExtra("id", nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
         setResult(RESULT_OK, resultIntent);
         finish();
+        return resultIntent;
     }
 
-
-    public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
-
-        // Obtiene el usuario actual.
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Obtiene una instancia de la BD.
-        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
-                getApplicationContext().getString(R.string.database_url));
-
-        // Obtiene la referencia a la BD.
-        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
-                .child(nuevoAnuncio.getId());
-
-        databaseAddReference.child(application.getString(R.string.add_title_db_label))
-                .setValue(nuevoAnuncio.getTitulo());
-        databaseAddReference.child(application.getString((R.string.add_location_db_label)))
-                .setValue(nuevoAnuncio.getUbicacion());
-        databaseAddReference.child(application.getString((R.string.add_square_meters_db_label)))
-                .setValue(nuevoAnuncio.getMetros());
-        databaseAddReference.child(application.getString((R.string.add_price_db_label)))
-                .setValue(nuevoAnuncio.getPrecio());
-        databaseAddReference.child(application.getString((R.string.add_description_db_label)))
-                .setValue(nuevoAnuncio.getDescripcion());
-
-        String categoria = nuevoAnuncio.getCategoria();
-        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
-                .setValue(categoria);
-
-        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .removeValue();
-            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoCasa());
-            databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
-                    .setValue(nuevoAnuncio.getHabitaciones());
-            databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
-                    .setValue(nuevoAnuncio.getBanos());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
-        }
-
-        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
-            databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
-                    .setValue(nuevoAnuncio.getCompaneros());
-            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
-                    .setValue(nuevoAnuncio.getGenero());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoBano());
-        }
-
+    public static void startForResult(ActivityResultLauncher<Intent> launcher, Context context) {
+        Intent intent = new Intent(context, CrearAnuncioActivity.class);
+        launcher.launch(intent);
     }
 
 
@@ -294,13 +242,13 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         }
     }
 
+
     private void mostrarImagenSiguiente() {
         if (imagenActualIndex < imagenesUri.size() - 1) {
             imagenActualIndex++;
             actualizarImagen();
         }
     }
-
 
 
     private void actualizarImagen() {
@@ -452,6 +400,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
 
-
     }
+
 }

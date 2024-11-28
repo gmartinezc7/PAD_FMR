@@ -1,10 +1,12 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -23,11 +25,12 @@ MutableLiveData<List<Anuncio>> anuncios PARA LA LISTA DE ANUNCIOS
 SIEMPRE QUE REALIZAMOS UN CAMBIO EN LA LISTA, AL FINAL USAMOS  anuncios.setValue(listaActual);
 PARA NOTIFICAR DEL CAMBIO
  */
-public class MisViviendasViewModel extends ViewModel {
+public class MisViviendasViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Anuncio>> anuncios;
 
-    public MisViviendasViewModel() {
+    public MisViviendasViewModel(Application application) {
+        super(application);
         anuncios = new MutableLiveData<>();
         List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
@@ -62,6 +65,8 @@ public class MisViviendasViewModel extends ViewModel {
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
 
+            Application application = getApplication();
+            MisViviendasFragment.eliminiarAnuncioEnBD(listaActual.get(position), this.getApplication());
             listaActual.remove(position);
             anuncios.setValue(listaActual);
         }

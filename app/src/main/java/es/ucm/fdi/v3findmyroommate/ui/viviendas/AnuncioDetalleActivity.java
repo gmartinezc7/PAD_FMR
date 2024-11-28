@@ -58,6 +58,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private int imagenActualIndex = 0;
     private ImageButton btnPrev,btnNext;
 
+    private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
@@ -133,6 +134,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
         // Obtener el anuncio del intent
         Intent intent = getIntent();
+        this.idAnuncio = intent.getStringExtra("id");
         this.titulo = intent.getStringExtra("titulo");
         this.ubicacion = intent.getStringExtra("ubicacion");
         this.metros = intent.getStringExtra("metros");
@@ -195,6 +197,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
 
+                        this.idAnuncio = data.getStringExtra("id");
                         this.titulo = data.getStringExtra("titulo");
                         this.ubicacion = data.getStringExtra("ubicacion");
                         this.metros = data.getStringExtra("metros");
@@ -261,6 +264,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private void terminarYRegresarInfo(){
 
         Intent resultIntent = new Intent();
+        resultIntent.putExtra("id", this.idAnuncio);
         resultIntent.putExtra("titulo", this.titulo);
         resultIntent.putExtra("ubicacion",  this.ubicacion);
         resultIntent.putExtra("metros",this.metros);
@@ -298,7 +302,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private void abrirEdicion() {
         Intent intent = new Intent(this, EditarAnuncioActivity.class);
 
-
+        intent.putExtra("id", idAnuncio);
         intent.putExtra("titulo", titulo);
         intent.putExtra("ubicacion", ubicacion);
         intent.putExtra("metros", metros);

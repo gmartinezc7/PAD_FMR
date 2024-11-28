@@ -164,6 +164,9 @@
     <string name="add_description_db_label" translatable="false">description</string>
     <string name="add_house_type_db_label" translatable="false">house_type</string>
     <string name="username_db_label" translatable="false">username</string>
+    <string name="user_adds_list_db_label" translatable="false">user_adds_list</string>
+    <string name="add_uri_list_db_label" translatable="false">uri_list</string>
+    <string name="add_user_id_db_label" translatable="false">user_id</string>
 
 
 </resources>
