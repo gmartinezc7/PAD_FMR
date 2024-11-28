@@ -27,12 +27,6 @@ public class ConfigFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*
-        ConfigPreferencesModel ConfigPreferencesModel = new ViewModelProvider(this,
-                new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication()))
-                .get(ConfigPreferencesModel.class);
-
-         */
 
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
