@@ -446,7 +446,7 @@ public class MisViviendasFragment extends Fragment {
 
         else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
 
-            // Elminina los campos que no sean de una habitación (en el casod e que antes fuese un anuncio de una casa).
+            // Elminina los campos que no sean de una habitación (en el caso de que antes fuese un anuncio de una casa).
             databaseAddReference.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
