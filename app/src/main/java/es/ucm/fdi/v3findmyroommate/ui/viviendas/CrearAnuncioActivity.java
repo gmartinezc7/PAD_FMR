@@ -179,43 +179,44 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
                 || precio.isEmpty() || imagenesUri.isEmpty()) {
-            Toast.makeText(this, "Debes rellenar toda la información " +
-                    "para poder crear un anuncio", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_debes_rellenar_todo),
+                    Toast.LENGTH_LONG).show();
             return null; // Detiene el flujo y no continúa con la creación del anuncio
         }
 
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("titulo", titulo);
-        resultIntent.putExtra("ubicacion", ubicacion);
-        resultIntent.putExtra("metros", metros);
-        resultIntent.putExtra("precio", precio);
-        resultIntent.putExtra("descripcion", descripcion);
-        resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
+        resultIntent.putExtra(this.getString(R.string.key_titulo), titulo);
+        resultIntent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+        resultIntent.putExtra(this.getString(R.string.key_metros), metros);
+        resultIntent.putExtra(this.getString(R.string.key_precio), precio);
+        resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),
+                new ArrayList<>(imagenesUri));
 
 
         //GUARDAMOS TAMBIÉN LAS ETIQUETAS
         String categoria = spinnerCategoria.getSelectedItem().toString();
-        resultIntent.putExtra("categoria", categoria);
+        resultIntent.putExtra(this.getString(R.string.key_categoria), categoria);
 
         // Guardamos los datos específicos según la categoría
-        if (categoria.equalsIgnoreCase("Casa")) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            resultIntent.putExtra("tipoCasa", spinnerTipoCasa.getSelectedItem().toString());
-            resultIntent.putExtra("habitaciones", spinnerHabitaciones.getSelectedItem().toString());
-            resultIntent.putExtra("banos", spinnerBanos.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorCasa.getSelectedItem().toString());
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
+            resultIntent.putExtra(this.getString(R.string.key_tipo_casa), spinnerTipoCasa.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_habitaciones), spinnerHabitaciones.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_banos), spinnerBanos.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorCasa.getSelectedItem().toString());
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
-            resultIntent.putExtra("companeros", spinnerCompaneros.getSelectedItem().toString());
-            resultIntent.putExtra("genero", spinnerGenero.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
-            resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_companeros), spinnerCompaneros.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_genero), spinnerGenero.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_tipo_bano), spinnerTipoBano.getSelectedItem().toString());
         }
 
         Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
         MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
-        resultIntent.putExtra("id", nuevoAnuncio.getId()); // Adds the new add ID to the intent.
+        resultIntent.putExtra(this.getString(R.string.key_id), nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
         setResult(RESULT_OK, resultIntent);
         finish();
@@ -307,14 +308,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImageSelector(); // Abre selector si se concede el permiso
             } else {
-                Toast.makeText(this, "Permiso de cámara no concedido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_permiso_camara_denegado), Toast.LENGTH_SHORT).show();
             }
         }
         else if(requestCode == 101){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImageSelector(); // Abre selector si se concede el permiso
             } else {
-                Toast.makeText(this, "Permiso de almacenamiento no concedido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_permiso_almacenamiento_denegado), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -331,14 +332,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_error_crear_imagen), Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
-                previewPhotoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
+                previewPhotoUri = FileProvider.getUriForFile(this, this.getString(R.string.file_provider), photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, previewPhotoUri);
             }
         } else {
-            Toast.makeText(this, "No se encontró aplicación de cámara", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_error_encontrar_camara), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -347,7 +348,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Crear un "chooser" que permite elegir entre la cámara o la galería
-        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, "Selecciona una imagen");
+        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, this.getString(R.string.key_intent_imagen));
 
         // Añadir la opción de tomar una foto con la cámara
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
@@ -376,14 +377,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
                 } else {
                     // El usuario no tomó una foto o canceló
-                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
                 }
             }
 
         }
         else{
             // Si no se seleccionó ninguna imagen o se canceló
-            Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
              previewPhotoUri = null; // Restablecemos previewPhotoUri
         }
 

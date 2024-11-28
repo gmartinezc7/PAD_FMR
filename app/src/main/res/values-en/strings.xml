@@ -77,4 +77,32 @@
     <string name="title_chats">Chats</string>
     <string name="title_config">Settings</string>
     <string name="passwords_dont_match_toast_text">Passwords don\'t match</string>
+
+
+
+
+
+    //SAMUMAGU TRADUCCIONES------------------------------------------
+
+
+        <string name="text_vivienda" translatable="false">Property: \u0020</string>
+        <string name="text_ubicacion" translatable="false">📍 \u0020</string>
+        <string name="text_metros_cuadrados" translatable="false">\u0020 m²</string>
+        <string name="text_precio" translatable="false">\u0020 €</string>
+
+        <string name="eliminar_anunio" translatable="false">Delete listing</string>
+        <string name="pregunta_eliminar_anunio" translatable="false">Are you sure you want to delete this listing?</string>
+
+        <string name="eliminar" translatable="false">Delete</string>
+        <string name="cancelar" translatable="false">Cancel</string>
+        <string name="mensaje_confirmacion_eliminado" translatable="false">Listing deleted</string>
+        <string name="mensaje_debes_rellenar_todo" translatable="false">You must fill in all the information to create a listing</string>
+
+        <string name="mensaje_permiso_camara_denegado" translatable="false">Camera permission not granted</string>
+        <string name="mensaje_permiso_almacenamiento_denegado" translatable="false">Storage permission not granted</string>
+        <string name="mensaje_error_crear_imagen" translatable="false">Error creating image file</string>
+        <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
+        <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
 </resources>
+
+

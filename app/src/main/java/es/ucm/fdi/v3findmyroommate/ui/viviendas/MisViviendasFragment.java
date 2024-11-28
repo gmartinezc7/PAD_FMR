@@ -79,7 +79,7 @@ public class MisViviendasFragment extends Fragment {
 
         // INICIAMOS EL ADAPTER Y LE ASIGNAMOS EL ADAPTADOR PARA MOSTRAR LOS DATOS, CUANDO SE VAYA A ACTUALIZAR,
         //USARÁ A ESTE ADPATADOR PARA MOSTRAR LOS DATOS
-        adapter = new AnunciosAdapter(misViviendasViewModel, this);
+        adapter = new AnunciosAdapter(misViviendasViewModel, this, this.getContext());
         recyclerView.setAdapter(adapter);
 
         // Cargar anuncios solo si es la primera vez
@@ -104,7 +104,6 @@ public class MisViviendasFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        String id = data.getStringExtra("id");
                         misViviendasViewModel.addAnuncio(data);
                     }
                 }
@@ -150,32 +149,32 @@ public class MisViviendasFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), AnuncioDetalleActivity.class);
 
-        intent.putExtra("id", anuncio.getId());
-        intent.putExtra("titulo", anuncio.getTitulo());
-        intent.putExtra("ubicacion", anuncio.getUbicacion());
-        intent.putExtra("metros", anuncio.getMetros());
-        intent.putExtra("precio", anuncio.getPrecio());
-        intent.putExtra("descripcion", anuncio.getDescripcion());
-        intent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(anuncio.getImagenesUri()));
+        intent.putExtra(this.getString(R.string.key_id), anuncio.getId());
+        intent.putExtra(this.getString(R.string.key_titulo), anuncio.getTitulo());
+        intent.putExtra(this.getString(R.string.key_ubicacion), anuncio.getUbicacion());
+        intent.putExtra(this.getString(R.string.key_metros), anuncio.getMetros());
+        intent.putExtra(this.getString(R.string.key_precio), anuncio.getPrecio());
+        intent.putExtra(this.getString(R.string.key_descripcion), anuncio.getDescripcion());
+        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
 
 
         //TAGS
         String categoria = anuncio.getCategoria();
-        intent.putExtra("categoria", categoria);
+        intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
 
-        if (categoria.equalsIgnoreCase("Casa")) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            intent.putExtra("tipoCasa", anuncio.getTipoCasa());
-            intent.putExtra("habitaciones", anuncio.getHabitaciones());
-            intent.putExtra("banos", anuncio.getBanos());
-            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
+            intent.putExtra(this.getString(R.string.key_tipo_bano), anuncio.getTipoCasa());
+            intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
+            intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
+            intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
-            intent.putExtra("companeros", anuncio.getCompaneros());
-            intent.putExtra("genero", anuncio.getGenero());
-            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
-            intent.putExtra("tipoBano", anuncio.getTipoBano());
+            intent.putExtra(this.getString(R.string.key_companeros), anuncio.getCompaneros());
+            intent.putExtra(this.getString(R.string.key_genero), anuncio.getGenero());
+            intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
+            intent.putExtra(this.getString(R.string.key_tipo_bano), anuncio.getTipoBano());
         }
 
         verAnuncioLauncher.launch(intent);
@@ -243,14 +242,14 @@ public class MisViviendasFragment extends Fragment {
 
                                     // Introduce cada uno de los campos en un intent.
                                     Intent currentAddIntent = new Intent();
-                                    currentAddIntent.putExtra("id", addID);
-                                    currentAddIntent.putExtra("titulo", titulo);
-                                    currentAddIntent.putExtra("ubicacion", ubicacion);
-                                    currentAddIntent.putExtra("metros", metros);
-                                    currentAddIntent.putExtra("precio", precio);
-                                    currentAddIntent.putExtra("descripcion", descripcion);
-                                    currentAddIntent.putExtra("categoria", categoria);
-                                    currentAddIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(listaImagenesFormatoUri));
+                                    currentAddIntent.putExtra(this.getString(R.string.key_id), addID);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_titulo), titulo);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_metros), metros);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_precio), precio);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
+                                    currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
                                     if (categoria.equals(getContext().getApplicationContext().getString(
                                             R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
@@ -265,10 +264,10 @@ public class MisViviendasFragment extends Fragment {
                                                 .getString(R.string.orientation_db_label)).getValue(String.class);
 
                                         // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra("tipoCasa", tipo_casa);
-                                        currentAddIntent.putExtra("habitaciones", num_habitaciones);
-                                        currentAddIntent.putExtra("banos", num_banos);
-                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
                                     }
 
                                     else if (categoria.equals(getContext().getApplicationContext().getString(
@@ -284,10 +283,10 @@ public class MisViviendasFragment extends Fragment {
                                                 .getString(R.string.bathroom_type_db_label)).getValue(String.class);
 
                                         // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra("companeros", max_companeros);
-                                        currentAddIntent.putExtra("genero", genero_companeros);
-                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
-                                        currentAddIntent.putExtra("tipoBano", tipo_bano);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
                                     }
 
                                     // Añade el anuncio a la lista del modelo.

@@ -1,6 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -31,11 +32,13 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     private MisViviendasViewModel viewModel;
     private MisViviendasFragment fragment;
 
+private Context context;
 
-
-    public AnunciosAdapter(MisViviendasViewModel viewModel, MisViviendasFragment fragment) {
+    public AnunciosAdapter(MisViviendasViewModel viewModel, MisViviendasFragment fragment,
+                           Context context) {
         this.fragment = fragment;
         this.viewModel = viewModel;
+        this.context = context;
     }
 
     // METODO PARA ACTUALIZAR LA LISTA DE ANUNCIOS
@@ -79,10 +82,10 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
 
 
     private void setAnuncioDetails(AnuncioViewHolder holder, Anuncio anuncio) {
-        holder.chipTitulo.setText("Vivienda: " + anuncio.getTitulo());
-        holder.chipUbicacion.setText("Ubicación: " + anuncio.getUbicacion());
-        holder.chipMetros.setText("Metros Cuadrados: " + anuncio.getMetros());
-        holder.chipPrecio.setText("Precio: " + anuncio.getPrecio());
+        holder.chipTitulo.setText(this.context.getString(R.string.text_vivienda) + anuncio.getTitulo());
+        holder.chipUbicacion.setText(this.context.getString(R.string.text_ubicacion) + anuncio.getUbicacion());
+       holder.chipMetros.setText(anuncio.getMetros() + this.context.getString(R.string.text_metros_cuadrados));
+       holder.chipPrecio.setText(anuncio.getPrecio() + this.context.getString(R.string.text_precio));
         holder.previewRect.setVisibility(View.VISIBLE);
     }
 
@@ -133,13 +136,13 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.Anunci
     private void setLongClickListener(AnuncioViewHolder holder, int position) {
         holder.imageViewAnuncio.setOnLongClickListener(v -> {
             new AlertDialog.Builder(holder.itemView.getContext())
-                    .setTitle("Eliminar anuncio")
-                    .setMessage("¿Estás seguro de que deseas eliminar este anuncio?")
-                    .setPositiveButton("Eliminar", (dialog, which) -> {
+                    .setTitle(this.context.getString(R.string.eliminar_anunio))
+                    .setMessage(this.context.getString(R.string.pregunta_eliminar_anunio))
+                    .setPositiveButton(this.context.getString(R.string.eliminar), (dialog, which) -> {
                         viewModel.eliminarAnuncio(position); //IMPORTANTE LA LLAMADA SIEMPRE A VIEWMODEL PARA MANEJAR LA LISTA
-                        Toast.makeText(holder.itemView.getContext(), "Anuncio eliminado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(holder.itemView.getContext(), this.context.getString(R.string.mensaje_confirmacion_eliminado), Toast.LENGTH_SHORT).show();
                     })
-                    .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                    .setNegativeButton(this.context.getString(R.string.cancelar), (dialog, which) -> dialog.dismiss())
                     .show();
             return true;
         });

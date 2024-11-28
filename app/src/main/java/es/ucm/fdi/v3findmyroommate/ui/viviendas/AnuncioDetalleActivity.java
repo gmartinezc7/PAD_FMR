@@ -204,13 +204,13 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
     private void obtenerYEstablecerDatos(Intent data){
 
-        this.idAnuncio = data.getStringExtra("id");
-        this.titulo = data.getStringExtra("titulo");
-        this.ubicacion = data.getStringExtra("ubicacion");
-        this.metros = data.getStringExtra("metros");
-        this.precio = data.getStringExtra("precio");
-        this.descripcion = data.getStringExtra("descripcion");
-        this.imagenesUri = data.getParcelableArrayListExtra("imagenesUri");
+        this.idAnuncio = data.getStringExtra(this.getString(R.string.key_id));
+        this.titulo = data.getStringExtra(this.getString(R.string.key_titulo));
+        this.ubicacion = data.getStringExtra(this.getString(R.string.key_ubicacion));
+        this.metros = data.getStringExtra(this.getString(R.string.key_metros));
+        this.precio = data.getStringExtra(this.getString(R.string.key_precio));
+        this.descripcion = data.getStringExtra(this.getString(R.string.key_descripcion));
+        this.imagenesUri = data.getParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri));
         iniciarNavImagenes();
 
 
@@ -223,18 +223,18 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
         //TAGS
-        this.categoria = data.getStringExtra("categoria");
+        this.categoria = data.getStringExtra(this.getString(R.string.key_categoria));
         categoriaText.setText(this.categoria);
 
-        if(this.categoria.equalsIgnoreCase("Casa")){
+        if(this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))){
 
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
 
-            this.tipoCasa = data.getStringExtra("tipoCasa");
-            this.habitaciones = data.getStringExtra("habitaciones");
-            this.banos = data.getStringExtra("banos");
-            this.exteriorInterior = data.getStringExtra("exteriorInterior");
+            this.tipoCasa = data.getStringExtra(this.getString(R.string.key_tipo_casa));
+            this.habitaciones = data.getStringExtra(this.getString(R.string.key_habitaciones));
+            this.banos = data.getStringExtra(this.getString(R.string.key_banos));
+            this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
 
             tipoCasaText.setText(tipoCasa);
             numHabitacionesText.setText( habitaciones);
@@ -242,15 +242,15 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
             orientacionText.setText( exteriorInterior);
 
         }
-        else if(categoria.equalsIgnoreCase("Habitación")){
+        else if(categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))){
 
             opcionesCasa.setVisibility(View.GONE);
             opcionesHabitacion.setVisibility(View.VISIBLE);
 
-            this.companeros = data.getStringExtra("companeros");
-            this.genero = data.getStringExtra("genero");
-            this.exteriorInterior = data.getStringExtra("exteriorInterior");
-            this.tipoBano = data.getStringExtra("tipoBano");
+            this.companeros = data.getStringExtra(this.getString(R.string.key_companeros));
+            this.genero = data.getStringExtra(this.getString(R.string.key_genero));
+            this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
+            this.tipoBano = data.getStringExtra(this.getString(R.string.key_tipo_bano));
 
             numCompanerosText.setText(companeros);
             generoHabitacionesText.setText( genero);
@@ -294,30 +294,30 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 //FUNCION AUXILIAR PARA INCLUIR LOS DATOS
     private void incluirDatosEnIntent(Intent intent){
 
-        intent.putExtra("id", idAnuncio);
-        intent.putExtra("titulo", titulo);
-        intent.putExtra("ubicacion", ubicacion);
-        intent.putExtra("metros", metros);
-        intent.putExtra("precio", precio);
-        intent.putExtra("descripcion", descripcion);
-        intent.putParcelableArrayListExtra("imagenesUri",  new ArrayList<>(imagenesUri));
+        intent.putExtra(this.getString(R.string.key_id), idAnuncio);
+        intent.putExtra(this.getString(R.string.key_titulo), titulo);
+        intent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+        intent.putExtra(this.getString(R.string.key_metros), metros);
+        intent.putExtra(this.getString(R.string.key_precio), precio);
+        intent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),  new ArrayList<>(imagenesUri));
 
 
         //TAGS
-        intent.putExtra("categoria", categoria);
+        intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
-        if (categoria.equalsIgnoreCase("Casa")) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            intent.putExtra("tipoCasa", tipoCasa);
-            intent.putExtra("habitaciones", habitaciones);
-            intent.putExtra("banos", banos);
-            intent.putExtra("exteriorInterior", exteriorInterior);
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
+            intent.putExtra(this.getString(R.string.key_tipo_casa), tipoCasa);
+            intent.putExtra(this.getString(R.string.key_habitaciones), habitaciones);
+            intent.putExtra(this.getString(R.string.key_banos), banos);
+            intent.putExtra(this.getString(R.string.key_exterior_interior), exteriorInterior);
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
-            intent.putExtra("companeros", companeros);
-            intent.putExtra("genero", genero);
-            intent.putExtra("exteriorInterior", exteriorInterior);
-            intent.putExtra("tipoBano", tipoBano);
+            intent.putExtra(this.getString(R.string.key_companeros), companeros);
+            intent.putExtra(this.getString(R.string.key_genero), genero);
+            intent.putExtra(this.getString(R.string.key_exterior_interior), exteriorInterior);
+            intent.putExtra(this.getString(R.string.key_tipo_bano), tipoBano);
         }
 
 

@@ -20,7 +20,6 @@ import es.ucm.fdi.v3findmyroommate.R;
 //EN OTRAS PARTES DEL CÓDIGO HEMOS TENIDO QUE TRANSFERIR LOS DATOS ATRIBUTO POR ATRIBUTO
 public class Anuncio {
 
-    public static int generadorId = 0;
     private String idAnuncio;
     private String titulo;
     private String ubicacion;
@@ -47,7 +46,7 @@ public class Anuncio {
 
     public Anuncio(Context context, Intent data) {
 
-        this.idAnuncio = data.getStringExtra("id");
+        this.idAnuncio = data.getStringExtra(context.getString(R.string.key_id));
 
         // Si el Intent no tiene un campo ID (cuando se crea el anuncio, por ejemplo):
         if (this.idAnuncio == null) {
