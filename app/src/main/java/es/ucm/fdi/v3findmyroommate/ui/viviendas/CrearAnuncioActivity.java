@@ -64,6 +64,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     LinearLayout opcionesCasa;
     LinearLayout opcionesHabitacion, guardarAnuncio;
 
+
     Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
@@ -103,6 +104,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         spinnerCategoria = findViewById(R.id.spinner_categoria);
         opcionesCasa = findViewById(R.id.opciones_casa);
         opcionesHabitacion = findViewById(R.id.opciones_habitacion);
+        guardarAnuncio = findViewById(R.id.guardarAnuncio);
 
         // Spinners de opciones Casa
         spinnerTipoCasa = findViewById(R.id.spinner_tipo_casa);
@@ -154,8 +156,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
-                        guardarAnuncio.getLayoutParams();
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) guardarAnuncio.getLayoutParams();
 
                 if (position == 0) { // Casa
                     opcionesCasa.setVisibility(View.VISIBLE);
