@@ -78,7 +78,7 @@
         android:id="@+id/description"
         android:layout_width="312dp"
         android:layout_height="18dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:text="Descripción"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,14 +86,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price" />
 
+    <!-- Owner Id -->
+
+
     <!-- Metros cuadrados -->
+    <TextView
+        android:id="@+id/owner_id"
+        android:layout_width="312dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:text="Contactar dueño: "
+        android:textColor="#666666"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
     <TextView
         android:id="@+id/metr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:text="Metr"
+        android:text="Metros"
         app:layout_constraintEnd_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/price" />
 
@@ -117,9 +133,10 @@
         android:id="@+id/horizontalDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description">
+        app:layout_constraintTop_toBottomOf="@+id/owner_id">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/detailsChipGroup"

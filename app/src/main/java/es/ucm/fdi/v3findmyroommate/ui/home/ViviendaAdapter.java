@@ -2,6 +2,7 @@ package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import com.google.android.material.chip.Chip;
 
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.chats.ChatActivity;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {
@@ -52,6 +54,22 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice());
         holder.metr.setText(vivienda.getMetr());
+
+        //Usuario
+        String ownerName = vivienda.getOwnerName();
+        if (ownerName != null) {
+            holder.ownerName.setText("Contanctar dueño: " + ownerName);
+            //Llamar al ChatActivity
+            holder.ownerName.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                intent.putExtra("chatId", vivienda.getUserId());
+                v.getContext().startActivity(intent);
+            });
+        } else {
+            holder.ownerName.setText("Dueño: Desconocido");
+        }
+
+
 
         // El resto de atributos, como son chips que quiero mostrar y no mostrar dependiendo de la
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
@@ -108,7 +126,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     }
 
     public static class ViviendaViewHolder extends RecyclerView.ViewHolder {
-        private TextView name, address, description, price;
+        private TextView name, address, description, price, ownerName;
         private TextView metr;
         private ToggleButton toggleFavorito;
         private Chip categoria, tipoCasa, habitaciones, banos, exteriorInterior, companeros, genero, tipoBano;
@@ -129,6 +147,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             companeros = itemView.findViewById(R.id.chipCompaneros);
             genero = itemView.findViewById(R.id.chipGenero);
             tipoBano = itemView.findViewById(R.id.chipTipoBano);
+            ownerName = itemView.findViewById(R.id.owner_id);
         }
     }
     public void updateList (List<Vivienda> newVivs){

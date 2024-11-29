@@ -55,6 +55,7 @@
         </provider>
         <activity android:name=".SignUp"/>
         <activity android:name=".PreferencesFragment.PreferenceUser"/>
+        <activity android:name=".ui.chats.ChatActivity"></activity>
     </application>
 
 </manifest>

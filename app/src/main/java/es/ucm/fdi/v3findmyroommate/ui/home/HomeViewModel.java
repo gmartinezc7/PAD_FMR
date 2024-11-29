@@ -53,6 +53,23 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setGenero(viviendas.child("roommate_gender").getValue(String.class));
                     vivienda.setTipoBano(viviendas.child("bathroom_type").getValue(String.class));
 
+                    //Obtener id y nombre dueño
+                    String userId = viviendas.child("user_id").getValue(String.class);
+                    vivienda.setUserId(userId);
+                    if (userId != null) {
+                        FirebaseDatabase.getInstance().getReference("users").child(userId).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String username = snapshot.getValue(String.class);
+                                vivienda.setOwnerName(username);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                vivienda.setOwnerName("Desconocido");
+                            }
+                        });
+                    }
+
                     //martineevivienda.printVivienda();
 
 

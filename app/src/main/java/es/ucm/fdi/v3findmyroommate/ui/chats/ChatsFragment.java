@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import es.ucm.fdi.v3findmyroommate.R;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigEditTextPreferencesFragment;
+//import es.ucm.fdi.v3findmyroommate.ui.config.ConfigEditTextPreferencesFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
