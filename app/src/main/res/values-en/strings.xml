@@ -103,6 +103,7 @@
         <string name="mensaje_error_crear_imagen" translatable="false">Error creating image file</string>
         <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
         <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
+    <string name="subnormal">uuu</string>
 </resources>
 
 

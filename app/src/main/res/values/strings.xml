@@ -199,31 +199,28 @@
 
     //MENSAJES DE TEXTO QUE SE MUESTRAN EN ALGUN PUNTO (DEBEN SER TRADUCIDOS TAMBIEN AL INGLES)
 
-    <string name= "text_vivienda"  translatable="false">Vivienda: \u0020</string>
-    <string name= "text_ubicacion"  translatable="false">📍 \u0020</string>
-    <string name= "text_metros_cuadrados"  translatable="false">\u0020 m²</string>
-    <string name= "text_precio"  translatable="false">\u0020 €</string>
+    <string name= "text_vivienda">Vivienda: \u0020</string>
+    <string name= "text_ubicacion">📍 \u0020</string>
+    <string name= "text_metros_cuadrados">\u0020 m²</string>
+    <string name= "text_precio">\u0020 €</string>
 
 
-    <string name= "eliminar_anunio"  translatable="false">Eliminar anuncio</string>
-    <string name= "pregunta_eliminar_anunio"  translatable="false">¿Estás seguro de que
+    <string name= "eliminar_anunio">Eliminar anuncio</string>
+    <string name= "pregunta_eliminar_anunio">¿Estás seguro de que
         deseas eliminar este anuncio?</string>
 
-    <string name= "eliminar"  translatable="false">Eliminar</string>
-    <string name= "cancelar"  translatable="false">Cancelar</string>
-    <string name= "mensaje_confirmacion_eliminado"  translatable="false">Anuncio eliminado</string>
-    <string name= "mensaje_debes_rellenar_todo"  translatable="false">Debes rellenar toda la información " +
+    <string name= "eliminar">Eliminar</string>
+    <string name= "cancelar">Cancelar</string>
+    <string name= "mensaje_confirmacion_eliminado">Anuncio eliminado</string>
+    <string name= "mensaje_debes_rellenar_todo">Debes rellenar toda la información " +
                     "para poder crear un anuncio</string>
 
-    <string name= "mensaje_permiso_camara_denegado"  translatable="false">Permiso de cámara no concedido</string>
-    <string name= "mensaje_permiso_almacenamiento_denegado"  translatable="false">Permiso de almacenamiento no concedido</string>
-    <string name= "mensaje_error_crear_imagen"  translatable="false">Error al crear archivo de imagen</string>
-    <string name= "mensaje_error_encontrar_camara"  translatable="false">No se encontró aplicación de cámara</string>
-    <string name= "mensaje_no_se_selecciono_imagen"  translatable="false">No se seleccionó ninguna imagen</string>
-
-
-
-
+    <string name= "mensaje_permiso_camara_denegado">Permiso de cámara no concedido</string>
+    <string name= "mensaje_permiso_almacenamiento_denegado">Permiso de almacenamiento no concedido</string>
+    <string name= "mensaje_error_crear_imagen">Error al crear archivo de imagen</string>
+    <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
+    <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
+    <string name="subnormal">uuu</string>
 
 
 </resources>
