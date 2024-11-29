@@ -6,7 +6,7 @@
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
     <string name="title_config">Configuración</string>
-    <string name="welcome_message">Bienvenid@!</string>
+    <string name="welcome_message">¡Bienvenid@!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Contraseña</string>
     <string name="login">registro</string>

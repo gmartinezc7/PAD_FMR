@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+import java.util.Locale;
 
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
@@ -47,6 +48,25 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Button loginButton = findViewById(R.id.loginButton);
+
+        // Adds both locales to the locale class' locale list.
+        LocaleUtils.addLocale("es");
+        LocaleUtils.addLocale("en");
+
+        // Sets the spanish locale as the default locale.
+        LocaleUtils.setDefaultLocale(this, "es");
+
+        // TEST TEST TEST
+        String mensBienvenido = "¡Bienvenid@!", mess = "Welkcome back!";
+        if (LocaleUtils.doesStringMatchAnyLanguage(this, mess, R.string.welcome_message)) {
+            Log.d("buttonName", "MATCH");
+        }
+        else {
+            Log.d("buttonName", "NO MATCH");
+        }
+        // END OF TEST
+
+
         loginButton.setOnClickListener(view -> {
             String userEmail = MainActivity.this.emailEditText.getText().toString();
             String userPassword = MainActivity.this.passwordEditText.getText().toString();
