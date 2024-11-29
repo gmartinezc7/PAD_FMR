@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Título principal -->
+        <TextView
+            android:id="@+id/titulo_crear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear Anuncio"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Contenedor de la imagen -->
+        <FrameLayout
+            android:id="@+id/preview_rect"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/border_rectangle"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/titulo_crear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp">
+
+
+            <!-- Flecha izquierda -->
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical|start"
+                android:backgroundTint="?attr/colorSecondary"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_izquierda"
+                android:scaleType="centerInside"
+                android:layout_margin="8dp" />
+
+
+
+            <!-- Flecha derecha -->
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical|end"
+                android:backgroundTint="?attr/colorSecondary"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_derecha"
+                android:scaleType="centerInside"
+                android:layout_margin="8dp"
+                />
+
+
+            <ImageView
+                android:id="@+id/imagen_anuncio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <!-- Botón de eliminar imagen -->
+            <ImageButton
+                android:id="@+id/btn_eliminar_imagen"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_close_24"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+
+                />
+
+            <!-- Cambiar color del icono si es necesario -->
+
+
+            <!-- Botón de añadir imagen -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_seleccionar_imagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_24"
+                android:layout_gravity="bottom|end"
+                android:tint="?attr/colorOnSecondary"
+                app:backgroundTint="?attr/colorSecondary"
+                app:fabSize="mini"
+                android:layout_margin="10dp" />
+        </FrameLayout>
+
+        <!-- Campos de texto -->
+        <EditText
+            android:id="@+id/create_titulo"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:paddingStart="10dp"
+            android:hint="Título del anuncio"
+            android:inputType="text"
+            android:background="@drawable/edit_text_custom"
+            app:layout_constraintTop_toBottomOf="@id/preview_rect"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/create_ubicacion"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/edit_text_custom"
+            android:hint="Ubicación"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_titulo" />
+
+        <EditText
+            android:id="@+id/create_metros"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:paddingStart="10dp"
+            android:hint="Metros cuadrados"
+            android:background="@drawable/edit_text_custom"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/create_ubicacion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="7dp"/>
+
+        <EditText
+            android:id="@+id/create_precio"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:paddingStart="10dp"
+            android:hint="Precio"
+            android:background="@drawable/edit_text_custom"
+            android:inputType="numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/create_metros"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="7dp" />
+
+
+        <EditText
+            android:id="@+id/create_descripcion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_custom"
+            android:hint="Descripción del anuncio"
+            android:inputType="textMultiLine"
+            android:paddingStart="10dp"
+            android:scrollbars="vertical"
+            android:minLines="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_precio"
+            android:layout_marginTop="7dp"/>
+
+        <TextView
+            android:id="@+id/create_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/create_descripcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp" />
+
+        <!-- Spinner Categoría -->
+        <TextView
+            android:id="@+id/category_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_tags"
+            android:layout_marginTop="20dp" />
+
+        <Spinner
+            android:id="@+id/spinner_categoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:entries="@array/categorias_array"
+            app:layout_constraintTop_toBottomOf="@+id/category_text"
+            android:layout_marginBottom="30dp"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/opciones_casa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/spinner_categoria"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            >
+
+            <!-- Tipo de Casa -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Casa"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_tipo_casa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo_casa_array"
+                android:layout_marginBottom="30dp"
+                />
+
+            <!-- Habitaciones -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Habitaciones"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_habitaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/habitaciones_array"
+                android:layout_marginBottom="30dp" />
+
+
+            <!-- Baños -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Baños"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_banos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/banos_array"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_exterior_interior_casa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/exterior_interior_array"
+                android:layout_marginBottom="30dp" />
+
+        </LinearLayout>
+
+        <!-- habitacion -->
+
+        <LinearLayout
+            android:id="@+id/opciones_habitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/spinner_categoria"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
+            android:visibility="gone">
+
+            <!-- Compañeros -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Compañeros"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_companeros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/companeros_array"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Género -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Género de los Habitantes"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <Spinner
+                android:id="@+id/spinner_genero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/genero_array"
+                android:layout_marginBottom="30dp" />
+
+
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <Spinner
+                android:id="@+id/spinner_exterior_interior_habitacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/exterior_interior_array"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Tipo de Baño -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Baño"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <Spinner
+                android:id="@+id/spinner_tipo_bano"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo_bano_array"
+                android:layout_marginBottom="30dp" />
+        </LinearLayout>
+
+
+
+
+
+        <!-- Botones Guardar y Cancelar -->
+        <LinearLayout
+            android:id="@+id/guardarAnuncio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/opciones_casa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btn_guardar_anuncio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar anuncio"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/btn_cancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:backgroundTint="@android:color/background_dark"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

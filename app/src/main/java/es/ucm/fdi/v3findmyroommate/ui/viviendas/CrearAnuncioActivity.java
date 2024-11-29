@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -36,6 +37,8 @@ import java.util.List;
 
 import android.widget.AdapterView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -44,9 +47,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
-    private Button btnGuardar, btnCancelar, btnSeleccionarImagen, btnEliminarImagen ;
-    private ImageView imagenAnuncio;
+    private Button btnGuardar, btnCancelar;
 
+    private ImageView imagenAnuncio, btnEliminarImagen;
+
+    FloatingActionButton btnSeleccionarImagen;
 
     private List<Uri> imagenesUri = new ArrayList<>();
     private int imagenActualIndex = 0; // Índice de la imagen actual
@@ -57,7 +62,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     Spinner spinnerCategoria;
     LinearLayout opcionesCasa;
-    LinearLayout opcionesHabitacion;
+    LinearLayout opcionesHabitacion, guardarAnuncio;
 
     Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
@@ -66,7 +71,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_anuncio);
+        setContentView(R.layout.activity_crear_anuncio_2);
         previewPhotoUri = null;
 
 
@@ -149,13 +154,19 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
+                        guardarAnuncio.getLayoutParams();
+
                 if (position == 0) { // Casa
                     opcionesCasa.setVisibility(View.VISIBLE);
                     opcionesHabitacion.setVisibility(View.GONE);
+                    params.topToBottom = opcionesCasa.getId();
                 } else if (position == 1) { // Habitación
                     opcionesCasa.setVisibility(View.GONE);
                     opcionesHabitacion.setVisibility(View.VISIBLE);
+                    params.topToBottom = opcionesHabitacion.getId();
                 }
+                guardarAnuncio.setLayoutParams(params);
             }
 
             @Override
