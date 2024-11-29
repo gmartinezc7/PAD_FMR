@@ -164,6 +164,63 @@
     <string name="add_description_db_label" translatable="false">description</string>
     <string name="add_house_type_db_label" translatable="false">house_type</string>
     <string name="username_db_label" translatable="false">username</string>
+    <string name="user_adds_list_db_label" translatable="false">user_adds_list</string>
+    <string name="add_uri_list_db_label" translatable="false">uri_list</string>
+
+
+
+
+
+    //--SAMUMAGU----------------------------------------------------------------------------------
+
+    //KEYS PARA LOS INTENTS
+    <string name="key_id" translatable="false">id</string>
+    <string name="key_titulo" translatable="false">titulo</string>
+    <string name="key_ubicacion" translatable="false">ubicacion</string>
+    <string name="key_metros" translatable="false">metros</string>
+    <string name="key_precio" translatable="false">precio</string>
+    <string name="key_descripcion"  translatable="false">descripcion</string>
+    <string name="key_imagenes_uri"  translatable="false">imagenesUri</string>
+    <string name="key_categoria"  translatable="false">categoria</string>
+    <string name="key_tipo_casa"  translatable="false">tipoCasa</string>
+    <string name="key_habitaciones"  translatable="false">habitaciones</string>
+    <string name="key_banos"  translatable="false">banos</string>
+    <string name="key_exterior_interior"  translatable="false">exteriorInterior</string>
+    <string name="key_companeros"  translatable="false">companeros</string>
+    <string name="key_genero"  translatable="false">genero</string>
+    <string name="key_tipo_bano"  translatable="false">tipoBano</string>
+    <string name="category_casa"  translatable="false">Casa</string>
+    <string name="category_habitacion"  translatable="false">Habitación</string>
+
+
+    <string name="key_intent_imagen"  translatable="false">Selecciona una imagen</string>
+    <string name= "file_provider"  translatable="false">es.ucm.fdi.v3findmyroommate.fileprovider</string>
+
+
+    //MENSAJES DE TEXTO QUE SE MUESTRAN EN ALGUN PUNTO (DEBEN SER TRADUCIDOS TAMBIEN AL INGLES)
+
+    <string name= "text_vivienda">Vivienda: \u0020</string>
+    <string name= "text_ubicacion">📍 \u0020</string>
+    <string name= "text_metros_cuadrados">\u0020 m²</string>
+    <string name= "text_precio">\u0020 €</string>
+
+
+    <string name= "eliminar_anunio">Eliminar anuncio</string>
+    <string name= "pregunta_eliminar_anunio">¿Estás seguro de que
+        deseas eliminar este anuncio?</string>
+
+    <string name= "eliminar">Eliminar</string>
+    <string name= "cancelar">Cancelar</string>
+    <string name= "mensaje_confirmacion_eliminado">Anuncio eliminado</string>
+    <string name= "mensaje_debes_rellenar_todo">Debes rellenar toda la información " +
+                    "para poder crear un anuncio</string>
+
+    <string name= "mensaje_permiso_camara_denegado">Permiso de cámara no concedido</string>
+    <string name= "mensaje_permiso_almacenamiento_denegado">Permiso de almacenamiento no concedido</string>
+    <string name= "mensaje_error_crear_imagen">Error al crear archivo de imagen</string>
+    <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
+    <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
+    <string name="subnormal">uuu</string>
 
 
 </resources>

@@ -39,20 +39,24 @@ import es.ucm.fdi.v3findmyroommate.R;
 
 
 public class EditarAnuncioActivity extends AppCompatActivity {
-    private MisViviendasViewModel viewModel;
 
 
+    //STRINGS SIMPLEMENTE PARA MANEJAR LOS DATOS QUE VIENEN DE LOS INTENTS,
+    // PONERLOS EN LOS TEXTVIEWS O VOLVER A METERLO EN INTENTS.
+    private String idAnuncio;
     private String titulo;
     private String ubicacion;
     private String metros;
     private String precio;
     private String descripcion;
+    //LISTA DE URIS PARA LAS IMAGENES, MINIMO OBLIGATORIO TENER 1
     private List<Uri> imagenesUri;
 
-
+    //IMAGEN DEL ANUNCIO QUE SE MUESTRA
     private ImageView imagenAnuncio;
+    //INDICE DE LA IMAGEN QUE SE MUESTRA
     private int imagenActualIndex = 0;
-    private ImageButton btnPrev,btnNext;
+
 
 
     EditText editTitulo ;
@@ -60,11 +64,18 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     EditText editMetros ;
     EditText editPrecio ;
     EditText editDescripcion ;
+
+    //BOTONES NECESARIOS, EL DE SELECCIONAR IMAGEN, ELIMINARLA  Y EL DE LAS FLECHAS PARA PASAR LAS IMAGENES
     private Button btnSeleccionarImagen, btnEliminarImagen;
+    private ImageButton btnPrev,btnNext;
+
+
+
     private Uri previewPhotoUri;
 
 
-    //TAGS
+    //------------------------------------------------------------------------------------------------
+    //PARTE DE LOS TAGS: (AL IGUAL QUE EN LO ANTERIOR, SE USAN STRINGS PARA GUARDAR LA INFO Y MANEJARLA)
     private String categoria;
 
     //Para la casa:
@@ -79,10 +90,12 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     private String genero;
     private String tipoBano;
 
+    //SPINNERS DE SELECCION PARA LOS TAGS
     Spinner spinnerCategoria;
     Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
+    //LINEARLAYOUTS QUE APARECEN O DESAPARECEN DEPENDIENDO DE SI LA OPCION ESCOGIDA ES UNA CASA O HABITACION
     LinearLayout opcionesCasa;
     LinearLayout opcionesHabitacion;
 
@@ -92,17 +105,29 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_anuncio);
+        previewPhotoUri = null;
 
-        Intent intent = getIntent();
-        this.titulo = intent.getStringExtra("titulo");
-        this.ubicacion = intent.getStringExtra("ubicacion");
-        this.metros = intent.getStringExtra("metros");
-        this.precio = intent.getStringExtra("precio");
-        this.descripcion = intent.getStringExtra("descripcion");
-        this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra("imagenesUri"));
+        enlazarIdsVista();
+
+        obtenerDatosAnuncioInicial();
 
 
 
+        establecerAccionesSpinners();
+
+
+        iniciarNavImagenes();
+
+
+        establecerAccionesBotones();
+
+
+
+    }
+
+
+
+    private void enlazarIdsVista(){
 
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
         btnPrev = findViewById(R.id.btn_prev);
@@ -110,24 +135,12 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
 
-            // Llenar los campos con la información del anuncio
-             editTitulo = findViewById(R.id.edit_titulo);
-             editUbicacion = findViewById(R.id.edit_ubicacion);
-             editMetros = findViewById(R.id.edit_metros);
-             editPrecio = findViewById(R.id.edit_precio);
-             editDescripcion = findViewById(R.id.edit_descripcion);
-
-            editTitulo.setText( this.titulo );
-            editUbicacion.setText(this.ubicacion);
-            editMetros.setText(String.valueOf(this.metros));
-            editPrecio.setText(String.valueOf(this.precio));
-            editDescripcion.setText(this.descripcion);
-
-        previewPhotoUri = null;
-
-
-
-
+        // Llenar los campos con la información del anuncio
+        editTitulo = findViewById(R.id.edit_titulo);
+        editUbicacion = findViewById(R.id.edit_ubicacion);
+        editMetros = findViewById(R.id.edit_metros);
+        editPrecio = findViewById(R.id.edit_precio);
+        editDescripcion = findViewById(R.id.edit_descripcion);
 
         //TAGS
         spinnerCategoria = findViewById(R.id.spinner_categoria);
@@ -147,19 +160,46 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
 
 
-        this.categoria = intent.getStringExtra("categoria");
+    }
 
-        if(this.categoria.equalsIgnoreCase("Casa")){
+
+    //SE RELLENAN LOS CUADROS Y SPINNERS CON LA INFORMACION QUE TENIA EL ANUNCIO
+    private void obtenerDatosAnuncioInicial(){
+
+        Intent intent = getIntent();
+        this.idAnuncio = intent.getStringExtra(this.getString(R.string.key_id));
+        this.titulo = intent.getStringExtra(this.getString(R.string.key_titulo));
+        this.ubicacion = intent.getStringExtra(this.getString(R.string.key_ubicacion));
+        this.metros = intent.getStringExtra(this.getString(R.string.key_metros));
+        this.precio = intent.getStringExtra(this.getString(R.string.key_precio));
+        this.descripcion = intent.getStringExtra(this.getString(R.string.key_descripcion));
+        this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri)));
+
+
+
+
+        editTitulo.setText( this.titulo );
+        editUbicacion.setText(this.ubicacion);
+        editMetros.setText(String.valueOf(this.metros));
+        editPrecio.setText(String.valueOf(this.precio));
+        editDescripcion.setText(this.descripcion);
+
+
+
+
+        this.categoria = intent.getStringExtra(this.getString(R.string.key_categoria));
+
+        if(this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))){
 
             spinnerCategoria.setSelection(0);
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
 
 
-            this.tipoCasa = intent.getStringExtra("tipoCasa");
-            this.habitaciones = intent.getStringExtra("habitaciones");
-            this.banos = intent.getStringExtra("banos");
-            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
+            this.tipoCasa = intent.getStringExtra(this.getString(R.string.key_tipo_casa));
+            this.habitaciones = intent.getStringExtra(this.getString(R.string.key_habitaciones));
+            this.banos = intent.getStringExtra(this.getString(R.string.key_banos));
+            this.exteriorInterior = intent.getStringExtra(this.getString(R.string.key_exterior_interior));
 
             setSpinnerValue(spinnerTipoCasa, tipoCasa);
             setSpinnerValue(spinnerHabitaciones, habitaciones);
@@ -167,16 +207,16 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             setSpinnerValue(spinnerExteriorInteriorCasa, exteriorInterior);
 
         }
-        else if(categoria.equalsIgnoreCase("Habitación")){
+        else if(categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))){
 
             spinnerCategoria.setSelection(1);
             opcionesCasa.setVisibility(View.GONE);
             opcionesHabitacion.setVisibility(View.VISIBLE);
 
-            this.companeros = intent.getStringExtra("companeros");
-            this.genero = intent.getStringExtra("genero");
-            this.exteriorInterior = intent.getStringExtra("exteriorInterior");
-            this.tipoBano = intent.getStringExtra("tipoBano");
+            this.companeros = intent.getStringExtra(this.getString(R.string.key_companeros));
+            this.genero = intent.getStringExtra(this.getString(R.string.key_genero));
+            this.exteriorInterior = intent.getStringExtra(this.getString(R.string.key_exterior_interior));
+            this.tipoBano = intent.getStringExtra(this.getString(R.string.key_tipo_bano));
 
             setSpinnerValue(spinnerCompaneros, companeros);
             setSpinnerValue(spinnerGenero, genero);
@@ -185,6 +225,15 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
         }
 
+
+
+
+
+
+    }
+
+
+    private void establecerAccionesSpinners(){
 
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -205,16 +254,10 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             }
         });
 
+    }
 
 
-        iniciarNavImagenes();
-
-
-
-        Button btnGuardar = findViewById(R.id.btn_actualizar_anuncio);
-        btnGuardar.setOnClickListener(v -> {
-            actualizarAnuncio();
-        });
+    private void establecerAccionesBotones(){
 
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
@@ -227,11 +270,19 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             eliminarImagenSeleccionada();
         });
 
+        Button btnGuardar = findViewById(R.id.btn_actualizar_anuncio);
+        btnGuardar.setOnClickListener(v -> {
+            actualizarAnuncio();
+        });
+
 
         // Botón de cancelar
         Button btnCancelar = findViewById(R.id.btn_cancelar);
         btnCancelar.setOnClickListener(v -> finish());
+
+
     }
+
 
 
 
@@ -278,14 +329,14 @@ public class EditarAnuncioActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_error_crear_imagen), Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
-                previewPhotoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
+                previewPhotoUri = FileProvider.getUriForFile(this, this.getString(R.string.file_provider), photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, previewPhotoUri);
             }
         } else {
-            Toast.makeText(this, "No se encontró aplicación de cámara", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_error_encontrar_camara), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -294,7 +345,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Crear un "chooser" que permite elegir entre la cámara o la galería
-        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, "Selecciona una imagen");
+        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, this.getString(R.string.key_intent_imagen));
 
         // Añadir la opción de tomar una foto con la cámara
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
@@ -323,14 +374,14 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
                         } else {
                             // El usuario no tomó una foto o canceló
-                            Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                 }
                 else{
                     // Si no se seleccionó ninguna imagen o se canceló
-                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
                     previewPhotoUri = null; // Restablecemos previewPhotoUri
                 }
 
@@ -377,72 +428,6 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
 
-    private void actualizarImagen() {
-        if (!imagenesUri.isEmpty()) {
-            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
-            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
-            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
-        } else {
-            // Si la lista está vacía, restablecer la vista
-            imagenAnuncio.setImageDrawable(null); // Limpia la imagen
-            btnPrev.setVisibility(View.INVISIBLE);
-            btnNext.setVisibility(View.INVISIBLE);
-        }
-    }
-
-
-
-    private void actualizarAnuncio() {
-        String titulo = editTitulo.getText().toString();
-        String ubicacion = editUbicacion.getText().toString();
-        String metros = editMetros.getText().toString();
-        String precio = editPrecio.getText().toString();
-        String descripcion = editDescripcion.getText().toString();
-        // Verifica si todos los campos están llenos
-        if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() || imagenesUri.isEmpty() ) {
-            Toast.makeText(this, "Debes rellenar toda la información " +
-                    "para poder crear un anuncio", Toast.LENGTH_LONG).show();
-            return; // Detiene el flujo y no continúa con la creación del anuncio
-        }
-
-
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("titulo", titulo);
-        resultIntent.putExtra("ubicacion", ubicacion);
-        resultIntent.putExtra("metros", metros);
-        resultIntent.putExtra("precio", precio);
-        resultIntent.putExtra("descripcion", descripcion);
-        resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
-
-
-        //GUARDAMOS TAMBIÉN LAS ETIQUETAS
-        String categoria = spinnerCategoria.getSelectedItem().toString();
-        resultIntent.putExtra("categoria", categoria);
-
-        // Guardamos los datos específicos según la categoría
-        if (categoria.equalsIgnoreCase("Casa")) {
-
-            resultIntent.putExtra("tipoCasa", spinnerTipoCasa.getSelectedItem().toString());
-            resultIntent.putExtra("habitaciones", spinnerHabitaciones.getSelectedItem().toString());
-            resultIntent.putExtra("banos", spinnerBanos.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorCasa.getSelectedItem().toString());
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
-
-            resultIntent.putExtra("companeros", spinnerCompaneros.getSelectedItem().toString());
-            resultIntent.putExtra("genero", spinnerGenero.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
-            resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
-        }
-
-
-        setResult(RESULT_OK, resultIntent);
-        finish();
-    }
-
-
-
-
     private void iniciarNavImagenes(){
 
         imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
@@ -468,5 +453,78 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
         }
     }
+
+
+
+    private void actualizarImagen() {
+        if (!imagenesUri.isEmpty()) {
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        } else {
+            // Si la lista está vacía, restablecer la vista
+            imagenAnuncio.setImageDrawable(null); // Limpia la imagen
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+
+    private void actualizarAnuncio() {
+
+        String titulo = editTitulo.getText().toString();
+        String ubicacion = editUbicacion.getText().toString();
+        String metros = editMetros.getText().toString();
+        String precio = editPrecio.getText().toString();
+        String descripcion = editDescripcion.getText().toString();
+
+        // Verifica si todos los campos están llenos
+        if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
+                || precio.isEmpty() || imagenesUri.isEmpty() ) {
+            Toast.makeText(this, this.getString(R.string.mensaje_debes_rellenar_todo), Toast.LENGTH_LONG).show();
+            return; // Detiene el flujo y no continúa con la creación del anuncio
+        }
+
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(this.getString(R.string.key_id), idAnuncio);
+        resultIntent.putExtra(this.getString(R.string.key_titulo), titulo);
+        resultIntent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+        resultIntent.putExtra(this.getString(R.string.key_metros), metros);
+        resultIntent.putExtra(this.getString(R.string.key_precio), precio);
+        resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(imagenesUri));
+
+
+        //GUARDAMOS TAMBIÉN LAS ETIQUETAS
+        String categoria = spinnerCategoria.getSelectedItem().toString();
+        resultIntent.putExtra(this.getString(R.string.key_categoria), categoria);
+
+        // Guardamos los datos específicos según la categoría
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+
+            resultIntent.putExtra(this.getString(R.string.key_tipo_casa), spinnerTipoCasa.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_habitaciones), spinnerHabitaciones.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_banos), spinnerBanos.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorCasa.getSelectedItem().toString());
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
+
+            resultIntent.putExtra(this.getString(R.string.key_companeros), spinnerCompaneros.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_genero), spinnerGenero.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_tipo_bano), spinnerTipoBano.getSelectedItem().toString());
+        }
+
+
+        MisViviendasFragment.actualizarAnuncioEnBD(new Anuncio(this, resultIntent), this.getApplication());
+        setResult(RESULT_OK, resultIntent);
+        finish();
+    }
+
+
+
+
+
 
 }
