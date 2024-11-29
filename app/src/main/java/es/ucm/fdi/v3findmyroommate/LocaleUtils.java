@@ -16,7 +16,7 @@ public class LocaleUtils {
     // Singleton function to access the list of existing locales.
     private static List<Locale> getLocalesList() {
         if (localesList == null) {
-            localesList = new ArrayList<Locale>();
+            localesList = new ArrayList<>();
         }
         return localesList;
     }
@@ -60,7 +60,7 @@ public class LocaleUtils {
 
             // Gets the updated resources.
             Resources resources = localizedContext.getResources();
-            String localizedValue = "";
+            String localizedValue;
 
             // Gets the string value associated with the given key ID in the current locale.
             localizedValue = resources.getString(keyId);

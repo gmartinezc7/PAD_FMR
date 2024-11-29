@@ -19,8 +19,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-import java.util.Locale;
-
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         LocaleUtils.setDefaultLocale(this, "es");
 
         // TEST TEST TEST
-        String mensBienvenido = "¡Bienvenid@!", mess = "Welkcome back!";
+        String mess = "Welkcome back!";
         if (LocaleUtils.doesStringMatchAnyLanguage(this, mess, R.string.welcome_message)) {
             Log.d("buttonName", "MATCH");
         }
