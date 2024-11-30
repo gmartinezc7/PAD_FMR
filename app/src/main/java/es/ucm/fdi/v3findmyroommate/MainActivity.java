@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+import java.util.Locale;
 
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
@@ -47,37 +48,71 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Button loginButton = findViewById(R.id.loginButton);
+
+        // Adds both locales to the locale class' locale list.
+        LocaleUtils.addLocale("es");
+        LocaleUtils.addLocale("en_US");
+
+        // Sets the spanish locale as the default locale.
+        //LocaleUtils.setDefaultLocale(this, "es");
+
+        Locale[] availableLocales = Locale.getAvailableLocales();
+        for (Locale locale : availableLocales) {
+            Log.d("Locales", "Locale: " + locale.toString());
+        }
+
+
+
+        // TEST TEST TEST
+        String mess = "Welkcome back!";
+        if (LocaleUtils.doesStringMatchAnyLanguage(this, mess, R.string.welcome_message)) {
+            Log.d("buttonName", "MATCH");
+        }
+        else {
+            Log.d("buttonName", "NO MATCH");
+        }
+        // END OF TEST
+
+
         loginButton.setOnClickListener(view -> {
             String userEmail = MainActivity.this.emailEditText.getText().toString();
             String userPassword = MainActivity.this.passwordEditText.getText().toString();
 
-            // Accesses database and searches for the user's email.
-            mAuth.signInWithEmailAndPassword(userEmail, userPassword)
-                .addOnCompleteListener(MainActivity.this, task -> {
-                    if (task.isSuccessful()) {
-                        // If the sign in is successful, updates preferences signed-in user's information.
-                        ConfigPreferencesModel.setInitialPreferences(this.getApplication());
-                        openLoginView(); // Goes to the next screen.
-                        Log.d("SignIn", "Sign in successful");
-                    }
-                    else {
-                        // If the sign in fails, displays a message to the user.
-                        Toast signInFailedToast = Toast.makeText(MainActivity.this,
-                                R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
-                        signInFailedToast.show();
-                        Log.w("SignIn", "Sign in failed", task.getException());
-                    }
-                });
+            // If the user has entered all the fields.
+            if (!userEmail.isEmpty() && !userPassword.isEmpty()) {
+
+                // Accesses database and searches for the user's email.
+                mAuth.signInWithEmailAndPassword(userEmail, userPassword)
+                    .addOnCompleteListener(MainActivity.this, task -> {
+                        if (task.isSuccessful()) {
+                            // If the sign in is successful, updates preferences signed-in user's information.
+                            ConfigPreferencesModel.setInitialPreferences(this.getApplication());
+                            openLoginView(); // Goes to the next screen.
+                            Log.d("SignIn", "Sign in successful");
+                        }
+                        else {
+                            // If the sign in fails, displays a message to the user.
+                            Toast signInFailedToast = Toast.makeText(MainActivity.this,
+                                    R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
+                            signInFailedToast.show();
+                            Log.w("SignIn", "Sign in failed", task.getException());
+                        }
+                    });
+            }
+
+            else {
+                Toast fillAlFieldsToast = Toast.makeText(MainActivity.this,
+                        R.string.fill_all_fields_toast_text, Toast.LENGTH_SHORT);
+                fillAlFieldsToast.show();
+            }
+
         });
 
         TextView signUP = findViewById(R.id.signUP);
         signUP.setOnClickListener(view -> openSignUPView());
         signUP.setPaintFlags(signUP.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        signUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {openSignUPView();}
-        });
+        signUP.setOnClickListener(view -> openSignUPView());
 
         signUP.setOnClickListener(view -> openSignUPView());
     }

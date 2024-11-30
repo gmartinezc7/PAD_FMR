@@ -2,299 +2,297 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Título del anuncio -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <!-- Título del anuncio -->
+            <TextView
+                android:id="@+id/titulo_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true"/>
+
+            <!-- Botón de editar alineado a la derecha -->
+            <Button
+                android:id="@+id/btn_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="Editar"/>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/preview_rect"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/border_rectangle"
+            android:padding="8dp"
+            android:layout_marginBottom="15dp">
+            <ImageView
+                android:id="@+id/imagen_anuncio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Imagen del anuncio" />
+
+            <!-- Flecha izquierda -->
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_izquierda"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+
+            <!-- Flecha derecha -->
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_derecha"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+
+        </FrameLayout>
+
+        <!-- Detalle del anuncio -->
         <TextView
-            android:id="@+id/titulo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ubicación: "
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/ubicacion_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_alignParentStart="true"/>
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Botón de editar alineado a la derecha -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Metros Cuadrados: "
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/metros_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Precio: "
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/precio_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción: "
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/descripcion_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+
+        //------------------------------------------------------------------------------------------
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría: "
+            android:textSize="12sp"
+            android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/categoria_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp" />
+
+
+        <!-- Opciones para Casa -->
+        <LinearLayout
+            android:id="@+id/opciones_casa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Tipo de Casa -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Casa"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:id="@+id/tipo_casa_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+
+            <!-- Habitaciones -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Habitaciones"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/num_habitaciones_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+
+            <!-- Baños -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Baños"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/num_banos_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/orientacion_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+
+
+        <!-- Opciones para Habitación -->
+        <LinearLayout
+            android:id="@+id/opciones_habitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Compañeros -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número de Compañeros"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/num_companeros_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Género -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Género de los Habitantes"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:id="@+id/genero_habitantes_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+
+            <!-- Interior/Exterior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Orientación (Interior/Exterior)"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:id="@+id/orientacion_habitacion_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Tipo de Baño -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Baño"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp" />
+            <TextView
+                android:id="@+id/tipo_bano_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp" />
+        </LinearLayout>
+
+
+        //------------------------------------------------------------------------------------------
+
         <Button
-            android:id="@+id/btn_editar"
+            android:id="@+id/btn_volver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:backgroundTint="#FFFFFF"
-            android:text="Editar"/>
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/preview_rect"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/border_rectangle"
-        android:padding="8dp"
-        android:layout_marginBottom="15dp">
-        <ImageView
-            android:id="@+id/imagen_anuncio"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="Imagen del anuncio" />
-
-        <!-- Flecha izquierda -->
-        <ImageButton
-            android:id="@+id/btn_prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_flecha_izquierda"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
-
-        <!-- Flecha derecha -->
-        <ImageButton
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_flecha_derecha"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
-
-
-    </FrameLayout>
-
-    <!-- Detalle del anuncio -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ubicación: "
-        android:textSize="12sp"
-        android:layout_marginBottom="5dp" />
-    <TextView
-        android:id="@+id/ubicacion_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Metros Cuadrados: "
-        android:textSize="12sp"
-        android:layout_marginBottom="5dp" />
-    <TextView
-        android:id="@+id/metros_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Precio: "
-        android:textSize="12sp"
-        android:layout_marginBottom="5dp" />
-    <TextView
-        android:id="@+id/precio_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Descripción: "
-        android:textSize="12sp"
-        android:layout_marginBottom="5dp" />
-    <TextView
-        android:id="@+id/descripcion_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-
-    //------------------------------------------------------------------------------------------
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Categoría: "
-        android:textSize="12sp"
-        android:layout_marginBottom="5dp" />
-    <TextView
-        android:id="@+id/categoria_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-
-    <!-- Opciones para Casa -->
-    <LinearLayout
-        android:id="@+id/opciones_casa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <!-- Tipo de Casa -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tipo de Casa"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-        <TextView
-            android:id="@+id/tipo_casa_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-
-        <!-- Habitaciones -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Número de Habitaciones"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-
-        <TextView
-            android:id="@+id/num_habitaciones_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-
-        <!-- Baños -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Número de Baños"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-
-        <TextView
-            android:id="@+id/num_banos_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Interior/Exterior -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Orientación (Interior/Exterior)"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-
-        <TextView
-            android:id="@+id/orientacion_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
+            android:text="Volver"
+            android:layout_gravity="end"/>
 
     </LinearLayout>
-
-
-
-    <!-- Opciones para Habitación -->
-    <LinearLayout
-        android:id="@+id/opciones_habitacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <!-- Compañeros -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Número de Compañeros"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-
-        <TextView
-            android:id="@+id/num_companeros_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Género -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Género de los Habitantes"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-
-        <TextView
-            android:id="@+id/genero_habitantes_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-
-        <!-- Interior/Exterior -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Orientación (Interior/Exterior)"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-        <TextView
-            android:id="@+id/orientacion_habitacion_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Tipo de Baño -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tipo de Baño"
-            android:textSize="12sp"
-            android:layout_marginBottom="5dp" />
-        <TextView
-            android:id="@+id/tipo_bano_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp" />
-    </LinearLayout>
-
-
-    //------------------------------------------------------------------------------------------
-
-    <Button
-        android:id="@+id/btn_volver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Volver"
-        android:backgroundTint= "#FFFFFF"
-        android:layout_gravity="end"/>
-
-</LinearLayout>
 </ScrollView>

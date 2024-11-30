@@ -36,32 +36,6 @@
             android:layout_marginTop="15dp">
 
 
-            <!-- Flecha izquierda -->
-            <ImageButton
-                android:id="@+id/btn_prev"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical|start"
-                android:backgroundTint="?attr/colorSecondary"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_flecha_izquierda"
-                android:scaleType="centerInside"
-                android:layout_margin="8dp" />
-
-
-
-            <!-- Flecha derecha -->
-            <ImageButton
-                android:id="@+id/btn_next"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical|end"
-                android:backgroundTint="?attr/colorSecondary"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_flecha_derecha"
-                android:scaleType="centerInside"
-                android:layout_margin="8dp"
-                />
 
 
             <ImageView
@@ -69,6 +43,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
+
+
+            <!-- Flecha izquierda -->
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_izquierda"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+
+            <!-- Flecha derecha -->
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_flecha_derecha"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+
 
             <!-- Botón de eliminar imagen -->
             <ImageButton
@@ -103,14 +102,15 @@
             android:id="@+id/create_titulo"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:paddingStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/edit_text_custom"
             android:hint="Título del anuncio"
             android:inputType="text"
-            android:background="@drawable/edit_text_custom"
-            app:layout_constraintTop_toBottomOf="@id/preview_rect"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingStart="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/create_ubicacion"
             app:layout_constraintEnd_toEndOf="parent"
-          />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/preview_rect" />
 
         <EditText
             android:id="@+id/create_ubicacion"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,7 +40,7 @@ public class HousePreferencesFragment extends PropertyTypeFragment {
 
     private Button continueButton;
     private SharedViewModel sharedViewModel;
-    private TextInputEditText squareMetersInput;
+    private EditText squareMetersInput;
 
     @Nullable
     @Override
@@ -72,7 +73,7 @@ public class HousePreferencesFragment extends PropertyTypeFragment {
                     view.findViewById(R.id.orientationChipGroup)
             );
 
-            List<TextInputEditText> requiredTextInputs = Arrays.asList(squareMetersInput); // Aquí se puede agregar más si es necesario
+            List<EditText> requiredTextInputs = Arrays.asList(squareMetersInput); // Aquí se puede agregar más si es necesario
 
             // Llama a validateSelections para verificar que los campos no estén vacíos
             if (validateSelections(requiredChipGroups, requiredTextInputs)) {

@@ -24,10 +24,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
-public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat {
+public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
 
     private String currentAuthenticationEmail;
-    private final ConfigPreferencesModel preferencesViewModel;
+    private ConfigPreferencesModel preferencesViewModel;
     private EditTextPreference usernamePreference, emailPreference, passwordPreference;
     private ListPreference ageRangePreference, genderPreference, maritalStatusPreference, occupationPreference;
 
@@ -37,10 +37,6 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
     private final CharSequence[] occupation_entries = new CharSequence[4];
 
 
-    public ConfigEditTextPreferencesFragment(ConfigPreferencesModel ConfigPreferencesModel) {
-        this.preferencesViewModel = ConfigPreferencesModel;
-    }
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Context currentContext = getContext();
@@ -48,6 +44,10 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         if (currentContext != null) {
             userPreferences = PreferenceManager.getDefaultSharedPreferences(
                     getContext());
+
+            Activity currentActivity = this.getActivity();
+            if (currentActivity != null)    // Initializes the preferences model.
+                new ConfigPreferencesModel(currentActivity.getApplication());
 
             this.currentAuthenticationEmail = userPreferences.getString(getString(R.string.email_preference_key), "");
             setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -193,7 +193,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
                         user.updateProfile(profileUpdates).addOnCompleteListener(
                             task -> {
                                 if (task.isSuccessful()) {
-                                    Activity currentActivity = ConfigEditTextPreferencesFragment.this.getActivity();
+                                    Activity currentActivity = ConfigPreferencesFragment.this.getActivity();
                                     if (currentActivity != null) {
                                         ConfigPreferencesModel.updateSelectedPreference(usernameWritten,
                                             getString(R.string.username_preference_key), currentActivity.getApplication());
@@ -308,7 +308,7 @@ public class ConfigEditTextPreferencesFragment extends PreferenceFragmentCompat 
         // Sets an action for the submit button.
         submitButton.setOnClickListener(v -> {
             String currentPassword = passwordEditText.getText().toString();
-            if (ConfigEditTextPreferencesFragment.this.currentAuthenticationEmail != null &&
+            if (ConfigPreferencesFragment.this.currentAuthenticationEmail != null &&
                     !currentPassword.isEmpty()) {
                 ConfigPreferencesModel.updateProfile(itemWritten,
                         currentPassword, action, getActivity().getApplication());

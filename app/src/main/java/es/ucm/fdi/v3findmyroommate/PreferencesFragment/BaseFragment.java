@@ -4,6 +4,7 @@ package es.ucm.fdi.v3findmyroommate.PreferencesFragment;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -34,12 +35,14 @@ public abstract class BaseFragment extends Fragment {
         for (int i = 0; i < group.getChildCount(); i++) {
             View chip = group.getChildAt(i);
             if (chip instanceof Chip) {
+                Chip materialChip = (Chip) chip;
                 if (chip.getId() == checkedId) {
                     // Chip seleccionado
-                    chip.setBackgroundColor(getResources().getColor(R.color.chipSelectedColor));
+                    materialChip.setChipBackgroundColorResource(R.color.light_gray);
+
                 } else {
+                    materialChip.setChipBackgroundColorResource(R.color.white);
                     // Chip no seleccionado
-                    chip.setBackgroundColor(getResources().getColor(R.color.chipDefaultColor));
                 }
             }
         }
@@ -71,7 +74,7 @@ public abstract class BaseFragment extends Fragment {
         void onChipSelected(String selectedText);
     }
 
-    protected boolean validateSelections(List<ChipGroup> requiredChipGroups, List<TextInputEditText> requiredTextInputs) {
+    protected boolean validateSelections(List<ChipGroup> requiredChipGroups, List<EditText> requiredTextInputs) {
         // Verifica si hay algún ChipGroup sin seleccionar
         for (ChipGroup chipGroup : requiredChipGroups) {
             if (chipGroup.getCheckedChipId() == -1) {
@@ -82,7 +85,7 @@ public abstract class BaseFragment extends Fragment {
 
         // Verifica si hay algún TextInputEditText vacío, solo si se proporciona la lista
         if (requiredTextInputs != null) {
-            for (TextInputEditText textInput : requiredTextInputs) {
+            for (EditText textInput : requiredTextInputs) {
                 if (textInput.getText() == null || textInput.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Por favor, completa todos los campos de texto requeridos", Toast.LENGTH_SHORT).show();
                     return false;
