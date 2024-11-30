@@ -43,8 +43,20 @@ public class Anuncio {
     private String genero;
     private String tipoBano;
 
+    // TEST TEST TEST
+    {
+        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.add_icon);
+
+        this.imagenesUri.add(exampleUri);
+    }
+    // END OF TEST
+
 
     public Anuncio(Context context, Intent data) {
+
+        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
+
+        this.imagenesUri.add(exampleUri);
 
         this.idAnuncio = data.getStringExtra(context.getString(R.string.key_id));
 
@@ -66,9 +78,9 @@ public class Anuncio {
         this.descripcion = data.getStringExtra(context.getString(R.string.key_descripcion));
 
 
-
+        // TEST TEST TEST
         this.imagenesUri = data.getParcelableArrayListExtra(context.getString(R.string.key_imagenes_uri));
-
+        // END OF TEST
 
         //TAGS
         this.categoria = data.getStringExtra(context.getString(R.string.key_categoria));

@@ -13,13 +13,11 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
-import es.ucm.fdi.v3findmyroommate.ui.viviendas.MisViviendasFragment;
 
 public class HomeViewModel extends ViewModel {
 
@@ -49,6 +47,28 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setTitle(viviendas.child("title").getValue(String.class));
                     vivienda.setLocation(viviendas.child("location").getValue(String.class));
                     vivienda.setMetr(viviendas.child("square_meters").getValue(String.class));
+
+//SAM-------------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Manejo de la lista de imágenes - conversión de String a Uri
+                    List<Uri> imagenesUri = new ArrayList<>();
+
+                    for (DataSnapshot uriSnapshot : viviendas.child("uri_list").getChildren()) {
+                        String uriString = uriSnapshot.getValue(String.class);
+                        if (uriString != null) {
+                            Uri uri = Uri.parse(uriString); // Convertir de String a Uri
+                            imagenesUri.add(uri);
+                        }
+                    }
+
+
+
+
+                    vivienda.setImagenesUri(imagenesUri);
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
                     vivienda.setPrice(viviendas.child("price").getValue(String.class));
                     vivienda.setDescription(viviendas.child("description").getValue(String.class));
                     vivienda.setCategoria(viviendas.child("property_type").getValue(String.class));
@@ -59,15 +79,24 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setCompaneros(viviendas.child("maximum_number_of_roomates").getValue(String.class));
                     vivienda.setGenero(viviendas.child("roommate_gender").getValue(String.class));
                     vivienda.setTipoBano(viviendas.child("bathroom_type").getValue(String.class));
-                    vivienda.setImagenesUri(viviendas.child("uri_list").getValue(List.class));
 
-                    // Obtiene la lista de imágenes del anuncio de la BD en formato String.
-                    List<String> listaImagenesFormatoString = viviendas.child("uri_list").getValue
-                            (new GenericTypeIndicator<List<String>>() {});
+                    //Obtener id y nombre dueño
+                    String userId = viviendas.child("user_id").getValue(String.class);
+                    vivienda.setOwnerId(userId);
+                    if (userId != null) {
+                        FirebaseDatabase.getInstance().getReference("users").child(userId).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String username = snapshot.getValue(String.class);
+                                vivienda.setOwnerName(username);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                vivienda.setOwnerName("Desconocido");
+                            }
+                        });
+                    }
 
-                    // Convierte los valores de la lista recibida a formato Uri.
-                    List<Uri> listaImagenesFormatoUri = MisViviendasFragment.convierteListaStringsAListaUris(listaImagenesFormatoString);
-                    vivienda.setImagenesUri(listaImagenesFormatoUri);
                     //martineevivienda.printVivienda();
 
 

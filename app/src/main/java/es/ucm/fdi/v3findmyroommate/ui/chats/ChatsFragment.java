@@ -56,6 +56,7 @@ public class ChatsFragment extends Fragment {
                 bundle.putSerializable("chat", chat);
                 chatFragment.setArguments(bundle);
 
+                // Ocultar RecyclerView y mostrar el contenedor del fragmento
                 recyclerView.setVisibility(View.GONE);
                 View container = getView().findViewById(R.id.chatFragmentContainer);
                 if (container != null) {
@@ -161,6 +162,7 @@ public class ChatsFragment extends Fragment {
             });
         }
     }
+
 
     private void createNewChat(List<String> participantIds, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

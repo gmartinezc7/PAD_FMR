@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -230,7 +231,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         }
 
         Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
-        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
+        MisViviendasFragment.guardarOActualizarAnuncioEnBD(nuevoAnuncio, this.getApplication());
         resultIntent.putExtra(this.getString(R.string.key_id), nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
         setResult(RESULT_OK, resultIntent);
@@ -313,6 +314,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         else {
             openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
         }
+
     }
 
 

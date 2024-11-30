@@ -22,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -86,7 +88,7 @@ public class ChatFragment extends Fragment {
             String messageText = messageEditText.getText().toString().trim();
             if (!messageText.isEmpty()) {
                 sendMessage(chatId, messageText);
-                messageEditText.setText(""); // Limpiar el campo de mensaje
+                messageEditText.setText("");
             } else {
                 Toast.makeText(getContext(), "Escribe un mensaje", Toast.LENGTH_SHORT).show();
             }
@@ -100,15 +102,15 @@ public class ChatFragment extends Fragment {
         chatMessagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                messageList.clear();  // Limpiar los mensajes previos
+                messageList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Message message = messageSnapshot.getValue(Message.class);
                     if (message != null) {
-                        messageList.add(message);  // Añadir los nuevos mensajes
+                        messageList.add(message);
                     }
                 }
-                messageAdapter.notifyDataSetChanged();  // Actualizar el adaptador
-                recyclerView.scrollToPosition(messageList.size() - 1);  // Desplazar al último mensaje
+                messageAdapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(messageList.size() - 1);
             }
 
             @Override
@@ -124,13 +126,29 @@ public class ChatFragment extends Fragment {
 
         // Crear el mensaje
         Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
+
+        // Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                        // Actualizar el último mensaje en el chat
+                        Map<String, Object> chatUpdates = new HashMap<>();
+                        chatUpdates.put("lastMessage", messageText);
+                        chatUpdates.put("timestamp", timestamp);
+
+                        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+                        chatRef.updateChildren(chatUpdates)
+                                .addOnCompleteListener(updateTask -> {
+                                    if (updateTask.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Error al actualizar el chat", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     } else {
                         Toast.makeText(getContext(), "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 }

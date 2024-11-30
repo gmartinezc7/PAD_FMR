@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:padding="16dp"
     android:layout_height="match_parent">
 
 
@@ -26,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage"
         android:layout_marginTop="16dp"
         android:text="@string/house_prefs_select_property_type_label"
@@ -38,8 +38,8 @@
         android:id="@+id/propertyTypeChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/propertyTypeMessage"
-        app:layout_constraintEnd_toEndOf="@id/propertyTypeMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/propertyTypeMessage"
         android:layout_marginTop="10dp"
         app:singleSelection="true">
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Apartment" />
+            android:text="@string/apartment_house_type" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/houseChip"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:checkable="true"
-            android:text="House" />
+            android:text="@string/house_house_type" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Rooms ChipGroup -->
@@ -67,7 +67,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/propertyTypeChipGroup"
         android:layout_marginTop="20dp"
         android:text="@string/house_prefs_select_number_of_rooms_label"
@@ -78,8 +77,8 @@
         android:id="@+id/roomsChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/roomsMessage"
-        app:layout_constraintEnd_toEndOf="@id/roomsMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/roomsMessage"
         android:layout_marginTop="10dp"
         app:singleSelection="true">
@@ -123,10 +122,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/roomsChipGroup"
         android:layout_marginTop="20dp"
-        android:text="Select Number of Bathrooms"
+        android:text="@string/select_number_of_bathrooms"
         android:textStyle="bold"
         android:textSize="20sp" />
 
@@ -134,8 +132,8 @@
         android:id="@+id/bathroomsChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/bathroomsMessage"
-        app:layout_constraintEnd_toEndOf="@id/bathroomsMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bathroomsMessage"
         android:layout_marginTop="10dp"
         app:singleSelection="true">
@@ -178,10 +176,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bathroomsChipGroup"
         android:layout_marginTop="20dp"
-        android:text="Select Orientation"
+        android:text="@string/select_orientation"
         android:textStyle="bold"
         android:textSize="20sp" />
 
@@ -189,8 +186,8 @@
         android:id="@+id/orientationChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/orientationMessage"
-        app:layout_constraintEnd_toEndOf="@id/orientationMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/orientationMessage"
         android:layout_marginTop="10dp"
         app:singleSelection="true">
@@ -201,7 +198,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Exterior" />
+            android:text="@string/exterior_orientation" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/interiorChip"
@@ -209,27 +206,38 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Interior" />
+            android:text="@string/interior_orientation" />
     </com.google.android.material.chip.ChipGroup>
 
-    <!-- Square Meters Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/squareMetersTextInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/housePreferencesMessage"
-        app:layout_constraintEnd_toEndOf="@+id/housePreferencesMessage"
-        app:layout_constraintTop_toBottomOf="@+id/orientationChipGroup"
-        android:layout_marginTop="20dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/squareMetersInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter square meters"
-            android:textSize="16sp"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/squaredFeetHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/house_square_feets"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/orientationChipGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/squareMetersInput"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/edit_text_custom"
+        android:paddingStart="10dp"
+        android:layout_marginTop="15dp"
+        android:hint="100 m2"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squaredFeetHeader"
+        />
+
+
 
     <!-- Continue Button -->
     <Button

@@ -13,6 +13,7 @@
 
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -42,6 +43,7 @@
             android:name=".ui.viviendas.CrearAnuncioActivity"
             android:exported="false" />
         <activity android:name=".ui.viviendas.AnuncioDetalleActivity" />
+        <activity android:name=".ui.home.ViviendaDetalleActivity" />
         <activity android:name=".ui.viviendas.EditarAnuncioActivity" />
 
         <provider
@@ -55,6 +57,7 @@
         </provider>
         <activity android:name=".SignUp"/>
         <activity android:name=".PreferencesFragment.PreferenceUser"/>
+        <activity android:name=".ui.chats.ChatActivity"></activity>
     </application>
 
 </manifest>

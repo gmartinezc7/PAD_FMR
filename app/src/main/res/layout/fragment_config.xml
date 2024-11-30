@@ -50,7 +50,7 @@
         android:id="@+id/modify_preferences_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modificar tus preferencias"
+        android:text="@string/modify_preferences_button_text"
         android:backgroundTint="?attr/colorButtonNormal"
         android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"

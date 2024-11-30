@@ -31,6 +31,7 @@ public class LocaleUtils {
 
     // Method that sets the default locale.
     public static void setDefaultLocale(Context context, String localeName) {
+
         // Creates a new locale from the string parameter.
         Locale newDefaultLocale = new Locale((localeName));
 
@@ -47,8 +48,51 @@ public class LocaleUtils {
     }
 
 
+    // Function that returns the value that the given key has in the locale used in the DB.
+    public static String getValueInDBLocale(Context context, int keyId) {
+        String result = "";
+        Resources initialResources = context.getResources();
+
+        for (Locale locale : getLocalesList()) {
+            if (locale.equals(new Locale("es"))) {
+                Configuration config = new Configuration(initialResources.getConfiguration());
+                config.setLocale(locale);
+
+                // Creates context with the updated configuration.
+                Context localizedContext = context.createConfigurationContext(config);
+
+                // Gets the updated resources.
+                Resources resources = localizedContext.getResources();
+                String localizedValue;
+
+                // Gets the string value associated with the given key ID in the current locale.
+                result = resources.getString(keyId);
+
+                return result;
+            }
+        }
+        return result;
+/*
+        // Gets the default locale.
+        Locale defaultLocale = Locale.getDefault();
+
+        // Creates a configuration for the default locale.
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        config.setLocale(defaultLocale);
+
+        // Creates a context with the updated configuration.
+        Context localizedContext = context.createConfigurationContext(config);
+
+        // Fetches the string value using the default locale.
+        return localizedContext.getResources().getString(keyId);
+
+ */
+    }
+
+
     // Function that returns whether the value
     public static boolean doesStringMatchAnyLanguage(Context context, String stringToMatch, int keyId) {
+
         Resources initialResources = context.getResources();
 
         for (Locale locale : getLocalesList()) {

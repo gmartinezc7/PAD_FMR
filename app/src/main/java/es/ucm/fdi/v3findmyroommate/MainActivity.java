@@ -19,6 +19,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+import java.util.Locale;
+
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,10 +51,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Adds both locales to the locale class' locale list.
         LocaleUtils.addLocale("es");
-        LocaleUtils.addLocale("en");
+        LocaleUtils.addLocale("en_US");
 
         // Sets the spanish locale as the default locale.
-        LocaleUtils.setDefaultLocale(this, "es");
+        //LocaleUtils.setDefaultLocale(this, "es");
+
+        Locale[] availableLocales = Locale.getAvailableLocales();
+        for (Locale locale : availableLocales) {
+            Log.d("Locales", "Locale: " + locale.toString());
+        }
+
+
 
         // TEST TEST TEST
         String mess = "Welkcome back!";
