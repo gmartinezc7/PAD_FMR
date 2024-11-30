@@ -24,10 +24,12 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 import es.ucm.fdi.v3findmyroommate.LocaleUtils;
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.TranslationUtils;
 import es.ucm.fdi.v3findmyroommate.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -159,8 +161,25 @@ public class HomeFragment extends Fragment {
 
     private void applyFilters(String categoria, String tipoCasa, String numHabs, String numBanos,
                               String orientacion, String genero, String numComps, String tipoBano) {
+        categoria = translateIfNeeded(categoria);
+        tipoCasa = translateIfNeeded(tipoCasa);
+        numHabs = translateIfNeeded(numHabs);
+        numBanos = translateIfNeeded(numBanos);
+        orientacion = translateIfNeeded(orientacion);
+        genero = translateIfNeeded(genero);
+        numComps = translateIfNeeded(numComps);
+        tipoBano = translateIfNeeded(tipoBano);
         homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano);
         System.out.println("Filtros aplicados: " + categoria + ", " + tipoCasa + ", " + numHabs + ", " + numBanos);
+    }
+    private String translateIfNeeded(String value) {
+        Locale currentLocale = Locale.getDefault();
+        boolean isSpanish = currentLocale.getLanguage().equals("es");
+
+        if (!isSpanish && value != null) {
+            return TranslationUtils.translateToBaseLanguage(value);
+        }
+        return value;
     }
 
     @Override

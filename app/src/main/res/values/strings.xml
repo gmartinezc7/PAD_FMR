@@ -123,8 +123,8 @@
         <item>Habitación</item>
     </string-array>
     <string-array name="tipo_casa_array">
-        <item>Apartamento</item>
-        <item>Casa</item>
+        <item>Apartament</item>
+        <item>House</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>

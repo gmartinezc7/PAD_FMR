@@ -93,7 +93,7 @@ public class HomeViewModel extends ViewModel {
             }
 
             // FILTROS CATEGORIA CASA
-            if (categoria != null && categoria.equals("Home")){
+            if (categoria != null && categoria.equals("Casa")){
                 System.out.println("ES UNA CASAAAAAA");
                 System.out.println("Vivienda: " + vivienda.getId());
 
