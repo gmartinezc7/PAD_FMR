@@ -79,7 +79,7 @@ public class Anuncio {
 
 
         // TEST TEST TEST
-        //this.imagenesUri = data.getParcelableArrayListExtra(context.getString(R.string.key_imagenes_uri));
+        this.imagenesUri = data.getParcelableArrayListExtra(context.getString(R.string.key_imagenes_uri));
         // END OF TEST
 
         //TAGS

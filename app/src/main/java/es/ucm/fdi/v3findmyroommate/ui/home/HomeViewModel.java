@@ -1,6 +1,8 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleableRes;
 import androidx.lifecycle.LiveData;
@@ -14,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class HomeViewModel extends ViewModel {
 
@@ -43,6 +47,28 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setTitle(viviendas.child("title").getValue(String.class));
                     vivienda.setLocation(viviendas.child("location").getValue(String.class));
                     vivienda.setMetr(viviendas.child("square_meters").getValue(String.class));
+
+//SAM-------------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Manejo de la lista de imágenes - conversión de String a Uri
+                    List<Uri> imagenesUri = new ArrayList<>();
+
+                    for (DataSnapshot uriSnapshot : viviendas.child("uri_list").getChildren()) {
+                        String uriString = uriSnapshot.getValue(String.class);
+                        if (uriString != null) {
+                            Uri uri = Uri.parse(uriString); // Convertir de String a Uri
+                            imagenesUri.add(uri);
+                        }
+                    }
+
+
+
+
+                    vivienda.setImagenesUri(imagenesUri);
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
                     vivienda.setPrice(viviendas.child("price").getValue(String.class));
                     vivienda.setDescription(viviendas.child("description").getValue(String.class));
                     vivienda.setCategoria(viviendas.child("property_type").getValue(String.class));
