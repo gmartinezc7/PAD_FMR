@@ -27,7 +27,7 @@ import es.ucm.fdi.v3findmyroommate.R;
 public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
 
     private String currentAuthenticationEmail;
-    private final ConfigPreferencesModel preferencesViewModel;
+    private ConfigPreferencesModel preferencesViewModel;
     private EditTextPreference usernamePreference, emailPreference, passwordPreference;
     private ListPreference ageRangePreference, genderPreference, maritalStatusPreference, occupationPreference;
 
@@ -37,10 +37,6 @@ public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
     private final CharSequence[] occupation_entries = new CharSequence[4];
 
 
-    public ConfigPreferencesFragment(ConfigPreferencesModel ConfigPreferencesModel) {
-        this.preferencesViewModel = ConfigPreferencesModel;
-    }
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Context currentContext = getContext();
@@ -48,6 +44,10 @@ public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
         if (currentContext != null) {
             userPreferences = PreferenceManager.getDefaultSharedPreferences(
                     getContext());
+
+            Activity currentActivity = this.getActivity();
+            if (currentActivity != null)    // Initializes the preferences model.
+                new ConfigPreferencesModel(currentActivity.getApplication());
 
             this.currentAuthenticationEmail = userPreferences.getString(getString(R.string.email_preference_key), "");
             setPreferencesFromResource(R.xml.preferences, rootKey);

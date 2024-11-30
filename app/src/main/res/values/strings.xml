@@ -6,7 +6,7 @@
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
     <string name="title_config">Configuración</string>
-    <string name="welcome_message">Bienvenid@!</string>
+    <string name="welcome_message">¡Bienvenid@!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Contraseña</string>
     <string name="login">registro</string>
@@ -166,6 +166,7 @@
     <string name="username_db_label" translatable="false">username</string>
     <string name="user_adds_list_db_label" translatable="false">user_adds_list</string>
     <string name="add_uri_list_db_label" translatable="false">uri_list</string>
+    <string name="add_user_id_db_label" translatable="false">user_id</string>
 
 
 

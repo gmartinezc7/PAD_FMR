@@ -37,6 +37,9 @@ import java.util.List;
 
 import android.widget.AdapterView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import es.ucm.fdi.v3findmyroommate.R;
