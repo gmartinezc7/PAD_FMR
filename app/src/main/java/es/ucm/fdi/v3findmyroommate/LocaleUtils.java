@@ -31,6 +31,7 @@ public class LocaleUtils {
 
     // Method that sets the default locale.
     public static void setDefaultLocale(Context context, String localeName) {
+
         // Creates a new locale from the string parameter.
         Locale newDefaultLocale = new Locale((localeName));
 
@@ -47,8 +48,27 @@ public class LocaleUtils {
     }
 
 
+    // Function that returns the value that the given key has in the default locale.
+    public static String getDefaultLocaleString(Context context, int keyId) {
+
+        // Gets the default locale.
+        Locale defaultLocale = Locale.getDefault();
+
+        // Creates a configuration for the default locale.
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        config.setLocale(defaultLocale);
+
+        // Creates a context with the updated configuration.
+        Context localizedContext = context.createConfigurationContext(config);
+
+        // Fetches the string value using the default locale.
+        return localizedContext.getResources().getString(keyId);
+    }
+
+
     // Function that returns whether the value
     public static boolean doesStringMatchAnyLanguage(Context context, String stringToMatch, int keyId) {
+
         Resources initialResources = context.getResources();
 
         for (Locale locale : getLocalesList()) {

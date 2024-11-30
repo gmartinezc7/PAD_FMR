@@ -525,7 +525,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         }
 
 
-        MisViviendasFragment.actualizarAnuncioEnBD(new Anuncio(this, resultIntent), this.getApplication());
+        MisViviendasFragment.guardarOActualizarAnuncioEnBD(new Anuncio(this, resultIntent), this.getApplication());
         setResult(RESULT_OK, resultIntent);
         finish();
     }

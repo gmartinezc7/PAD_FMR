@@ -80,33 +80,6 @@
 
 
 
-
-
-    //SAMUMAGU TRADUCCIONES------------------------------------------
-
-
-        <string name="text_vivienda" translatable="false">Property: \u0020</string>
-        <string name="text_ubicacion" translatable="false">📍 \u0020</string>
-        <string name="text_metros_cuadrados" translatable="false">\u0020 m²</string>
-        <string name="text_precio" translatable="false">\u0020 €</string>
-
-        <string name="eliminar_anunio" translatable="false">Delete listing</string>
-        <string name="pregunta_eliminar_anunio" translatable="false">Are you sure you want to delete this listing?</string>
-
-        <string name="eliminar" translatable="false">Delete</string>
-        <string name="cancelar" translatable="false">Cancel</string>
-        <string name="mensaje_confirmacion_eliminado" translatable="false">Listing deleted</string>
-        <string name="mensaje_debes_rellenar_todo" translatable="false">You must fill in all the information to create a listing</string>
-
-        <string name="mensaje_permiso_camara_denegado" translatable="false">Camera permission not granted</string>
-        <string name="mensaje_permiso_almacenamiento_denegado" translatable="false">Storage permission not granted</string>
-        <string name="mensaje_error_crear_imagen" translatable="false">Error creating image file</string>
-        <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
-        <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
-    <string name="subnormal">uuu</string>
-
-
-
     <string-array name="categorias_array">
         <item>House</item>
         <item>Room</item>
@@ -133,8 +106,8 @@
         <item>4+</item>
     </string-array>
     <string-array name="genero_array">
-        <item>Men</item>
-        <item>Women</item>
+        <item>Male</item>
+        <item>Female</item>
         <item>Both</item>
     </string-array>
     <string-array name="exterior_interior_array">
@@ -145,6 +118,40 @@
         <item>Private</item>
         <item>Shared</item>
     </string-array>
+
+
+
+
+
+    //SAMUMAGU TRADUCCIONES------------------------------------------
+
+
+        <string name="text_vivienda" translatable="false">Property: \u0020</string>
+        <string name="text_ubicacion" translatable="false">📍 \u0020</string>
+        <string name="text_metros_cuadrados" translatable="false">\u0020 m²</string>
+        <string name="text_precio" translatable="false">\u0020 €</string>
+
+        <string name="eliminar_anunio" translatable="false">Delete listing</string>
+        <string name="pregunta_eliminar_anunio" translatable="false">Are you sure you want to delete this listing?</string>
+
+        <string name="eliminar" translatable="false">Delete</string>
+        <string name="cancelar" translatable="false">Cancel</string>
+        <string name="mensaje_confirmacion_eliminado" translatable="false">Listing deleted</string>
+        <string name="mensaje_debes_rellenar_todo" translatable="false">You must fill in all the information to create a listing</string>
+
+        <string name="mensaje_permiso_camara_denegado" translatable="false">Camera permission not granted</string>
+        <string name="mensaje_permiso_almacenamiento_denegado" translatable="false">Storage permission not granted</string>
+        <string name="mensaje_error_crear_imagen" translatable="false">Error creating image file</string>
+        <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
+        <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
+    <string name="edit_house_listing">Edit add</string>
+    <string name="apartment_house_type">Apartment</string>
+    <string name="house_house_type">House</string>
+    <string name="interior_orientation">Interior</string>
+    <string name="exterior_orientation">Exterior</string>
+    <string name="private_bathroom_type">Private</string>
+    <string name="shared_bathroom_type">Shared</string>
+    <string name="both_label">Both</string>
 
 
 </resources>

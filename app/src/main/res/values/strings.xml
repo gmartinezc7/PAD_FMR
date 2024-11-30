@@ -123,8 +123,8 @@
         <item>Habitación</item>
     </string-array>
     <string-array name="tipo_casa_array">
-        <item>Apartment</item>
-        <item>House</item>
+        <item>Apartamento</item>
+        <item>Casa</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>
@@ -144,8 +144,8 @@
         <item>4+</item>
     </string-array>
     <string-array name="genero_array">
-        <item>Solo Hombres</item>
-        <item>Solo Mujeres</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
         <item>Mixto</item>
     </string-array>
     <string-array name="exterior_interior_array">
@@ -156,6 +156,9 @@
         <item>Privado</item>
         <item>Compartido</item>
     </string-array>
+
+
+
     <string name="passwords_dont_match_toast_text">Las contraseñas no coinciden</string>
     <string name="add_title_db_label" translatable="false">title</string>
     <string name="add_location_db_label" translatable="false">location</string>
@@ -221,8 +224,14 @@
     <string name= "mensaje_error_crear_imagen">Error al crear archivo de imagen</string>
     <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
     <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
-    <string name="subnormal">uuu</string>
     <string name="edit_house_listing">Editar anuncio</string>
+    <string name="apartment_house_type">Apartamento</string>
+    <string name="house_house_type">Casa</string>
+    <string name="interior_orientation">Interior</string>
+    <string name="exterior_orientation">Exterior</string>
+    <string name="private_bathroom_type">Privado</string>
+    <string name="shared_bathroom_type">Compartido</string>
+    <string name="both_label">Mixto</string>
 
 
 </resources>
