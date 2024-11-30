@@ -238,7 +238,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
             tipoCasaText.setText(tipoCasa);
             numHabitacionesText.setText( habitaciones);
-            numBanosText.setText( banos);
+            numBanosText.setText(banos);
             orientacionText.setText( exteriorInterior);
 
         }

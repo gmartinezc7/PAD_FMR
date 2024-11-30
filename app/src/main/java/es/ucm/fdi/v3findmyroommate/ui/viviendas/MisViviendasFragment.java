@@ -165,7 +165,7 @@ public class MisViviendasFragment extends Fragment {
 
         if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            intent.putExtra(this.getString(R.string.key_tipo_bano), anuncio.getTipoCasa());
+            intent.putExtra(this.getString(R.string.key_tipo_casa), anuncio.getTipoCasa());
             intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
             intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
             intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());

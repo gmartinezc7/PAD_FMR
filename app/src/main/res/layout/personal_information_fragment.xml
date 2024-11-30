@@ -250,6 +250,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/personalInformationMessage"
         app:layout_constraintEnd_toEndOf="@+id/personalInformationMessage"
+        android:backgroundTint="?attr/colorButtonNormal"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="0dp"
         android:textSize="30sp"

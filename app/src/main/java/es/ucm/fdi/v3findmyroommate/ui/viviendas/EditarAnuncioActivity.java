@@ -23,10 +23,13 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,20 +56,19 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     private List<Uri> imagenesUri;
 
     //IMAGEN DEL ANUNCIO QUE SE MUESTRA
-    private ImageView imagenAnuncio;
+    private ImageView imagenAnuncio,btnEliminarImagen;
     //INDICE DE LA IMAGEN QUE SE MUESTRA
     private int imagenActualIndex = 0;
 
 
 
-    EditText editTitulo ;
-    EditText editUbicacion ;
-    EditText editMetros ;
-    EditText editPrecio ;
-    EditText editDescripcion ;
+    EditText editTitulo , editUbicacion,editMetros,editPrecio,editDescripcion;
+    TextView editTituloPantalla ;
+    private Button btnGuardar, btnCancelar;
+    FloatingActionButton btnSeleccionarImagen;
 
     //BOTONES NECESARIOS, EL DE SELECCIONAR IMAGEN, ELIMINARLA  Y EL DE LAS FLECHAS PARA PASAR LAS IMAGENES
-    private Button btnSeleccionarImagen, btnEliminarImagen;
+
     private ImageButton btnPrev,btnNext;
 
 
@@ -97,14 +99,14 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
     //LINEARLAYOUTS QUE APARECEN O DESAPARECEN DEPENDIENDO DE SI LA OPCION ESCOGIDA ES UNA CASA O HABITACION
     LinearLayout opcionesCasa;
-    LinearLayout opcionesHabitacion;
+    LinearLayout opcionesHabitacion,guardarAnuncio;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_anuncio);
+        setContentView(R.layout.activity_editar_anuncio_2);
         previewPhotoUri = null;
 
         enlazarIdsVista();
@@ -134,13 +136,17 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next);
         btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
+        editTituloPantalla = findViewById(R.id.titulo_crear);
+        editTituloPantalla.setText(R.string.edit_house_listing);
+        guardarAnuncio = findViewById(R.id.guardarAnuncio);
+
 
         // Llenar los campos con la información del anuncio
-        editTitulo = findViewById(R.id.edit_titulo);
-        editUbicacion = findViewById(R.id.edit_ubicacion);
-        editMetros = findViewById(R.id.edit_metros);
-        editPrecio = findViewById(R.id.edit_precio);
-        editDescripcion = findViewById(R.id.edit_descripcion);
+        editTitulo = findViewById(R.id.create_titulo);
+        editUbicacion = findViewById(R.id.create_ubicacion);
+        editMetros = findViewById(R.id.create_metros);
+        editPrecio = findViewById(R.id.create_precio);
+        editDescripcion = findViewById(R.id.create_descripcion);
 
         //TAGS
         spinnerCategoria = findViewById(R.id.spinner_categoria);
@@ -238,13 +244,18 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) guardarAnuncio.getLayoutParams();
                 if (position == 0) { // Casa
                     opcionesCasa.setVisibility(View.VISIBLE);
                     opcionesHabitacion.setVisibility(View.GONE);
+                    params.topToBottom = opcionesCasa.getId();
                 } else if (position == 1) { // Habitación
                     opcionesCasa.setVisibility(View.GONE);
                     opcionesHabitacion.setVisibility(View.VISIBLE);
+                    params.topToBottom = opcionesHabitacion.getId();
                 }
+                guardarAnuncio.setLayoutParams(params);
+
             }
 
             @Override
@@ -270,21 +281,18 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             eliminarImagenSeleccionada();
         });
 
-        Button btnGuardar = findViewById(R.id.btn_actualizar_anuncio);
+        btnGuardar = findViewById(R.id.btn_guardar_anuncio);
         btnGuardar.setOnClickListener(v -> {
             actualizarAnuncio();
         });
 
 
         // Botón de cancelar
-        Button btnCancelar = findViewById(R.id.btn_cancelar);
+        btnCancelar = findViewById(R.id.btn_cancelar);
         btnCancelar.setOnClickListener(v -> finish());
 
 
     }
-
-
-
 
 
 
