@@ -6,19 +6,19 @@
     <string name="title_misfavs">MisFavs</string>
     <string name="title_chats">Chats</string>
     <string name="title_config">Configuración</string>
-    <string name="welcome_message">Bienvenid@!</string>
+    <string name="welcome_message">¡Bienvenid@!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
-    <string name="dont_have_account">No tienes una cuenta</string>
+    <string name="dont_have_account">¿No tienes una cuenta?</string>
     <string name="sign_up">Registrarse</string>
     <string name="sign_in">Iniciar sesión</string>
     <string name="name">Nombre</string>
     <string name="last_name">Apellido</string>
     <string name="confirm_password_hint">Confirma tu contraseña</string>
-    <string name="already_have_an_acount">Ya tienes una cuenta</string>
-    <string name="create_account_message">You\'re almost there! Simply create your new account now, and you\'ll be one step closer to discovering the perfect dream house that you\'ve always wanted!</string>
-    <string name="create_account">Create account</string>
+    <string name="already_have_an_acount">¿Ya tienes una cuenta?</string>
+    <string name="create_account_message">¡Ya casi estás! Solo crea tu nueva cuenta ahora, y estarás un paso más cerca de descubrir la vivienda perfecta que siempre has querido.</string>
+    <string name="create_account">Crear cuenta</string>
     <!--Texto Chats -->
 
     <string name="personal_information_message">Dinos más acerca de ti</string>
@@ -89,7 +89,7 @@
     <string name="personal_information_marital_status_label">Estado Civil</string>
     <string name="personal_information_occupation_label">Empleo</string>
     <string name="max_budget_text">Introduce tu presupuesto máximo</string>
-    <string name="house_prefs_select_property_type_label">Selecciona el Tipo de Casa</string>
+    <string name="house_prefs_select_property_type_label">Selecciona el tipo de casa</string>
     <string name="property_type_preference_key" translatable="false">property_type_preference</string>
     <string name="property_type_db_label" translatable="false">property_type</string>
     <string name="max_budget_preference_key" translatable="false">max_budget_preference</string>
@@ -102,7 +102,7 @@
     <string name="orientation_db_label" translatable="false">orientation</string>
     <string name="square_meters_preference_key" translatable="false">square_meters_preference</string>
     <string name="square_meters_db_label" translatable="false">square_meters</string>
-    <string name="house_prefs_select_number_of_rooms_label">Selecciona el Número de Habitaciones</string>
+    <string name="house_prefs_select_number_of_rooms_label">Selecciona el número de habitaciones</string>
     <string name="sign_up_failed_toast_text">Usuario o contraseña incorrectos</string>
     <string name="age_range_db_label" translatable="false">age_range</string>
     <string name="max_num_roommates_preference_key" translatable="false">max_num_roommates_preference</string>
@@ -123,8 +123,8 @@
         <item>Habitación</item>
     </string-array>
     <string-array name="tipo_casa_array">
-        <item>Apartment</item>
-        <item>House</item>
+        <item>Apartamento</item>
+        <item>Casa</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>
@@ -144,8 +144,8 @@
         <item>4+</item>
     </string-array>
     <string-array name="genero_array">
-        <item>Solo Hombres</item>
-        <item>Solo Mujeres</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
         <item>Mixto</item>
     </string-array>
     <string-array name="exterior_interior_array">
@@ -156,6 +156,9 @@
         <item>Privado</item>
         <item>Compartido</item>
     </string-array>
+
+
+
     <string name="passwords_dont_match_toast_text">Las contraseñas no coinciden</string>
     <string name="add_title_db_label" translatable="false">title</string>
     <string name="add_location_db_label" translatable="false">location</string>
@@ -166,6 +169,7 @@
     <string name="username_db_label" translatable="false">username</string>
     <string name="user_adds_list_db_label" translatable="false">user_adds_list</string>
     <string name="add_uri_list_db_label" translatable="false">uri_list</string>
+    <string name="add_user_id_db_label" translatable="false">user_id</string>
 
 
 
@@ -234,6 +238,26 @@
     <string name="both">Ambos</string>
     <string name="select_number_of_bathrooms">Selecciona el Número de Baños</string>
     <string name="select_orientation">Selecciona Orientation</string>
+    <string name="apartment_house_type">Apartamento</string>
+    <string name="house_house_type">Casa</string>
+    <string name="interior_orientation">Interior</string>
+    <string name="exterior_orientation">Exterior</string>
+    <string name="private_bathroom_type">Privado</string>
+    <string name="shared_bathroom_type">Compartido</string>
+    <string name="both_label">Mixto</string>
+    <string name="modify_preferences_button_text">Modificar tus preferencias</string>
+    <string name="room_preferences_title">Preferencias de habitación</string>
+    <string name="select_max_roomates_title">Seleciona el número máximo de compañeros de piso</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four_plus">4+</string>
+    <string name="select_roomate_gender_title">Selecciona tu preferencia de género de tus compañeros de piso</string>
+    <string name="select_room_orientation_title">Selecciona la orientación de la habitación</string>
+    <string name="select_bathroom_type_title">Selecciona el tipo de baño</string>
+    <string name="one">1</string>
+    <string name="select_num_bathrooms_title">Selecciona el número de baños</string>
+    <string name="select_house_orientation_title">Seleciona la orientación</string>
+    <string name="enter_square_meters_hint">Introduce los metros cuadrados</string>
 
 
 </resources>

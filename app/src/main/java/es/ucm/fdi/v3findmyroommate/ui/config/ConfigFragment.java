@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,9 +28,6 @@ public class ConfigFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ConfigPreferencesModel ConfigPreferencesModel = new ViewModelProvider(this,
-                new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication()))
-                .get(ConfigPreferencesModel.class);
 
         binding = FragmentConfigBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -41,7 +37,7 @@ public class ConfigFragment extends Fragment {
         // Adds preferences fragment here instead of on item click.
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.preferences_frame, new ConfigPreferencesFragment(ConfigPreferencesModel))
+                .replace(R.id.preferences_frame, new ConfigPreferencesFragment())
                 .commit();
 
         ImageView logoutButton = root.findViewById(R.id.log_out_button);

@@ -37,6 +37,9 @@ import java.util.List;
 
 import android.widget.AdapterView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import es.ucm.fdi.v3findmyroommate.R;
@@ -227,7 +230,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         }
 
         Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
-        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
+        MisViviendasFragment.guardarOActualizarAnuncioEnBD(nuevoAnuncio, this.getApplication());
         resultIntent.putExtra(this.getString(R.string.key_id), nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
         setResult(RESULT_OK, resultIntent);
@@ -310,6 +313,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         else {
             openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
         }
+
     }
 
 

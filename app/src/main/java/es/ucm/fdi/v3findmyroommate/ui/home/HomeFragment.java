@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +68,7 @@ public class HomeFragment extends Fragment {
 
 
         openFilters.setOnClickListener(v -> {
-            FiltersFragment dialog = new FiltersFragment();
+            FiltersFragment dialog = new FiltersFragment(this.getContext());
             dialog.setListenerFiltrosAplicados(((categoria, tipocasa, numHabs, numBanos, numComps, genero, orientacion, tipoBano) -> {
                 // Llamada a viviendaViewModel para aplicar los filtros que se hanc reado
                 homeViewModel.applyFiltersViewModel(categoria,tipocasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano);
@@ -82,55 +83,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    private void applyFilters(){
-        // APLICAR LOS FILTROS
-        String fcategoria = sCategoria.getSelectedItem().toString();
-        System.out.println("CATEGORIA FILTRO: " + fcategoria);
-
-        String ftipocasa = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sTipoCasa.getSelectedItem().toString();
-        }
-
-        String fnumhabitaciones = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sNumHabs.getSelectedItem().toString();
-        }
-
-        String fnumbanos = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sNumBanos.getSelectedItem().toString();
-        }
-
-        String fnumComps = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sNumComps.getSelectedItem().toString();
-        }
-
-        String fgenero = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sGenero.getSelectedItem().toString();
-        }
-
-        String forientacion = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sOrientacion.getSelectedItem().toString();
-        }
-
-        String fTipoBano = null;
-        if (filterscasa.getVisibility() == View.VISIBLE){
-            sTipoBano.getSelectedItem().toString();
-        }
-
-        // Llamada a la construcción del ViewModel
-        /*System.out.println("FILTROS");
-        System.out.println("FCATEGORIA: " + fcategoria);
-        System.out.println("FTIPOCASA: " + ftipocasa);*/
-        //System.out.println("FCOMPS: " + fcomps);
-        //System.out.println("FGENERO: " + fgenero);
-        homeViewModel.applyFiltersViewModel(fcategoria, ftipocasa, fnumhabitaciones, fnumbanos, fnumComps, fgenero, forientacion, fTipoBano);
     }
 
 
