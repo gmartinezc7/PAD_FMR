@@ -38,9 +38,10 @@ import java.util.List;
 
 import android.widget.AdapterView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -50,9 +51,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
-    private Button btnGuardar, btnCancelar ;
-    private ImageView imagenAnuncio,btnSeleccionarImagen,btnEliminarImagen;
+    private Button btnGuardar, btnCancelar;
 
+    private ImageView imagenAnuncio, btnEliminarImagen;
+
+    FloatingActionButton btnSeleccionarImagen;
 
     private List<Uri> imagenesUri = new ArrayList<>();
     private int imagenActualIndex = 0; // Índice de la imagen actual
@@ -65,6 +68,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     LinearLayout opcionesCasa;
     LinearLayout opcionesHabitacion, guardarAnuncio;
 
+
     Spinner spinnerTipoCasa, spinnerHabitaciones, spinnerBanos, spinnerExteriorInteriorCasa;
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
@@ -73,44 +77,38 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio_2);
-        try {
-            btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
+        previewPhotoUri = null;
 
-        //  btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
-        }catch (Exception e){
-            Log.d("Imagen",e.getMessage());
-        }
-        guardarAnuncio = findViewById(R.id.guardarAnuncio);
 
-        // Inicialización de vistas
+        enlazarIdsVista();
+
+        establecerAccionesBotones();
+
+        establecerAccionesSpinners();
+
+    }
+
+
+    private void enlazarIdsVista(){
+
         editTitulo = findViewById(R.id.create_titulo);
         editUbicacion = findViewById(R.id.create_ubicacion);
         editMetros = findViewById(R.id.create_metros);
         editPrecio = findViewById(R.id.create_precio);
         editDescripcion = findViewById(R.id.create_descripcion);
-
-
         btnGuardar = findViewById(R.id.btn_guardar_anuncio);
         btnCancelar = findViewById(R.id.btn_cancelar);
-        FloatingActionButton btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
-
-        //btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
+        btnSeleccionarImagen = findViewById(R.id.btn_seleccionar_imagen);
         btnEliminarImagen = findViewById(R.id.btn_eliminar_imagen);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
-
         btnPrev = findViewById(R.id.btn_prev);
         btnNext = findViewById(R.id.btn_next);
-
-        //btnPrev.setVisibility(View.INVISIBLE);
-        //btnNext.setVisibility(View.INVISIBLE);
-
-
-        previewPhotoUri = null;
-
-
+        btnPrev.setVisibility(View.INVISIBLE);
+        btnNext.setVisibility(View.INVISIBLE);
         spinnerCategoria = findViewById(R.id.spinner_categoria);
         opcionesCasa = findViewById(R.id.opciones_casa);
         opcionesHabitacion = findViewById(R.id.opciones_habitacion);
+        guardarAnuncio = findViewById(R.id.guardarAnuncio);
 
         // Spinners de opciones Casa
         spinnerTipoCasa = findViewById(R.id.spinner_tipo_casa);
@@ -125,6 +123,11 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         spinnerTipoBano = findViewById(R.id.spinner_tipo_bano);
 
 
+    }
+
+
+
+    private void  establecerAccionesBotones(){
 
         // Botón para seleccionar imagen
         btnSeleccionarImagen.setOnClickListener(v -> {
@@ -148,6 +151,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         btnNext.setOnClickListener(v -> mostrarImagenSiguiente());
 
 
+    }
+
+
+
+    private void establecerAccionesSpinners(){
+
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -157,14 +166,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                     opcionesCasa.setVisibility(View.VISIBLE);
                     opcionesHabitacion.setVisibility(View.GONE);
                     params.topToBottom = opcionesCasa.getId();
-
                 } else if (position == 1) { // Habitación
                     opcionesCasa.setVisibility(View.GONE);
                     opcionesHabitacion.setVisibility(View.VISIBLE);
                     params.topToBottom = opcionesHabitacion.getId();
                 }
                 guardarAnuncio.setLayoutParams(params);
-
             }
 
             @Override
@@ -176,7 +183,10 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     }
 
+
+
     private Intent guardarAnuncio() {
+
         String titulo = editTitulo.getText().toString();
         String ubicacion = editUbicacion.getText().toString();
         String metros = editMetros.getText().toString();
@@ -184,51 +194,52 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         String descripcion = editDescripcion.getText().toString();
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() /*|| imagenesUri.isEmpty()*/) {
-            Toast.makeText(this, "Debes rellenar toda la información " +
-                    "para poder crear un anuncio", Toast.LENGTH_LONG).show();
+                || precio.isEmpty() || imagenesUri.isEmpty()) {
+            Toast.makeText(this, this.getString(R.string.mensaje_debes_rellenar_todo),
+                    Toast.LENGTH_LONG).show();
             return null; // Detiene el flujo y no continúa con la creación del anuncio
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();    // Obtiene el usuario actual.
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("titulo", titulo);
-        if (user != null) resultIntent.putExtra("idUsuario", user.getUid());
-        resultIntent.putExtra("ubicacion", ubicacion);
-        resultIntent.putExtra("metros", metros);
-        resultIntent.putExtra("precio", precio);
-        resultIntent.putExtra("descripcion", descripcion);
-        resultIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(imagenesUri));
+        resultIntent.putExtra(this.getString(R.string.key_titulo), titulo);
+        resultIntent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+        resultIntent.putExtra(this.getString(R.string.key_metros), metros);
+        resultIntent.putExtra(this.getString(R.string.key_precio), precio);
+        resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),
+                new ArrayList<>(imagenesUri));
 
 
         //GUARDAMOS TAMBIÉN LAS ETIQUETAS
         String categoria = spinnerCategoria.getSelectedItem().toString();
-        resultIntent.putExtra("categoria", categoria);
+        resultIntent.putExtra(this.getString(R.string.key_categoria), categoria);
 
         // Guardamos los datos específicos según la categoría
-        if (categoria.equalsIgnoreCase("Casa")) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            resultIntent.putExtra("tipoCasa", spinnerTipoCasa.getSelectedItem().toString());
-            resultIntent.putExtra("habitaciones", spinnerHabitaciones.getSelectedItem().toString());
-            resultIntent.putExtra("banos", spinnerBanos.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorCasa.getSelectedItem().toString());
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
+            resultIntent.putExtra(this.getString(R.string.key_tipo_casa), spinnerTipoCasa.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_habitaciones), spinnerHabitaciones.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_banos), spinnerBanos.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorCasa.getSelectedItem().toString());
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
-            resultIntent.putExtra("companeros", spinnerCompaneros.getSelectedItem().toString());
-            resultIntent.putExtra("genero", spinnerGenero.getSelectedItem().toString());
-            resultIntent.putExtra("exteriorInterior", spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
-            resultIntent.putExtra("tipoBano", spinnerTipoBano.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_companeros), spinnerCompaneros.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_genero), spinnerGenero.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
+            resultIntent.putExtra(this.getString(R.string.key_tipo_bano), spinnerTipoBano.getSelectedItem().toString());
         }
 
-        Anuncio nuevoAnuncio = new Anuncio(resultIntent);
-        MisViviendasFragment.guardarAnuncioEnBD(nuevoAnuncio, this.getApplication());
-        resultIntent.putExtra("id", nuevoAnuncio.getId()); // Adds the new add ID to the intent.
+        Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
+        MisViviendasFragment.guardarOActualizarAnuncioEnBD(nuevoAnuncio, this.getApplication());
+        resultIntent.putExtra(this.getString(R.string.key_id), nuevoAnuncio.getId()); // Adds the new add ID to the intent.
 
         setResult(RESULT_OK, resultIntent);
         finish();
         return resultIntent;
     }
+
+
 
     public static void startForResult(ActivityResultLauncher<Intent> launcher, Context context) {
         Intent intent = new Intent(context, CrearAnuncioActivity.class);
@@ -283,6 +294,12 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+    //----------------------PERMISOS Y ACCESO A CAMARA/ALAMACENAMIENTO----------------------------------------------------------------------
+
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
@@ -297,7 +314,9 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         else {
             openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
         }
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -306,17 +325,18 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImageSelector(); // Abre selector si se concede el permiso
             } else {
-                Toast.makeText(this, "Permiso de cámara no concedido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_permiso_camara_denegado), Toast.LENGTH_SHORT).show();
             }
         }
         else if(requestCode == 101){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImageSelector(); // Abre selector si se concede el permiso
             } else {
-                Toast.makeText(this, "Permiso de almacenamiento no concedido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_permiso_almacenamiento_denegado), Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     private void openImageSelector() {
 
@@ -329,14 +349,14 @@ public class CrearAnuncioActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                Toast.makeText(this, "Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_error_crear_imagen), Toast.LENGTH_SHORT).show();
             }
             if (photoFile != null) {
-                previewPhotoUri = FileProvider.getUriForFile(this, "es.ucm.fdi.v3findmyroommate.fileprovider", photoFile);
+                previewPhotoUri = FileProvider.getUriForFile(this, this.getString(R.string.file_provider), photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, previewPhotoUri);
             }
         } else {
-            Toast.makeText(this, "No se encontró aplicación de cámara", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_error_encontrar_camara), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -345,7 +365,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Crear un "chooser" que permite elegir entre la cámara o la galería
-        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, "Selecciona una imagen");
+        Intent chooserIntent = Intent.createChooser(pickPhotoIntent, this.getString(R.string.key_intent_imagen));
 
         // Añadir la opción de tomar una foto con la cámara
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
@@ -368,31 +388,35 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
             } else { //EN CASO DE QUE SEA NULL ES PORQUE LA IMAGEN QUE SE HA ESCOGIDO ES DE LA CAMARA
 
-                if (previewPhotoUri != null) { //SE COMPRUEBA QUE EFECTIVAMENTE SER HAYA ELEGIDO UNA IMAGEN UNA VEZ ABEIRTA LA CAMARA
+                if (previewPhotoUri != null) { //SE COMPRUEBA QUE EFECTIVAMENTE SER HAYA ELEGIDO UNA IMAGEN UNA VEZ ABIERTA LA CAMARA
                     // El usuario tomó la foto correctamente
                      agregarImagen(previewPhotoUri);
 
                 } else {
                     // El usuario no tomó una foto o canceló
-                    Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
                 }
             }
 
         }
         else{
             // Si no se seleccionó ninguna imagen o se canceló
-            Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.mensaje_no_se_selecciono_imagen), Toast.LENGTH_SHORT).show();
              previewPhotoUri = null; // Restablecemos previewPhotoUri
         }
 
 
 });
 
+
+
     private void agregarImagen(Uri uri) {
         imagenesUri.add(uri);
         imagenActualIndex = imagenesUri.size() - 1;
         actualizarImagen();
     }
+
+
 
     private File createImageFile() throws IOException {
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,8 +30,7 @@ public class PropertyTypeFragment extends BaseFragment {
     private Button continueButton;
     private SharedViewModel sharedViewModel;
     private ChipGroup propertyTypeChipGroup;
-    private TextInputLayout maxBudgetTextInputLayout;
-    private TextInputEditText maxBudgetEditText;
+    private EditText maxBudgetEditText;
     private String propertyType;
     private View view = null;
 
@@ -45,7 +45,7 @@ public class PropertyTypeFragment extends BaseFragment {
         setupChipGroup(view, R.id.propertyTypeChipGroup, selectedText -> sharedViewModel.setPropertyType(propertyType));
 
 
-        maxBudgetTextInputLayout = view.findViewById(R.id.maxBudgetTextInputLayout);
+
         maxBudgetEditText = view.findViewById(R.id.maxBudgetInput);
 
         continueButton = view.findViewById(R.id.continueButton);
@@ -53,7 +53,7 @@ public class PropertyTypeFragment extends BaseFragment {
         continueButton.setOnClickListener(v -> {
             // Recopilar ChipGroups y TextInputEditText a validar
             List<ChipGroup> requiredChipGroups = Arrays.asList(view.findViewById(R.id.propertyTypeChipGroup));
-            List<TextInputEditText> requiredTextInputs = Arrays.asList(maxBudgetEditText);
+            List<EditText> requiredTextInputs = Arrays.asList(maxBudgetEditText);
             if (validateSelections(requiredChipGroups, requiredTextInputs)) {
                 this.propertyType = getPropertyType();
                 String maxBudget = maxBudgetEditText.getText().toString();
@@ -95,6 +95,7 @@ public class PropertyTypeFragment extends BaseFragment {
 
             Activity currentActivity = getActivity();
             if (currentActivity != null) {
+
                 // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
                 ConfigPreferencesModel.updateSelectedPreference(propertyType, getString(R.string.property_type_preference_key),
                         currentActivity.getApplication());

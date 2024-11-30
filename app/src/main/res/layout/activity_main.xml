@@ -66,6 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/login"
+        android:backgroundTint="?attr/colorButtonNormal"
+
         app:layout_constraintEnd_toEndOf="@+id/welcomeMessage"
         app:layout_constraintStart_toStartOf="@+id/welcomeMessage"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />

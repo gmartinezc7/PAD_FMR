@@ -1,15 +1,19 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
     <style name="Base.Theme.V3FindMyRoommate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorSurface">@color/white</item>
-        <item name="colorPrimary">@color/black</item> <!-- Fondo negro -->
-        <item name="colorOnPrimary">@color/white</item> <!-- Texto blanco -->
-        <item name="colorSecondary">@color/light_gray</item> <!-- Acentos y botones -->
+        <!-- Fondo de la aplicación -->
+        <item name="android:windowBackground">@color/white</item> <!-- Fondo blanco -->
+        <item name="colorSurface">@color/white</item> <!-- Color de superficie blanco -->
+        <item name="colorOnSurface">@color/black</item> <!-- Texto sobre fondo -->
+
+        <!-- Elementos principales -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorButtonNormal">@color/light_gray</item> <!-- Fondo del botón -->
+
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/light_gray</item>
         <item name="colorOnSecondary">@color/black</item>
-
-
     </style>
 
     <style name="Theme.V3FindMyRoommate" parent="Base.Theme.V3FindMyRoommate" />

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginBottom="20dp">
 
     <FrameLayout
@@ -66,6 +68,7 @@
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:text="Vivienda: "
+                        android:backgroundTint="?attr/colorButtonNormal"
                         android:textSize="14sp" />
 
                     <com.google.android.material.chip.Chip
@@ -73,6 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ubicación: "
+                        android:backgroundTint="?attr/colorButtonNormal"
                         android:checkable="true"
                         android:textSize="14sp" />
 
@@ -81,6 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Metros Cuadrados: "
+                        android:backgroundTint="?attr/colorButtonNormal"
                         android:checkable="true"
                         android:textSize="14sp" />
 
@@ -90,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:text="Precio: "
                         android:checkable="true"
+                        android:backgroundTint="?attr/colorButtonNormal"
                         android:textSize="14sp" />
 
                 </com.google.android.material.chip.ChipGroup>

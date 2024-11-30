@@ -12,11 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.AsyncListUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.ucm.fdi.v3findmyroommate.LocaleUtils;
 import es.ucm.fdi.v3findmyroommate.R;
-import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 
 //ESTE FRAGMENT SIRVE COMO "CONECTOR" DE TODA LA PARTE DE "MISVIVIENDAS".
@@ -79,19 +77,22 @@ public class MisViviendasFragment extends Fragment {
 
         // INICIAMOS EL ADAPTER Y LE ASIGNAMOS EL ADAPTADOR PARA MOSTRAR LOS DATOS, CUANDO SE VAYA A ACTUALIZAR,
         //USARÁ A ESTE ADPATADOR PARA MOSTRAR LOS DATOS
-        adapter = new AnunciosAdapter(misViviendasViewModel, this);
+        adapter = new AnunciosAdapter(misViviendasViewModel, this, this.getContext());
         recyclerView.setAdapter(adapter);
 
+        // Cargar anuncios solo si es la primera vez
+        if (!misViviendasViewModel.isAnunciosCargados()) {
         loadUserAdds(anuncios -> {
-            adapter.setAnuncios(anuncios);
-            adapter.notifyDataSetChanged(); // Refresh the adapter
+            misViviendasViewModel.setAnunciosCargados(true);
         });
+        }
 
         // CON ESTO PODREMOS OBSERVAR LOS DATOS ACTUALIZADOS DE LOS ANUNCIOS A TIEMPO REAL,
         // DE MANERA QUE SI SE PRODUCE ALGUN CAMBIO EN LA LISTA DE ANUNCIOS, SE NOTIFICARÁ
         //AUTOMATICAMENTE AQUÍ Y SE REALIZARÁ EL CAMBIO EN EL ADAPTADOR
         misViviendasViewModel.getAnuncios().observe(getViewLifecycleOwner(), anuncios -> {
             adapter.setAnuncios(anuncios);
+            adapter.notifyDataSetChanged();
         });
 
 
@@ -101,7 +102,6 @@ public class MisViviendasFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        String id = data.getStringExtra("id");
                         misViviendasViewModel.addAnuncio(data);
                     }
                 }
@@ -121,8 +121,7 @@ public class MisViviendasFragment extends Fragment {
         // TAMBIÉN CONTIENE EL BOTÓN PRINCIPAL DE CREAR ANUNCIO
         btnCrearAnuncio = view.findViewById(R.id.btn_crear_anuncio);
         btnCrearAnuncio.setOnClickListener(v -> {
-            //Intent intent = new Intent(getContext(), CrearAnuncioActivity.class);
-            //crearAnuncioLauncher.launch(intent); // Usar el nuevo launcher
+
             CrearAnuncioActivity.startForResult(crearAnuncioLauncher, getContext());
         });
 
@@ -148,32 +147,32 @@ public class MisViviendasFragment extends Fragment {
 
         Intent intent = new Intent(getContext(), AnuncioDetalleActivity.class);
 
-        intent.putExtra("id", anuncio.getId());
-        intent.putExtra("titulo", anuncio.getTitulo());
-        intent.putExtra("ubicacion", anuncio.getUbicacion());
-        intent.putExtra("metros", anuncio.getMetros());
-        intent.putExtra("precio", anuncio.getPrecio());
-        intent.putExtra("descripcion", anuncio.getDescripcion());
-        intent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(anuncio.getImagenesUri()));
+        intent.putExtra(this.getString(R.string.key_id), anuncio.getId());
+        intent.putExtra(this.getString(R.string.key_titulo), anuncio.getTitulo());
+        intent.putExtra(this.getString(R.string.key_ubicacion), anuncio.getUbicacion());
+        intent.putExtra(this.getString(R.string.key_metros), anuncio.getMetros());
+        intent.putExtra(this.getString(R.string.key_precio), anuncio.getPrecio());
+        intent.putExtra(this.getString(R.string.key_descripcion), anuncio.getDescripcion());
+        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
 
 
         //TAGS
         String categoria = anuncio.getCategoria();
-        intent.putExtra("categoria", categoria);
+        intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
 
-        if (categoria.equalsIgnoreCase("Casa")) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
-            intent.putExtra("tipoCasa", anuncio.getTipoCasa());
-            intent.putExtra("habitaciones", anuncio.getHabitaciones());
-            intent.putExtra("banos", anuncio.getBanos());
-            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
-        } else if (categoria.equalsIgnoreCase("Habitación")) {
+            intent.putExtra(this.getString(R.string.key_tipo_casa), anuncio.getTipoCasa());
+            intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
+            intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
+            intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
-            intent.putExtra("companeros", anuncio.getCompaneros());
-            intent.putExtra("genero", anuncio.getGenero());
-            intent.putExtra("exteriorInterior", anuncio.getExteriorInterior());
-            intent.putExtra("tipoBano", anuncio.getTipoBano());
+            intent.putExtra(this.getString(R.string.key_companeros), anuncio.getCompaneros());
+            intent.putExtra(this.getString(R.string.key_genero), anuncio.getGenero());
+            intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
+            intent.putExtra(this.getString(R.string.key_tipo_bano), anuncio.getTipoBano());
         }
 
         verAnuncioLauncher.launch(intent);
@@ -181,7 +180,12 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Función que
+
+
+
+
+   //---------------------------------BASE DE DATOS:--------------------------------------------------------------------
+
     private void loadUserAdds(DataCallback<List<Anuncio>> callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Get current user
 
@@ -236,14 +240,14 @@ public class MisViviendasFragment extends Fragment {
 
                                     // Introduce cada uno de los campos en un intent.
                                     Intent currentAddIntent = new Intent();
-                                    currentAddIntent.putExtra("id", addID);
-                                    currentAddIntent.putExtra("titulo", titulo);
-                                    currentAddIntent.putExtra("ubicacion", ubicacion);
-                                    currentAddIntent.putExtra("metros", metros);
-                                    currentAddIntent.putExtra("precio", precio);
-                                    currentAddIntent.putExtra("descripcion", descripcion);
-                                    currentAddIntent.putExtra("categoria", categoria);
-                                    currentAddIntent.putParcelableArrayListExtra("imagenesUri", new ArrayList<>(listaImagenesFormatoUri));
+                                    currentAddIntent.putExtra(this.getString(R.string.key_id), addID);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_titulo), titulo);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_metros), metros);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_precio), precio);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+                                    currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
+                                    currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
                                     if (categoria.equals(getContext().getApplicationContext().getString(
                                             R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
@@ -258,10 +262,10 @@ public class MisViviendasFragment extends Fragment {
                                                 .getString(R.string.orientation_db_label)).getValue(String.class);
 
                                         // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra("tipoCasa", tipo_casa);
-                                        currentAddIntent.putExtra("habitaciones", num_habitaciones);
-                                        currentAddIntent.putExtra("banos", num_banos);
-                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
                                     }
 
                                     else if (categoria.equals(getContext().getApplicationContext().getString(
@@ -277,17 +281,17 @@ public class MisViviendasFragment extends Fragment {
                                                 .getString(R.string.bathroom_type_db_label)).getValue(String.class);
 
                                         // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra("companeros", max_companeros);
-                                        currentAddIntent.putExtra("genero", genero_companeros);
-                                        currentAddIntent.putExtra("exteriorInterior", orientacion);
-                                        currentAddIntent.putExtra("tipoBano", tipo_bano);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
                                     }
 
                                     // Añade el anuncio a la lista del modelo.
                                     misViviendasViewModel.addAnuncio(currentAddIntent);
 
                                     // Crea un nuevo anuncio a partir del intent y lo guarda en la lista.
-                                    Anuncio newAdd = new Anuncio(currentAddIntent);
+                                    Anuncio newAdd = new Anuncio(this.getContext(), currentAddIntent);
                                     newAddList.add(newAdd);
 
                                     // Notify the callback when all ads are loaded
@@ -310,11 +314,12 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Función que guarda un anuncio de nueva creación en la base de datos.
-    public static void guardarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
+    // Método que actualiza la BD de anuncios, bien introduciendo el nuevo anuncio a crear, bien
+    // actualizando el anuncio dado.
+    public static void guardarOActualizarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
         // Guarda el ID del anuncio en la lista de IDs de anuncios de este usuario.
-        MisViviendasFragment.guardarAnuncioListaAnunciosUsuario(nuevoAnuncio, application);
+        MisViviendasFragment.actualizarListaAnunciosUsuario(nuevoAnuncio, application);
 
         // Obtiene una instancia de la BD.
         FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
@@ -344,153 +349,55 @@ public class MisViviendasFragment extends Fragment {
         databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
                 .setValue(listaImagenesAnuncioFormatoString);
 
-        String categoria = nuevoAnuncio.getCategoria();
-        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
-                .setValue(categoria);
+        if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                nuevoAnuncio.getCategoria(), R.string.house_property_type_label)) {  // Si selecciona una casa.
+            String housePropertyTypeLabelDefaultLanguage = LocaleUtils.getValueInDBLocale(application
+                .getApplicationContext(), R.string.house_property_type_label);
+            databaseAddReference.child(application.getString(R.string.property_type_db_label))
+                    .setValue(housePropertyTypeLabelDefaultLanguage);
 
-        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
-            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoCasa());
+            MisViviendasFragment.eliminarCamposPreviosTipoPropiedadCasa(databaseAddReference, application);
+
+            MisViviendasFragment.guardarTipoDeCasa(nuevoAnuncio, application, databaseAddReference);
+
+            // Como es un valor numérico, no es necesario compararlo con otros idiomas.
             databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
                     .setValue(nuevoAnuncio.getHabitaciones());
+
+            // Como es un valor numérico, no es necesario compararlo con otros idiomas.
             databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
                     .setValue(nuevoAnuncio.getBanos());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
+
+            MisViviendasFragment.guardarOrientacion(nuevoAnuncio, application, databaseAddReference);
+
         }
-        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                nuevoAnuncio.getCategoria(), R.string.room_property_type_label)) {  // Si selecciona una habitación.
+            String roomPropertyTypeLabelDefaultLanguage = LocaleUtils.getValueInDBLocale(application
+                    .getApplicationContext(), R.string.room_property_type_label);
+            databaseAddReference.child(application.getString(R.string.property_type_db_label))
+                    .setValue(roomPropertyTypeLabelDefaultLanguage);
+
+            MisViviendasFragment.eliminarCamposPreviosTipoPropiedadHabitacion(databaseAddReference, application);
+
+            // Como es un valor numérico, no es necesario compararlo con otros idiomas.
             databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
                     .setValue(nuevoAnuncio.getCompaneros());
-            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
-                    .setValue(nuevoAnuncio.getGenero());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(nuevoAnuncio.getExteriorInterior());
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .setValue(nuevoAnuncio.getTipoBano());
-        }
-    }
 
+            MisViviendasFragment.guardarGenero(nuevoAnuncio, application, databaseAddReference);
 
-    // Función que actualiza un anuncio ya existente en la base de datos.
-    public static void actualizarAnuncioEnBD(Anuncio anuncioActualizado, Application application) {
+            MisViviendasFragment.guardarOrientacion(nuevoAnuncio, application, databaseAddReference);
 
-        // Obtiene una instancia de la BD.
-        FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
-                getApplicationContext().getString(R.string.database_url));
-
-        // Obtiene la referencia a la BD de anuncios.
-        DatabaseReference databaseAddReference = databaseInstance.getReference("adds")
-                .child(anuncioActualizado.getId());
-
-        databaseAddReference.child(application.getString(R.string.add_title_db_label))
-                .setValue(anuncioActualizado.getTitulo());
-        databaseAddReference.child(application.getString((R.string.add_location_db_label)))
-                .setValue(anuncioActualizado.getUbicacion());
-        databaseAddReference.child(application.getString((R.string.add_square_meters_db_label)))
-                .setValue(anuncioActualizado.getMetros());
-        databaseAddReference.child(application.getString((R.string.add_price_db_label)))
-                .setValue(anuncioActualizado.getPrecio());
-        databaseAddReference.child(application.getString((R.string.add_description_db_label)))
-                .setValue(anuncioActualizado.getDescripcion());
-
-        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(anuncioActualizado.getImagenesUri());
-        databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
-                .setValue(listaImagenesAnuncioFormatoString);
-
-        String categoria = anuncioActualizado.getCategoria();
-        databaseAddReference.child(application.getString((R.string.property_type_db_label)))
-                .setValue(categoria);
-
-        if (categoria.equals(application.getString(R.string.house_property_type_label))) {  // Si selecciona una casa.
-
-            // Elimina los campos que no sean de una casa (en el caso de que antes fuese un anuncio de una habitación).
-            databaseAddReference.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-
-                    // Elimina el campo de máximo número de compañeros de piso.
-                    String max_num_roomates = snapshot.child(application
-                            .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
-                    if (max_num_roomates != null)
-                        databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
-                                .removeValue();
-
-                    // Elimina el campo de preferencia de sexo de los compañeros.
-                    String roomate_gender = snapshot.child(application
-                            .getString(R.string.roommate_gender_db_label)).getValue(String.class);
-                    if (roomate_gender != null)
-                        databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
-                                .removeValue();
-
-                    // Elimina el campo de tipo de baño.
-                    String bathroom_type = snapshot.child(application
-                            .getString(R.string.bathroom_type_db_label)).getValue(String.class);
-                    if (bathroom_type != null)
-                        databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                                .removeValue();
-
-                }
-            });
-
-            // Añade los campos propios del alquiler de una casa.
-            databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
-                    .setValue(anuncioActualizado.getTipoCasa());
-            databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
-                    .setValue(anuncioActualizado.getHabitaciones());
-            databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
-                    .setValue(anuncioActualizado.getBanos());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(anuncioActualizado.getExteriorInterior());
+            MisViviendasFragment.guardarTipoDeBano(nuevoAnuncio, application, databaseAddReference);
 
         }
 
-        else if (categoria.equals(application.getString(R.string.room_property_type_label))) {  // Si selecciona una habitación
-
-            // Elminina los campos que no sean de una habitación (en el caso de que antes fuese un anuncio de una casa).
-            databaseAddReference.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-
-                    // Elimina el campo de tipo de casa.
-                    String house_type = snapshot.child(application
-                            .getString(R.string.add_house_type_db_label)).getValue(String.class);
-                    if (house_type != null)
-                        databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
-                                .removeValue();
-
-                    // Elimina el campo de número de habitaciones.
-                    String num_rooms = snapshot.child(application
-                            .getString(R.string.num_rooms_db_label)).getValue(String.class);
-                    if (num_rooms != null)
-                        databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
-                                .removeValue();
-
-                    // Elimina el campo de número de baños.
-                    String num_bathroom = snapshot.child(application
-                            .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
-                    if (num_bathroom != null)
-                        databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
-                                .removeValue();
-
-                }
-            });
-
-            // Añade los campos propios del alquiler de una habitación.
-            databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
-                    .setValue(anuncioActualizado.getCompaneros());
-            databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
-                    .setValue(anuncioActualizado.getGenero());
-            databaseAddReference.child(application.getString(R.string.orientation_db_label))
-                    .setValue(anuncioActualizado.getExteriorInterior());
-            databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
-                    .setValue(anuncioActualizado.getTipoBano());
-
-        }
     }
 
 
     // Función que elimina un anuncio de la base de datos.
-    public static void eliminiarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
+    public static void eliminarAnuncioEnBD(Anuncio nuevoAnuncio, Application application) {
 
         // Obtiene una instancia de la BD.
         FirebaseDatabase databaseInstance = FirebaseDatabase.getInstance(application.
@@ -506,10 +413,185 @@ public class MisViviendasFragment extends Fragment {
         // Eliminar la entrada del anuncio de la BD de anuncios.
         databaseAddReference.removeValue();
     }
+    
+
+    // Método que guarda en la BD el valor seleccionado para el campo de tipo de casa en el lenguaje por defecto.
+    private static void guardarTipoDeCasa(Anuncio nuevoAnuncio, Application application, DatabaseReference
+            databaseAddReference) {
+
+        String tipoCasaSeleccionado = nuevoAnuncio.getTipoCasa();
+        String tipoCasaLenguajePredeterminado = "";
+
+        if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                tipoCasaSeleccionado, R.string.house_house_type)) {
+            tipoCasaLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.house_house_type);
+        }
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                tipoCasaSeleccionado, R.string.apartment_house_type)) {
+            tipoCasaLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.apartment_house_type);
+        }
+
+        databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
+                .setValue(tipoCasaLenguajePredeterminado);
+
+    }
 
 
-    // Función que guarda el ID del anuncio actual en la lista con los IDs de los anuncios del usuario.
-    private static void guardarAnuncioListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
+    // Método que guarda en la BD el valor seleccionado para el campo de orientación en el lenguaje por defecto.
+    private static void guardarOrientacion(Anuncio nuevoAnuncio, Application application, DatabaseReference
+            databaseAddReference) {
+
+        String orientacionSeleccionada = nuevoAnuncio.getExteriorInterior();
+        String orientacionLenguajePredeterminado = "";
+
+        if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                orientacionSeleccionada, R.string.interior_orientation)) {
+            orientacionLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.interior_orientation);
+        }
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                orientacionSeleccionada, R.string.exterior_orientation)) {
+            orientacionLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.exterior_orientation);
+        }
+
+        databaseAddReference.child(application.getString(R.string.orientation_db_label))
+                .setValue(orientacionLenguajePredeterminado);
+
+    }
+
+
+    // Método que guarda en la BD el valor seleccionado para el campo de género de los compañeros en el lenguaje por defecto.
+    private static void guardarGenero(Anuncio nuevoAnuncio, Application application, DatabaseReference
+            databaseAddReference) {
+
+        String generoSeleccionado = nuevoAnuncio.getGenero();
+        String generoLenguajePredeterminado = "";
+
+        if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                generoSeleccionado, R.string.male_label)) {
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.male_label);
+        }
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                generoSeleccionado, R.string.female_label)) {
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.female_label);
+        }
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                generoSeleccionado, R.string.both_label)) {
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.both_label);
+        }
+
+        databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
+                .setValue(generoLenguajePredeterminado);
+
+    }
+
+
+    // Método que guarda en la BD el valor seleccionado para el campo de tipo de baño en el lenguaje por defecto.
+    private static void guardarTipoDeBano(Anuncio nuevoAnuncio, Application application, DatabaseReference
+            databaseAddReference) {
+
+        String tipoBanoSeleccionado = nuevoAnuncio.getTipoBano();
+        String tipoBanoLenguajePredeterminado = "";
+
+        if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                tipoBanoSeleccionado, R.string.private_bathroom_type)) {
+            tipoBanoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.private_bathroom_type);
+        }
+
+        else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
+                tipoBanoSeleccionado, R.string.shared_bathroom_type)) {
+            tipoBanoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
+                    R.string.shared_bathroom_type);
+        }
+
+        databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
+                .setValue(tipoBanoLenguajePredeterminado);
+
+    }
+
+
+    // Método que elimina los campos que no sean los propios de una casa.
+    private static void eliminarCamposPreviosTipoPropiedadCasa(DatabaseReference databaseAddReference,
+                                                               Application application) {
+
+        databaseAddReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
+
+                // Elimina el campo de máximo número de compañeros de piso.
+                String max_num_roomates = snapshot.child(application
+                        .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                if (max_num_roomates != null)
+                    databaseAddReference.child(application.getString(R.string.max_num_roommates_db_label))
+                            .removeValue();
+
+                // Elimina el campo de preferencia de género de los compañeros.
+                String roomate_gender = snapshot.child(application
+                        .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                if (roomate_gender != null)
+                    databaseAddReference.child(application.getString(R.string.roommate_gender_db_label))
+                            .removeValue();
+
+                // Elimina el campo de tipo de baño.
+                String bathroom_type = snapshot.child(application
+                        .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+                if (bathroom_type != null)
+                    databaseAddReference.child(application.getString(R.string.bathroom_type_db_label))
+                            .removeValue();
+
+            }
+        });
+    }
+
+
+    // Método que elminina los campos que no sean los propios de una habitación.
+    private static void eliminarCamposPreviosTipoPropiedadHabitacion(DatabaseReference databaseAddReference,
+                                                                     Application application) {
+
+        databaseAddReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
+
+                // Elimina el campo de tipo de casa.
+                String house_type = snapshot.child(application
+                        .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                if (house_type != null)
+                    databaseAddReference.child(application.getString(R.string.add_house_type_db_label))
+                            .removeValue();
+
+                // Elimina el campo de número de habitaciones.
+                String num_rooms = snapshot.child(application
+                        .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                if (num_rooms != null)
+                    databaseAddReference.child(application.getString(R.string.num_rooms_db_label))
+                            .removeValue();
+
+                // Elimina el campo de número de baños.
+                String num_bathroom = snapshot.child(application
+                        .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                if (num_bathroom != null)
+                    databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                            .removeValue();
+
+            }
+        });
+    }
+
+
+    // Función que guarda el ID del anuncio actual en la lista con los IDs de los anuncios del usuario,
+    // si tal anuncio no ha sido guardado ya.
+    private static void actualizarListaAnunciosUsuario(Anuncio nuevoAnuncio, Application application) {
         // Obtiene el usuario actual.
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -530,23 +612,27 @@ public class MisViviendasFragment extends Fragment {
                     List<String> userAddsIdsList = new ArrayList<String>();
 
                     List<String> userAddsInDB = snapshot.child(application
-                            .getString(R.string.user_adds_list_db_label)).getValue(
-                            new GenericTypeIndicator<List<String>>() {
-                            });
+                        .getString(R.string.user_adds_list_db_label)).getValue(
+                        new GenericTypeIndicator<List<String>>() {
+                        });
 
                     if (userAddsInDB != null) {
-                        // Añade el ID del anuncio a la lista y la actualiza en la BD.
-                        userAddsInDB.add(nuevoAnuncio.getId());
-                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                                .setValue(userAddsInDB);
+                        // Si el ID del anuncio no está en la lista, lo añade (caso de crear anuncio).
+                        if (!userAddsInDB.contains(nuevoAnuncio.getId())) {
+                            userAddsInDB.add(nuevoAnuncio.getId());
+                            databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
+                                    .setValue(userAddsInDB);
+
+                        }
                     }
                     else {
                         userAddsIdsList.add(nuevoAnuncio.getId());
-                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                                .setValue(userAddsIdsList);
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label)).setValue(userAddsIdsList);
                     }
                 }
             });
+
+
         }
     }
 
@@ -566,29 +652,31 @@ public class MisViviendasFragment extends Fragment {
             DatabaseReference databaseUserReference = databaseInstance.getReference("users")
                     .child(user.getUid());
 
+
+            // Escucha primero el estado de la base de datos para asegurar que se actualizó correctamente.
+            DatabaseReference anuncioReference = databaseInstance.getReference("adds")
+                    .child(nuevoAnuncio.getId());
+
             databaseUserReference.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
-                    // Obtiene la lista actual de anuncios de ese usuario
-                    List<String> userAddsIdsList = new ArrayList<String>();
 
+                    // Obtiene la lista actual de anuncios de ese usuario
                     List<String> userAddsInDB = snapshot.child(application
                             .getString(R.string.user_adds_list_db_label)).getValue(
-                            new GenericTypeIndicator<List<String>>() {
-                            });
+                        new GenericTypeIndicator<List<String>>() {
+                        });
 
                     if (userAddsInDB != null) { // Como hay al menos un anuncio en la lista, esta nunca será vacía en este momento.
                         // Añade el ID del anuncio a la lista y la actualiza en la BD.
                         userAddsInDB.remove(nuevoAnuncio.getId());
-                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label))
-                                .setValue(userAddsInDB);
+                        databaseUserReference.child(application.getString(R.string.user_adds_list_db_label)).setValue(userAddsInDB);
                     }
                 }
             });
         }
     }
-
-
+    
 
     // Función auxiliar que convierte una lista de Uris a otra de Strings
     public static List<String> convierteListaUrisAListaStrings(List<Uri> urisList) {

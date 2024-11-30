@@ -28,12 +28,21 @@ PARA NOTIFICAR DEL CAMBIO
 public class MisViviendasViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Anuncio>> anuncios;
+    private boolean anunciosCargados = false;
 
     public MisViviendasViewModel(Application application) {
         super(application);
         anuncios = new MutableLiveData<>();
         List<Anuncio> listaInicial = new ArrayList<>();
         anuncios.setValue(listaInicial);
+    }
+
+    public boolean isAnunciosCargados() {
+        return anunciosCargados;
+    }
+
+    public void setAnunciosCargados(boolean cargados) {
+        this.anunciosCargados = cargados;
     }
 
     public LiveData<List<Anuncio>> getAnuncios() {
@@ -54,7 +63,7 @@ public class MisViviendasViewModel extends AndroidViewModel {
 
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null) {
-            Anuncio nuevoAnuncio = new Anuncio(data);
+            Anuncio nuevoAnuncio = new Anuncio(this.getApplication(), data);
             listaActual.add(nuevoAnuncio);
             anuncios.setValue(listaActual);
         }
@@ -66,7 +75,7 @@ public class MisViviendasViewModel extends AndroidViewModel {
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
 
             Application application = getApplication();
-            MisViviendasFragment.eliminiarAnuncioEnBD(listaActual.get(position), this.getApplication());
+            MisViviendasFragment.eliminarAnuncioEnBD(listaActual.get(position), this.getApplication());
             listaActual.remove(position);
             anuncios.setValue(listaActual);
         }
@@ -76,7 +85,7 @@ public class MisViviendasViewModel extends AndroidViewModel {
     public void actualizarAnuncio(int position, Intent data) {
         List<Anuncio> listaActual = anuncios.getValue();
         if (listaActual != null && position >= 0 && position < listaActual.size()) {
-            Anuncio anuncioActualizado = new Anuncio(data);
+            Anuncio anuncioActualizado = new Anuncio(this.getApplication(), data);
             listaActual.set(position, anuncioActualizado);
             anuncios.setValue(listaActual);
         }
