@@ -93,7 +93,7 @@ public class HomeViewModel extends ViewModel {
             }
 
             // FILTROS CATEGORIA CASA
-            if (categoria != null && categoria.equals("Casa")){
+            if (categoria != null && categoria.equals("Home")){
                 System.out.println("ES UNA CASAAAAAA");
                 System.out.println("Vivienda: " + vivienda.getId());
 
@@ -112,10 +112,10 @@ public class HomeViewModel extends ViewModel {
                     filtrosOK = false;
                 }else System.out.println("numbanos Coincide");
 
-                /*if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
                     System.out.println("orientation no Coincide");
                     filtrosOK = false;
-                }else System.out.println("orientation Coincide");*/
+                }else System.out.println("orientation Coincide");
             }
 
             // Filtros Categoría Habitación
@@ -139,10 +139,10 @@ public class HomeViewModel extends ViewModel {
                     filtrosOK = false;
                 }else System.out.println("tipobano Coincide");
 
-                /*if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
+                if (orientation != null && !orientation.isEmpty() && !orientation.equals(vivienda.getExteriorInterior() == null ? "" : vivienda.getExteriorInterior())){
                     System.out.println("orientation no Coincide");
                     filtrosOK = false;
-                }else System.out.println("orientation Coincide");*/
+                }else System.out.println("orientation Coincide");
             }
 
 

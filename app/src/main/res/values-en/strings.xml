@@ -108,7 +108,7 @@
 
 
     <string-array name="categorias_array">
-        <item>House</item>
+        <item>Home</item>
         <item>Room</item>
     </string-array>
     <string-array name="tipo_casa_array">
