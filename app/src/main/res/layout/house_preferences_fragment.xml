@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Apartment" />
+            android:text="@string/apartment_house_type" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/houseChip"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:checkable="true"
-            android:text="House" />
+            android:text="@string/house_house_type" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Rooms ChipGroup -->
@@ -198,7 +198,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Exterior" />
+            android:text="@string/exterior_orientation" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/interiorChip"
@@ -206,7 +206,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Interior" />
+            android:text="@string/interior_orientation" />
     </com.google.android.material.chip.ChipGroup>
 
 
@@ -238,29 +238,6 @@
         />
 
 
-
-
-
-
-    <!-- Square Meters Input
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/squareMetersTextInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/housePreferencesMessage"
-        app:layout_constraintEnd_toEndOf="@+id/housePreferencesMessage"
-        app:layout_constraintTop_toBottomOf="@+id/orientationChipGroup"
-        android:layout_marginTop="20dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/squareMetersInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter square meters"
-            android:textSize="16sp"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-    -->
 
     <!-- Continue Button -->
     <Button

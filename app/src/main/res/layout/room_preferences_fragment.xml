@@ -142,14 +142,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Exterior" />
+            android:text="@string/exterior_orientation" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipInterior"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Interior" />
+            android:text="@string/interior_orientation" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Bathroom Type Header -->
