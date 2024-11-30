@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,7 @@ public class ConfigFragment extends Fragment {
                 .replace(R.id.preferences_frame, new ConfigPreferencesFragment(ConfigPreferencesModel))
                 .commit();
 
-        Button logoutButton = root.findViewById(R.id.log_out_button);
+        ImageView logoutButton = root.findViewById(R.id.log_out_button);
         logoutButton.setOnClickListener(view -> {
             mAuth.signOut();
             Intent intent = new Intent(getContext(), MainActivity.class);

@@ -102,14 +102,15 @@
             android:id="@+id/create_titulo"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:paddingStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/edit_text_custom"
             android:hint="Título del anuncio"
             android:inputType="text"
-            android:background="@drawable/edit_text_custom"
-            app:layout_constraintTop_toBottomOf="@id/preview_rect"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingStart="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/create_ubicacion"
             app:layout_constraintEnd_toEndOf="parent"
-          />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/preview_rect" />
 
         <EditText
             android:id="@+id/create_ubicacion"

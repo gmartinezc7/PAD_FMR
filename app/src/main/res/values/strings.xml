@@ -9,7 +9,7 @@
     <string name="welcome_message">Bienvenid@!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Contraseña</string>
-    <string name="login">registro</string>
+    <string name="login">Iniciar Sesión</string>
     <string name="dont_have_account">No tienes una cuenta</string>
     <string name="sign_up">Registrarse</string>
     <string name="sign_in">Iniciar sesión</string>
@@ -221,6 +221,7 @@
     <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
     <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
     <string name="subnormal">uuu</string>
+    <string name="edit_house_listing">Editar anuncio</string>
 
 
 </resources>

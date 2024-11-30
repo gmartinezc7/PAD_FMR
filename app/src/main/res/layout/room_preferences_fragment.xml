@@ -209,5 +209,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.95"
         android:textSize="30sp"
+        android:backgroundTint="?attr/colorButtonNormal"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

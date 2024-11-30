@@ -42,6 +42,7 @@
             android:text="@string/room_property_type_label"/>
     </com.google.android.material.chip.ChipGroup>
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/maxBudgetTextInputLayout"
         android:layout_width="0dp"
@@ -49,16 +50,24 @@
         app:layout_constraintStart_toStartOf="@id/propertyTypeMessage"
         app:layout_constraintEnd_toEndOf="@id/propertyTypeMessage"
         app:layout_constraintTop_toBottomOf="@+id/propertyTypeChipGroup"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/dark_gray"
+        android:textColorHint="@color/dark_gray"
+        app:boxStrokeWidthFocused="2dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/maxBudgetInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="@color/dark_gray"
             android:hint="@string/max_budget_text"
             android:inputType="number" />
-
     </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
     <Button
@@ -73,6 +82,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="0dp"
         android:textSize="30sp"
+        android:backgroundTint="?attr/colorButtonNormal"
         app:layout_constraintVertical_bias="0.95"/>
 
 
