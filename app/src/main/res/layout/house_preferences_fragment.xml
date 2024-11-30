@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
-        android:text="@string/house_preferences"
+        android:text="@string/house_preferences_title"
         android:textStyle="bold"
         android:textSize="25sp"
         />
@@ -25,13 +25,14 @@
         android:id="@+id/propertyTypeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage"
         android:layout_marginTop="16dp"
         android:text="@string/house_prefs_select_property_type_label"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/housePreferencesMessage" />
 
     <!-- Property Type ChipGroup -->
     <com.google.android.material.chip.ChipGroup
@@ -50,7 +51,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Apartment" />
+            android:text="@string/apartment_house_type" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/houseChip"
@@ -58,7 +59,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:checkable="true"
-            android:text="House" />
+            android:text="@string/house_house_type" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Rooms ChipGroup -->
@@ -66,13 +67,14 @@
         android:id="@+id/roomsMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/propertyTypeChipGroup"
         android:layout_marginTop="20dp"
         android:text="@string/house_prefs_select_number_of_rooms_label"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/propertyTypeChipGroup" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/roomsChipGroup"
@@ -90,7 +92,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="1" />
+            android:text="@string/one" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/room2Chip"
@@ -98,7 +100,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="2" />
+            android:text="@string/two" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/room3Chip"
@@ -106,7 +108,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="3" />
+            android:text="@string/three" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/room4Chip"
@@ -114,7 +116,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="4+" />
+            android:text="@string/four_plus" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Bathrooms ChipGroup -->
@@ -122,13 +124,14 @@
         android:id="@+id/bathroomsMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roomsChipGroup"
         android:layout_marginTop="20dp"
-        android:text="Select Number of Bathrooms"
+        android:text="@string/select_num_bathrooms_title"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/roomsChipGroup" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/bathroomsChipGroup"
@@ -146,14 +149,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="1" />
+            android:text="@string/one" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/bathroom2Chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="2" />
+            android:text="@string/two" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/bathroom3Chip"
@@ -161,7 +164,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="3" />
+            android:text="@string/three" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/bathroom4Chip"
@@ -169,7 +172,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="4+" />
+            android:text="@string/four_plus" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Exterior/Interior ChipGroup -->
@@ -177,13 +180,14 @@
         android:id="@+id/orientationMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bathroomsChipGroup"
         android:layout_marginTop="20dp"
-        android:text="Select Orientation"
+        android:text="@string/select_house_orientation_title"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bathroomsChipGroup" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/orientationChipGroup"
@@ -201,7 +205,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Exterior" />
+            android:text="@string/exterior_orientation" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/interiorChip"
@@ -209,7 +213,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Interior" />
+            android:text="@string/interior_orientation" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Square Meters Input -->
@@ -226,7 +230,7 @@
             android:id="@+id/squareMetersInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter square meters"
+            android:hint="@string/enter_square_meters_hint"
             android:textSize="16sp"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>

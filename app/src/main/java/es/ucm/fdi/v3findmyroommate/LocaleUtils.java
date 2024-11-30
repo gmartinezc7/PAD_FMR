@@ -48,9 +48,31 @@ public class LocaleUtils {
     }
 
 
-    // Function that returns the value that the given key has in the default locale.
-    public static String getDefaultLocaleString(Context context, int keyId) {
+    // Function that returns the value that the given key has in the locale used in the DB.
+    public static String getValueInDBLocale(Context context, int keyId) {
+        String result = "";
+        Resources initialResources = context.getResources();
 
+        for (Locale locale : getLocalesList()) {
+            if (locale.equals(new Locale("es"))) {
+                Configuration config = new Configuration(initialResources.getConfiguration());
+                config.setLocale(locale);
+
+                // Creates context with the updated configuration.
+                Context localizedContext = context.createConfigurationContext(config);
+
+                // Gets the updated resources.
+                Resources resources = localizedContext.getResources();
+                String localizedValue;
+
+                // Gets the string value associated with the given key ID in the current locale.
+                result = resources.getString(keyId);
+
+                return result;
+            }
+        }
+        return result;
+/*
         // Gets the default locale.
         Locale defaultLocale = Locale.getDefault();
 
@@ -63,6 +85,8 @@ public class LocaleUtils {
 
         // Fetches the string value using the default locale.
         return localizedContext.getResources().getString(keyId);
+
+ */
     }
 
 

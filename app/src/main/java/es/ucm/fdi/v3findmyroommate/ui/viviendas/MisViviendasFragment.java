@@ -351,7 +351,7 @@ public class MisViviendasFragment extends Fragment {
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 nuevoAnuncio.getCategoria(), R.string.house_property_type_label)) {  // Si selecciona una casa.
-            String housePropertyTypeLabelDefaultLanguage = LocaleUtils.getDefaultLocaleString(application
+            String housePropertyTypeLabelDefaultLanguage = LocaleUtils.getValueInDBLocale(application
                 .getApplicationContext(), R.string.house_property_type_label);
             databaseAddReference.child(application.getString(R.string.property_type_db_label))
                     .setValue(housePropertyTypeLabelDefaultLanguage);
@@ -374,7 +374,7 @@ public class MisViviendasFragment extends Fragment {
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 nuevoAnuncio.getCategoria(), R.string.room_property_type_label)) {  // Si selecciona una habitación.
-            String roomPropertyTypeLabelDefaultLanguage = LocaleUtils.getDefaultLocaleString(application
+            String roomPropertyTypeLabelDefaultLanguage = LocaleUtils.getValueInDBLocale(application
                     .getApplicationContext(), R.string.room_property_type_label);
             databaseAddReference.child(application.getString(R.string.property_type_db_label))
                     .setValue(roomPropertyTypeLabelDefaultLanguage);
@@ -424,13 +424,13 @@ public class MisViviendasFragment extends Fragment {
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 tipoCasaSeleccionado, R.string.house_house_type)) {
-            tipoCasaLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            tipoCasaLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.house_house_type);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 tipoCasaSeleccionado, R.string.apartment_house_type)) {
-            tipoCasaLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            tipoCasaLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.apartment_house_type);
         }
 
@@ -449,13 +449,13 @@ public class MisViviendasFragment extends Fragment {
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 orientacionSeleccionada, R.string.interior_orientation)) {
-            orientacionLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            orientacionLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.interior_orientation);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 orientacionSeleccionada, R.string.exterior_orientation)) {
-            orientacionLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            orientacionLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.exterior_orientation);
         }
 
@@ -474,19 +474,19 @@ public class MisViviendasFragment extends Fragment {
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 generoSeleccionado, R.string.male_label)) {
-            generoLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.male_label);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 generoSeleccionado, R.string.female_label)) {
-            generoLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.female_label);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 generoSeleccionado, R.string.both_label)) {
-            generoLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.both_label);
         }
 
@@ -505,13 +505,13 @@ public class MisViviendasFragment extends Fragment {
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 tipoBanoSeleccionado, R.string.private_bathroom_type)) {
-            tipoBanoLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            tipoBanoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.private_bathroom_type);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
                 tipoBanoSeleccionado, R.string.shared_bathroom_type)) {
-            tipoBanoLenguajePredeterminado = LocaleUtils.getDefaultLocaleString(application.getApplicationContext(),
+            tipoBanoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
                     R.string.shared_bathroom_type);
         }
 
