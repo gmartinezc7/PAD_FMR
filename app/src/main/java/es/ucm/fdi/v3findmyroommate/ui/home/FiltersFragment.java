@@ -1,5 +1,7 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,8 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import android.widget.Spinner;
 
-import androidx.fragment.app.DialogFragment;
-
+import es.ucm.fdi.v3findmyroommate.LocaleUtils;
 import es.ucm.fdi.v3findmyroommate.R;
 
 public class FiltersFragment extends DialogFragment {
@@ -21,7 +21,11 @@ public class FiltersFragment extends DialogFragment {
     private Spinner sCategoria, sTipoCasa, sNumHabs, sNumBanos, sOrientacion, sNumComps, sGenero, sTipoBano;
     private ListenerFiltrosAplicados listener;
     private View filterscasa, filtershabitacion;
+    private Context application;
 
+    public FiltersFragment (Context a){
+        this.application = a;
+    }
     public void onStart (){
         super.onStart();
         if(getDialog() != null && getDialog().getWindow() != null){
@@ -60,11 +64,12 @@ public class FiltersFragment extends DialogFragment {
 
                 // Se muestran los filtros dependeindo de la categoría seleccionada
 
-                if ("Casa".equals(categoriaSel)){
-                    System.out.println("SE HA SELECCIONADO FILTRO CASA");
-                    filterscasa.setVisibility(View.VISIBLE);
-                    filtershabitacion.setVisibility(View.GONE);
-                }else if ("Habitación".equals(categoriaSel)){
+                //if ("Casa".equals(categoriaSel)){
+                if (LocaleUtils.doesStringMatchAnyLanguage(application,categoriaSel, R.string.house_property_type_label)){
+                        System.out.println("SE HA SELECCIONADO FILTRO CASA");
+                        filterscasa.setVisibility(View.VISIBLE);
+                        filtershabitacion.setVisibility(View.GONE);
+                }else if (LocaleUtils.doesStringMatchAnyLanguage(application,categoriaSel, R.string.room_property_type_label)){
                     System.out.println("SE HA SELECCIONADO FILTRO HABITACION");
                     filtershabitacion.setVisibility(View.VISIBLE);
                     filterscasa.setVisibility(View.GONE);
