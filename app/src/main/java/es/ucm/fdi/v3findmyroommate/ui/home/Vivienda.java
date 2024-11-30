@@ -30,7 +30,7 @@ public class Vivienda implements Serializable {
     private String tipoBano;
 
     //Usuario dueño
-    private String userId;
+    private String ownerId;
     private String ownerName;
 
     public Vivienda (){} // constructor que necesita Firebase
@@ -89,7 +89,7 @@ public class Vivienda implements Serializable {
         this.tipoBano = tb;
     }
 
-    public void setUserId(String userId) {this.userId = userId;}
+    public void setOwnerId(String ownerId) {this.ownerId = ownerId;}
     public void setOwnerName(String ownerName) {this.ownerName = ownerName;}
 
     // GET
@@ -127,7 +127,7 @@ public class Vivienda implements Serializable {
         return tipoBano;
     }
 
-    public String getUserId() {return userId;}
+    public String getOwnerId() {return ownerId;}
     public String getOwnerName() {return ownerName;}
 
     public void printVivienda (){

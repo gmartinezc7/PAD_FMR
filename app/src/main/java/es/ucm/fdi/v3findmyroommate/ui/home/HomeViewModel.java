@@ -55,7 +55,7 @@ public class HomeViewModel extends ViewModel {
 
                     //Obtener id y nombre dueño
                     String userId = viviendas.child("user_id").getValue(String.class);
-                    vivienda.setUserId(userId);
+                    vivienda.setOwnerId(userId);
                     if (userId != null) {
                         FirebaseDatabase.getInstance().getReference("users").child(userId).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

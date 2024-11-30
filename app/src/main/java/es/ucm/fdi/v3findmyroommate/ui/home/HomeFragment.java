@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
 
 
         List<Vivienda> viviendas = new ArrayList<>();
-        adapter = new ViviendaAdapter(viviendas);
+        adapter = new ViviendaAdapter(getActivity(), viviendas);
         recyclerView.setAdapter(adapter);
 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);

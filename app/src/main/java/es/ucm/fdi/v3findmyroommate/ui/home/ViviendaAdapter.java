@@ -2,8 +2,11 @@ package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import com.google.android.material.chip.Chip;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,10 +26,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.chats.Chat;
 import es.ucm.fdi.v3findmyroommate.ui.chats.ChatActivity;
+import es.ucm.fdi.v3findmyroommate.ui.chats.ChatFragment;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {
@@ -31,9 +41,10 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     private List<Vivienda> listViv;
     private String userId;
     private FirebaseDatabase database;
+    private Context context;
 
-    public ViviendaAdapter(List<Vivienda> lista){
-
+    public ViviendaAdapter(Context context, List<Vivienda> lista){
+        this.context = context;
         this.listViv = lista;
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -61,14 +72,17 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             holder.ownerName.setText("Contanctar dueño: " + ownerName);
             //Llamar al ChatActivity
             holder.ownerName.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                intent.putExtra("chatId", vivienda.getUserId());
-                v.getContext().startActivity(intent);
+                String ownerId = vivienda.getOwnerId();
+                if (ownerId != null) {
+                    openChatWithOwner(ownerId);
+                } else {
+                    Log.e("vivienda adapter", "No se puede contactar con el propietario");
+                }
             });
+
         } else {
             holder.ownerName.setText("Dueño: Desconocido");
         }
-
 
 
         // El resto de atributos, como son chips que quiero mostrar y no mostrar dependiendo de la
@@ -163,6 +177,79 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             chip.setVisibility(View.VISIBLE);
             chip.setText(prefix + value);
         }
-
     }
+
+    private void openChatWithOwner(String ownerId) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("chats");
+
+        // Buscar chat entre los usuarios
+        chatsRef.orderByChild("participants/" + currentUserId).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String chatId = null;
+
+                // Verificar si ya existe un chat con ambos usuarios
+                for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                    if (chatSnapshot.child("participants").hasChild(ownerId)) {
+                        chatId = chatSnapshot.getKey();
+                        break;
+                    }
+                }
+
+                if (chatId == null) {
+                    // Crear un nuevo chat si no existe
+                    chatId = chatsRef.push().getKey();
+                    if (chatId != null) {
+                        Map<String, Object> chatData = new HashMap<>();
+                        chatData.put("lastMessage", "");
+                        chatData.put("timestamp", System.currentTimeMillis());
+
+                        Map<String, Boolean> participants = new HashMap<>();
+                        participants.put(currentUserId, true);
+                        participants.put(ownerId, true);
+
+                        chatData.put("participants", participants);
+
+                        chatsRef.child(chatId).setValue(chatData);
+
+                        // Agregar el chat a la lista de chats de ambos usuarios
+                        DatabaseReference userChatsRef = FirebaseDatabase.getInstance().getReference("users");
+                        userChatsRef.child(currentUserId).child("chats").child(chatId).setValue(true);
+                        userChatsRef.child(ownerId).child("chats").child(chatId).setValue(true);
+                    }
+                }
+
+                // Abrir el fragmento de chat
+                openChatFragment(chatId, ownerId);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("viviendaAdapter ", "Error al abrir el chat");
+            }
+        });
+    }
+
+
+    private void openChatFragment(String chatId, String ownerId) {
+        Chat chat = new Chat(chatId, null, null, "", System.currentTimeMillis());
+        chat.setOtherUsername(ownerId);
+
+        // Crea el ChatFragment y pasa los argumentos
+        ChatFragment chatFragment = new ChatFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("chat", chat);
+        chatFragment.setArguments(bundle);
+
+        // Usa el NavController para navegar
+        if (context instanceof FragmentActivity) {
+            NavController navController = Navigation.findNavController((FragmentActivity) context, R.id.nav_host_fragment_activity_lobby);
+            navController.navigate(R.id.chatFragment, bundle);
+        } else {
+            Log.e("ViviendaAdapter", "Contexto no válido para abrir el fragmento");
+        }
+    }
+
+
 }
