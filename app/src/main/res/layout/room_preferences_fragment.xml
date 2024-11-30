@@ -25,12 +25,11 @@
         android:id="@+id/maxRoommatesHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Maximum Number of Roomates"
+        android:text="@string/select_maximum_number_of_roomates"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/roomPreferencesMessage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
 
     <!-- Max Roommates Selector -->
@@ -73,12 +72,11 @@
         android:id="@+id/roommateGenderHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Roommate Gender"
+        android:text="@string/select_roommate_gender"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/maxRoommatesChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
 
     <!-- Roommate Gender Selector -->
@@ -98,21 +96,21 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Men" />
+            android:text="@string/man" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipWomen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Women" />
+            android:text="@string/woman" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipBoth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Both" />
+            android:text="@string/both" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Room Type Header -->
@@ -120,12 +118,11 @@
         android:id="@+id/roomTypeHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Room Type"
+        android:text="@string/select_room_type"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/roommateGenderChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
 
     <!-- Room Type Selector -->
@@ -152,7 +149,6 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-
             android:text="Interior" />
     </com.google.android.material.chip.ChipGroup>
 
@@ -161,12 +157,11 @@
         android:id="@+id/bathroomHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Bathroom Tyoe"
+        android:text="@string/select_bathroom_tyoe"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/roomTypeChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
 
     <!-- Bathroom Selector -->
@@ -186,15 +181,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="Private" />
+            android:text="@string/private_bathroom" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipShared"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-
-            android:text="Shared" />
+            android:text="@string/shared" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Continue Button -->

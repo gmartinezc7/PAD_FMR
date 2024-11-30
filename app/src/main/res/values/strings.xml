@@ -220,8 +220,20 @@
     <string name= "mensaje_error_crear_imagen">Error al crear archivo de imagen</string>
     <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
     <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
-    <string name="subnormal">uuu</string>
     <string name="edit_house_listing">Editar anuncio</string>
+    <string name="house_square_feets">Tamaño de la vivienda</string>
+    <string name="property_price">Precio de la vivienda</string>
+    <string name="select_maximum_number_of_roomates">Número Máximo de Compañeros de Piso</string>
+    <string name="select_roommate_gender">Genero de los Compañeros de Piso</string>
+    <string name="select_room_type">Orientación de la Habitación</string>
+    <string name="select_bathroom_tyoe">Tipo de baño</string>
+    <string name="private_bathroom">Privado</string>
+    <string name="shared">Compartido</string>
+    <string name="man">Hombre</string>
+    <string name="woman">Mujer</string>
+    <string name="both">Ambos</string>
+    <string name="select_number_of_bathrooms">Selecciona el Número de Baños</string>
+    <string name="select_orientation">Selecciona Orientation</string>
 
 
 </resources>

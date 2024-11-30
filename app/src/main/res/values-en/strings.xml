@@ -103,7 +103,20 @@
         <string name="mensaje_error_crear_imagen" translatable="false">Error creating image file</string>
         <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
         <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
-    <string name="subnormal">uuu</string>
+        <string name="edit_house_listing">Edit Listing</string>
+        <string name="house_square_feets">House Square Feet</string>
+        <string name="property_price">Property Price</string>
+        <string name="select_maximum_number_of_roomates">Select Maximum Number of Roommates</string>
+        <string name="select_roommate_gender">Select Roommate Gender</string>
+        <string name="select_room_type">Select Room Type</string>
+        <string name="select_bathroom_tyoe">Select Bathroom Type</string>
+        <string name="private_bathroom">Private</string>
+    <string name="shared">Shared</string>
+    <string name="man">Man</string>
+    <string name="woman">Woman</string>
+    <string name="both">Both</string>
+    <string name="select_number_of_bathrooms">Select Number of Bathrooms</string>
+    <string name="select_orientation">Select Orientation</string>
 </resources>
 
 
