@@ -104,6 +104,49 @@
         <string name="mensaje_error_encontrar_camara" translatable="false">No camera application found</string>
         <string name="mensaje_no_se_selecciono_imagen" translatable="false">No image selected</string>
     <string name="subnormal">uuu</string>
+
+
+
+    <string-array name="categorias_array">
+        <item>House</item>
+        <item>Room</item>
+    </string-array>
+    <string-array name="tipo_casa_array">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+    <string-array name="habitaciones_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="banos_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="companeros_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="genero_array">
+        <item>Men</item>
+        <item>Women</item>
+        <item>Both</item>
+    </string-array>
+    <string-array name="exterior_interior_array">
+        <item>Exterior</item>
+        <item>Interior</item>
+    </string-array>
+    <string-array name="tipo_bano_array">
+        <item>Private</item>
+        <item>Shared</item>
+    </string-array>
+
+
 </resources>
 
 
