@@ -21,6 +21,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent">
+        <!-- ImageView para la imagen del anuncio -->
+        <ImageView
+            android:id="@+id/image_view_vivienda"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+        <!-- Flecha izquierda -->
+        <ImageButton
+            android:id="@+id/btn_prev_viv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_flecha_izquierda"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <!-- Flecha derecha -->
+        <ImageButton
+            android:id="@+id/btn_next_viv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_flecha_derecha"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
 
         <ToggleButton
             android:id="@+id/toggleButton"

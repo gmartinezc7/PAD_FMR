@@ -1,6 +1,8 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleableRes;
 import androidx.lifecycle.LiveData;
@@ -11,9 +13,13 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.MisViviendasFragment;
 
 public class HomeViewModel extends ViewModel {
 
@@ -53,7 +59,15 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setCompaneros(viviendas.child("maximum_number_of_roomates").getValue(String.class));
                     vivienda.setGenero(viviendas.child("roommate_gender").getValue(String.class));
                     vivienda.setTipoBano(viviendas.child("bathroom_type").getValue(String.class));
+                    vivienda.setImagenesUri(viviendas.child("uri_list").getValue(List.class));
 
+                    // Obtiene la lista de imágenes del anuncio de la BD en formato String.
+                    List<String> listaImagenesFormatoString = viviendas.child("uri_list").getValue
+                            (new GenericTypeIndicator<List<String>>() {});
+
+                    // Convierte los valores de la lista recibida a formato Uri.
+                    List<Uri> listaImagenesFormatoUri = MisViviendasFragment.convierteListaStringsAListaUris(listaImagenesFormatoString);
+                    vivienda.setImagenesUri(listaImagenesFormatoUri);
                     //martineevivienda.printVivienda();
 
 

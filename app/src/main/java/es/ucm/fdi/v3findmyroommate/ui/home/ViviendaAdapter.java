@@ -2,10 +2,13 @@ package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import com.google.android.material.chip.Chip;
 
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -19,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
@@ -52,6 +56,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice());
         holder.metr.setText(vivienda.getMetr());
+        setImageNavigationViv(holder,vivienda,position);
 
         // El resto de atributos, como son chips que quiero mostrar y no mostrar dependiendo de la
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
@@ -102,6 +107,31 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
 
     }
 
+    private void setImageNavigationViv (ViviendaViewHolder holder, Vivienda vivienda, int position){
+        if (!vivienda.getImagenesUri().isEmpty()){
+            holder.imagenesUri = new ArrayList<>(vivienda.getImagenesUri());
+            holder.imagenViewVivienda.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.left.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.right.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size()-1 ? View.VISIBLE : View.INVISIBLE);
+
+            // imagen anterior y siguiente
+            holder.left.setOnClickListener(v -> navigateImage(holder, -1));
+            holder.right.setOnClickListener(v -> navigateImage(holder, 1));
+
+
+        }
+    }
+
+    private void navigateImage (ViviendaViewHolder holder, int direction){
+        int newIndex = holder.imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < holder.imagenesUri.size()){
+            holder.imagenActualIndex = newIndex;
+            holder.imagenViewVivienda.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.left.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.right.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() -1 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return listViv.size();
@@ -112,6 +142,10 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         private TextView metr;
         private ToggleButton toggleFavorito;
         private Chip categoria, tipoCasa, habitaciones, banos, exteriorInterior, companeros, genero, tipoBano;
+        private ImageView imagenViewVivienda;
+        private List<Uri> imagenesUri = new ArrayList<>();
+        private ImageButton left, right;
+        private int imagenActualIndex = 0;
 
         public ViviendaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,8 +163,15 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             companeros = itemView.findViewById(R.id.chipCompaneros);
             genero = itemView.findViewById(R.id.chipGenero);
             tipoBano = itemView.findViewById(R.id.chipTipoBano);
+            imagenViewVivienda = itemView.findViewById(R.id.image_view_vivienda);
+            left = itemView.findViewById(R.id.btn_prev_viv);
+            right = itemView.findViewById(R.id.btn_next_viv);
+            left.setVisibility(View.INVISIBLE);
+            right.setVisibility(View.INVISIBLE);
         }
     }
+
+
     public void updateList (List<Vivienda> newVivs){
         this.listViv = newVivs;
         notifyDataSetChanged();
