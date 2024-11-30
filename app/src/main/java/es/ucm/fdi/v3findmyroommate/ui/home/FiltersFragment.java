@@ -65,6 +65,7 @@ public class FiltersFragment extends DialogFragment {
                 // Se muestran los filtros dependeindo de la categoría seleccionada
 
                 //if ("Casa".equals(categoriaSel)){
+
                 if (LocaleUtils.doesStringMatchAnyLanguage(application,categoriaSel, R.string.house_property_type_label)){
                         System.out.println("SE HA SELECCIONADO FILTRO CASA");
                         filterscasa.setVisibility(View.VISIBLE);
