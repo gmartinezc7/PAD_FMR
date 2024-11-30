@@ -123,8 +123,8 @@
         <item>Habitación</item>
     </string-array>
     <string-array name="tipo_casa_array">
-        <item>Apartamento</item>
-        <item>Casa</item>
+        <item>Apartment</item>
+        <item>House</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>
@@ -235,7 +235,7 @@
     <string name="shared">Compartido</string>
     <string name="man">Hombre</string>
     <string name="woman">Mujer</string>
-    <string name="both">Ambos</string>
+    <string name="both">Mixto</string>
     <string name="select_number_of_bathrooms">Selecciona el Número de Baños</string>
     <string name="select_orientation">Selecciona Orientation</string>
     <string name="apartment_house_type">Apartamento</string>

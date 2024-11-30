@@ -12,6 +12,8 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,10 +25,12 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
-
+import es.ucm.fdi.v3findmyroommate.LocaleUtils;
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.TranslationUtils;
 import es.ucm.fdi.v3findmyroommate.databinding.FragmentHomeBinding;
 import es.ucm.fdi.v3findmyroommate.ui.viviendas.Anuncio;
 import es.ucm.fdi.v3findmyroommate.ui.viviendas.AnuncioDetalleActivity;
@@ -50,7 +54,7 @@ public class HomeFragment extends Fragment {
 
 
         recyclerView = root.findViewById(R.id.recyclerViewViviendas);
-        Button openFilters = root.findViewById(R.id.buttonOpenFilters);
+        //Button openFilters = root.findViewById(R.id.buttonOpenFilters);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -69,7 +73,79 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        DrawerLayout drawerLayout = root.findViewById(R.id.drawerLayoutFilters); // ID del DrawerLayout
+        Button openFiltersButton = root.findViewById(R.id.buttonOpenFilters);
 
+        openFiltersButton.setOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START); // Cierra el menú si está abierto
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START); // Abre el menú lateral
+            }
+        });
+
+        View filtersMenu = root.findViewById(R.id.filtersDialog); // Este debe ser el layout que contiene los filtros en el drawer
+        Spinner sCategoria = filtersMenu.findViewById(R.id.spinnerCategorias);
+        Spinner sTipoCasa = filtersMenu.findViewById(R.id.spinnerTipoCasas);
+        Spinner sNumHabs = filtersMenu.findViewById(R.id.spinnerNumHabs);
+        Spinner sNumBanos = filtersMenu.findViewById(R.id.spinnerNumBanos);
+        Spinner sOrientacion = filtersMenu.findViewById(R.id.spinnerOrientacion);
+        Spinner sGenero = filtersMenu.findViewById(R.id.spinnerGenero);
+        Spinner sNumComps = filtersMenu.findViewById(R.id.spinnerNumComps);
+        Spinner sTipoBano = filtersMenu.findViewById(R.id.spinnerTipoBano);
+
+        View filtersCasa = filtersMenu.findViewById(R.id.filtrosCasa);
+        View filtersHabitacion = filtersMenu.findViewById(R.id.filtrosHabitacion);
+
+        sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String categoriaSel = parent.getItemAtPosition(position).toString();
+                String tipoCasaSel = getString(R.string.house_property_type_label);
+                if (categoriaSel.equals(getString(R.string.house_property_type_label))) {
+                    filtersCasa.setVisibility(View.VISIBLE);
+                    filtersHabitacion.setVisibility(View.GONE);
+                } else if (categoriaSel.equals(getString(R.string.room_property_type_label))) {
+                    filtersCasa.setVisibility(View.GONE);
+                    filtersHabitacion.setVisibility(View.VISIBLE);
+                } else {
+                    filtersCasa.setVisibility(View.GONE);
+                    filtersHabitacion.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        Button applyFiltersButton = filtersMenu.findViewById(R.id.buttonApplyFilters);
+        applyFiltersButton.setOnClickListener(v -> {
+            String fCategoria = sCategoria.getSelectedItem() != null ? sCategoria.getSelectedItem().toString() : "";
+            String fTipoCasa = sTipoCasa.getSelectedItem() != null ? sTipoCasa.getSelectedItem().toString() : "";
+            String fNumHabs = sNumHabs.getSelectedItem() != null ? sNumHabs.getSelectedItem().toString() : "";
+            String fNumBanos = sNumBanos.getSelectedItem() != null ? sNumBanos.getSelectedItem().toString() : "";
+            String fOrientacion = sOrientacion.getSelectedItem() != null ? sOrientacion.getSelectedItem().toString() : "";
+            String fGenero = sGenero.getSelectedItem() != null ? sGenero.getSelectedItem().toString() : "";
+            String fNumComps = sNumComps.getSelectedItem() != null ? sNumComps.getSelectedItem().toString() : "";
+            String fTipoBano = sTipoBano.getSelectedItem() != null ? sTipoBano.getSelectedItem().toString() : "";
+
+            // Lógica para aplicar filtros
+            // Llama a tu método o listener con los valores seleccionados
+            applyFilters(fCategoria, fTipoCasa, fNumHabs, fNumBanos, fOrientacion, fGenero, fNumComps, fTipoBano);
+
+            drawerLayout.closeDrawer(GravityCompat.START); // Cierra el menú lateral tras aplicar los filtros
+        });
+
+        Button cancelFiltersButton = filtersMenu.findViewById(R.id.buttonCancelFilters);
+        cancelFiltersButton.setOnClickListener(v -> {
+            // Opcional: Restaura valores por defecto si es necesario
+            drawerLayout.closeDrawer(GravityCompat.START); // Cierra el menú lateral
+        });
+
+        // Método para manejar la aplicación de filtros
+
+
+        /*
         openFilters.setOnClickListener(v -> {
             FiltersFragment dialog = new FiltersFragment(this.getContext());
             dialog.setListenerFiltrosAplicados(((categoria, tipocasa, numHabs, numBanos, numComps, genero, orientacion, tipoBano) -> {
@@ -78,9 +154,35 @@ public class HomeFragment extends Fragment {
             }));
             dialog.show(getParentFragmentManager(),"Filters");
         });
+        */
+
         //buttonApplyFilters.setOnClickListener(v -> applyFilters());
 
         return root;
+    }
+
+
+    private void applyFilters(String categoria, String tipoCasa, String numHabs, String numBanos,
+                              String orientacion, String genero, String numComps, String tipoBano) {
+        categoria = translateIfNeeded(categoria);
+        tipoCasa = translateIfNeeded(tipoCasa);
+        numHabs = translateIfNeeded(numHabs);
+        numBanos = translateIfNeeded(numBanos);
+        orientacion = translateIfNeeded(orientacion);
+        genero = translateIfNeeded(genero);
+        numComps = translateIfNeeded(numComps);
+        tipoBano = translateIfNeeded(tipoBano);
+        homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano);
+        System.out.println("Filtros aplicados: " + categoria + ", " + tipoCasa + ", " + numHabs + ", " + numBanos);
+    }
+    private String translateIfNeeded(String value) {
+        Locale currentLocale = Locale.getDefault();
+        boolean isSpanish = currentLocale.getLanguage().equals("es");
+
+        if (!isSpanish && value != null) {
+            return TranslationUtils.translateToBaseLanguage(value);
+        }
+        return value;
     }
 
     @Override
