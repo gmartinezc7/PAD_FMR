@@ -77,4 +77,47 @@
     <string name="title_chats">Chats</string>
     <string name="title_config">Settings</string>
     <string name="passwords_dont_match_toast_text">Passwords don\'t match</string>
+
+
+
+    <string-array name="categorias_array">
+        <item>House</item>
+        <item>Room</item>
+    </string-array>
+    <string-array name="tipo_casa_array">
+        <item>Apartment</item>
+        <item>House</item>
+    </string-array>
+    <string-array name="habitaciones_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="banos_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="companeros_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4+</item>
+    </string-array>
+    <string-array name="genero_array">
+        <item>Men</item>
+        <item>Women</item>
+        <item>Both</item>
+    </string-array>
+    <string-array name="exterior_interior_array">
+        <item>Exterior</item>
+        <item>Interior</item>
+    </string-array>
+    <string-array name="tipo_bano_array">
+        <item>Private</item>
+        <item>Shared</item>
+    </string-array>
+
+
 </resources>
