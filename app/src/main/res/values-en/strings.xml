@@ -180,6 +180,7 @@
     <string name="both">Both</string>
     <string name="select_number_of_bathrooms">Select Number of Bathrooms</string>
     <string name="select_orientation">Select Orientation</string>
+    <string name="contact_owner">Contact owner</string>
 
 </resources>
 
