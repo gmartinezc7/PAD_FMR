@@ -12,6 +12,8 @@
     <color name="light_gray">#E0E0E0</color>
     <color name="chip_selected">#DDDDDD</color> <!-- Gris claro -->
     <color name="chip_unselected">#FFFFFF</color> <!-- Blanco -->
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#757575</color>
 
 
 </resources>

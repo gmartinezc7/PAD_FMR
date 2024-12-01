@@ -60,7 +60,8 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white">
+        android:background="?attr/colorPrimary">
+        <!--android:background="@android:color/white">-->
 
         <!-- Contenido del menú (filtros) -->
         <TextView
