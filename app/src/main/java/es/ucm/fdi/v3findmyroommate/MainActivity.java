@@ -1,7 +1,10 @@
 package es.ucm.fdi.v3findmyroommate;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,7 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -85,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(userEmail, userPassword)
                     .addOnCompleteListener(MainActivity.this, task -> {
                         if (task.isSuccessful()) {
-                            // If the sign in is successful, updates preferences signed-in user's information.
-                            ConfigPreferencesModel.setInitialPreferences(this.getApplication());
-                            openLoginView(); // Goes to the next screen.
-                            Log.d("SignIn", "Sign in successful");
+
+                            requestPermissions();
+
+
                         }
                         else {
                             // If the sign in fails, displays a message to the user.
@@ -116,6 +122,49 @@ public class MainActivity extends AppCompatActivity {
 
         signUP.setOnClickListener(view -> openSignUPView());
     }
+
+
+    private void abrirTrasIniciar(){
+
+        // If the sign in is successful, updates preferences signed-in user's information.
+        ConfigPreferencesModel.setInitialPreferences(this.getApplication());
+        openLoginView(); // Goes to the next screen.
+        Log.d("SignIn", "Sign in successful");
+
+
+    }
+
+
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        100);
+
+            } else {
+                abrirTrasIniciar();
+            }
+        } else {
+            abrirTrasIniciar();
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Llamada a la implementación base
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                abrirTrasIniciar();
+            } else {
+                Toast.makeText(this, this.getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     public void openLoginView(){
         Intent intent = new Intent(MainActivity.this, Lobby.class);
