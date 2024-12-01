@@ -249,42 +249,46 @@ public class MisViviendasFragment extends Fragment {
                                     currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
                                     currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
-                                    if (categoria.equals(getContext().getApplicationContext().getString(
-                                            R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
+                                    if (categoria != null) {
 
-                                        String tipo_casa = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.add_house_type_db_label)).getValue(String.class);
-                                        String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.num_rooms_db_label)).getValue(String.class);
-                                        String num_banos = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
-                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.orientation_db_label)).getValue(String.class);
+                                        if (categoria.equals(getContext().getApplicationContext().getString(
+                                                R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
 
-                                        // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
-                                    }
+                                            String tipo_casa = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                                            String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                                            String num_banos = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                                            String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.orientation_db_label)).getValue(String.class);
 
-                                    else if (categoria.equals(getContext().getApplicationContext().getString(
-                                            R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
+                                            // Guardamos los datos específicos, propios de una casa.
+                                            currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                        }
 
-                                        String max_companeros = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
-                                        String genero_companeros = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.roommate_gender_db_label)).getValue(String.class);
-                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.orientation_db_label)).getValue(String.class);
-                                        String tipo_bano = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+                                        else if (categoria.equals(getContext().getApplicationContext().getString(
+                                                R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
 
-                                        // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
+                                            String max_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                                            String genero_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                                            String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.orientation_db_label)).getValue(String.class);
+                                            String tipo_bano = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+
+                                            // Guardamos los datos específicos, propios de una casa.
+                                            currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
+                                        }
+
                                     }
 
                                     // Añade el anuncio a la lista del modelo.

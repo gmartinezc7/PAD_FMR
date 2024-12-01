@@ -218,13 +218,13 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra(this.getString(R.string.key_categoria), categoria);
 
         // Guardamos los datos específicos según la categoría
-        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))) {
 
             resultIntent.putExtra(this.getString(R.string.key_tipo_casa), spinnerTipoCasa.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_habitaciones), spinnerHabitaciones.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_banos), spinnerBanos.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorCasa.getSelectedItem().toString());
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))) {
 
             resultIntent.putExtra(this.getString(R.string.key_companeros), spinnerCompaneros.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_genero), spinnerGenero.getSelectedItem().toString());

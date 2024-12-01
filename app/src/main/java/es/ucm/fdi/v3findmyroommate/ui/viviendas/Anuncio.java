@@ -85,7 +85,7 @@ public class Anuncio {
         //TAGS
         this.categoria = data.getStringExtra(context.getString(R.string.key_categoria));
 
-        if(this.categoria.equalsIgnoreCase(context.getString(R.string.category_casa))){
+        if(this.categoria.equalsIgnoreCase(context.getString(R.string.house_property_type_label))){
 
             this.tipoCasa = data.getStringExtra(context.getString(R.string.key_tipo_casa));
             this.habitaciones = data.getStringExtra(context.getString(R.string.key_habitaciones));
@@ -93,7 +93,7 @@ public class Anuncio {
             this.exteriorInterior = data.getStringExtra(context.getString(R.string.key_exterior_interior));
 
         }
-        else if(this.categoria.equalsIgnoreCase(context.getString(R.string.category_habitacion))){
+        else if(this.categoria.equalsIgnoreCase(context.getString(R.string.room_property_type_label))){
 
             this.companeros = data.getStringExtra(context.getString(R.string.key_companeros));
             this.genero = data.getStringExtra(context.getString(R.string.key_genero));
