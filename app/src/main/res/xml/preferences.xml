@@ -5,6 +5,7 @@
         android:id="@+id/email_preference"
         android:key="@string/email_preference_key"
         android:icon="@drawable/mail_icon"
+        android:backgroundTint="?attr/colorButtonNormal"
         android:title="@string/email_preference_title"
         android:summary="@string/email_preference_summary"
         android:dialogTitle="@string/email_preference_dialog_text"
@@ -16,6 +17,7 @@
         android:icon="@drawable/key_icon"
         android:title="@string/password_preference_title"
         android:summary="@string/password_preference_summary"
+        android:background="?attr/colorPrimary"
         android:dialogTitle="@string/password_preference_new_password_label"
         android:inputType="textPassword" />
 
@@ -23,6 +25,7 @@
         android:id="@+id/username_preference"
         android:key="@string/username_preference_key"
         android:icon="@drawable/person_icon"
+        android:background="?attr/colorSurface"
         android:title="@string/username_preference_title"
         android:summary="@string/username_preference_summary"
         android:dialogTitle="@string/username_preference_dialog_text"
@@ -32,6 +35,7 @@
         android:id="@+id/gender_preference"
         android:key="@string/gender_preference_key"
         android:icon="@drawable/female_gender_icon"
+        android:background="?attr/colorPrimary"
         android:title="@string/gender_preference_title"
         android:summary="@string/gender_preference_summary"
         android:dialogTitle="@string/gender_preference_title"/>
@@ -40,6 +44,7 @@
         android:id="@+id/age_range_preference"
         android:key="@string/age_range_preference_key"
         android:icon="@drawable/age_diversity_icon"
+        android:background="?attr/colorPrimary"
         android:title="@string/age_range_preference_title"
         android:summary="@string/age_range_preference_summary"
         android:dialogTitle="@string/age_range_preference_title"/>
@@ -47,6 +52,7 @@
     <ListPreference
         android:id="@+id/marital_status_preference"
         android:key="@string/marital_status_preference_key"
+        android:background="?attr/colorPrimary"
         android:icon="@drawable/marital_state_icon"
         android:title="@string/marital_status_preference_title"
         android:summary="@string/marital_status_preference_summary"
@@ -56,6 +62,7 @@
         android:id="@+id/occupation_preference"
         android:key="@string/occupation_preference_key"
         android:icon="@drawable/occupation_icon"
+        android:background="?attr/colorSurface"
         android:title="@string/occupation_preference_title"
         android:summary="@string/occupation_preference_summary"
         android:dialogTitle="@string/occupation_preference_title"/>
