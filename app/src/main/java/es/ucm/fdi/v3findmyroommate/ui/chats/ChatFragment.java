@@ -122,36 +122,32 @@ public class ChatFragment extends Fragment {
         });
     }
 
-
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
 
-        //Crear el mensaje
         Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
 
-        //Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Actualizar el último mensaje en el chat
-                        Map<String, Object> chatUpdates = new HashMap<>();
-                        chatUpdates.put("lastMessage", messageText);
-                        chatUpdates.put("timestamp", timestamp);
-
-                        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
-                        chatRef.updateChildren(chatUpdates)
-                                .addOnCompleteListener(updateTask -> {
-                                    if (updateTask.isSuccessful()) {
-                                        Log.d("Enviar Mensage", "Mensaje enviado");
-
-                                        notifyRecipient(chatId, messageText);
-                                    } else {
-                                        Log.d("Enviar Mensage", "Error enviar mensaje");
-                                    }
-                                });
+                        updateChatLastMessage(chatId, messageText, timestamp);
                     } else {
-                        Log.d("Enviar Mensage", "Error enviar mensaje");
+                        Log.d("SendMessage", "Error al enviar el mensaje.");
+                    }
+                });
+    }
+
+    private void updateChatLastMessage(String chatId, String messageText, long timestamp) {
+        Map<String, Object> chatUpdates = new HashMap<>();
+        chatUpdates.put("lastMessage", messageText);
+        chatUpdates.put("timestamp", timestamp);
+
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+        chatRef.updateChildren(chatUpdates)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        notifyRecipient(chatId, messageText);
                     }
                 });
     }
@@ -164,28 +160,38 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot participant : snapshot.getChildren()) {
                     String participantId = participant.getKey();
                     if (!participantId.equals(currentUserId)) {
-                        //Enviar notificación al otro usuario
-                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId).child("notifications");
-                        Map<String, String> notification = new HashMap<>();
-                        notification.put("title", "Nuevo mensaje");
-                        notification.put("body", messageText);
-                        notification.put("chatId", chatId);
-
-                        userRef.push().setValue(notification)
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        Log.d("NotifyRecipient", "Notificación enviada al usuario " + participantId);
-                                    } else {
-                                        Log.e("NotifyRecipient", "Error al enviar notificación");
-                                    }
-                                });
+                        sendPushNotification(participantId, "Nuevo mensaje", messageText);
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("NotifyRecipient", "Error obteniendo participantes: " + error.getMessage());
+                Log.e("NotifyRecipient", "Error: " + error.getMessage());
             }
         });
     }
+
+    private void sendPushNotification(String recipientId, String title, String message) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(recipientId).child("fcmToken");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String recipientToken = snapshot.getValue(String.class);
+                if (recipientToken != null) {
+                    RemoteMessage remoteMessage = new RemoteMessage.Builder(recipientToken)
+                            .addData("title", title)
+                            .addData("body", message)
+                            .build();
+                    FirebaseMessaging.getInstance().send(remoteMessage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("SendNotification", "Error al obtener token: " + error.getMessage());
+            }
+        });
+    }
+
 }

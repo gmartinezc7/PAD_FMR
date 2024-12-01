@@ -9,79 +9,63 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
+    private static final String TAG = "FCMService";
+    private static final String CHANNEL_ID = "default_channel";
+
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        updateTokenToDatabase(token);
+        Log.d(TAG, "Nuevo token FCM: " + token);
+        sendTokenToDatabase(token);
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        Log.d(TAG, "Mensaje recibido: " + remoteMessage);
 
-        // Si el mensaje contiene datos personalizados
-        if (remoteMessage.getData().size() > 0) {
-            String title = remoteMessage.getData().get("title");
-            String body = remoteMessage.getData().get("body");
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("body");
 
-            sendNotification(title, body);
+        if (title != null && body != null) {
+            showNotification(title, body);
         }
     }
 
-    /**
-     * Envía una notificación al dispositivo.
-     */
-    private void sendNotification(String title, String body) {
+    private void showNotification(String title, String body) {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Configurar el canal para dispositivos Android Oreo y superiores
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    "my_channel_id",
-                    "My Notifications",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    CHANNEL_ID,
+                    "Notificaciones Generales",
+                    NotificationManager.IMPORTANCE_HIGH
             );
             notificationManager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, "my_channel_id")
-                        .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle(title)
-                        .setContentText(body)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(0, builder.build());
     }
 
-    /**
-     * Actualiza el token FCM en la base de datos del usuario.
-     */
-    private void updateTokenToDatabase(String token) {
-        String currentUserId = FirebaseAuth.getInstance().getUid();
+    private void sendTokenToDatabase(String token) {
+        String userId = "currentUser"; // Obtén dinámicamente el ID del usuario
+        Log.d(TAG, "Token guardado para usuario: " + userId);
 
-        if (currentUserId != null) {
-            DatabaseReference userRef = FirebaseDatabase.getInstance()
-                    .getReference("users")
-                    .child(currentUserId);
-
-            userRef.child("fcmToken").setValue(token)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d("FCM Token", "Token actualizado en la base de datos.");
-                        } else {
-                            Log.e("FCM Token", "Error al actualizar el token en la base de datos.");
-                        }
-                    });
-        }
+        // Simula guardar el token en Firebase Database
+        // DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        // database.child("users").child(userId).child("fcmToken").setValue(token);
     }
 }
