@@ -10,10 +10,8 @@ public class TranslationUtils {
         // Mapeos de traducción (puedes extender esta lista)
         translationMap.put("Home", "Casa");
         translationMap.put("Room", "Habitación");
-        translationMap.put("Apartment", "Apartment");
-        translationMap.put("House", "House");
-      //  translationMap.put("Apartment", "Apartment");
-      //  translationMap.put("House", "House");
+        translationMap.put("Apartment", "Apartamento");
+        translationMap.put("House", "Casa independiente");
         translationMap.put("Male", "Hombre");
         translationMap.put("Female", "Mujer");
         translationMap.put("Both", "Mixto");
