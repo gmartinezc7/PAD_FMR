@@ -117,7 +117,7 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano){
+    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano,boolean nofilters){
         List<Vivienda> filtered = new ArrayList<>();
         // DEBUG
         System.out.println("SE HA LLAMADO A LA FUNCIÓN applyFiltersViewModel con los valores: ");
@@ -190,7 +190,7 @@ public class HomeViewModel extends ViewModel {
 
 
 
-            if (filtrosOK){
+            if (filtrosOK || nofilters == true){
                 filtered.add(vivienda);
                 System.out.println("FILTRADO");
                 vivienda.printVivienda();

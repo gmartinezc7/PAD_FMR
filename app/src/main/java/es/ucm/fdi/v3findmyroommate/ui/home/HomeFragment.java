@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     private ViviendaAdapter adapter;
     private HomeViewModel homeViewModel;
     private Spinner sCategoria, sTipoCasa, sNumHabs, sNumBanos, sOrientacion, sNumComps, sGenero, sTipoBano;
-    private Button buttonApplyFilters;
 
 
     // variables para poder visualizar o no los filtros
@@ -75,6 +74,7 @@ public class HomeFragment extends Fragment {
 
         DrawerLayout drawerLayout = root.findViewById(R.id.drawerLayoutFilters); // ID del DrawerLayout
         Button openFiltersButton = root.findViewById(R.id.buttonOpenFilters);
+        Button buttonNoFilters = root.findViewById(R.id.noFiltersButton); // botón para eliminar todos los filtros
 
         openFiltersButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -82,6 +82,10 @@ public class HomeFragment extends Fragment {
             } else {
                 drawerLayout.openDrawer(GravityCompat.START); // Abre el menú lateral
             }
+        });
+
+        buttonNoFilters.setOnClickListener(v -> {
+            notApplyFilters();
         });
 
         View filtersMenu = root.findViewById(R.id.filtersDialog); // Este debe ser el layout que contiene los filtros en el drawer
@@ -161,6 +165,11 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void notApplyFilters(){
+        homeViewModel.applyFiltersViewModel("","","","","","","","",true);
+
+    }
+
 
     private void applyFilters(String categoria, String tipoCasa, String numHabs, String numBanos,
                               String orientacion, String genero, String numComps, String tipoBano) {
@@ -172,7 +181,7 @@ public class HomeFragment extends Fragment {
         genero = translateIfNeeded(genero);
         numComps = translateIfNeeded(numComps);
         tipoBano = translateIfNeeded(tipoBano);
-        homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano);
+        homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano,false);
         System.out.println("Filtros aplicados: " + categoria + ", " + tipoCasa + ", " + numHabs + ", " + numBanos);
     }
     private String translateIfNeeded(String value) {

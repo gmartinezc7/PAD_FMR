@@ -13,7 +13,7 @@ public class TranslationUtils {
         translationMap.put("Apartment", "Apartamento");
         translationMap.put("Home", "Casa independiente");
         translationMap.put("Male", "Hombre");
-        translationMap.put("Female", "Mujer");
+        translationMap.put("Woman", "Mujer");
         translationMap.put("Both", "Mixto");
         translationMap.put("Exterior", "Exterior");
         translationMap.put("Interior", "Interior");
