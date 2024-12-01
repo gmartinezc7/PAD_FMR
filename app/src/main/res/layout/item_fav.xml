@@ -59,7 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="23dp"
         android:layout_marginTop="12dp"
-        android:text="Nombre de la vivienda"
+        android:text="@string/item_building_name_label"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
         android:layout_width="0dp"
         android:layout_height="23dp"
         android:layout_marginTop="8dp"
-        android:text="Dirección"
+        android:text="@string/location_label"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginTop="12dp"
-        android:text="Precio"
+        android:text="@string/item_building_name_label"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
         android:layout_width="0dp"
         android:layout_height="18dp"
         android:layout_marginTop="8dp"
-        android:text="Descripción"
+        android:text="@string/description_label"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
             android:layout_width="0dp"
             android:layout_height="18dp"
             android:layout_marginEnd="4dp"
-            android:text="Metr"
+            android:text="@string/square_meters_label"
             android:layout_weight="1" />
 
         <!-- Metros cuadrados m2 -->
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:backgroundTint="?attr/colorButtonNormal"
-                android:text="Categoria: "
+                android:text="@string/item_category_label"
                 android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:backgroundTint="?attr/colorButtonNormal"
-                android:text="Tipo Casa: "
+                android:text="@string/item_house_type_label"
                 android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:backgroundTint="?attr/colorButtonNormal"
-                android:text="Habitaciones: "
+                android:text="@string/item_num_rooms_label"
                 android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:backgroundTint="?attr/colorButtonNormal"
-                android:text="Banos: "
+                android:text="@string/item_num_bathrooms_label"
                 android:textSize="14sp" />
 
             <com.google.android.material.chip.Chip
@@ -188,7 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:text="ExtInt: "
+                android:text="@string/item_orientation_label"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:textSize="14sp" />
 
@@ -197,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:text="Companeros: "
+                android:text="@string/item_num_roommates_label"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:textSize="14sp" />
 
@@ -206,7 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:text="Genero: "
+                android:text="@string/item_roommates_gender_label"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:textSize="14sp" />
 
@@ -215,7 +215,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:text="TipoBano: "
+                android:text="@string/item_bathroom_type_label"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:textSize="14sp" />
 

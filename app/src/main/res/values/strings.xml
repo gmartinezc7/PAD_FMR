@@ -262,8 +262,47 @@
     <string name="select_num_bathrooms_title">Selecciona el número de baños</string>
     <string name="select_house_orientation_title">Seleciona la orientación</string>
     <string name="enter_square_meters_hint">Introduce los metros cuadrados</string>
-    <string name="contact_owner">Contactar dueño:</string>
+    <string name="contact_owner">Contactar dueño</string>
     <string name="DB_language_shortcut" translatable="false">es</string>
     <string name="house_type_preference_key" translatable="false">house_type</string>
+    <string name="my_favs_title">MIS FAVORITOS</string>
+    <string name="back_button_text">Volver</string>
+    <string name="image_description_label">Imagen del anuncio</string>
+    <string name="location_label">Ubicación</string>
+    <string name="square_meters_label">Metros cuadrados</string>
+    <string name="price_label">Precio</string>
+    <string name="description_label">Descripción</string>
+    <string name="category_label">Categoría</string>
+    <string name="house_type_label">Tipo de casa</string>
+    <string name="room_number_label">Número de habitaciones</string>
+    <string name="bathroom_number_label">Número de baños</string>
+    <string name="orientation_label">Orientación (Interior/Exterior)</string>
+    <string name="roommate_number_label">Número de compañeros</string>
+    <string name="roommate_gender_label">Género de los compañeros</string>
+    <string name="bathroom_type_label">Tipo de baño</string>
+    <string name="edit_button_text">Editar</string>
+    <string name="my_adds_title">MIS ANUNCIOS</string>
+    <string name="add_title_label">Título del anuncio</string>
+    <string name="create_add_title">Crear anuncio</string>
+    <string name="add_image_button_text">Añadir imagen</string>
+    <string name="delete_image_button_text">Eliminar imagen</string>
+    <string name="add_tags_label">Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente</string>
+    <string name="save_add_button_text">Guardar anuncio</string>
+    <string name="edit_add_title">Editar anuncio</string>
+    <string name="update_add_button_text">Actualizar anuncio</string>
+    <string name="item_category_label">"Categoría: "</string>
+    <string name="item_house_type_label">"Tipo de casa: "</string>
+    <string name="item_num_rooms_label">"Habitaciones: "</string>
+    <string name="item_num_bathrooms_label">"Baños: "</string>
+    <string name="item_orientation_label">"Orientación: "</string>
+    <string name="item_num_roommates_label">"Compañeros: "</string>
+    <string name="item_roommates_gender_label">"Género: "</string>
+    <string name="item_bathroom_type_label">"Tipo de baño: "</string>
+    <string name="item_building_name_label">Nombre de la vivienda</string>
+    <string name="item_living_building_name_label">Vivienda:</string>
+    <string name="item_location_label">"Ubicación: "</string>
+    <string name="item_square_meters_label">"Metros cuadrados: "</string>
+    <string name="item_price_label">"Precio: "</string>
+    <string name="create_new_add_button_text">Crear nuevo anuncio</string>
 
 </resources>

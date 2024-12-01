@@ -57,7 +57,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         this.listViv = lista;
         this.fragment = fragment;
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
+        this.database = FirebaseDatabase.getInstance(context.getString(R.string.database_url));
     }
 
     @NonNull
@@ -104,14 +104,23 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
         // el siguiente método
 
-        setChipVisibility(holder.categoria, vivienda.getCategoria(),"Categoria - ");
-        setChipVisibility(holder.tipoCasa, vivienda.getTipoCasa(), "Tipo Casa - ");
-        setChipVisibility(holder.habitaciones, vivienda.getHabitaciones(), "Habitaciones - ");
-        setChipVisibility(holder.banos, vivienda.getBanos(), "Baños - ");
-        setChipVisibility(holder.exteriorInterior, vivienda.getExteriorInterior(), "Orientacion - ");
-        setChipVisibility(holder.companeros, vivienda.getCompaneros(), "Compañeros - ");
-        setChipVisibility(holder.genero, vivienda.getGenero(), "Género - ");
-        setChipVisibility(holder.tipoBano, vivienda.getTipoBano(), "Tipo Baño - ");
+        setChipVisibility(holder.categoria, vivienda.getCategoria(),
+                context.getString(R.string.item_category_label));
+        setChipVisibility(holder.tipoCasa, vivienda.getTipoCasa(),
+                context.getString(R.string.item_house_type_label));
+        setChipVisibility(holder.habitaciones, vivienda.getHabitaciones(),
+                context.getString(R.string.item_num_rooms_label));
+        setChipVisibility(holder.banos, vivienda.getBanos(),
+                context.getString(R.string.item_num_bathrooms_label));
+        setChipVisibility(holder.exteriorInterior, vivienda.getExteriorInterior(),
+                context.getString(R.string.item_orientation_label));
+        setChipVisibility(holder.companeros, vivienda.getCompaneros(),
+                context.getString(R.string.item_num_roommates_label));
+        setChipVisibility(holder.genero, vivienda.getGenero(),
+                context.getString(R.string.item_roommates_gender_label));
+        setChipVisibility(holder.tipoBano, vivienda.getTipoBano(),
+                context.getString(R.string.item_bathroom_type_label));
+
 
         String key = vivienda.getId();
         String vivKey = database.getReference("viviendas").child(String.valueOf(position)).getKey();

@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="Editar"/>
+                android:text="@string/edit_button_text"/>
         </RelativeLayout>
 
         <FrameLayout
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="Imagen del anuncio" />
+                android:contentDescription="@string/image_description_label" />
 
             <!-- Flecha izquierda -->
             <ImageButton
@@ -75,9 +75,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ubicación: "
+            android:text="@string/location_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
+
         <TextView
             android:id="@+id/ubicacion_text"
             android:layout_width="wrap_content"
@@ -85,11 +86,10 @@
             android:textSize="18sp"
             android:layout_marginBottom="16dp" />
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Metros Cuadrados: "
+            android:text="@string/square_meters_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
         <TextView
@@ -99,13 +99,13 @@
             android:textSize="18sp"
             android:layout_marginBottom="16dp" />
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Precio: "
+            android:text="@string/price_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
+
         <TextView
             android:id="@+id/precio_text"
             android:layout_width="wrap_content"
@@ -116,9 +116,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descripción: "
+            android:text="@string/description_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
+
         <TextView
             android:id="@+id/descripcion_text"
             android:layout_width="wrap_content"
@@ -132,7 +133,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Categoría: "
+            android:text="@string/category_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
         <TextView
@@ -155,7 +156,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Casa"
+                android:text="@string/house_type_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
             <TextView
@@ -170,7 +171,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Habitaciones"
+                android:text="@string/room_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -186,7 +187,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Baños"
+                android:text="@string/bathroom_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -201,7 +202,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Orientación (Interior/Exterior)"
+                android:text="@string/orientation_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -228,7 +229,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Compañeros"
+                android:text="@string/roommate_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -243,7 +244,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Género de los Habitantes"
+                android:text="@string/roommate_gender_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -259,7 +260,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Orientación (Interior/Exterior)"
+                android:text="@string/orientation_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
             <TextView
@@ -273,7 +274,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Baño"
+                android:text="@string/bathroom_type_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
             <TextView
@@ -291,7 +292,7 @@
             android:id="@+id/btn_volver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Volver"
+            android:text="@string/back_button_text"
             android:layout_gravity="end"/>
 
     </LinearLayout>
