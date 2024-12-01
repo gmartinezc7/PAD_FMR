@@ -161,13 +161,13 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
 
-        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))) {
 
             intent.putExtra(this.getString(R.string.key_tipo_casa), anuncio.getTipoCasa());
             intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
             intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
             intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))) {
 
             intent.putExtra(this.getString(R.string.key_companeros), anuncio.getCompaneros());
             intent.putExtra(this.getString(R.string.key_genero), anuncio.getGenero());

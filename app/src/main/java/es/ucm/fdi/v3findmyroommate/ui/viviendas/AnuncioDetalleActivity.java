@@ -226,7 +226,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         this.categoria = data.getStringExtra(this.getString(R.string.key_categoria));
         categoriaText.setText(this.categoria);
 
-        if(this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))){
+        if(this.categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))){
 
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
@@ -242,7 +242,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
             orientacionText.setText( exteriorInterior);
 
         }
-        else if(categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))){
+        else if(categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))){
 
             opcionesCasa.setVisibility(View.GONE);
             opcionesHabitacion.setVisibility(View.VISIBLE);
@@ -285,7 +285,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private void abrirEdicion() {
         Intent intent = new Intent(this, EditarAnuncioActivity.class);
 
-       incluirDatosEnIntent (intent);
+        incluirDatosEnIntent(intent);
 
         editarAnuncioLauncher.launch(intent); // Usar el nuevo launcher
     }
