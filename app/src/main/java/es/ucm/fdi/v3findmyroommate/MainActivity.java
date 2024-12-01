@@ -51,27 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Adds both locales to the locale class' locale list.
         LocaleUtils.addLocale("es");
-        LocaleUtils.addLocale("en_US");
-
-        // Sets the spanish locale as the default locale.
-        //LocaleUtils.setDefaultLocale(this, "es");
-
-        Locale[] availableLocales = Locale.getAvailableLocales();
-        for (Locale locale : availableLocales) {
-            Log.d("Locales", "Locale: " + locale.toString());
-        }
-
-
-
-        // TEST TEST TEST
-        String mess = "Welkcome back!";
-        if (LocaleUtils.doesStringMatchAnyLanguage(this, mess, R.string.welcome_message)) {
-            Log.d("buttonName", "MATCH");
-        }
-        else {
-            Log.d("buttonName", "NO MATCH");
-        }
-        // END OF TEST
+        LocaleUtils.addLocale("en");
 
 
         loginButton.setOnClickListener(view -> {

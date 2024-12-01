@@ -245,6 +245,8 @@
     <string name="select_num_bathrooms_title">Selecciona el número de baños</string>
     <string name="select_house_orientation_title">Seleciona la orientación</string>
     <string name="enter_square_meters_hint">Introduce los metros cuadrados</string>
+    <string name="DB_language_shortcut" translatable="false">es</string>
+    <string name="house_type_preference_key" translatable="false">house_type</string>
 
 
 </resources>

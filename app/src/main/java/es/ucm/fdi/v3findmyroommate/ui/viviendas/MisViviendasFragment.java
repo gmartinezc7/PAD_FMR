@@ -370,6 +370,10 @@ public class MisViviendasFragment extends Fragment {
 
             MisViviendasFragment.guardarOrientacion(nuevoAnuncio, application, databaseAddReference);
 
+            // Como es un valor numérico, no es necesario compararlo con otros idiomas.
+            databaseAddReference.child(application.getString(R.string.square_meters_db_label))
+                    .setValue(nuevoAnuncio.getMetros());
+
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
@@ -555,7 +559,7 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Método que elminina los campos que no sean los propios de una habitación.
+    // Método que elimina los campos que no sean los propios de una habitación.
     private static void eliminarCamposPreviosTipoPropiedadHabitacion(DatabaseReference databaseAddReference,
                                                                      Application application) {
 
@@ -582,6 +586,13 @@ public class MisViviendasFragment extends Fragment {
                         .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
                 if (num_bathroom != null)
                     databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                            .removeValue();
+
+                // Elimina el campo de metros cuadrados.
+                String square_meters = snapshot.child(application
+                        .getString(R.string.square_meters_db_label)).getValue(String.class);
+                if (square_meters != null)
+                    databaseAddReference.child(application.getString(R.string.square_meters_db_label))
                             .removeValue();
 
             }
