@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import android.widget.AdapterView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -80,6 +81,8 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio_2);
         previewPhotoUri = null;
+
+
 
 
         enlazarIdsVista();
