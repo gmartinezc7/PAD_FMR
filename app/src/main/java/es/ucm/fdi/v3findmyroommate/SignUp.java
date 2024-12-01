@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuthWebException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.ucm.fdi.v3findmyroommate.PreferencesFragment.PreferenceUser;
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
@@ -117,13 +120,31 @@ public class SignUp extends AppCompatActivity {
 
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Lista de permisos según la versión de Android
+            List<String> permisosNecesarios = new ArrayList<>();
 
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
-                        100);
+            // Permiso de cámara (siempre requerido)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permisosNecesarios.add(android.Manifest.permission.CAMERA);
+            }
 
+            // Permiso de imágenes según la versión de Android
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else { // Android 12 y anteriores
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
+            }
+
+            // Solicitar los permisos necesarios
+            if (!permisosNecesarios.isEmpty()) {
+                requestPermissions(
+                        permisosNecesarios.toArray(new String[0]),
+                        100
+                );
             } else {
                 abrirTrasIniciar();
             }
@@ -132,15 +153,23 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Llamada a la implementación base
         if (requestCode == 100) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            boolean todosPermisosConcedidos = true;
+
+            for (int resultado : grantResults) {
+                if (resultado != PackageManager.PERMISSION_GRANTED) {
+                    todosPermisosConcedidos = false;
+                    break;
+                }
+            }
+
+            if (todosPermisosConcedidos) {
                 abrirTrasIniciar();
             } else {
-                Toast.makeText(this, this.getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
             }
         }
     }
