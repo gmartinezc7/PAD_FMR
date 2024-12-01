@@ -41,7 +41,7 @@
     <string name="fill_all_fields_toast_text">Enter all the fields</string>
     <string name="username_preference_dialog_text">Insert your new username</string>
     <string name="email_preference_dialog_text">Insert your new email</string>
-    <string name="house_preferences_title">House preferences</string>
+    <string name="house_preferences">House preferences</string>
     <string name="male_label">Male</string>
     <string name="female_label">Female</string>
     <string name="single_status_label">Single</string>
@@ -139,11 +139,12 @@
         <string name="mensaje_confirmacion_eliminado">Listing deleted</string>
         <string name="mensaje_debes_rellenar_todo">You must fill in all the information to create a listing</string>
 
-        <string name="mensaje_permiso_camara_denegado">Camera permission not granted</string>
-        <string name="mensaje_permiso_almacenamiento_denegado">Storage permission not granted</string>
-        <string name="mensaje_error_crear_imagen">Error creating image file</string>
-        <string name="mensaje_error_encontrar_camara">No camera application found</string>
-        <string name="mensaje_no_se_selecciono_imagen">No image selected</string>
+    <string name="mensaje_permiso_camara_denegado">Camera permission not granted</string>
+    <string name="mensaje_permiso_almacenamiento_denegado">Storage permission not granted</string>
+    <string name="mensaje_permisos_requeridos_denegados">Storage permission not granted</string>
+    <string name="mensaje_error_crear_imagen">Error creating image file</string>
+    <string name="mensaje_error_encontrar_camara">No camera application found</string>
+    <string name="mensaje_no_se_selecciono_imagen">No image selected</string>
     <string name="edit_house_listing">Edit add</string>
     <string name="apartment_house_type">Apartment</string>
     <string name="house_house_type">House</string>
@@ -166,6 +167,21 @@
     <string name="select_house_orientation_title">Select house orientation</string>
     <string name="enter_square_meters_hint">Enter square meters</string>
 
+
+    <string name="house_square_feets">House Square Feet</string>
+    <string name="property_price">Property Price</string>
+    <string name="select_maximum_number_of_roomates">Select Maximum Number of Roommates</string>
+    <string name="select_roommate_gender">Select Roommate Gender</string>
+    <string name="select_room_type">Select Room Type</string>
+    <string name="select_bathroom_tyoe">Select Bathroom Type</string>
+    <string name="private_bathroom">Private</string>
+    <string name="shared">Shared</string>
+    <string name="man">Man</string>
+    <string name="woman">Woman</string>
+    <string name="both">Both</string>
+    <string name="select_number_of_bathrooms">Select Number of Bathrooms</string>
+    <string name="select_orientation">Select Orientation</string>
+    <string name="contact_owner">Contact owner</string>
 
 </resources>
 

@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:paddingBottom="?attr/actionBarSize">
 
-    <!-- RecyclerView para los mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
@@ -13,7 +12,6 @@
         android:padding="8dp"
         android:clipToPadding="false" />
 
-    <!-- Input y botón para enviar mensajes -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

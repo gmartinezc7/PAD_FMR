@@ -72,6 +72,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     private Message getLastMessage(Map<String, Object> messages) {
+        if (messages == null || messages.isEmpty()) {
+            return null;
+        }
+
         long latestTimestamp = Long.MIN_VALUE;
         Message lastMessage = null;
 
@@ -98,6 +102,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
         return lastMessage;
     }
+
 
     private String formatTimestamp(long timestamp) {
         if (timestamp == 0L) {

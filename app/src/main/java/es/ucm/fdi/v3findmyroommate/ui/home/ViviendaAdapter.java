@@ -2,14 +2,24 @@ package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import com.google.android.material.chip.Chip;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,9 +29,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.ui.chats.Chat;
+import es.ucm.fdi.v3findmyroommate.ui.chats.ChatActivity;
+import es.ucm.fdi.v3findmyroommate.ui.chats.ChatFragment;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.Anuncio;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.AnuncioDetalleActivity;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.AnunciosAdapter;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.MisViviendasFragment;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {
@@ -29,10 +49,13 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     private List<Vivienda> listViv;
     private String userId;
     private FirebaseDatabase database;
+    private Context context;
+    private HomeFragment fragment;
 
-    public ViviendaAdapter(List<Vivienda> lista){
-
+    public ViviendaAdapter(Context context, List<Vivienda> lista, HomeFragment fragment){
+        this.context = context;
         this.listViv = lista;
+        this.fragment = fragment;
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
     }
@@ -52,6 +75,30 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice());
         holder.metr.setText(vivienda.getMetr());
+
+        //SAM-----------------------------------------------------------------------------------------------------
+        holder.previewRect.setVisibility(View.VISIBLE);
+//-------------------------------------------------------------------------------------------------------------------
+
+
+        //Usuario
+        String ownerName = vivienda.getOwnerName();
+        if (ownerName != null) {
+            holder.ownerName.setText("Contanctar dueño: " + ownerName);
+            //Llamar al ChatActivity
+            holder.ownerName.setOnClickListener(v -> {
+                String ownerId = vivienda.getOwnerId();
+                if (ownerId != null) {
+                    openChatWithOwner(ownerId);
+                } else {
+                    Log.e("vivienda adapter", "No se puede contactar con el propietario");
+                }
+            });
+
+        } else {
+            holder.ownerName.setText("Dueño: Desconocido");
+        }
+
 
         // El resto de atributos, como son chips que quiero mostrar y no mostrar dependiendo de la
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
@@ -100,7 +147,58 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         }
 
 
+        //SAM--------------------------------------------------------------------------------------------------------------------------
+        // CONFIGURAR LA IMAGEN (CLICK) Y LA NAVEGACIÓN ENTRE ELLAS
+        setImageNavigation(holder, vivienda);
+
+
+
     }
+
+
+
+
+    //SAM---------------------------------------------------------------------------------------------------------------------------------------
+    private void setImageNavigation(ViviendaAdapter.ViviendaViewHolder holder, Vivienda vivienda) {
+        if (!vivienda.getImagenesUri().isEmpty()) {
+            holder.imagenesUri = new ArrayList<>(vivienda.getImagenesUri());
+            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+            // NAVEGAR A LA IMAGEN ANTERIOR
+            holder.btnPrev.setOnClickListener(v -> navigateImage(holder, -1));
+
+            // NAVEGAR A LA SIGUIENTE
+            holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
+
+            // CLICK EN LA IMAGEN PARA VER LOS DETALLES
+            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(vivienda));
+        }
+    }
+
+    private void navigateImage(ViviendaAdapter.ViviendaViewHolder holder, int direction) {
+        int newIndex = holder.imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < holder.imagenesUri.size()) {
+            holder.imagenActualIndex = newIndex;
+            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+
+    //IMPORTANTE !!!!!
+    private void showAnuncioDetail(Vivienda vivienda) {
+
+        this.fragment.lanzarVerAnuncio(vivienda);
+
+    }
+
+
+
+    //---------------------------------------------------------------------------------------------------------------------------------------
+
 
     @Override
     public int getItemCount() {
@@ -108,10 +206,20 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     }
 
     public static class ViviendaViewHolder extends RecyclerView.ViewHolder {
-        private TextView name, address, description, price;
+        private TextView name, address, description, price, ownerName;
         private TextView metr;
         private ToggleButton toggleFavorito;
         private Chip categoria, tipoCasa, habitaciones, banos, exteriorInterior, companeros, genero, tipoBano;
+
+
+        //SAM-------------------------------------------------------------
+        View previewRect;
+        ImageView imageViewAnuncio;
+         List<Uri> imagenesUri = new ArrayList<>();
+         int imagenActualIndex = 0;
+         ImageButton btnPrev, btnNext;
+        //---------------------------------------------------------------------------
+
 
         public ViviendaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,6 +237,19 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             companeros = itemView.findViewById(R.id.chipCompaneros);
             genero = itemView.findViewById(R.id.chipGenero);
             tipoBano = itemView.findViewById(R.id.chipTipoBano);
+            ownerName = itemView.findViewById(R.id.owner_id);
+
+
+
+//SAM------------------------------------------------------------------------------------------
+            previewRect = itemView.findViewById(R.id.preview_rect);
+            imageViewAnuncio = itemView.findViewById(R.id.image_view_anuncio);
+            btnPrev = itemView.findViewById(R.id.btn_prev);
+            btnNext = itemView.findViewById(R.id.btn_next);
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
+            //------------------------------------------------------------------------------------------
+
         }
     }
     public void updateList (List<Vivienda> newVivs){
@@ -144,6 +265,79 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             chip.setVisibility(View.VISIBLE);
             chip.setText(prefix + value);
         }
-
     }
+
+    private void openChatWithOwner(String ownerId) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("chats");
+
+        // Buscar chat entre los usuarios
+        chatsRef.orderByChild("participants/" + currentUserId).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String chatId = null;
+
+                // Verificar si ya existe un chat con ambos usuarios
+                for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                    if (chatSnapshot.child("participants").hasChild(ownerId)) {
+                        chatId = chatSnapshot.getKey();
+                        break;
+                    }
+                }
+
+                if (chatId == null) {
+                    // Crear un nuevo chat si no existe
+                    chatId = chatsRef.push().getKey();
+                    if (chatId != null) {
+                        Map<String, Object> chatData = new HashMap<>();
+                        chatData.put("lastMessage", "");
+                        chatData.put("timestamp", System.currentTimeMillis());
+
+                        Map<String, Boolean> participants = new HashMap<>();
+                        participants.put(currentUserId, true);
+                        participants.put(ownerId, true);
+
+                        chatData.put("participants", participants);
+
+                        chatsRef.child(chatId).setValue(chatData);
+
+                        // Agregar el chat a la lista de chats de ambos usuarios
+                        DatabaseReference userChatsRef = FirebaseDatabase.getInstance().getReference("users");
+                        userChatsRef.child(currentUserId).child("chats").child(chatId).setValue(true);
+                        userChatsRef.child(ownerId).child("chats").child(chatId).setValue(true);
+                    }
+                }
+
+                // Abrir el fragmento de chat
+                openChatFragment(chatId, ownerId);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("viviendaAdapter ", "Error al abrir el chat");
+            }
+        });
+    }
+
+
+    private void openChatFragment(String chatId, String ownerId) {
+        Chat chat = new Chat(chatId, null, null, "", System.currentTimeMillis());
+        chat.setOtherUsername(ownerId);
+
+        // Crea el ChatFragment y pasa los argumentos
+        ChatFragment chatFragment = new ChatFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("chat", chat);
+        chatFragment.setArguments(bundle);
+
+        // Usa el NavController para navegar
+        if (context instanceof FragmentActivity) {
+            NavController navController = Navigation.findNavController((FragmentActivity) context, R.id.nav_host_fragment_activity_lobby);
+            navController.navigate(R.id.chatFragment, bundle);
+        } else {
+            Log.e("ViviendaAdapter", "Contexto no válido para abrir el fragmento");
+        }
+    }
+
+
 }

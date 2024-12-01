@@ -9,7 +9,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 
     <application
@@ -43,6 +43,7 @@
             android:name=".ui.viviendas.CrearAnuncioActivity"
             android:exported="false" />
         <activity android:name=".ui.viviendas.AnuncioDetalleActivity" />
+        <activity android:name=".ui.home.ViviendaDetalleActivity" />
         <activity android:name=".ui.viviendas.EditarAnuncioActivity" />
 
         <provider
@@ -56,6 +57,7 @@
         </provider>
         <activity android:name=".SignUp"/>
         <activity android:name=".PreferencesFragment.PreferenceUser"/>
+        <activity android:name=".ui.chats.ChatActivity"></activity>
     </application>
 
 </manifest>

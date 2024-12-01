@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
-        android:text="@string/room_preferences_title"
+        android:text="Room Preferences"
         android:textStyle="bold"
         android:textSize="25sp"
         />
@@ -25,14 +25,12 @@
         android:id="@+id/maxRoommatesHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/select_max_roomates_title"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:text="@string/select_maximum_number_of_roomates"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/roomPreferencesMessage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomPreferencesMessage" />
+        android:layout_marginTop="20dp" />
 
     <!-- Max Roommates Selector -->
     <com.google.android.material.chip.ChipGroup
@@ -51,21 +49,22 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/two" />
+            android:text="2" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/three" />
+            android:text="3" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFourOrMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/four_plus" />
+
+            android:text="4+" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Roommate Gender Header -->
@@ -73,14 +72,12 @@
         android:id="@+id/roommateGenderHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/select_roomate_gender_title"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:text="@string/select_roommate_gender"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/maxRoommatesChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxRoommatesChipGroup" />
+        android:layout_marginTop="20dp" />
 
     <!-- Roommate Gender Selector -->
     <com.google.android.material.chip.ChipGroup
@@ -99,21 +96,21 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/male_label" />
+            android:text="@string/man" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipWomen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/female_label" />
+            android:text="@string/woman" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipBoth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/both_label" />
+            android:text="@string/both" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Room Type Header -->
@@ -121,14 +118,12 @@
         android:id="@+id/roomTypeHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/select_room_orientation_title"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:text="@string/select_room_type"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/roommateGenderChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roommateGenderChipGroup" />
+        android:layout_marginTop="20dp" />
 
     <!-- Room Type Selector -->
     <com.google.android.material.chip.ChipGroup
@@ -162,14 +157,12 @@
         android:id="@+id/bathroomHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/select_bathroom_type_title"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:text="@string/select_bathroom_tyoe"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/roomTypeChipGroup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomTypeChipGroup" />
+        android:layout_marginTop="20dp" />
 
     <!-- Bathroom Selector -->
     <com.google.android.material.chip.ChipGroup
@@ -188,14 +181,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/private_bathroom_type" />
+            android:text="@string/private_bathroom" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chipShared"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:textSize="16sp"
-            android:text="@string/shared_bathroom_type" />
+            android:text="@string/shared" />
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Continue Button -->
