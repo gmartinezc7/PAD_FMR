@@ -1,5 +1,10 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,7 +106,6 @@ public class ChatFragment extends Fragment {
         return root;
     }
 
-    // Cargar los mensajes del chat
     private void loadMessages() {
         chatMessagesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,6 +127,7 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
 
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -160,7 +167,7 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot participant : snapshot.getChildren()) {
                     String participantId = participant.getKey();
                     if (!participantId.equals(currentUserId)) {
-                        sendPushNotification(participantId, "Nuevo mensaje", messageText);
+                        sendLocalNotification(messageText);
                     }
                 }
             }
@@ -172,26 +179,32 @@ public class ChatFragment extends Fragment {
         });
     }
 
-    private void sendPushNotification(String recipientId, String title, String message) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(recipientId).child("fcmToken");
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String recipientToken = snapshot.getValue(String.class);
-                if (recipientToken != null) {
-                    RemoteMessage remoteMessage = new RemoteMessage.Builder(recipientToken)
-                            .addData("title", title)
-                            .addData("body", message)
-                            .build();
-                    FirebaseMessaging.getInstance().send(remoteMessage);
-                }
-            }
+    @SuppressLint("MissingPermission")
+    private void sendLocalNotification(String message) {
+        // Crear un canal de notificación para Android 8.0 y superior
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Chat Notifications";
+            String description = "Notifications for new messages in chat.";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("chat_channel", name, importance);
+            channel.setDescription(description);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("SendNotification", "Error al obtener token: " + error.getMessage());
-            }
-        });
+            // Obtener el NotificationManager y crear el canal
+            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Crear la notificación
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "chat_channel")
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp) // Usar un ícono apropiado
+                .setContentTitle("Nuevo mensaje")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true); // Se cancela cuando se toca la notificación
+
+        // Mostrar la notificación
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        notificationManager.notify(0, builder.build());
     }
 
 }

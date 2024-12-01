@@ -1,6 +1,12 @@
 package es.ucm.fdi.v3findmyroommate;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +19,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,6 +29,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -67,13 +76,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         // TEST TEST TEST
         String mess = "Welkcome back!";
         if (LocaleUtils.doesStringMatchAnyLanguage(this, mess, R.string.welcome_message)) {
             Log.d("buttonName", "MATCH");
-        }
-        else {
+        } else {
             Log.d("buttonName", "NO MATCH");
         }
         // END OF TEST
@@ -88,24 +95,21 @@ public class MainActivity extends AppCompatActivity {
 
                 // Accesses database and searches for the user's email.
                 mAuth.signInWithEmailAndPassword(userEmail, userPassword)
-                    .addOnCompleteListener(MainActivity.this, task -> {
-                        if (task.isSuccessful()) {
-                            // If the sign in is successful, updates preferences signed-in user's information.
-                            ConfigPreferencesModel.setInitialPreferences(this.getApplication());
-                            openLoginView(); // Goes to the next screen.
-                            Log.d("SignIn", "Sign in successful");
-                        }
-                        else {
-                            // If the sign in fails, displays a message to the user.
-                            Toast signInFailedToast = Toast.makeText(MainActivity.this,
-                                    R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
-                            signInFailedToast.show();
-                            Log.w("SignIn", "Sign in failed", task.getException());
-                        }
-                    });
-            }
-
-            else {
+                        .addOnCompleteListener(MainActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // If the sign in is successful, updates preferences signed-in user's information.
+                                ConfigPreferencesModel.setInitialPreferences(this.getApplication());
+                                openLoginView(); // Goes to the next screen.
+                                Log.d("SignIn", "Sign in successful");
+                            } else {
+                                // If the sign in fails, displays a message to the user.
+                                Toast signInFailedToast = Toast.makeText(MainActivity.this,
+                                        R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
+                                signInFailedToast.show();
+                                Log.w("SignIn", "Sign in failed", task.getException());
+                            }
+                        });
+            } else {
                 Toast fillAlFieldsToast = Toast.makeText(MainActivity.this,
                         R.string.fill_all_fields_toast_text, Toast.LENGTH_SHORT);
                 fillAlFieldsToast.show();
@@ -132,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -147,20 +150,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void openLoginView(){
+    public void openLoginView() {
         Intent intent = new Intent(MainActivity.this, Lobby.class);
         startActivity(intent);
     }
 
 
-    public void openSignUPView(){
+    public void openSignUPView() {
         Intent intent = new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
     }
 
-    private void sendTokenToBackend(String token) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        //TODO
+    public void sendNotification(Context context, String messageText, String senderName) {
+        String channelId = "chat_channel_id";
+        String channelName = "Chat Notifications";
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle("Nuevo mensaje de " + senderName)
+                .setContentText(messageText)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
+
+        notificationManager.notify(1, notification);
     }
 
 
