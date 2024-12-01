@@ -135,8 +135,20 @@ public class HomeFragment extends Fragment {
             String fGenero = sGenero.getSelectedItem() != null ? sGenero.getSelectedItem().toString() : "";
             String fNumComps = sNumComps.getSelectedItem() != null ? sNumComps.getSelectedItem().toString() : "";
             String fTipoBano = sTipoBano.getSelectedItem() != null ? sTipoBano.getSelectedItem().toString() : "";
-            Integer fprice = Integer.parseInt(sprice.getText().toString());
-            Integer fmetr = Integer.parseInt(smetros.getText().toString());
+            Integer fprice = -1;
+            Integer fmetr = -1;
+            if (sprice.getText() != null){
+                System.out.println("NO ES NULL Y ES: " + sprice.getText());
+                if (!sprice.getText().toString().equals("")){
+                    fprice = Integer.parseInt(sprice.getText().toString());
+                }
+            }
+            if (smetros.getText() != null){
+                System.out.println("NO ES NULL Y ES: " + smetros.getText());
+                if (!smetros.getText().toString().equals("")){
+                    fmetr = Integer.parseInt(smetros.getText().toString());
+                }
+            }
 
             // Lógica para aplicar filtros
             // Llama a tu método o listener con los valores seleccionados
@@ -171,7 +183,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void notApplyFilters(){
-        homeViewModel.applyFiltersViewModel("","","","","","","","",true, 0,0);
+        homeViewModel.applyFiltersViewModel("","","","","","","","",true, -1,-1);
 
     }
 
