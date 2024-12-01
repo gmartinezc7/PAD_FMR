@@ -477,15 +477,15 @@ public class MisViviendasFragment extends Fragment {
         String generoLenguajePredeterminado = "";
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                generoSeleccionado, R.string.male_label)) {
+                generoSeleccionado, R.string.man)) {
             generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.male_label);
+                    R.string.man);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                generoSeleccionado, R.string.female_label)) {
+                generoSeleccionado, R.string.woman)) {
             generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.female_label);
+                    R.string.woman);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),

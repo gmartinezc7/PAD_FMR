@@ -264,6 +264,7 @@
     <string name="contact_owner">Contactar dueño:</string>
     <string name="DB_language_shortcut" translatable="false">es</string>
     <string name="house_type_preference_key" translatable="false">house_type</string>
+    <string name="house_preferences">Características de la casa</string>
 
 
 </resources>

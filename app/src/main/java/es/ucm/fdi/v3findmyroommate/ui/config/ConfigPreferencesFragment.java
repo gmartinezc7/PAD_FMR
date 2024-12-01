@@ -61,8 +61,8 @@ public class ConfigPreferencesFragment extends PreferenceFragmentCompat {
 
     public void setListPreferencesArrays() {
         // Edit the gender entries array.
-        this.gender_entries[0] = getString(R.string.male_label);
-        this.gender_entries[1] = getString(R.string.female_label);
+        this.gender_entries[0] = getString(R.string.man);
+        this.gender_entries[1] = getString(R.string.woman);
 
         // Edit the age entries array.
         this.age_entries[0] = getString(R.string.young_adult_age_label);

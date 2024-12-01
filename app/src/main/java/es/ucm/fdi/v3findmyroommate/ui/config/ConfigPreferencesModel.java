@@ -385,17 +385,17 @@ public class ConfigPreferencesModel extends AndroidViewModel {
 
         // Translates to the DB language's equivalent value.
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                gender, R.string.male_label)) {  // Selects male option.
+                gender, R.string.man)) {  // Selects male option.
             genderDBLanguage = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.male_label);
-            genderValueForPreferences = application.getString(R.string.male_label);
+                    R.string.man);
+            genderValueForPreferences = application.getString(R.string.man);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                gender, R.string.female_label)) {  // Selects female option.
+                gender, R.string.woman)) {  // Selects female option.
             genderDBLanguage = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.female_label);
-            genderValueForPreferences = application.getString(R.string.female_label);
+                    R.string.woman);
+            genderValueForPreferences = application.getString(R.string.woman);
         }
 
         ConfigPreferencesModel.databaseUserReference.child(application.getString(R.string.gender_db_label))
@@ -562,17 +562,17 @@ public class ConfigPreferencesModel extends AndroidViewModel {
 
         // Translates to the DB language's equivalent value.
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                roommateGender, R.string.male_label)) {  // Selects male option.
+                roommateGender, R.string.man)) {  // Selects male option.
             roommateGenderDBLanguage = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.male_label);
-            roommateGenderValueForPreferences = application.getString(R.string.male_label);
+                    R.string.man);
+            roommateGenderValueForPreferences = application.getString(R.string.man);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                roommateGender, R.string.female_label)) {  // Selects female option.
+                roommateGender, R.string.woman)) {  // Selects female option.
             roommateGenderDBLanguage = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.female_label);
-            roommateGenderValueForPreferences = application.getString(R.string.female_label);
+                    R.string.woman);
+            roommateGenderValueForPreferences = application.getString(R.string.woman);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),

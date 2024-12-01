@@ -42,6 +42,7 @@
     <string name="username_preference_dialog_text">Insert your new username</string>
     <string name="email_preference_dialog_text">Insert your new email</string>
     <string name="house_preferences">House preferences</string>
+    <string name="house_preferences_title">House preferences</string>
     <string name="male_label">Male</string>
     <string name="female_label">Female</string>
     <string name="single_status_label">Single</string>
@@ -147,7 +148,7 @@
     <string name="mensaje_no_se_selecciono_imagen">No image selected</string>
     <string name="edit_house_listing">Edit add</string>
     <string name="apartment_house_type">Apartment</string>
-    <string name="house_house_type">House</string>
+    <string name="house_house_type">Single-family home</string>
     <string name="interior_orientation">Interior</string>
     <string name="exterior_orientation">Exterior</string>
     <string name="private_bathroom_type">Private</string>
