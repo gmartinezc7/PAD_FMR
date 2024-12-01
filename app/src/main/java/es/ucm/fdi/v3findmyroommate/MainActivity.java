@@ -17,6 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import java.util.Locale;
@@ -115,6 +118,20 @@ public class MainActivity extends AppCompatActivity {
         signUP.setOnClickListener(view -> openSignUPView());
 
         signUP.setOnClickListener(view -> openSignUPView());
+
+        //Notificaciones
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        //Guardar token del usuario
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+                        userRef.child("fcmToken").setValue(token);
+                    }
+                });
+
+
     }
 
     public void openLoginView(){
@@ -126,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
     public void openSignUPView(){
         Intent intent = new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
+    }
+
+    private void sendTokenToBackend(String token) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //TODO
     }
 
 

@@ -20,10 +20,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -124,10 +127,10 @@ public class ChatFragment extends Fragment {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
 
-        // Crear el mensaje
+        //Crear el mensaje
         Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
 
-        // Agregar el mensaje a la base de datos
+        //Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -140,15 +143,58 @@ public class ChatFragment extends Fragment {
                         chatRef.updateChildren(chatUpdates)
                                 .addOnCompleteListener(updateTask -> {
                                     if (updateTask.isSuccessful()) {
-                                        Toast.makeText(getContext(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                                        Log.d("Enviar Mensage", "Mensaje enviado");
+                                        //Notificar al otro usuario
+                                        notifyRecipient(chatId, messageText);
                                     } else {
-                                        Toast.makeText(getContext(), "Error al actualizar el chat", Toast.LENGTH_SHORT).show();
+                                        Log.d("Enviar Mensage", "Error enviar mensaje");
                                     }
                                 });
                     } else {
-                        Toast.makeText(getContext(), "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
+                        Log.d("Enviar Mensage", "Error enviar mensaje");
                     }
                 });
     }
 
+    private void notifyRecipient(String chatId, String messageText) {
+        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+        chatRef.child("participants").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot participant : snapshot.getChildren()) {
+                    String participantId = participant.getKey();
+                    if (!participantId.equals(currentUserId)) {
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId).child("notifications");
+                        userRef.child("fcmToken").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String recipientToken = snapshot.getValue(String.class);
+                                if (recipientToken != null) {
+                                    sendPushNotification(recipientToken, "Nuevo mensaje", messageText);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("NotifyRecipient", "Error obteniendo el token FCM: " + error.getMessage());
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("NotifyRecipient", "Error obteniendo participantes: " + error.getMessage());
+            }
+        });
+    }
+
+    private void sendPushNotification(String recipientToken, String title, String message) {
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(recipientToken)
+                .setMessageId(UUID.randomUUID().toString())
+                .addData("title", title)
+                .addData("body", message)
+                .build());
+    }
 }
