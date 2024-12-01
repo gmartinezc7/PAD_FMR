@@ -26,7 +26,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -123,6 +122,7 @@ public class ChatFragment extends Fragment {
         });
     }
 
+
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
@@ -144,7 +144,7 @@ public class ChatFragment extends Fragment {
                                 .addOnCompleteListener(updateTask -> {
                                     if (updateTask.isSuccessful()) {
                                         Log.d("Enviar Mensage", "Mensaje enviado");
-                                        //Notificar al otro usuario
+
                                         notifyRecipient(chatId, messageText);
                                     } else {
                                         Log.d("Enviar Mensage", "Error enviar mensaje");
@@ -164,37 +164,28 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot participant : snapshot.getChildren()) {
                     String participantId = participant.getKey();
                     if (!participantId.equals(currentUserId)) {
+                        //Enviar notificación al otro usuario
                         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId).child("notifications");
-                        userRef.child("fcmToken").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                String recipientToken = snapshot.getValue(String.class);
-                                if (recipientToken != null) {
-                                    sendPushNotification(recipientToken, "Nuevo mensaje", messageText);
-                                }
-                            }
+                        Map<String, String> notification = new HashMap<>();
+                        notification.put("title", "Nuevo mensaje");
+                        notification.put("body", messageText);
+                        notification.put("chatId", chatId);
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.e("NotifyRecipient", "Error obteniendo el token FCM: " + error.getMessage());
-                            }
-                        });
+                        userRef.push().setValue(notification)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Log.d("NotifyRecipient", "Notificación enviada al usuario " + participantId);
+                                    } else {
+                                        Log.e("NotifyRecipient", "Error al enviar notificación");
+                                    }
+                                });
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("NotifyRecipient", "Error obteniendo participantes: " + error.getMessage());
             }
         });
-    }
-
-    private void sendPushNotification(String recipientToken, String title, String message) {
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(recipientToken)
-                .setMessageId(UUID.randomUUID().toString())
-                .addData("title", title)
-                .addData("body", message)
-                .build());
     }
 }
