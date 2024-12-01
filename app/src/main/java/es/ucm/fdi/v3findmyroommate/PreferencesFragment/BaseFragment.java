@@ -38,15 +38,17 @@ public abstract class BaseFragment extends Fragment {
                 Chip materialChip = (Chip) chip;
                 if (chip.getId() == checkedId) {
                     // Chip seleccionado
-                    materialChip.setChipBackgroundColorResource(R.color.light_gray);
-
+                    materialChip.setChipBackgroundColorResource(R.color.chip_selected);
                 } else {
-                    materialChip.setChipBackgroundColorResource(R.color.white);
                     // Chip no seleccionado
+                    materialChip.setChipBackgroundColorResource(R.color.chip_unselected);
                 }
             }
         }
     }
+
+
+
     /**
      * Sets up a ChipGroup with a generic listener to reduce redundancy.
      * @param view The parent view.

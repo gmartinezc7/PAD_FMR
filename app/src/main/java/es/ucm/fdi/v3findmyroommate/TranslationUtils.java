@@ -8,10 +8,10 @@ public class TranslationUtils {
 
     static {
         // Mapeos de traducción (puedes extender esta lista)
-        translationMap.put("Home", "Casa");
+        translationMap.put("House", "Casa");
         translationMap.put("Room", "Habitación");
         translationMap.put("Apartment", "Apartamento");
-        translationMap.put("House", "Casa independiente");
+        translationMap.put("Home", "Casa independiente");
         translationMap.put("Male", "Hombre");
         translationMap.put("Female", "Mujer");
         translationMap.put("Both", "Mixto");
