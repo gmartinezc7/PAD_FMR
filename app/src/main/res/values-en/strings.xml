@@ -141,6 +141,7 @@
 
     <string name="mensaje_permiso_camara_denegado">Camera permission not granted</string>
     <string name="mensaje_permiso_almacenamiento_denegado">Storage permission not granted</string>
+    <string name="mensaje_permisos_requeridos_denegados">Storage permission not granted</string>
     <string name="mensaje_error_crear_imagen">Error creating image file</string>
     <string name="mensaje_error_encontrar_camara">No camera application found</string>
     <string name="mensaje_no_se_selecciono_imagen">No image selected</string>
