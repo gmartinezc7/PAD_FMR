@@ -199,7 +199,7 @@ public class HomeViewModel extends ViewModel {
                 String viviendagetmetr = vivienda.getMetr();
                 System.out.println("Viviendaprint: " + viviendagetmetr);
                 Integer vmetr = Integer.parseInt(vivienda.getMetr());
-                if (metros < vmetr){
+                if (metros < vmetr && metros != -1){
                     filtrosOK = false;
                 }
             }
