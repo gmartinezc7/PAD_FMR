@@ -41,7 +41,6 @@
     <string name="fill_all_fields_toast_text">Enter all the fields</string>
     <string name="username_preference_dialog_text">Insert your new username</string>
     <string name="email_preference_dialog_text">Insert your new email</string>
-    <string name="house_preferences">House preferences</string>
     <string name="house_preferences_title">House preferences</string>
     <string name="male_label">Male</string>
     <string name="female_label">Female</string>

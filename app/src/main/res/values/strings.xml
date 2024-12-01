@@ -19,7 +19,6 @@
     <string name="already_have_an_acount">¿Ya tienes una cuenta?</string>
     <string name="create_account_message">¡Ya casi estás! Solo crea tu nueva cuenta ahora, y estarás un paso más cerca de descubrir la vivienda perfecta que siempre has querido.</string>
     <string name="create_account">Crear cuenta</string>
-    <string name="house_preferences">Preferencias de casa</string>
 
     <!--Texto Chats -->
 
@@ -266,7 +265,5 @@
     <string name="contact_owner">Contactar dueño:</string>
     <string name="DB_language_shortcut" translatable="false">es</string>
     <string name="house_type_preference_key" translatable="false">house_type</string>
-    <string name="house_preferences">Características de la casa</string>
-
 
 </resources>
