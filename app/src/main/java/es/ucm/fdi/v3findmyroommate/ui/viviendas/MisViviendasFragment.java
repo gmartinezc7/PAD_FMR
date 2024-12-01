@@ -253,11 +253,11 @@ public class MisViviendasFragment extends Fragment {
                                             R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
 
                                         String tipo_casa = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                                                .getString(R.string.add_house_type_db_label)).getValue(String.class);
                                         String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
                                                 .getString(R.string.num_rooms_db_label)).getValue(String.class);
                                         String num_banos = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                                                .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
                                         String orientacion = secondSnapshot.child(getActivity().getApplication()
                                                 .getString(R.string.orientation_db_label)).getValue(String.class);
 
