@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chip_selected">#333333</color> <!-- Gris oscuro -->
+    <color name="chip_unselected">#121212</color> <!-- Negro profundo -->
+</resources>
