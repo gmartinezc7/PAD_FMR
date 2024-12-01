@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 import android.widget.AdapterView;
@@ -301,38 +303,31 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     //----------------------PERMISOS Y ACCESO A CAMARA/ALAMACENAMIENTO----------------------------------------------------------------------
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.CAMERA
-            }, 100);
-        }
-        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            }, 101);
-        }
-        else {
-            openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        100);
+
+            } else {
+                openImageSelector();
+            }
+        } else {
+            openImageSelector();
+        }
     }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Llamada a la implementación base
         if (requestCode == 100) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageSelector(); // Abre selector si se concede el permiso
+                openImageSelector();
             } else {
-                Toast.makeText(this, this.getString(R.string.mensaje_permiso_camara_denegado), Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if(requestCode == 101){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageSelector(); // Abre selector si se concede el permiso
-            } else {
-                Toast.makeText(this, this.getString(R.string.mensaje_permiso_almacenamiento_denegado), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -419,12 +414,16 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
     private File createImageFile() throws IOException {
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
 
+        // Android 11+ verifica acceso a Scoped Storage
+        if (storageDir == null) {
+            throw new IOException("No se pudo acceder al directorio.");
+        }
+
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
 }
