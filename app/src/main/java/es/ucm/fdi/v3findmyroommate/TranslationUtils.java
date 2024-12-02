@@ -46,7 +46,7 @@ public class TranslationUtils {
         Locale currentLocale = Locale.getDefault();
         boolean isSpanish = currentLocale.getLanguage().equals("es");
 
-        if (isSpanish && value != null) {
+        if (!isSpanish && value != null) {
             return translateToBaseLanguage(value);
         }
         return value;
