@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +137,6 @@ public class ChatFragment extends Fragment {
                 });
     }
 
-
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
@@ -163,4 +165,18 @@ public class ChatFragment extends Fragment {
                     }
                 });
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //Toolbar
+        Toolbar toolbar = view.findViewById(R.id.toolbarChat);
+        toolbar.setNavigationIcon(R.drawable.ic_send);
+        toolbar.setNavigationOnClickListener(v -> {
+            //Volver atrás
+            Navigation.findNavController(view).navigateUp();
+
+        });
+    }
+
 }
