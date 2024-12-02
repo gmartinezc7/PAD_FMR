@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo personalizado -->
+
+
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:buttonTint">@color/dark_gray</item>
+    </style>
+
+
+    <!-- Agrega más estilos aquí -->
+</resources>
