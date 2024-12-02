@@ -375,8 +375,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save_add_button_text"
-                android:backgroundTint="@color/primary_color"
-                android:textColor="@android:color/white"
+                android:backgroundTint="?attr/colorButtonNormal"
                 android:layout_marginEnd="16dp" />
 
             <Button
@@ -384,8 +383,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel_text"
-                android:backgroundTint="@android:color/background_dark"
-                android:textColor="@android:color/white" />
+                android:backgroundTint="?attr/colorButtonNormal"
+                />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

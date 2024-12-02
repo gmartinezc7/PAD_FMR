@@ -72,49 +72,58 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp" />
 
-    <!-- Age Selector -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/ageChipGroup"
-        android:layout_width="wrap_content"
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalAgeChipGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/ageHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        app:singleSelection="true">
+        android:layout_marginTop="10dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip18To25"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/ageChipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="@string/young_adult_age_label"
-            android:textSize="18sp" />
+            app:singleSelection="true">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip25To35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="@string/adult_age_label"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip18To25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/young_adult_age_label"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip35To45"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="@string/grown_up_age_label"
-            android:textSize="18sp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip25To35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/adult_age_label"
+                android:textSize="18sp" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipOver45"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="@string/senior_age_label"
-            android:textSize="18sp" />
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip35To45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/grown_up_age_label"
+                android:textSize="18sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipOver45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/senior_age_label"
+                android:textSize="18sp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+
+
 
     <!-- Marital Status Header -->
     <TextView
@@ -124,7 +133,7 @@
         android:text="@string/personal_information_marital_status_label"
         android:textStyle="bold"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/ageChipGroup"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalAgeChipGroup"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"/>
 

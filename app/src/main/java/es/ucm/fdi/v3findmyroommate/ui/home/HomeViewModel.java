@@ -117,11 +117,11 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano,boolean nofilters){
+    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano,boolean nofilters, Integer price, Integer metros){
         List<Vivienda> filtered = new ArrayList<>();
         // DEBUG
         System.out.println("SE HA LLAMADO A LA FUNCIÓN applyFiltersViewModel con los valores: ");
-        System.out.println("Filtros: " + categoria + tipoCasa + numhabs + numbanos + numComps + genero + orientation + tipobano);
+        System.out.println("Filtros: " + categoria + tipoCasa + numhabs + numbanos + numComps + genero + orientation + tipobano + price.toString() + metros.toString());
         for (Vivienda vivienda : viviendasini){
             boolean filtrosOK = true;
 
@@ -188,7 +188,21 @@ public class HomeViewModel extends ViewModel {
                 }else System.out.println("orientation Coincide");
             }
 
+            if (vivienda.getPrice() != null){
+                Integer vprecio = Integer.parseInt(vivienda.getPrice());
+                if (price > vprecio){
+                    filtrosOK = false;
+                }
+            }
 
+            if (vivienda.getMetr() != null){
+                String viviendagetmetr = vivienda.getMetr();
+                System.out.println("Viviendaprint: " + viviendagetmetr);
+                Integer vmetr = Integer.parseInt(vivienda.getMetr());
+                if (metros < vmetr && metros != -1){
+                    filtrosOK = false;
+                }
+            }
 
             if (filtrosOK || nofilters == true){
                 filtered.add(vivienda);
