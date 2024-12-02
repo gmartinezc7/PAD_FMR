@@ -85,7 +85,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                 Message message = new Message();
                 message.setText(text);
                 message.setTimestamp(timestamp);
-                message.setSenderId(senderID);
+                message.setSender(senderID);
 
                 if (timestamp > latestTimestamp) {
                     latestTimestamp = timestamp;
