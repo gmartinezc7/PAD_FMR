@@ -45,18 +45,18 @@ public class Anuncio {
 
     // TEST TEST TEST
     {
-        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.add_icon);
+        //Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.add_icon);
 
-        this.imagenesUri.add(exampleUri);
+        //this.imagenesUri.add(exampleUri);
     }
     // END OF TEST
 
 
     public Anuncio(Context context, Intent data) {
 
-        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
+        ///Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
 
-        this.imagenesUri.add(exampleUri);
+        //this.imagenesUri.add(exampleUri);
 
         this.idAnuncio = data.getStringExtra(context.getString(R.string.key_id));
 

@@ -50,9 +50,17 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.coordinatorlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(libs.cloudinary.android)
+    implementation(libs.glide)
+    implementation(libs.constraintlayout.v220)
+    implementation(libs.navigation.fragment.v277)
+    implementation(libs.navigation.ui.v277)
+    implementation (libs.coordinatorlayout)
 
 
 

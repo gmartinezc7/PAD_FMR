@@ -1,7 +1,5 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
-import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -40,17 +36,24 @@ import java.util.Locale;
 
 import android.widget.AdapterView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import es.ucm.fdi.v3findmyroommate.MainActivity;
 import es.ucm.fdi.v3findmyroommate.R;
+
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+
+
+import android.util.Log;
+
+import java.util.Map;
+import java.util.UUID;
 
 
 public class CrearAnuncioActivity extends AppCompatActivity {
-
-
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
     private Button btnGuardar, btnCancelar;
@@ -75,12 +78,13 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
 
+    private String publicPictureId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio_2);
         previewPhotoUri = null;
-
 
         enlazarIdsVista();
 
@@ -88,7 +92,10 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
         establecerAccionesSpinners();
 
+
     }
+
+
 
 
     private void enlazarIdsVista(){
@@ -209,6 +216,19 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra(this.getString(R.string.key_metros), metros);
         resultIntent.putExtra(this.getString(R.string.key_precio), precio);
         resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
+
+
+        List<String> urlPicturesList = new ArrayList<>();
+
+        for (Uri currentPictureUri : this.imagenesUri) {
+            uploadImage(currentPictureUri);
+            String currentPictureUrlStringFormat = generateUrl();
+            urlPicturesList.add(currentPictureUrlStringFormat);
+        }
+
+        // HASTA AQUÍ ESTÁ HECHO
+        // ----------------------------------
+
         resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),
                 new ArrayList<>(imagenesUri));
 
@@ -231,6 +251,7 @@ public class CrearAnuncioActivity extends AppCompatActivity {
             resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_tipo_bano), spinnerTipoBano.getSelectedItem().toString());
         }
+
 
         Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
         MisViviendasFragment.guardarOActualizarAnuncioEnBD(nuevoAnuncio, this.getApplication());
@@ -451,5 +472,69 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
+
+
+
+
+
+
+
+    //----------------------SUBIDA DE LA IMAGEN A LA BD DE CLOUDINARY----------------------------------------------------------------------
+
+
+
+    // Function that uploads the image corresponding to the given Uri.
+    private void uploadImage(Uri currentPhotoUri) {
+
+        // Generates and assigns a random ID to the picture.
+        this.publicPictureId = UUID.randomUUID().toString();
+        MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
+                this.publicPictureId, this.publicPictureId).callback(new UploadCallback() {
+        @Override
+            public void onStart(String requestId) {
+                Log.d("Cloudinary Quickstart", "Upload start");
+            }
+
+            @Override
+            public void onProgress(String requestId, long bytes, long totalBytes) {
+                Log.d("Cloudinary Quickstart", "Upload progress");
+            }
+
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                Log.d("Cloudinary Quickstart", "Upload success");
+                String url = (String) resultData.get("secure_url");
+                Glide.with(getApplicationContext()).load(url).into(MainActivity.binding.mainContent.uploadedImageview);
+            }
+
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                Log.d("Cloudinary Quickstart", "Upload failed");
+            }
+
+            @Override
+            public void onReschedule(String requestId, ErrorInfo error) {
+
+            }
+        }).dispatch();
+    }
+
+
+    // Function that returns the URL generated for that image.
+    private String generateUrl() {
+        String currentPhotoUrl = MediaManager.get().url().generate(this.publicPictureId);
+        Glide.with(this).load(currentPhotoUrl).into(MainActivity.binding.mainContent.generatedImageview);
+        return currentPhotoUrl;
+    }
+
+
+
+
+
+
+
+
+
+
 
 }

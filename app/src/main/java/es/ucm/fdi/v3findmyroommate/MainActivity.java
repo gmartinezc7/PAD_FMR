@@ -1,6 +1,5 @@
 package es.ucm.fdi.v3findmyroommate;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
@@ -15,26 +14,33 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.cloudinary.android.MediaManager;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
+import es.ucm.fdi.v3findmyroommate.databinding.ActivityMainBinding;
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private FirebaseAuth mAuth;
+    public static ActivityMainBinding binding;
+
+    // Cloudinary DB necessary constants.
+    public static final String CLOUD_REPOS_NAME = "dhvyxnpau";
+    public static final String UPLOAD_PRESET = "fmr_upload_preset";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
         // Adds both locales to the locale class' locale list.
         LocaleUtils.addLocale("es");
         LocaleUtils.addLocale("en");
+
+
+        // Inflates view binding (necessary for the Cloudinary API).
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //setContentView(binding.getRoot());
+        //binding.toolbar.setTitle("Cloudinary Quickstart");
+        //setSupportActionBar(binding.toolbar);
+
+        // Start the Cloudinary API.
+        initCloudinary();
+
 
 
         loginButton.setOnClickListener(view -> {
@@ -102,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
         signUP.setOnClickListener(view -> openSignUPView());
 
         signUP.setOnClickListener(view -> openSignUPView());
+    }
+
+
+    // Init the DB connection.
+    private void initCloudinary() {
+        Map config = new HashMap();
+        config.put("cloud_name", MainActivity.CLOUD_REPOS_NAME);
+        config.put("api_key", getString(R.string.cloudinary_api_key));
+        config.put("api_secret", getString(R.string.cloudinary_api_secret_key));
+        MediaManager.init(this, config);
     }
 
 
