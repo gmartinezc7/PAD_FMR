@@ -190,26 +190,18 @@ public class HomeFragment extends Fragment {
 
     private void applyFilters(String categoria, String tipoCasa, String numHabs, String numBanos,
                               String orientacion, String genero, String numComps, String tipoBano, Integer price, Integer metros) {
-        categoria = translateIfNeeded(categoria);
-        tipoCasa = translateIfNeeded(tipoCasa);
-        numHabs = translateIfNeeded(numHabs);
-        numBanos = translateIfNeeded(numBanos);
-        orientacion = translateIfNeeded(orientacion);
-        genero = translateIfNeeded(genero);
-        numComps = translateIfNeeded(numComps);
-        tipoBano = translateIfNeeded(tipoBano);
+        categoria = TranslationUtils.translateIfNeeded(categoria);
+        tipoCasa = TranslationUtils.translateIfNeeded(tipoCasa);
+        numHabs = TranslationUtils.translateIfNeeded(numHabs);
+        numBanos = TranslationUtils.translateIfNeeded(numBanos);
+        orientacion = TranslationUtils.translateIfNeeded(orientacion);
+        genero = TranslationUtils.translateIfNeeded(genero);
+        numComps = TranslationUtils.translateIfNeeded(numComps);
+        tipoBano = TranslationUtils.translateIfNeeded(tipoBano);
         homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano,false, price, metros);
         System.out.println("Filtros aplicados: " + categoria + ", " + tipoCasa + ", " + numHabs + ", " + numBanos);
     }
-    private String translateIfNeeded(String value) {
-        Locale currentLocale = Locale.getDefault();
-        boolean isSpanish = currentLocale.getLanguage().equals("es");
 
-        if (!isSpanish && value != null) {
-            return TranslationUtils.translateToBaseLanguage(value);
-        }
-        return value;
-    }
 
     @Override
     public void onDestroyView() {

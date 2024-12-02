@@ -188,7 +188,7 @@ public class HomeViewModel extends ViewModel {
 
             if (vivienda.getPrice() != null){
                 Integer vprecio = Integer.parseInt(vivienda.getPrice());
-                if (price > vprecio){
+                if (vprecio >= price && price != -1){
                     filtrosOK = false;
                 }
             }
@@ -197,7 +197,7 @@ public class HomeViewModel extends ViewModel {
                 String viviendagetmetr = vivienda.getMetr();
                 System.out.println("Viviendaprint: " + viviendagetmetr);
                 Integer vmetr = Integer.parseInt(vivienda.getMetr());
-                if (metros < vmetr && metros != -1){
+                if (metros >= vmetr && metros != -1){
                     filtrosOK = false;
                 }
             }

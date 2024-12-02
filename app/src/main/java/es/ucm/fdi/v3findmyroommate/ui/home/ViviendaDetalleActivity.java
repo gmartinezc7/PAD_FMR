@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.TranslationUtils;
 import es.ucm.fdi.v3findmyroommate.ui.viviendas.EditarAnuncioActivity;
 
 public class ViviendaDetalleActivity extends AppCompatActivity {
@@ -182,7 +183,7 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
 
         //TAGS
         this.categoria = data.getStringExtra(this.getString(R.string.key_categoria));
-        categoriaText.setText(this.categoria);
+        categoriaText.setText(TranslationUtils.reverseTranslateIfNeeded(this.categoria));
 
         if (this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
@@ -194,10 +195,10 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
             this.banos = data.getStringExtra(this.getString(R.string.key_banos));
             this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
 
-            tipoCasaText.setText(tipoCasa);
+            tipoCasaText.setText(TranslationUtils.reverseTranslateIfNeeded(tipoCasa));
             numHabitacionesText.setText(habitaciones);
             numBanosText.setText(banos);
-            orientacionText.setText(exteriorInterior);
+            orientacionText.setText(TranslationUtils.reverseTranslateIfNeeded(exteriorInterior));
 
         } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
@@ -210,9 +211,9 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
             this.tipoBano = data.getStringExtra(this.getString(R.string.key_tipo_bano));
 
             numCompanerosText.setText(companeros);
-            generoHabitacionesText.setText(genero);
-            orientacionHabitacionText.setText(exteriorInterior);
-            tipoBanoText.setText(tipoBano);
+            generoHabitacionesText.setText(TranslationUtils.reverseTranslateIfNeeded(genero));
+            orientacionHabitacionText.setText(TranslationUtils.reverseTranslateIfNeeded(exteriorInterior));
+            tipoBanoText.setText(TranslationUtils.reverseTranslateIfNeeded(tipoBano));
 
         }
 

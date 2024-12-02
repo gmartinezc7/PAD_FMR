@@ -36,7 +36,7 @@
                 android:id="@+id/buttonOpenFilters"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:text="Filtrar"
+                android:text="@string/filter_label"
                 android:textSize="14sp"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:layout_marginStart="12dp"
@@ -49,7 +49,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="?attr/colorButtonNormal"
-                android:text="Eliminar filtros"
+                android:text="@string/remove_filters"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
