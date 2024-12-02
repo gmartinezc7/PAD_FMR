@@ -31,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     private String descripcion;
     //LISTA DE URIS PARA LAS IMAGENES, MINIMO OBLIGATORIO TENER 1
     private List<Uri> imagenesUri;
+    private List<String> imagenesUrl;
 
     //IMAGEN DEL ANUNCIO QUE SE MUESTRA
     private ImageView imagenAnuncio,btnEliminarImagen;
@@ -111,6 +113,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_anuncio_2);
         previewPhotoUri = null;
+        imagenesUri = new ArrayList<>();
 
         enlazarIdsVista();
 
@@ -182,7 +185,9 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         this.metros = intent.getStringExtra(this.getString(R.string.key_metros));
         this.precio = intent.getStringExtra(this.getString(R.string.key_precio));
         this.descripcion = intent.getStringExtra(this.getString(R.string.key_descripcion));
-        this.imagenesUri = new ArrayList<>(intent.getParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri)));
+
+        this.imagenesUrl = new ArrayList<>(intent.getStringArrayListExtra(this.getString(R.string.key_imagenes_uri)));
+
 
 
 
@@ -198,7 +203,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
         this.categoria = intent.getStringExtra(this.getString(R.string.key_categoria));
 
-        if(this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))){
+        if(this.categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))){
 
             spinnerCategoria.setSelection(0);
             opcionesCasa.setVisibility(View.VISIBLE);
@@ -216,7 +221,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             setSpinnerValue(spinnerExteriorInteriorCasa, exteriorInterior);
 
         }
-        else if(categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))){
+        else if(categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))){
 
             spinnerCategoria.setSelection(1);
             opcionesCasa.setVisibility(View.GONE);
@@ -418,22 +423,36 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
     private void agregarImagen(Uri uri) {
         imagenesUri.add(uri);
-        imagenActualIndex = imagenesUri.size() - 1;
+        imagenActualIndex = imagenesUrl.size() + imagenesUri.size() - 1;
         actualizarImagen();
     }
 
 
-
+//PARA ENTENDER ESTA FUNCION DEBEMOS DE SABER QUE PRIMERO VAN LAS IMAGENES URL Y
+    //LUEGO VAN LAS URIS QUE SON LAS QUE AÑADIMOS ACTUALMENTE
     private void eliminarImagenSeleccionada(){
 
-        if (imagenesUri != null && !imagenesUri.isEmpty() && imagenActualIndex >= 0) {
+        //EN ESTE CASO EL ACTUAL INDEX PERTENECE A LA LISTA DE URIS, USEA SE ESTA
+        //INTENTANDO ELIMINAR UNA IMAGEN DE LA LISTA DE URIS,
+        //ES DECIR, DE LAS IMAGENES QUE SE ACABAN DE AÑADIR
+        if (imagenesUri != null && !imagenesUri.isEmpty() && imagenActualIndex >= 0
+        &&  imagenActualIndex >= imagenesUrl.size()) {
             // Eliminar la imagen actual de la lista
-            imagenesUri.remove(imagenActualIndex);
+            imagenesUri.remove(imagenActualIndex - imagenesUrl.size());
 
             // Ajustar el índice actual si es necesario
             if (imagenActualIndex >= imagenesUri.size()) {
                 imagenActualIndex = imagenesUri.size() - 1; // Mover al último índice disponible
             }
+
+            // Actualizar la imagen mostrada
+            actualizarImagen();
+        }
+        //EN ESTE CASO SE INTENTARIA ELIMINAR DE LA LISTA DE URLS
+        else if (imagenesUrl != null && !imagenesUrl.isEmpty() && imagenActualIndex >= 0
+                &&  imagenActualIndex < imagenesUrl.size()) {
+            // Eliminar la imagen actual de la lista
+            imagenesUrl.remove(imagenActualIndex);
 
             // Actualizar la imagen mostrada
             actualizarImagen();
@@ -458,13 +477,31 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
 
 
-
+    //PARA ENTENDER ESTA FUNCION DEBEMOS DE SABER QUE PRIMERO VAN LAS IMAGENES URL Y
+    //LUEGO VAN LAS URIS QUE SON LAS QUE AÑADIMOS ACTUALMENTE
     private void iniciarNavImagenes(){
 
-        imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
-        btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
-        btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        //AQUI NAVEGAMOS ENTRE LAS IMAGENES "URI"
+        if(imagenActualIndex >= imagenesUrl.size()) {
 
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex - imagenesUrl.size()));
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+        }
+        //NAVEGACION ENTRE LAS URLS
+        else {
+
+            // Cargar la imagen actual usando Glide
+            Glide.with(imagenAnuncio.getContext())
+                    .load(imagenesUrl.get(imagenActualIndex))
+                    .into(imagenAnuncio);
+
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUrl.size() + imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+
+        }
 
         // Navegar hacia la imagen anterior
         btnPrev.setOnClickListener(v -> navigateImage( -1));
@@ -475,24 +512,47 @@ public class EditarAnuncioActivity extends AppCompatActivity {
     }
 
 
-    private void navigateImage( int direction) {
+    private void navigateImage(int direction) {
         int newIndex = imagenActualIndex + direction;
-        if (newIndex >= 0 && newIndex < imagenesUri.size()) {
+        if (newIndex >= 0 && newIndex - imagenesUrl.size() <=  imagenesUri.size()
+                && newIndex >= imagenesUrl.size()) {
             imagenActualIndex = newIndex;
-            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex - imagenesUrl.size()));
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+        else if(newIndex >= 0 && newIndex < imagenesUrl.size()){
+
+            imagenActualIndex = newIndex;
+            // Cargar la imagen actual usando Glide
+            Glide.with(imagenAnuncio.getContext())
+                    .load(imagenesUrl.get(imagenActualIndex))
+                    .into(imagenAnuncio);
+
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUrl.size() + imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
 
 
     private void actualizarImagen() {
-        if (!imagenesUri.isEmpty()) {
-            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+
+        if (!imagenesUri.isEmpty() &&  imagenActualIndex >= imagenesUrl.size()) {
+            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex - imagenesUrl.size()));
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
-        } else {
+        }
+        else if (!imagenesUrl.isEmpty() &&  imagenActualIndex < imagenesUrl.size()) {
+            // Cargar la imagen actual usando Glide
+            Glide.with(imagenAnuncio.getContext())
+                    .load(imagenesUrl.get(imagenActualIndex))
+                    .into(imagenAnuncio);
+
+            btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            btnNext.setVisibility(imagenActualIndex < imagenesUrl.size() + imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+        else {
             // Si la lista está vacía, restablecer la vista
             imagenAnuncio.setImageDrawable(null); // Limpia la imagen
             btnPrev.setVisibility(View.INVISIBLE);
@@ -512,7 +572,7 @@ public class EditarAnuncioActivity extends AppCompatActivity {
 
         // Verifica si todos los campos están llenos
         if (titulo.isEmpty() || ubicacion.isEmpty() || metros.isEmpty()
-                || precio.isEmpty() || imagenesUri.isEmpty() ) {
+                || precio.isEmpty() || (imagenesUri.isEmpty() && imagenesUrl.isEmpty())) {
             Toast.makeText(this, this.getString(R.string.mensaje_debes_rellenar_todo), Toast.LENGTH_LONG).show();
             return; // Detiene el flujo y no continúa con la creación del anuncio
         }
@@ -525,18 +585,21 @@ public class EditarAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra(this.getString(R.string.key_metros), metros);
         resultIntent.putExtra(this.getString(R.string.key_precio), precio);
         resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
-        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(imagenesUri));
 
 
-        List<String> urlPicturesList = new ArrayList<>();
+
+
 
         for (Uri currentPictureUri : this.imagenesUri) {
 
             MisViviendasFragment.uploadImage(currentPictureUri, getApplication());
             String currentPictureUrlStringFormat = MisViviendasFragment.generateUrl(getApplication());
-            urlPicturesList.add(currentPictureUrlStringFormat);
+            this.imagenesUrl.add(currentPictureUrlStringFormat);
 
         }
+
+
+        resultIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(this.imagenesUrl));
 
 
         //GUARDAMOS TAMBIÉN LAS ETIQUETAS

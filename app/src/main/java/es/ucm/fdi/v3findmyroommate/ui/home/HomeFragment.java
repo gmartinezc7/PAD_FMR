@@ -233,7 +233,7 @@ public class HomeFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_metros), vivienda.getMetr());
         intent.putExtra(this.getString(R.string.key_precio), vivienda.getPrice());
         intent.putExtra(this.getString(R.string.key_descripcion), vivienda.getDescription());
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(vivienda.getImagenesUri()));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(vivienda.getImagenesUri()));
 
 
         //TAGS

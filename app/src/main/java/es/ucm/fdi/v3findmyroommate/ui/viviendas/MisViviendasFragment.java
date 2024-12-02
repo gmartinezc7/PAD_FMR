@@ -168,7 +168,7 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_metros), anuncio.getMetros());
         intent.putExtra(this.getString(R.string.key_precio), anuncio.getPrecio());
         intent.putExtra(this.getString(R.string.key_descripcion), anuncio.getDescripcion());
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
 
 
         //TAGS
@@ -251,7 +251,7 @@ public class MisViviendasFragment extends Fragment {
                                             (new GenericTypeIndicator<List<String>>() {});
 
                                     // Convierte los valores de la lista recibida a formato Uri.
-                                    List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
+                                    List<String> listaImagenesFormatoUri = new ArrayList<>(listaImagenesFormatoString);
 
                                     // Introduce cada uno de los campos en un intent.
                                     Intent currentAddIntent = new Intent();
@@ -262,7 +262,7 @@ public class MisViviendasFragment extends Fragment {
                                     currentAddIntent.putExtra(this.getString(R.string.key_precio), precio);
                                     currentAddIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
                                     currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
-                                    currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
+                                    currentAddIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
                                     if (categoria != null) {
 
@@ -364,7 +364,7 @@ public class MisViviendasFragment extends Fragment {
         databaseAddReference.child(application.getString((R.string.add_description_db_label)))
                 .setValue(nuevoAnuncio.getDescripcion());
 
-        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
+        List<String> listaImagenesAnuncioFormatoString = new ArrayList<>(nuevoAnuncio.getImagenesUri());
         databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
                 .setValue(listaImagenesAnuncioFormatoString);
 
@@ -722,7 +722,7 @@ public class MisViviendasFragment extends Fragment {
         // Generates and assigns a random ID to the picture.
         MisViviendasFragment.publicPictureId = UUID.randomUUID().toString();
         MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
-                MisViviendasFragment.publicPictureId, MisViviendasFragment.publicPictureId).callback(new UploadCallback() {
+               "public_id", MisViviendasFragment.publicPictureId).callback(new UploadCallback() {
             @Override
             public void onStart(String requestId) {
                 Log.d("Cloudinary Quickstart", "Upload start");
@@ -769,25 +769,10 @@ public class MisViviendasFragment extends Fragment {
     //-------------------------FUNCIONES AUXILIARES-----------------------------
     
 
-    // Función auxiliar que convierte una lista de Uris a otra de Strings
-    public static List<String> convierteListaUrisAListaStrings(List<Uri> urisList) {
-        List<String> stringsList = new ArrayList<>();
-        for (Uri uri : urisList) {
-            stringsList.add(uri.toString());
-        }
-        return stringsList;
-    }
 
 
-    // Función auxiliar que convierte una lista de Strings a otra de Uris.
-    public static List<Uri> convierteListaStringsAListaUris(List<String> stringsList) {
-        List<Uri> urisList = new ArrayList<>();
-        for (String str : stringsList) {
-            Uri newUri = Uri.parse(str);
-            urisList.add(newUri);
-        }
-        return urisList;
-    }
+
+
 
 
 }

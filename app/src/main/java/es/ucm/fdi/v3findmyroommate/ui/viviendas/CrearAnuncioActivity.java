@@ -238,8 +238,8 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         // HASTA AQUÍ ESTÁ HECHO
         // ----------------------------------
 
-        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),
-                new ArrayList<>(imagenesUri));
+        resultIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri),
+                new ArrayList<>(urlPicturesList));
 
 
         //GUARDAMOS TAMBIÉN LAS ETIQUETAS
