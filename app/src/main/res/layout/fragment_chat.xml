@@ -1,9 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="?attr/actionBarSize">
+    android:orientation="vertical">
 
+    <!-- Toolbar para volver atrás -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarChat"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:title="Chat"/>
+
+    <!-- RecyclerView para los mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
@@ -12,25 +21,35 @@
         android:padding="8dp"
         android:clipToPadding="false" />
 
+    <!-- Caja de texto y botón enviar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:elevation="2dp">
 
         <EditText
             android:id="@+id/inputMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Escribe un mensaje"
-            android:padding="8dp" />
+            android:hint="Escribe un mensaje..."
+            android:padding="12dp"
+            android:background="@drawable/edittext_rounded_background"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:maxLines="4"
+            android:scrollbars="vertical" />
 
         <ImageButton
             android:id="@+id/buttonSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send"
-            android:contentDescription="Enviar mensaje" />
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Enviar mensaje"
+            android:padding="12dp"
+            android:elevation="4dp"
+            android:src="@drawable/ic_send" />
     </LinearLayout>
 </LinearLayout>
