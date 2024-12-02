@@ -172,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="19dp"
             android:layout_marginEnd="4dp"
-            android:text="m2" />
+            android:text="m²" />
     </LinearLayout>
 
 
