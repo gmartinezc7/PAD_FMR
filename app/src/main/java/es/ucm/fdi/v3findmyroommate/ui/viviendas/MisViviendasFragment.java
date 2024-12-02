@@ -18,11 +18,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,8 +39,11 @@ import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import es.ucm.fdi.v3findmyroommate.LocaleUtils;
+import es.ucm.fdi.v3findmyroommate.MainActivity;
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -59,6 +67,7 @@ public class MisViviendasFragment extends Fragment {
     private AnunciosAdapter adapter;
 
     private int posicionCambioActual;
+    private static String publicPictureId;
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
     private ActivityResultLauncher<Intent> verAnuncioLauncher;
 
@@ -697,6 +706,67 @@ public class MisViviendasFragment extends Fragment {
             });
         }
     }
+
+
+
+
+
+
+
+    //-------------------------GUARDAR EN CLOUDINARY-----------------------------
+
+
+    // Function that uploads the image corresponding to the given Uri.
+    public static void uploadImage(Uri currentPhotoUri, Application application) {
+
+        // Generates and assigns a random ID to the picture.
+        MisViviendasFragment.publicPictureId = UUID.randomUUID().toString();
+        MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
+                MisViviendasFragment.publicPictureId, MisViviendasFragment.publicPictureId).callback(new UploadCallback() {
+            @Override
+            public void onStart(String requestId) {
+                Log.d("Cloudinary Quickstart", "Upload start");
+            }
+
+            @Override
+            public void onProgress(String requestId, long bytes, long totalBytes) {
+                Log.d("Cloudinary Quickstart", "Upload progress");
+            }
+
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                Log.d("Cloudinary Quickstart", "Upload success");
+                String url = (String) resultData.get("secure_url");
+                Glide.with(application).load(url).into(MainActivity.binding.mainContent.uploadedImageview);
+            }
+
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                Log.d("Cloudinary Quickstart", "Upload failed");
+            }
+
+            @Override
+            public void onReschedule(String requestId, ErrorInfo error) {
+
+            }
+        }).dispatch();
+    }
+
+
+    // Function that returns the URL generated for that image.
+    public static String generateUrl(Application application) {
+        String currentPhotoUrl = MediaManager.get().url().generate(MisViviendasFragment.publicPictureId);
+        Glide.with(application).load(currentPhotoUrl).into(MainActivity.binding.mainContent.generatedImageview);
+        return currentPhotoUrl;
+    }
+
+
+
+
+
+
+
+    //-------------------------FUNCIONES AUXILIARES-----------------------------
     
 
     // Función auxiliar que convierte una lista de Uris a otra de Strings

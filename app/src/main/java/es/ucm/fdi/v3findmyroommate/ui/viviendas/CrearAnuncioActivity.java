@@ -228,9 +228,17 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         List<String> urlPicturesList = new ArrayList<>();
 
         for (Uri currentPictureUri : this.imagenesUri) {
+
+            MisViviendasFragment.uploadImage(currentPictureUri, getApplication());
+            String currentPictureUrlStringFormat = MisViviendasFragment.generateUrl(getApplication());
+            urlPicturesList.add(currentPictureUrlStringFormat);
+
+            /*
             uploadImage(currentPictureUri);
             String currentPictureUrlStringFormat = generateUrl();
             urlPicturesList.add(currentPictureUrlStringFormat);
+
+             */
         }
 
         // HASTA AQUÍ ESTÁ HECHO
@@ -479,69 +487,6 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
-
-
-
-
-
-
-
-    //----------------------SUBIDA DE LA IMAGEN A LA BD DE CLOUDINARY----------------------------------------------------------------------
-
-
-
-    // Function that uploads the image corresponding to the given Uri.
-    private void uploadImage(Uri currentPhotoUri) {
-
-        // Generates and assigns a random ID to the picture.
-        this.publicPictureId = UUID.randomUUID().toString();
-        MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
-                this.publicPictureId, this.publicPictureId).callback(new UploadCallback() {
-        @Override
-            public void onStart(String requestId) {
-                Log.d("Cloudinary Quickstart", "Upload start");
-            }
-
-            @Override
-            public void onProgress(String requestId, long bytes, long totalBytes) {
-                Log.d("Cloudinary Quickstart", "Upload progress");
-            }
-
-            @Override
-            public void onSuccess(String requestId, Map resultData) {
-                Log.d("Cloudinary Quickstart", "Upload success");
-                String url = (String) resultData.get("secure_url");
-                Glide.with(getApplicationContext()).load(url).into(MainActivity.binding.mainContent.uploadedImageview);
-            }
-
-            @Override
-            public void onError(String requestId, ErrorInfo error) {
-                Log.d("Cloudinary Quickstart", "Upload failed");
-            }
-
-            @Override
-            public void onReschedule(String requestId, ErrorInfo error) {
-
-            }
-        }).dispatch();
-    }
-
-
-    // Function that returns the URL generated for that image.
-    private String generateUrl() {
-        String currentPhotoUrl = MediaManager.get().url().generate(this.publicPictureId);
-        Glide.with(this).load(currentPhotoUrl).into(MainActivity.binding.mainContent.generatedImageview);
-        return currentPhotoUrl;
-    }
-
-
-
-
-
-
-
-
-
 
 
 }
