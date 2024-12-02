@@ -4,10 +4,10 @@
     <string name="welcome_message">Welcome back!</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
-    <string name="login">Login</string>
+    <string name="login">Log In</string>
     <string name="dont_have_account">Don\'t have an account yet?</string>
-    <string name="sign_up">Sign up</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
     <string name="name">Name</string>
     <string name="last_name">Last name</string>
     <string name="confirm_password_hint">Confirm Password</string>
@@ -221,6 +221,10 @@
     <string name="item_square_meters_label">"Square feet: "</string>
     <string name="item_price_label">"Price: "</string>
     <string name="create_new_add_button_text">Create new add</string>
+    <string name="apply_label">Apply</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="filter_label">Filter</string>
+    <string name="remove_filters">Remove Filters</string>
 
 </resources>
 

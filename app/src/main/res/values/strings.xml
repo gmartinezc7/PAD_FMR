@@ -306,5 +306,9 @@
     <string name="create_new_add_button_text">Crear nuevo anuncio</string>
     <string name="cloudinary_api_key" translatable="false">357912162435366</string>
     <string name="cloudinary_api_secret_key" translatable="false">PLFjYDRSKfqB2m5Ul587GCkngq4</string>
+    <string name="apply_label">Aplicar</string>
+    <string name="cancel_label">Cancelar</string>
+    <string name="filter_label">Filtrar</string>
+    <string name="remove_filters">Eliminar filtros</string>
 
 </resources>

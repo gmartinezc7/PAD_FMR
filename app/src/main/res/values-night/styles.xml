@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo personalizado -->
+
+<style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+    <item name="android:background">@color/dark_gray</item> <!-- Fondo para tema oscuro -->
+    <item name="android:textColorPrimary">@color/white</item> <!-- Color del texto -->
+
+</style>
+  <!-- Agrega más estilos aquí -->
+</resources>

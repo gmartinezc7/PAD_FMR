@@ -33,9 +33,11 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.TranslationUtils;
 import es.ucm.fdi.v3findmyroommate.ui.chats.Chat;
 import es.ucm.fdi.v3findmyroommate.ui.chats.ChatActivity;
 import es.ucm.fdi.v3findmyroommate.ui.chats.ChatFragment;
@@ -105,21 +107,21 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
         // el siguiente método
 
-        setChipVisibility(holder.categoria, vivienda.getCategoria(),
+        setChipVisibility(holder.categoria, TranslationUtils.reverseTranslateIfNeeded(vivienda.getCategoria()),
                 context.getString(R.string.item_category_label));
-        setChipVisibility(holder.tipoCasa, vivienda.getTipoCasa(),
+        setChipVisibility(holder.tipoCasa, TranslationUtils.reverseTranslateIfNeeded(vivienda.getTipoCasa()),
                 context.getString(R.string.item_house_type_label));
         setChipVisibility(holder.habitaciones, vivienda.getHabitaciones(),
                 context.getString(R.string.item_num_rooms_label));
         setChipVisibility(holder.banos, vivienda.getBanos(),
                 context.getString(R.string.item_num_bathrooms_label));
-        setChipVisibility(holder.exteriorInterior, vivienda.getExteriorInterior(),
+        setChipVisibility(holder.exteriorInterior, TranslationUtils.reverseTranslateIfNeeded(vivienda.getExteriorInterior()),
                 context.getString(R.string.item_orientation_label));
         setChipVisibility(holder.companeros, vivienda.getCompaneros(),
                 context.getString(R.string.item_num_roommates_label));
-        setChipVisibility(holder.genero, vivienda.getGenero(),
+        setChipVisibility(holder.genero, TranslationUtils.reverseTranslateIfNeeded(vivienda.getGenero()),
                 context.getString(R.string.item_roommates_gender_label));
-        setChipVisibility(holder.tipoBano, vivienda.getTipoBano(),
+        setChipVisibility(holder.tipoBano, TranslationUtils.reverseTranslateIfNeeded(vivienda.getTipoBano()),
                 context.getString(R.string.item_bathroom_type_label));
 
 
@@ -359,6 +361,8 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             Log.e("ViviendaAdapter", "Contexto no válido para abrir el fragmento");
         }
     }
+
+
 
 
 }

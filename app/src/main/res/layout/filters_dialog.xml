@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Categoria"
+                android:text="@string/item_category_label"
                 android:layout_marginEnd="8dp" />
 
             <Spinner
@@ -41,13 +41,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Precio"
+                android:text="@string/price_label"
                 android:layout_marginEnd="8dp" />
 
             <EditText
                 android:id="@+id/editTextPrice"
-                android:layout_width="61dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:gravity="end" />
 
         </LinearLayout>
@@ -62,12 +63,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Metros"
+                android:text="@string/square_meters_label"
                 android:layout_marginEnd="8dp" />
 
             <EditText
                 android:id="@+id/editTextMetros"
-                android:layout_width="61dp"
+                android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
                 android:gravity="end" />
 
@@ -95,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tipo Casa"
+                    android:text="@string/item_house_type_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerTipoCasas"
@@ -116,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Habitaciones"
+                    android:text="@string/item_num_rooms_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerNumHabs"
@@ -137,7 +139,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Baños"
+                    android:text="@string/item_num_bathrooms_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerNumBanos"
@@ -164,7 +166,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Compañeros"
+                    android:text="@string/item_num_roommates_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerNumComps"
@@ -185,7 +187,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Genero"
+                    android:text="@string/item_roommates_gender_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerGenero"
@@ -206,7 +208,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tipo Baño"
+                    android:text="@string/item_bathroom_type_label"
                     android:layout_marginEnd="8dp" />
             <Spinner
                 android:id="@+id/spinnerTipoBano"
@@ -228,7 +230,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Orientacion"
+            android:text="@string/item_orientation_label"
             android:layout_marginEnd="8dp" />
         <Spinner
             android:id="@+id/spinnerOrientacion"
@@ -246,18 +248,19 @@
             android:gravity="end"
             android:paddingTop="16dp">
 
-            <Button
-                android:id="@+id/buttonApplyFilters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Aplicar" />
 
             <Button
                 android:id="@+id/buttonCancelFilters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Cancelar" />
+                android:text="@string/cancel_label" />
+
+            <Button
+                android:id="@+id/buttonApplyFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apply_label" />
 
         </LinearLayout>
 
