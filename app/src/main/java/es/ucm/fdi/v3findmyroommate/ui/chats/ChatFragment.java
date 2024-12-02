@@ -160,51 +160,77 @@ public class ChatFragment extends Fragment {
     }
 
     private void notifyRecipient(String chatId, String messageText) {
+        // Obtenemos la referencia de los participantes del chat
         DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
         chatRef.child("participants").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot participant : snapshot.getChildren()) {
                     String participantId = participant.getKey();
+
+                    // Aseguramos de no enviar la notificación al usuario actual
                     if (!participantId.equals(currentUserId)) {
-                        sendLocalNotification(messageText);
+                        // Si el participante no es el usuario actual, enviar la notificación local
+                        sendLocalNotification(participantId, "Nuevo mensaje", messageText);
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("NotifyRecipient", "Error: " + error.getMessage());
+                Log.e("NotifyRecipient", "Error al obtener participantes: " + error.getMessage());
             }
         });
     }
 
-    @SuppressLint("MissingPermission")
-    private void sendLocalNotification(String message) {
-        // Crear un canal de notificación para Android 8.0 y superior
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Chat Notifications";
-            String description = "Notifications for new messages in chat.";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("chat_channel", name, importance);
-            channel.setDescription(description);
+    private void sendLocalNotification(String recipientId, String title, String message) {
+        // Aquí usaríamos el NotificationManager para enviar una notificación local
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-            // Obtener el NotificationManager y crear el canal
-            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+        // Si tu dispositivo está en Android 8.0 o superior, necesitas un canal de notificación
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "chat_notifications";
+            CharSequence channelName = "Chat Notifications";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
         // Crear la notificación
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "chat_channel")
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp) // Usar un ícono apropiado
-                .setContentTitle("Nuevo mensaje")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "chat_notifications")
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true); // Se cancela cuando se toca la notificación
+                .setAutoCancel(true);
 
-        // Mostrar la notificación
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        // Enviar la notificación
         notificationManager.notify(0, builder.build());
     }
+
+    private void sendPushNotification(String recipientId, String title, String message) {
+        // Obtener el token FCM del destinatario
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(recipientId).child("fcmToken");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String recipientToken = snapshot.getValue(String.class);
+                if (recipientToken != null) {
+                    // Aquí se enviaría la notificación al otro usuario utilizando el token
+                    RemoteMessage remoteMessage = new RemoteMessage.Builder(recipientToken)
+                            .addData("title", title)
+                            .addData("body", message)
+                            .build();
+                    FirebaseMessaging.getInstance().send(remoteMessage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("SendNotification", "Error al obtener token: " + error.getMessage());
+            }
+        });
+    }
+
 
 }
