@@ -26,6 +26,8 @@ import java.util.List;
 import es.ucm.fdi.v3findmyroommate.R;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+
 
 /*
 ACTIVIDAD UTILIZADA PARA MOSTRAR EN DETALLE LA INFORMACIÓN DEL ANUNCIO.
@@ -52,7 +54,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     private TextView precioText;
     private TextView descripcionText;
     //LISTA DE URIS PARA LAS IMAGENES, MINIMO OBLIGATORIO TENER 1
-    private List<Uri> imagenesUri;
+    private List<String> imagenesUri;
 
     //IMAGEN DEL ANUNCIO QUE SE MUESTRA
     private ImageView imagenAnuncio;
@@ -210,7 +212,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         this.metros = data.getStringExtra(this.getString(R.string.key_metros));
         this.precio = data.getStringExtra(this.getString(R.string.key_precio));
         this.descripcion = data.getStringExtra(this.getString(R.string.key_descripcion));
-        this.imagenesUri = data.getParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri));
+        this.imagenesUri = data.getStringArrayListExtra(this.getString(R.string.key_imagenes_uri));
         iniciarNavImagenes();
 
 
@@ -300,7 +302,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         intent.putExtra(this.getString(R.string.key_metros), metros);
         intent.putExtra(this.getString(R.string.key_precio), precio);
         intent.putExtra(this.getString(R.string.key_descripcion), descripcion);
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),  new ArrayList<>(imagenesUri));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri),  new ArrayList<>(imagenesUri));
 
 
         //TAGS
@@ -329,7 +331,11 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     //TAMBIEN DETERMINA LA IMAGEN QUE SE VE EN EL CUADRO SEGUN EL INDICE ACTUAL
     private void iniciarNavImagenes(){
 
-        imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+        // Cargar la imagen actual usando Glide
+        Glide.with(imagenAnuncio.getContext())
+                .load(imagenesUri.get(imagenActualIndex))
+                .into(imagenAnuncio);
+
         btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
         btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
 
@@ -347,7 +353,14 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         int newIndex = imagenActualIndex + direction;
         if (newIndex >= 0 && newIndex < imagenesUri.size()) {
             imagenActualIndex = newIndex;
-            imagenAnuncio.setImageURI(imagenesUri.get(imagenActualIndex));
+
+
+            // Cargar la imagen actual usando Glide
+            Glide.with(imagenAnuncio.getContext())
+                    .load(imagenesUri.get(imagenActualIndex))
+                    .into(imagenAnuncio);
+
+
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
         }

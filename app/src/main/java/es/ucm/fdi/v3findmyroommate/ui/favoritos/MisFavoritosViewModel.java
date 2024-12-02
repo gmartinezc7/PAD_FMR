@@ -76,16 +76,15 @@ public class MisFavoritosViewModel extends ViewModel {
 
                     //SAM-------------------------------------------------------------------------------------------------------------------------------------
 
-                    // Manejo de la lista de imágenes - conversión de String a Uri
-                    List<Uri> imagenesUri = new ArrayList<>();
+                    // Manejo de la lista de imágenes
+                    List<String> imagenesUri = new ArrayList<>();
 
-                    for (DataSnapshot uriSnapshot : viviendas.child("uri_list").getChildren()) {
-                        String uriString = uriSnapshot.getValue(String.class);
-                        if (uriString != null) {
-                            Uri uri = Uri.parse(uriString); // Convertir de String a Uri
-                            imagenesUri.add(uri);
-                        }
+                    for (DataSnapshot urlSnapshot : viviendas.child("uri_list").getChildren()) {
+                        String url = urlSnapshot.getValue(String.class);
+
+                        imagenesUri.add(url);
                     }
+
 
 
 

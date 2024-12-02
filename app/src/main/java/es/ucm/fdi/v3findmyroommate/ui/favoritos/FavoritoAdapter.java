@@ -17,6 +17,8 @@ import es.ucm.fdi.v3findmyroommate.ui.home.ViviendaAdapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,28 +62,39 @@ public class FavoritoAdapter extends RecyclerView.Adapter <FavoritoAdapter.Favor
 
     //SAM---------------------------------------------------------------------------------------------------------------------------------------
     private void setImageNavigation(FavoritoAdapter.FavoritoViewHolder holder, Vivienda vivienda) {
-        if (!vivienda.getImagenesUri().isEmpty()) {
+        if (!vivienda.getImagenesUri().isEmpty()) { // Usamos URLs en lugar de URIs
             holder.imagenesUri = new ArrayList<>(vivienda.getImagenesUri());
-            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
+            // Actualizar visibilidad de los botones
             holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
 
-            // NAVEGAR A LA IMAGEN ANTERIOR
+            // Navegar a la imagen anterior
             holder.btnPrev.setOnClickListener(v -> navigateImage(holder, -1));
 
-            // NAVEGAR A LA SIGUIENTE
+            // Navegar a la siguiente imagen
             holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
 
-            // CLICK EN LA IMAGEN PARA VER LOS DETALLES
+            // Click en la imagen para ver los detalles
             holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(vivienda));
         }
     }
+
 
     private void navigateImage(FavoritoAdapter.FavoritoViewHolder holder, int direction) {
         int newIndex = holder.imagenActualIndex + direction;
         if (newIndex >= 0 && newIndex < holder.imagenesUri.size()) {
             holder.imagenActualIndex = newIndex;
-            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
             holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
         }
@@ -111,7 +124,7 @@ public class FavoritoAdapter extends RecyclerView.Adapter <FavoritoAdapter.Favor
         //SAM-------------------------------------------------------------
         View previewRect;
         ImageView imageViewAnuncio;
-        List<Uri> imagenesUri = new ArrayList<>();
+        List<String> imagenesUri = new ArrayList<>();
         int imagenActualIndex = 0;
         ImageButton btnPrev, btnNext;
         //---------------------------------------------------------------------------

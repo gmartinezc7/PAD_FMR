@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -97,6 +98,8 @@ public class HomeFragment extends Fragment {
         Spinner sGenero = filtersMenu.findViewById(R.id.spinnerGenero);
         Spinner sNumComps = filtersMenu.findViewById(R.id.spinnerNumComps);
         Spinner sTipoBano = filtersMenu.findViewById(R.id.spinnerTipoBano);
+        EditText sprice = root.findViewById(R.id.editTextPrice);
+        EditText smetros = root.findViewById(R.id.editTextMetros);
 
         View filtersCasa = filtersMenu.findViewById(R.id.filtrosCasa);
         View filtersHabitacion = filtersMenu.findViewById(R.id.filtrosHabitacion);
@@ -132,10 +135,24 @@ public class HomeFragment extends Fragment {
             String fGenero = sGenero.getSelectedItem() != null ? sGenero.getSelectedItem().toString() : "";
             String fNumComps = sNumComps.getSelectedItem() != null ? sNumComps.getSelectedItem().toString() : "";
             String fTipoBano = sTipoBano.getSelectedItem() != null ? sTipoBano.getSelectedItem().toString() : "";
+            Integer fprice = -1;
+            Integer fmetr = -1;
+            if (sprice.getText() != null){
+                System.out.println("NO ES NULL Y ES: " + sprice.getText());
+                if (!sprice.getText().toString().equals("")){
+                    fprice = Integer.parseInt(sprice.getText().toString());
+                }
+            }
+            if (smetros.getText() != null){
+                System.out.println("NO ES NULL Y ES: " + smetros.getText());
+                if (!smetros.getText().toString().equals("")){
+                    fmetr = Integer.parseInt(smetros.getText().toString());
+                }
+            }
 
             // Lógica para aplicar filtros
             // Llama a tu método o listener con los valores seleccionados
-            applyFilters(fCategoria, fTipoCasa, fNumHabs, fNumBanos, fOrientacion, fGenero, fNumComps, fTipoBano);
+            applyFilters(fCategoria, fTipoCasa, fNumHabs, fNumBanos, fOrientacion, fGenero, fNumComps, fTipoBano, fprice, fmetr);
 
             drawerLayout.closeDrawer(GravityCompat.START); // Cierra el menú lateral tras aplicar los filtros
         });
@@ -166,13 +183,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void notApplyFilters(){
-        homeViewModel.applyFiltersViewModel("","","","","","","","",true);
+        homeViewModel.applyFiltersViewModel("","","","","","","","",true, -1,-1);
 
     }
 
 
     private void applyFilters(String categoria, String tipoCasa, String numHabs, String numBanos,
-                              String orientacion, String genero, String numComps, String tipoBano) {
+                              String orientacion, String genero, String numComps, String tipoBano, Integer price, Integer metros) {
         categoria = translateIfNeeded(categoria);
         tipoCasa = translateIfNeeded(tipoCasa);
         numHabs = translateIfNeeded(numHabs);
@@ -181,7 +198,7 @@ public class HomeFragment extends Fragment {
         genero = translateIfNeeded(genero);
         numComps = translateIfNeeded(numComps);
         tipoBano = translateIfNeeded(tipoBano);
-        homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano,false);
+        homeViewModel.applyFiltersViewModel(categoria,tipoCasa,numHabs, numBanos, numComps, genero, orientacion, tipoBano,false, price, metros);
         System.out.println("Filtros aplicados: " + categoria + ", " + tipoCasa + ", " + numHabs + ", " + numBanos);
     }
     private String translateIfNeeded(String value) {
@@ -216,7 +233,7 @@ public class HomeFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_metros), vivienda.getMetr());
         intent.putExtra(this.getString(R.string.key_precio), vivienda.getPrice());
         intent.putExtra(this.getString(R.string.key_descripcion), vivienda.getDescription());
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(vivienda.getImagenesUri()));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(vivienda.getImagenesUri()));
 
 
         //TAGS

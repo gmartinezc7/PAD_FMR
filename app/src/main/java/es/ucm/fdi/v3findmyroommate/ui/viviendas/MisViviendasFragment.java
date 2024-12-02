@@ -18,11 +18,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,8 +39,11 @@ import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import es.ucm.fdi.v3findmyroommate.LocaleUtils;
+import es.ucm.fdi.v3findmyroommate.MainActivity;
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -59,6 +67,7 @@ public class MisViviendasFragment extends Fragment {
     private AnunciosAdapter adapter;
 
     private int posicionCambioActual;
+    private static String publicPictureId;
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
     private ActivityResultLauncher<Intent> verAnuncioLauncher;
 
@@ -159,7 +168,7 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_metros), anuncio.getMetros());
         intent.putExtra(this.getString(R.string.key_precio), anuncio.getPrecio());
         intent.putExtra(this.getString(R.string.key_descripcion), anuncio.getDescripcion());
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
 
 
         //TAGS
@@ -242,7 +251,7 @@ public class MisViviendasFragment extends Fragment {
                                             (new GenericTypeIndicator<List<String>>() {});
 
                                     // Convierte los valores de la lista recibida a formato Uri.
-                                    List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
+                                    List<String> listaImagenesFormatoUri = new ArrayList<>(listaImagenesFormatoString);
 
                                     // Introduce cada uno de los campos en un intent.
                                     Intent currentAddIntent = new Intent();
@@ -253,7 +262,7 @@ public class MisViviendasFragment extends Fragment {
                                     currentAddIntent.putExtra(this.getString(R.string.key_precio), precio);
                                     currentAddIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
                                     currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
-                                    currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
+                                    currentAddIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
                                     if (categoria != null) {
 
@@ -355,7 +364,7 @@ public class MisViviendasFragment extends Fragment {
         databaseAddReference.child(application.getString((R.string.add_description_db_label)))
                 .setValue(nuevoAnuncio.getDescripcion());
 
-        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
+        List<String> listaImagenesAnuncioFormatoString = new ArrayList<>(nuevoAnuncio.getImagenesUri());
         databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
                 .setValue(listaImagenesAnuncioFormatoString);
 
@@ -697,27 +706,73 @@ public class MisViviendasFragment extends Fragment {
             });
         }
     }
+
+
+
+
+
+
+
+    //-------------------------GUARDAR EN CLOUDINARY-----------------------------
+
+
+    // Function that uploads the image corresponding to the given Uri.
+    public static void uploadImage(Uri currentPhotoUri, Application application) {
+
+        // Generates and assigns a random ID to the picture.
+        MisViviendasFragment.publicPictureId = UUID.randomUUID().toString();
+        MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
+               "public_id", MisViviendasFragment.publicPictureId).callback(new UploadCallback() {
+            @Override
+            public void onStart(String requestId) {
+                Log.d("Cloudinary Quickstart", "Upload start");
+            }
+
+            @Override
+            public void onProgress(String requestId, long bytes, long totalBytes) {
+                Log.d("Cloudinary Quickstart", "Upload progress");
+            }
+
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                Log.d("Cloudinary Quickstart", "Upload success");
+                String url = (String) resultData.get("secure_url");
+                Glide.with(application).load(url).into(MainActivity.binding.mainContent.uploadedImageview);
+            }
+
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                Log.d("Cloudinary Quickstart", "Upload failed");
+            }
+
+            @Override
+            public void onReschedule(String requestId, ErrorInfo error) {
+
+            }
+        }).dispatch();
+    }
+
+
+    // Function that returns the URL generated for that image.
+    public static String generateUrl(Application application) {
+        String currentPhotoUrl = MediaManager.get().url().generate(MisViviendasFragment.publicPictureId);
+        Glide.with(application).load(currentPhotoUrl).into(MainActivity.binding.mainContent.generatedImageview);
+        return currentPhotoUrl;
+    }
+
+
+
+
+
+
+
+    //-------------------------FUNCIONES AUXILIARES-----------------------------
     
 
-    // Función auxiliar que convierte una lista de Uris a otra de Strings
-    public static List<String> convierteListaUrisAListaStrings(List<Uri> urisList) {
-        List<String> stringsList = new ArrayList<>();
-        for (Uri uri : urisList) {
-            stringsList.add(uri.toString());
-        }
-        return stringsList;
-    }
 
 
-    // Función auxiliar que convierte una lista de Strings a otra de Uris.
-    public static List<Uri> convierteListaStringsAListaUris(List<String> stringsList) {
-        List<Uri> urisList = new ArrayList<>();
-        for (String str : stringsList) {
-            Uri newUri = Uri.parse(str);
-            urisList.add(newUri);
-        }
-        return urisList;
-    }
+
+
 
 
 }

@@ -26,7 +26,7 @@ public class Anuncio {
     private String metros;
     private String precio;
     private String descripcion;
-    private List<Uri> imagenesUri = new ArrayList<>();
+    private List<String> imagenesUri = new ArrayList<>();
 
 
     //TAGS
@@ -45,18 +45,18 @@ public class Anuncio {
 
     // TEST TEST TEST
     {
-        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.add_icon);
+        //Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.add_icon);
 
-        this.imagenesUri.add(exampleUri);
+        //this.imagenesUri.add(exampleUri);
     }
     // END OF TEST
 
 
     public Anuncio(Context context, Intent data) {
 
-        Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
+        ///Uri exampleUri = Uri.parse("android.resource://es.ucm.fdi.v3findmyroommate/" + R.drawable.age_diversity_icon);
 
-        this.imagenesUri.add(exampleUri);
+        //this.imagenesUri.add(exampleUri);
 
         this.idAnuncio = data.getStringExtra(context.getString(R.string.key_id));
 
@@ -79,7 +79,7 @@ public class Anuncio {
 
 
         // TEST TEST TEST
-        this.imagenesUri = data.getParcelableArrayListExtra(context.getString(R.string.key_imagenes_uri));
+        this.imagenesUri = data.getStringArrayListExtra(context.getString(R.string.key_imagenes_uri));
         // END OF TEST
 
         //TAGS
@@ -103,7 +103,7 @@ public class Anuncio {
         }
     }
 
-    public List<Uri> getImagenesUri() {
+    public List<String> getImagenesUri() {
         return imagenesUri;
     }
     public String getId() {
