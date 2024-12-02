@@ -68,7 +68,7 @@ private Context context;
     @Override
     public void onBindViewHolder(@NonNull AnuncioViewHolder holder, int position) {
         Anuncio anuncio = anuncios.get(position);
-
+        holder.imagenActualIndex = 0;
         // CONFIGURAR LA INFORMACIÓN
         setAnuncioDetails(holder, anuncio);
 

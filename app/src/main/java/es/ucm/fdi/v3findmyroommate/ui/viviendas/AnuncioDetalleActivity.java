@@ -214,6 +214,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         this.precio = data.getStringExtra(this.getString(R.string.key_precio));
         this.descripcion = data.getStringExtra(this.getString(R.string.key_descripcion));
         this.imagenesUri = data.getStringArrayListExtra(this.getString(R.string.key_imagenes_uri));
+        imagenActualIndex = 0;
         iniciarNavImagenes();
 
 
