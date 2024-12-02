@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
@@ -40,7 +41,11 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Vivienda> lista = new ArrayList<>();
-                for (DataSnapshot viviendas : snapshot.getChildren()){
+                //Cambios para que sea "sincrono"
+                int totalViviendas = (int) snapshot.getChildrenCount();
+                AtomicInteger viviendasProcesadas = new AtomicInteger(0);
+
+                for (DataSnapshot viviendas : snapshot.getChildren()) {
                     Vivienda vivienda = new Vivienda();
                     String key = viviendas.getKey();
                     vivienda.setId(key);
@@ -57,10 +62,8 @@ public class HomeViewModel extends ViewModel {
                     for (DataSnapshot urlSnapshot : viviendas.child("uri_list").getChildren()) {
                         String url = urlSnapshot.getValue(String.class);
 
-                            imagenesUri.add(url);
+                        imagenesUri.add(url);
                     }
-
-
 
 
                     vivienda.setImagenesUri(imagenesUri);
@@ -81,30 +84,36 @@ public class HomeViewModel extends ViewModel {
                     //Obtener id y nombre dueño
                     String userId = viviendas.child("user_id").getValue(String.class);
                     vivienda.setOwnerId(userId);
+
                     if (userId != null) {
-                        FirebaseDatabase.getInstance().getReference("users").child(userId).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                String username = snapshot.getValue(String.class);
-                                vivienda.setOwnerName(username);
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                vivienda.setOwnerName("Desconocido");
-                            }
-                        });
+                        FirebaseDatabase.getInstance().getReference("users").child(userId).child("username")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        vivienda.setOwnerName(snapshot.getValue(String.class));
+                                        finalizarCarga(viviendasProcesadas, totalViviendas, lista);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        vivienda.setOwnerName("Desconocido");
+                                        finalizarCarga(viviendasProcesadas, totalViviendas, lista);
+                                    }
+                                });
+                    } else {
+                        vivienda.setOwnerName("Desconocido");
+                        finalizarCarga(viviendasProcesadas, totalViviendas, lista);
                     }
 
-                    //martineevivienda.printVivienda();
-
-
-                    if (vivienda != null) {
-                        lista.add(vivienda);
-                        System.out.println("Vivienda carga: " + vivienda.getTitle());
-                    }
+                    lista.add(vivienda);
                 }
                 viviendasini = new ArrayList<>(lista);
-                viviendas.setValue(lista);
+            }
+
+            private void finalizarCarga(AtomicInteger viviendasProcesadas, int totalViviendas, List<Vivienda> lista) {
+                if (viviendasProcesadas.incrementAndGet() == totalViviendas) {
+                    viviendas.setValue(lista);
+                }
             }
 
             @Override
