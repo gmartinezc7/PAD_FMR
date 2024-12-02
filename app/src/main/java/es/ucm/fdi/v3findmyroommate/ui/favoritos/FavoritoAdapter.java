@@ -55,7 +55,14 @@ public class FavoritoAdapter extends RecyclerView.Adapter <FavoritoAdapter.Favor
         holder.address.setText(vivienda.getLocation());
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice().toString());
-        holder.metr.setText(vivienda.getMetr().toString());
+        try{
+            holder.metr.setText(vivienda.getMetr().toString());
+        }catch(NullPointerException e){
+
+            holder.metr.setText("0");
+        }
+
+
 
         //SAM-----------------------------------------------------------------------------------------------------
         holder.previewRect.setVisibility(View.VISIBLE);
