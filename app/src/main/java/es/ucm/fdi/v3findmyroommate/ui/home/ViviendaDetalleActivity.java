@@ -167,7 +167,6 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
         this.idAnuncio = data.getStringExtra(this.getString(R.string.key_id));
         this.titulo = data.getStringExtra(this.getString(R.string.key_titulo));
         this.ubicacion = data.getStringExtra(this.getString(R.string.key_ubicacion));
-        this.metros = data.getStringExtra(this.getString(R.string.key_metros));
         this.precio = data.getStringExtra(this.getString(R.string.key_precio));
         this.descripcion = data.getStringExtra(this.getString(R.string.key_descripcion));
         this.imagenesUri = data.getStringArrayListExtra(this.getString(R.string.key_imagenes_uri));
@@ -176,7 +175,6 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
 
         tituloText.setText(titulo);
         ubicacionText.setText(ubicacion);
-        metrosText.setText(metros);
         precioText.setText(precio);
         descripcionText.setText(descripcion);
 
@@ -189,12 +187,13 @@ public class ViviendaDetalleActivity extends AppCompatActivity {
 
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
-
+            this.metros = data.getStringExtra(this.getString(R.string.key_metros));
             this.tipoCasa = data.getStringExtra(this.getString(R.string.key_tipo_casa));
             this.habitaciones = data.getStringExtra(this.getString(R.string.key_habitaciones));
             this.banos = data.getStringExtra(this.getString(R.string.key_banos));
             this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
 
+            metrosText.setText(metros);
             tipoCasaText.setText(TranslationUtils.reverseTranslateIfNeeded(tipoCasa));
             numHabitacionesText.setText(habitaciones);
             numBanosText.setText(banos);

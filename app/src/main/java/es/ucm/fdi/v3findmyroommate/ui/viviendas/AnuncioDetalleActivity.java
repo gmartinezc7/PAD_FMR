@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
+import es.ucm.fdi.v3findmyroommate.TranslationUtils;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -209,7 +211,6 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         this.idAnuncio = data.getStringExtra(this.getString(R.string.key_id));
         this.titulo = data.getStringExtra(this.getString(R.string.key_titulo));
         this.ubicacion = data.getStringExtra(this.getString(R.string.key_ubicacion));
-        this.metros = data.getStringExtra(this.getString(R.string.key_metros));
         this.precio = data.getStringExtra(this.getString(R.string.key_precio));
         this.descripcion = data.getStringExtra(this.getString(R.string.key_descripcion));
         this.imagenesUri = data.getStringArrayListExtra(this.getString(R.string.key_imagenes_uri));
@@ -218,7 +219,6 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
         tituloText.setText(titulo);
         ubicacionText.setText( ubicacion);
-        metrosText.setText( metros);
         precioText.setText( precio);
         descripcionText.setText( descripcion);
 
@@ -226,25 +226,26 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
         //TAGS
         this.categoria = data.getStringExtra(this.getString(R.string.key_categoria));
-        categoriaText.setText(this.categoria);
+        categoriaText.setText(TranslationUtils.reverseTranslateIfNeeded(this.categoria));
 
-        if(this.categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))){
+        if(this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))){
 
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
-
+            this.metros = data.getStringExtra(this.getString(R.string.key_metros));
             this.tipoCasa = data.getStringExtra(this.getString(R.string.key_tipo_casa));
             this.habitaciones = data.getStringExtra(this.getString(R.string.key_habitaciones));
             this.banos = data.getStringExtra(this.getString(R.string.key_banos));
             this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
 
-            tipoCasaText.setText(tipoCasa);
+            tipoCasaText.setText(TranslationUtils.reverseTranslateIfNeeded(tipoCasa));
             numHabitacionesText.setText( habitaciones);
             numBanosText.setText(banos);
-            orientacionText.setText( exteriorInterior);
+            metrosText.setText(metros);
+            orientacionText.setText(TranslationUtils.reverseTranslateIfNeeded(exteriorInterior));
 
         }
-        else if(categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))){
+        else if(categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))){
 
             opcionesCasa.setVisibility(View.GONE);
             opcionesHabitacion.setVisibility(View.VISIBLE);
@@ -255,9 +256,9 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
             this.tipoBano = data.getStringExtra(this.getString(R.string.key_tipo_bano));
 
             numCompanerosText.setText(companeros);
-            generoHabitacionesText.setText( genero);
-            orientacionHabitacionText.setText( exteriorInterior);
-            tipoBanoText.setText( tipoBano);
+            generoHabitacionesText.setText(TranslationUtils.reverseTranslateIfNeeded(genero));
+            orientacionHabitacionText.setText(TranslationUtils.reverseTranslateIfNeeded(exteriorInterior));
+            tipoBanoText.setText(TranslationUtils.reverseTranslateIfNeeded(tipoBano));
 
         }
 

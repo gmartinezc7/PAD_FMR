@@ -176,13 +176,14 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
 
-        if (categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+            String tipoCasa = anuncio.getTipoCasa();
 
             intent.putExtra(this.getString(R.string.key_tipo_casa), anuncio.getTipoCasa());
             intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
             intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
             intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))) {
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
             intent.putExtra(this.getString(R.string.key_companeros), anuncio.getCompaneros());
             intent.putExtra(this.getString(R.string.key_genero), anuncio.getGenero());
@@ -267,7 +268,7 @@ public class MisViviendasFragment extends Fragment {
                                     if (categoria != null) {
 
                                         if (categoria.equals(getContext().getApplicationContext().getString(
-                                                R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
+                                                R.string.category_casa))) {  // Si el anuncio es de una casa.
 
                                             String tipo_casa = secondSnapshot.child(getActivity().getApplication()
                                                     .getString(R.string.add_house_type_db_label)).getValue(String.class);
@@ -286,7 +287,7 @@ public class MisViviendasFragment extends Fragment {
                                         }
 
                                         else if (categoria.equals(getContext().getApplicationContext().getString(
-                                                R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
+                                                R.string.category_habitacion))) {  // Si el anuncio es de una habitación.
 
                                             String max_companeros = secondSnapshot.child(getActivity().getApplication()
                                                     .getString(R.string.max_num_roommates_db_label)).getValue(String.class);

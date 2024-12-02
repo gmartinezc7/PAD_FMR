@@ -74,7 +74,6 @@ public class MisFavoritosFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_id), vivienda.getId());
         intent.putExtra(this.getString(R.string.key_titulo), vivienda.getTitle());
         intent.putExtra(this.getString(R.string.key_ubicacion), vivienda.getLocation());
-        intent.putExtra(this.getString(R.string.key_metros), vivienda.getMetr());
         intent.putExtra(this.getString(R.string.key_precio), vivienda.getPrice());
         intent.putExtra(this.getString(R.string.key_descripcion), vivienda.getDescription());
         intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(vivienda.getImagenesUri()));
@@ -91,6 +90,7 @@ public class MisFavoritosFragment extends Fragment {
             intent.putExtra(this.getString(R.string.key_habitaciones), vivienda.getHabitaciones());
             intent.putExtra(this.getString(R.string.key_banos), vivienda.getBanos());
             intent.putExtra(this.getString(R.string.key_exterior_interior), vivienda.getExteriorInterior());
+            intent.putExtra(this.getString(R.string.key_metros), vivienda.getMetr());
         } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
             intent.putExtra(this.getString(R.string.key_companeros), vivienda.getCompaneros());
