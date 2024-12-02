@@ -68,7 +68,7 @@ public class ChatFragment extends Fragment {
             return root;
         }
 
-        // Configuración de la vista
+        // aConfigurción de la vista
         recyclerView = root.findViewById(R.id.recyclerViewMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -97,15 +97,17 @@ public class ChatFragment extends Fragment {
         return root;
     }
 
-    // Cargar los mensajes del chat
     private void loadMessages() {
         chatMessagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messageList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    Message message = messageSnapshot.getValue(Message.class);
+                    Message message = Message.fromDataSnapshot(messageSnapshot);
                     if (message != null) {
+                        if (!message.isVisto() && !message.getSender().equals(currentUserId)) {
+                            updateMessageVisto(message.getMessageId());
+                        }
                         messageList.add(message);
                     }
                 }
@@ -120,18 +122,32 @@ public class ChatFragment extends Fragment {
         });
     }
 
+
+    private void updateMessageVisto(String messageId) {
+        DatabaseReference messageRef = chatMessagesRef.child(messageId);
+        messageRef.child("visto").setValue(true)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("ChatFragment", "Mensaje actualizado a visto.");
+                    } else {
+                        Log.d("ChatFragment", "Error al actualizar el mensaje a visto.");
+                    }
+                });
+    }
+
+
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
 
-        // Crear el mensaje
-        Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
+        //Crear el mensaje con 'visto' inicialmente en false
+        Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp, false);
 
-        // Agregar el mensaje a la base de datos
+        //Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Actualizar el último mensaje en el chat
+                        //Actualizar el último mensaje en el chat
                         Map<String, Object> chatUpdates = new HashMap<>();
                         chatUpdates.put("lastMessage", messageText);
                         chatUpdates.put("timestamp", timestamp);
@@ -150,5 +166,4 @@ public class ChatFragment extends Fragment {
                     }
                 });
     }
-
 }

@@ -51,12 +51,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Message message = messageList.get(position);
         String senderId = message.getSender();
 
-        if (senderId.equals(currentUserId)) {
+        if (senderId != null && senderId.equals(currentUserId)) {
             holder.messageSender.setVisibility(View.VISIBLE);
             holder.messageContainerOther.setVisibility(View.GONE);
 
             holder.messageSenderName.setText(currentUserName != null ? currentUserName : "You");
-            holder.messageText.setText(message.getText());
+            holder.messageText.setText(message.getText() != null ? message.getText() : "No message");
 
             String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestamp.setText(formattedDate);
@@ -66,13 +66,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.messageContainerOther.setVisibility(View.VISIBLE);
 
             holder.messageOtherName.setText(otherUserName != null ? otherUserName : "Unknown");
-            holder.messageTextOther.setText(message.getText());
+            holder.messageTextOther.setText(message.getText() != null ? message.getText() : "No message");
 
             String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestampOther.setText(formattedDate);
             holder.messageTimestampOther.setGravity(Gravity.START);
         }
     }
+
 
     @Override
     public int getItemCount() {

@@ -9,6 +9,7 @@ public class Message {
     private String sender;
     private String text;
     private long timestamp;
+    private boolean visto;
     private Map<String, Object> participantes;
 
     public Message() {}
@@ -19,6 +20,16 @@ public class Message {
         this.text = text;
         this.timestamp = timestamp;
         this.participantes = new HashMap<>();
+        this.visto = false;
+    }
+
+    public Message(String messageId, String sender, String text, long timestamp, boolean visto) {
+        this.messageId = messageId;
+        this.sender = sender;
+        this.text = text;
+        this.timestamp = timestamp;
+        this.participantes = new HashMap<>();
+        this.visto = visto;
     }
 
     public String getMessageId() {
@@ -65,9 +76,20 @@ public class Message {
         Message message = snapshot.getValue(Message.class);
         if (message != null) {
             message.setSender((String) snapshot.child("sender").getValue());
+            if (!snapshot.hasChild("visto")) {
+                message.setVisto(true);
+            }
         }
         return message;
     }
 
     public String getSenderId() {return sender;}
+
+    public boolean isVisto() {
+        return visto;
+    }
+
+    public void setVisto(boolean visto) {
+        this.visto = visto;
+    }
 }
