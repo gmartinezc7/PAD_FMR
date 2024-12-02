@@ -87,7 +87,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         //Usuario
         String ownerName = vivienda.getOwnerName();
         if (ownerName != null) {
-            holder.ownerName.setText("Contanctar dueño: " + ownerName);
+            holder.ownerName.setText(context.getString(R.string.contact_owner) + ": " + ownerName);
             //Llamar al ChatActivity
             holder.ownerName.setOnClickListener(v -> {
                 String ownerId = vivienda.getOwnerId();
@@ -99,7 +99,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             });
 
         } else {
-            holder.ownerName.setText("Dueño: Desconocido");
+            holder.ownerName.setText(context.getString(R.string.owner_unknown));
         }
 
 

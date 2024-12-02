@@ -50,8 +50,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.messageSender.setVisibility(View.VISIBLE);
             holder.messageContainerOther.setVisibility(View.GONE);
 
-            holder.messageSenderName.setText(currentUserName != null ? currentUserName : "You");
-            holder.messageText.setText(message.getText() != null ? message.getText() : "No message");
+            holder.messageSenderName.setText(currentUserName != null ? currentUserName : context.getString(R.string.you));
+            holder.messageText.setText(message.getText() != null ? message.getText() : context.getString(R.string.message_no_message));
 
             String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestamp.setText(formattedDate);
@@ -60,8 +60,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.messageSender.setVisibility(View.GONE);
             holder.messageContainerOther.setVisibility(View.VISIBLE);
 
-            holder.messageOtherName.setText(otherUserName != null ? otherUserName : "Unknown");
-            holder.messageTextOther.setText(message.getText() != null ? message.getText() : "No message");
+            holder.messageOtherName.setText(otherUserName != null ? otherUserName : context.getString(R.string.unknown_user));
+            holder.messageTextOther.setText(message.getText() != null ? message.getText() : context.getString(R.string.message_no_message));
 
             String formattedDate = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date(message.getTimestamp()));
             holder.messageTimestampOther.setText(formattedDate);

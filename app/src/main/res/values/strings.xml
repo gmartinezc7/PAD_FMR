@@ -21,6 +21,13 @@
     <string name="create_account">Crear cuenta</string>
 
     <!--Texto Chats -->
+    <string name="message_no_message">Sin mensaje</string>
+    <string name="you">Tú</string>
+    <string name="unknown_user">Desconocido</string>
+    <string name="no_date">Sin fecha</string>
+    <string name="owner_unknown">Dueño: Desconocido</string>
+    <string name="contact_owner_error">No se puede contactar con el propietario</string>
+
 
     <string name="personal_information_message">Dinos más acerca de ti</string>
     <string name="continue_">Continuar</string>

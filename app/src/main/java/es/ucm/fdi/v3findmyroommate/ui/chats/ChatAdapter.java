@@ -45,11 +45,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         Chat chat = chatList.get(position);
 
         //Nombre del otro usuario
-        holder.chatUserId.setText(chat.getOtherUsername() != null ? chat.getOtherUsername() : "Usuario desconocido");
+        holder.chatUserId.setText(chat.getOtherUsername() != null ? chat.getOtherUsername() : context.getString(R.string.unknown_user));
 
         //Último mensaje
         Message lastMessage = getLastMessage(chat.getMessages());
-        holder.chatLastMessage.setText(lastMessage != null ? lastMessage.getText() : "Sin mensajes");
+        holder.chatLastMessage.setText(lastMessage != null ? lastMessage.getText() : context.getString(R.string.message_no_message));
 
         //Timestamp
         long timestamp = lastMessage != null ? lastMessage.getTimestamp() : 0;
@@ -101,7 +101,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     private String formatTimestamp(long timestamp) {
         if (timestamp == 0L) {
-            return "No date";
+            return context.getString(R.string.no_date);
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         return dateFormat.format(new Date(timestamp));
