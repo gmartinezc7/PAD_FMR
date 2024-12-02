@@ -18,8 +18,18 @@ import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
 
-public abstract class BaseFragment extends Fragment {
+/**
+ * BaseFragment es una clase abstracta base para gestionar fragmentos en la aplicación.
+ * Contiene métodos reutilizables para la navegación entre fragmentos,
+ * la gestión de ChipGroups y validaciones comunes.
+ */
 
+public abstract class BaseFragment extends Fragment {
+    /**
+     * Carga el siguiente fragmento reemplazando el actual.
+     *
+     * @param nextFragment El fragmento a cargar.
+     */
     protected void loadNextFragment(Fragment nextFragment) {
         if (getActivity() != null) {
             getActivity().getSupportFragmentManager()
@@ -30,7 +40,12 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Actualiza los colores de los Chips en un ChipGroup para reflejar el estado seleccionado.
+     *
+     * @param group El ChipGroup.
+     * @param checkedId El ID del Chip seleccionado.
+     */
     protected void updateChipColors(ChipGroup group, int checkedId) {
         for (int i = 0; i < group.getChildCount(); i++) {
             View chip = group.getChildAt(i);
@@ -50,11 +65,13 @@ public abstract class BaseFragment extends Fragment {
 
 
     /**
-     * Sets up a ChipGroup with a generic listener to reduce redundancy.
-     * @param view The parent view.
-     * @param chipGroupId The ID of the ChipGroup.
-     * @param onChipSelected A callback to handle the selected chip text.
+     * Configura un ChipGroup con un listener genérico para manejar selecciones.
+     *
+     * @param view El View padre que contiene el ChipGroup.
+     * @param chipGroupId El ID del ChipGroup.
+     * @param onChipSelected Callback para manejar el texto del Chip seleccionado.
      */
+    @SuppressWarnings("deprecation")
     protected void setupChipGroup(View view, int chipGroupId, OnChipSelectedCallback onChipSelected) {
         ChipGroup chipGroup = view.findViewById(chipGroupId);
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -76,6 +93,13 @@ public abstract class BaseFragment extends Fragment {
         void onChipSelected(String selectedText);
     }
 
+    /**
+     * Valida que todos los ChipGroups tengan una selección y que todos los TextInputs requeridos estén llenos.
+     *
+     * @param requiredChipGroups Lista de ChipGroups requeridos.
+     * @param requiredTextInputs Lista de EditTexts requeridos.
+     * @return true si todos los campos están llenos; false de lo contrario.
+     */
     protected boolean validateSelections(List<ChipGroup> requiredChipGroups, List<EditText> requiredTextInputs) {
         // Verifica si hay algún ChipGroup sin seleccionar
         for (ChipGroup chipGroup : requiredChipGroups) {
@@ -100,10 +124,16 @@ public abstract class BaseFragment extends Fragment {
 
 
 
-    // Método abstracto que cada fragmento hijo deberá implementar para obtener el siguiente fragmento
+    /**
+     * Método abstracto para obtener el siguiente fragmento. Cada fragmento hijo debe implementarlo.
+     *
+     * @return El siguiente fragmento a cargar.
+     */
     protected abstract Fragment getNextFragment();
 
 
-    // Method that's used in some of the fragments, to update the user's information to the database.
+    /**
+     * Interfaz funcional para manejar selecciones de Chips.
+     */
     protected void updateUserInfoInDatabase() {}
 }
