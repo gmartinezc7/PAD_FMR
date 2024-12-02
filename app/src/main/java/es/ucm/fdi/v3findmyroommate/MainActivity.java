@@ -1,10 +1,5 @@
 package es.ucm.fdi.v3findmyroommate;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
@@ -19,6 +14,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,7 +25,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -96,20 +92,20 @@ public class MainActivity extends AppCompatActivity {
 
                 // Accesses database and searches for the user's email.
                 mAuth.signInWithEmailAndPassword(userEmail, userPassword)
-                    .addOnCompleteListener(MainActivity.this, task -> {
-                        if (task.isSuccessful()) {
+                        .addOnCompleteListener(MainActivity.this, task -> {
+                            if (task.isSuccessful()) {
 
-                            requestPermissions();
+                                requestPermissions();
 
-                        }
-                        else {
-                            // If the sign in fails, displays a message to the user.
-                            Toast signInFailedToast = Toast.makeText(MainActivity.this,
-                                    R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
-                            signInFailedToast.show();
-                            Log.w("SignIn", "Sign in failed", task.getException());
-                        }
-                    });
+                            }
+                            else {
+                                // If the sign in fails, displays a message to the user.
+                                Toast signInFailedToast = Toast.makeText(MainActivity.this,
+                                        R.string.sign_in_failed_toast_text, Toast.LENGTH_SHORT);
+                                signInFailedToast.show();
+                                Log.w("SignIn", "Sign in failed", task.getException());
+                            }
+                        });
             }
 
             else {
@@ -128,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
         signUP.setOnClickListener(view -> openSignUPView());
 
-
-
         //Pedir permiso para Notificaciones
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -139,17 +133,17 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-        //Token para inapp-messaging pero no se usa
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String token = task.getResult();
-                        //Guardar token del usuario
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
-                        userRef.child("fcmToken").setValue(token);
-                    }
-                });
+//        //Token para inapp-messaging pero no se usa
+//        FirebaseMessaging.getInstance().getToken()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        String token = task.getResult();
+//                        //Guardar token del usuario
+//                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+//                        userRef.child("fcmToken").setValue(token);
+//                    }
+//                });
 
 
     }

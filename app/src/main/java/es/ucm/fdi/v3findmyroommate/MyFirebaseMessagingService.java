@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+//Ya no se usa esta clase pero me daba pena quitarla xd
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "FCMService";
@@ -31,11 +32,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "Mensaje recibido: " + remoteMessage);
 
-        // Extraemos los datos del mensaje (puedes personalizar esto según el tipo de mensaje)
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
-        // Mostrar la notificación solo si hay un título y cuerpo
         if (title != null && body != null) {
             showNotification(title, body);
         }
@@ -45,7 +44,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Crear el canal de notificación (solo para Android Oreo o superior)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
@@ -55,21 +53,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        // Crear la notificación
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)  // Asegúrate de tener un icono en 'res/drawable'
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true); // La notificación desaparecerá al tocarla
+                .setAutoCancel(true);
 
-        // Mostrar la notificación
         notificationManager.notify(0, builder.build());
     }
 
-    // Guarda el token de FCM en la base de datos de Firebase para poder enviarlo a otros usuarios
     private void sendTokenToDatabase(String token) {
-        String userId = "currentUserId"; // Reemplaza esto con el ID real del usuario autenticado
+        String userId = "currentUserId";
         Log.d(TAG, "Token guardado para usuario: " + userId);
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();

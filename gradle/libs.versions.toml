@@ -25,6 +25,7 @@ firebaseMessaging = "24.1.0"
 firebaseAuth = "23.1.0"
 firebaseInappmessagingDisplay = "21.0.1"
 coordinatorlayout = "1.2.0"
+playServicesCastTv = "21.1.1"
 
 [libraries]
 cloudinary-android = { module = "com.cloudinary:cloudinary-android", version.ref = "cloudinaryAndroid" }
@@ -50,6 +51,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 firebase-inappmessaging-display = { group = "com.google.firebase", name = "firebase-inappmessaging-display", version.ref = "firebaseInappmessagingDisplay" }
 coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "coordinatorlayout" }
+play-services-cast-tv = { group = "com.google.android.gms", name = "play-services-cast-tv", version.ref = "playServicesCastTv" }
 
 
 [plugins]
