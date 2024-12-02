@@ -39,7 +39,7 @@ public class MisFavoritosFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Vivienda> viviendasfavs = new ArrayList<>();
-        adapter = new FavoritoAdapter(viviendasfavs, this);
+        adapter = new FavoritoAdapter(this.getContext(),viviendasfavs, this);
         recyclerView.setAdapter(adapter);
 
         misfavsViewModel = new ViewModelProvider(this).get(MisFavoritosViewModel.class);
