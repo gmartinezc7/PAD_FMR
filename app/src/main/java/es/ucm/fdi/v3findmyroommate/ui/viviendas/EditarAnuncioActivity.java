@@ -441,8 +441,8 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             imagenesUri.remove(imagenActualIndex - imagenesUrl.size());
 
             // Ajustar el índice actual si es necesario
-            if (imagenActualIndex >= imagenesUri.size()) {
-                imagenActualIndex = imagenesUri.size() - 1; // Mover al último índice disponible
+            if (imagenActualIndex - imagenesUrl.size() >= imagenesUri.size() || imagenActualIndex >= imagenesUrl.size()) {
+                imagenActualIndex = imagenesUrl.size() + imagenesUri.size() - 1; // Mover al último índice disponible
             }
 
             // Actualizar la imagen mostrada
@@ -453,6 +453,11 @@ public class EditarAnuncioActivity extends AppCompatActivity {
                 &&  imagenActualIndex < imagenesUrl.size()) {
             // Eliminar la imagen actual de la lista
             imagenesUrl.remove(imagenActualIndex);
+
+            // Ajustar el índice actual si es necesario
+            if (imagenActualIndex  >= imagenesUrl.size()) {
+                imagenActualIndex = imagenesUrl.size() - 1; // Mover al último índice disponible
+            }
 
             // Actualizar la imagen mostrada
             actualizarImagen();
