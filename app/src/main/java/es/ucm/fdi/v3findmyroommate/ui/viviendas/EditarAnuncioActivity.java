@@ -536,12 +536,6 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             String currentPictureUrlStringFormat = MisViviendasFragment.generateUrl(getApplication());
             urlPicturesList.add(currentPictureUrlStringFormat);
 
-            /*
-            uploadImage(currentPictureUri);
-            String currentPictureUrlStringFormat = generateUrl();
-            urlPicturesList.add(currentPictureUrlStringFormat);
-
-             */
         }
 
 
