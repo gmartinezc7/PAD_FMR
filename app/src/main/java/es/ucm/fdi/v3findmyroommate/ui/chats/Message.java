@@ -6,19 +6,30 @@ import java.util.HashMap;
 import java.util.Map;
 public class Message {
     private String messageId;
-    private String senderId;
+    private String sender;
     private String text;
     private long timestamp;
+    private boolean visto;
     private Map<String, Object> participantes;
 
     public Message() {}
 
-    public Message(String messageId, String senderId, String text, long timestamp) {
+    public Message(String messageId, String sender, String text, long timestamp) {
         this.messageId = messageId;
-        this.senderId = senderId;
+        this.sender = sender;
         this.text = text;
         this.timestamp = timestamp;
         this.participantes = new HashMap<>();
+        this.visto = false;
+    }
+
+    public Message(String messageId, String sender, String text, long timestamp, boolean visto) {
+        this.messageId = messageId;
+        this.sender = sender;
+        this.text = text;
+        this.timestamp = timestamp;
+        this.participantes = new HashMap<>();
+        this.visto = visto;
     }
 
     public String getMessageId() {
@@ -29,12 +40,12 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setSender(String senderId) {
+        this.sender = senderId;
     }
 
     public String getText() {
@@ -64,8 +75,21 @@ public class Message {
     public static Message fromDataSnapshot(DataSnapshot snapshot) {
         Message message = snapshot.getValue(Message.class);
         if (message != null) {
-            message.setSenderId((String) snapshot.child("sender").getValue());
+            message.setSender((String) snapshot.child("sender").getValue());
+            if (!snapshot.hasChild("visto")) {
+                message.setVisto(true);
+            }
         }
         return message;
+    }
+
+    public String getSenderId() {return sender;}
+
+    public boolean isVisto() {
+        return visto;
+    }
+
+    public void setVisto(boolean visto) {
+        this.visto = visto;
     }
 }

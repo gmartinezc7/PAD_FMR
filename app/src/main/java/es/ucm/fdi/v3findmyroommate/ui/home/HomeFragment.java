@@ -77,6 +77,8 @@ public class HomeFragment extends Fragment {
         });
         //buttonApplyFilters.setOnClickListener(v -> applyFilters());
 
+
+
         return root;
     }
 
@@ -84,6 +86,8 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+
 
 
 }

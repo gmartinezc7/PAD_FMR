@@ -80,4 +80,7 @@ public class Chat implements Serializable{
         this.otherUsename = otherUsername;
     }
 
+    public Map<String, Object> getMessagesData() {
+        return messages;
+    }
 }

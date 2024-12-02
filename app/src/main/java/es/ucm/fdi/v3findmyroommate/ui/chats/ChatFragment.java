@@ -1,10 +1,5 @@
 package es.ucm.fdi.v3findmyroommate.ui.chats;
 
-import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +68,7 @@ public class ChatFragment extends Fragment {
             return root;
         }
 
-        // Configuración de la vista
+        // aConfigurción de la vista
         recyclerView = root.findViewById(R.id.recyclerViewMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -112,8 +103,11 @@ public class ChatFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 messageList.clear();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    Message message = messageSnapshot.getValue(Message.class);
+                    Message message = Message.fromDataSnapshot(messageSnapshot);
                     if (message != null) {
+                        if (!message.isVisto() && !message.getSender().equals(currentUserId)) {
+                            updateMessageVisto(message.getMessageId());
+                        }
                         messageList.add(message);
                     }
                 }
@@ -129,101 +123,47 @@ public class ChatFragment extends Fragment {
     }
 
 
+    private void updateMessageVisto(String messageId) {
+        DatabaseReference messageRef = chatMessagesRef.child(messageId);
+        messageRef.child("visto").setValue(true)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("ChatFragment", "Mensaje actualizado a visto.");
+                    } else {
+                        Log.d("ChatFragment", "Error al actualizar el mensaje a visto.");
+                    }
+                });
+    }
+
+
     private void sendMessage(String chatId, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
 
-        Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp);
+        //Crear el mensaje con 'visto' inicialmente en false
+        Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp, false);
 
+        //Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        updateChatLastMessage(chatId, messageText, timestamp);
+                        //Actualizar el último mensaje en el chat
+                        Map<String, Object> chatUpdates = new HashMap<>();
+                        chatUpdates.put("lastMessage", messageText);
+                        chatUpdates.put("timestamp", timestamp);
+
+                        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
+                        chatRef.updateChildren(chatUpdates)
+                                .addOnCompleteListener(updateTask -> {
+                                    if (updateTask.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Error al actualizar el chat", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     } else {
-                        Log.d("SendMessage", "Error al enviar el mensaje.");
+                        Toast.makeText(getContext(), "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
-    private void updateChatLastMessage(String chatId, String messageText, long timestamp) {
-        Map<String, Object> chatUpdates = new HashMap<>();
-        chatUpdates.put("lastMessage", messageText);
-        chatUpdates.put("timestamp", timestamp);
-
-        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
-        chatRef.updateChildren(chatUpdates)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        notifyRecipient(chatId, messageText);
-                    }
-                });
-    }
-
-    private void notifyRecipient(String chatId, String messageText) {
-        DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
-        chatRef.child("participants").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot participant : snapshot.getChildren()) {
-                    String participantId = participant.getKey();
-
-                    // Asegurarse de que no le enviamos la notificación al usuario actual
-                    if (!participantId.equals(currentUserId)) {
-                        // Obtener el token FCM del receptor desde la base de datos
-                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId);
-                        userRef.child("fcmToken").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                String recipientToken = dataSnapshot.getValue(String.class);
-                                if (recipientToken != null) {
-                                    // Ahora tienes el token del receptor, y puedes enviarle una notificación local
-                                    sendNotificationToReceiver(recipientToken, "Nuevo mensaje", messageText);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.e("NotifyRecipient", "Error al obtener token: " + error.getMessage());
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("NotifyRecipient", "Error al obtener participantes: " + error.getMessage());
-            }
-        });
-    }
-
-
-    private void sendNotificationToReceiver(String recipientToken, String title, String message) {
-        // Crear la notificación
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "chat_channel")
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true);
-
-        // Obtener el NotificationManager
-        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Si es la primera vez que envías una notificación, debes crear un canal
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Chat Notifications";
-            String description = "Notificaciones de nuevos mensajes";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("chat_channel", name, importance);
-            channel.setDescription(description);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        // Mostrar la notificación
-        notificationManager.notify(0, builder.build());
-    }
-
-
-
 }
