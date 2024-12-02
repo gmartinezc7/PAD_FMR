@@ -455,9 +455,14 @@ public class EditarAnuncioActivity extends AppCompatActivity {
             imagenesUrl.remove(imagenActualIndex);
 
             // Ajustar el índice actual si es necesario
-            if (imagenActualIndex  >= imagenesUrl.size()) {
+            if(imagenesUrl.isEmpty() && !imagenesUri.isEmpty()){
+                imagenActualIndex = 0;
+            }
+            else if (imagenActualIndex  >= imagenesUrl.size()) {
                 imagenActualIndex = imagenesUrl.size() - 1; // Mover al último índice disponible
             }
+
+
 
             // Actualizar la imagen mostrada
             actualizarImagen();
