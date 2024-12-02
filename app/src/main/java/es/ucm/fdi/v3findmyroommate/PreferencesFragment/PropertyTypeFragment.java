@@ -39,7 +39,7 @@ public class PropertyTypeFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.property_type_fragment, container, false);
         super.onCreateView(inflater, container, savedInstanceState);
-        // Recuperar nuestros datos de user
+        // Retrieve the data from the shared ViewModel
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         setupChipGroup(view, R.id.propertyTypeChipGroup, selectedText -> sharedViewModel.setPropertyType(propertyType));
@@ -51,7 +51,7 @@ public class PropertyTypeFragment extends BaseFragment {
         continueButton = view.findViewById(R.id.continueButton);
 
         continueButton.setOnClickListener(v -> {
-            // Recopilar ChipGroups y TextInputEditText a validar
+            // Validate before continuing
             List<ChipGroup> requiredChipGroups = Arrays.asList(view.findViewById(R.id.propertyTypeChipGroup));
             List<EditText> requiredTextInputs = Arrays.asList(maxBudgetEditText);
             if (validateSelections(requiredChipGroups, requiredTextInputs)) {
@@ -60,7 +60,7 @@ public class PropertyTypeFragment extends BaseFragment {
                 sharedViewModel.setPropertyType(this.propertyType);
                 sharedViewModel.setMaxBudget(maxBudget);
                 updateUserInfoInDatabase();
-                loadNextFragment(getNextFragment()); // Continuar si la validación es exitosa
+                loadNextFragment(getNextFragment());
             }
         });
 
