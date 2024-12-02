@@ -118,21 +118,17 @@ public class ChatsFragment extends Fragment {
                 if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     Map<String, Object> chatData = (Map<String, Object>) dataSnapshot.getValue();
 
-                    // Verificar que los datos necesarios estén presentes
+                    //Verificar que los datos existen
                     String lastMessage = chatData.containsKey("lastMessage") ? (String) chatData.get("lastMessage") : "No hay mensajes";
                     Long timestamp = chatData.containsKey("timestamp") ? (Long) chatData.get("timestamp") : System.currentTimeMillis();
-
-                    // Validación para "participants"
                     Map<String, Object> participants = chatData.containsKey("participants") ? (Map<String, Object>) chatData.get("participants") : new HashMap<>();
-
-                    // Validación para "messages"
                     Map<String, Object> messagesData = chatData.containsKey("messages") ? (Map<String, Object>) chatData.get("messages") : new HashMap<>();
 
                     boolean hasUnreadMessages = false;
 
                     String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    // Verificar si hay mensajes no leídos
+                    //Verificar si hay mensajes no vistos
                     for (Map.Entry<String, Object> entry : messagesData.entrySet()) {
                         String messageId = entry.getKey();
                         Map<String, Object> message = (Map<String, Object>) entry.getValue();
@@ -140,26 +136,25 @@ public class ChatsFragment extends Fragment {
                         Boolean isSeen = (Boolean) message.get("visto");
                         String senderId = (String) message.get("senderId");
 
-                        // Saltar los mensajes enviados por el usuario actual
+                        //Saltar mensajes enviados por el usuario
                         if (senderId != null && senderId.equals(currentUserId)) {
                             continue;
                         }
 
-                        // Si no existe el campo "visto", asumir que es "visto"
+                        //Si no existe el campo "visto", asumir que es "visto" = true
                         if (isSeen == null) {
                             message.put("visto", true);
                             chatRef.child("messages").child(messageId).child("visto").setValue(true);
                             isSeen = true;
                         }
 
-                        // Verificar si el mensaje no ha sido visto
+                        // erificar si el mensaje no ha sido visto
                         if (isSeen != null && !isSeen) {
                             hasUnreadMessages = true;
                             break;
                         }
                     }
 
-                    // Crear el objeto Chat
                     Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
                     assignUsernames(participants, chat);
 
