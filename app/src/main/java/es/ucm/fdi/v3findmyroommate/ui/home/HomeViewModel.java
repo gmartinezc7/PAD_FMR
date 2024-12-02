@@ -196,19 +196,31 @@ public class HomeViewModel extends ViewModel {
             }
 
             if (vivienda.getPrice() != null){
-                Integer vprecio = Integer.parseInt(vivienda.getPrice());
-                if (vprecio >= price && price != -1){
+                try{
+                    Integer vprecio = Integer.parseInt(vivienda.getPrice());
+                    if (vprecio >= price && price != -1){
+                        filtrosOK = false;
+                    }
+                }catch (NumberFormatException e){
+                    vivienda.setMetr("0");
                     filtrosOK = false;
                 }
+
             }
 
             if (vivienda.getMetr() != null){
                 String viviendagetmetr = vivienda.getMetr();
                 System.out.println("Viviendaprint: " + viviendagetmetr);
-                Integer vmetr = Integer.parseInt(vivienda.getMetr());
-                if (metros >= vmetr && metros != -1){
+                try{
+                    Integer vmetr = Integer.parseInt(vivienda.getMetr());
+                    if (metros >= vmetr && metros != -1){
+                        filtrosOK = false;
+                    }
+                }catch (NumberFormatException e){
+                    vivienda.setMetr("0");
                     filtrosOK = false;
                 }
+
             }
 
             if (filtrosOK || nofilters == true){
