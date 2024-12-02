@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -170,14 +171,21 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //Toolbar
+        //Toolbar y logica para volver atras
         Toolbar toolbar = view.findViewById(R.id.toolbarChat);
         toolbar.setNavigationIcon(R.drawable.ic_flecha_izquierda);
         toolbar.setNavigationOnClickListener(v -> {
-            //Volver atrás
-            Navigation.findNavController(view).navigateUp();
+            NavController navController = Navigation.findNavController(v);
 
+            if (navController.getCurrentDestination() != null
+                    && navController.getCurrentDestination().getId() == R.id.chatFragment) {
+                getParentFragmentManager().popBackStackImmediate();
+            } else {
+                navController.navigate(R.id.chatsFragment);
+
+            }
         });
     }
+
 
 }

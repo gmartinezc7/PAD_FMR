@@ -36,6 +36,12 @@
         tools:layout="@layout/fragment_chat" />
 
     <fragment
+        android:id="@+id/chatsFragment"
+        android:name="es.ucm.fdi.v3findmyroommate.ui.chats.ChatsFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
         android:id="@+id/navigation_config"
         android:name="es.ucm.fdi.v3findmyroommate.ui.config.ConfigFragment"
         android:label="@string/title_config"
