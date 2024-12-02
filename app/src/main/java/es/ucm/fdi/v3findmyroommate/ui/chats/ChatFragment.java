@@ -100,28 +100,29 @@ public class ChatFragment extends Fragment {
     }
 
     private void loadMessages() {
-        chatMessagesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                messageList.clear();
-                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    Message message = Message.fromDataSnapshot(messageSnapshot);
-                    if (message != null) {
-                        if (!message.isVisto() && !message.getSender().equals(currentUserId)) {
-                            updateMessageVisto(message.getMessageId());
+        chatMessagesRef.orderByChild("timestamp")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        messageList.clear();
+                        for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                            Message message = Message.fromDataSnapshot(messageSnapshot);
+                            if (message != null) {
+                                if (!message.isVisto() && !message.getSender().equals(currentUserId)) {
+                                    updateMessageVisto(message.getMessageId());
+                                }
+                                messageList.add(message);
+                            }
                         }
-                        messageList.add(message);
+                        messageAdapter.notifyDataSetChanged();
+                        recyclerView.scrollToPosition(messageList.size() - 1);
                     }
-                }
-                messageAdapter.notifyDataSetChanged();
-                recyclerView.scrollToPosition(messageList.size() - 1);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Error cargando los mensajes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getContext(), "Error cargando los mensajes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
