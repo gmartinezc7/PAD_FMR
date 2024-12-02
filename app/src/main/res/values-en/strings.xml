@@ -41,7 +41,7 @@
     <string name="fill_all_fields_toast_text">Enter all the fields</string>
     <string name="username_preference_dialog_text">Insert your new username</string>
     <string name="email_preference_dialog_text">Insert your new email</string>
-    <string name="house_preferences">House preferences</string>
+    <string name="house_preferences_title">House preferences</string>
     <string name="male_label">Male</string>
     <string name="female_label">Female</string>
     <string name="single_status_label">Single</string>
@@ -56,7 +56,7 @@
     <string name="marital_status_preference_summary">Select your marital status</string>
     <string name="occupation_preference_title">Occupation</string>
     <string name="occupation_preference_summary">Select your occupation</string>
-    <string name="house_property_type_label">Home</string>
+    <string name="house_property_type_label">House</string>
     <string name="room_property_type_label">Room</string>
     <string name="weak_password_text">Password must be at least 6 characters long</string>
     <string name="duplicated_user_text">There\'s already a user registered with that email address</string>
@@ -81,12 +81,12 @@
 
 
     <string-array name="categorias_array">
-        <item>Home</item>
+        <item>House</item>
         <item>Room</item>
     </string-array>
     <string-array name="tipo_casa_array">
         <item>Apartment</item>
-        <item>House</item>
+        <item>Home</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>
@@ -106,8 +106,8 @@
         <item>4+</item>
     </string-array>
     <string-array name="genero_array">
-        <item>Male</item>
-        <item>Female</item>
+        <item>Man</item>
+        <item>Woman</item>
         <item>Both</item>
     </string-array>
     <string-array name="exterior_interior_array">
@@ -141,12 +141,13 @@
 
     <string name="mensaje_permiso_camara_denegado">Camera permission not granted</string>
     <string name="mensaje_permiso_almacenamiento_denegado">Storage permission not granted</string>
+    <string name="mensaje_permisos_requeridos_denegados">Storage permission not granted</string>
     <string name="mensaje_error_crear_imagen">Error creating image file</string>
     <string name="mensaje_error_encontrar_camara">No camera application found</string>
     <string name="mensaje_no_se_selecciono_imagen">No image selected</string>
     <string name="edit_house_listing">Edit add</string>
     <string name="apartment_house_type">Apartment</string>
-    <string name="house_house_type">House</string>
+    <string name="house_house_type">Single-family home</string>
     <string name="interior_orientation">Interior</string>
     <string name="exterior_orientation">Exterior</string>
     <string name="private_bathroom_type">Private</string>
@@ -180,6 +181,46 @@
     <string name="both">Both</string>
     <string name="select_number_of_bathrooms">Select Number of Bathrooms</string>
     <string name="select_orientation">Select Orientation</string>
+    <string name="contact_owner">Contact owner</string>
+    <string name="my_favs_title">MY FAVORITES</string>
+    <string name="my_adds_title">MY ADDS</string>
+    <string name="back_button_text">Go back</string>
+    <string name="image_description_label">Add image</string>
+    <string name="location_label">Location</string>
+    <string name="square_meters_label">Square meters</string>
+    <string name="price_label">Price</string>
+    <string name="description_label">Description</string>
+    <string name="category_label">Category</string>
+    <string name="house_type_label">House type</string>
+    <string name="room_number_label">Number of rooms</string>
+    <string name="bathroom_number_label">Number of bathrooms</string>
+    <string name="orientation_label">Orientation (Interior/Exterior)</string>
+    <string name="roommate_number_label">Number of roommates</string>
+    <string name="roommate_gender_label">Roommates\' gender</string>
+    <string name="bathroom_type_label">Bathroom type</string>
+    <string name="edit_button_text">Edit</string>
+    <string name="add_title_label">Add title</string>
+    <string name="create_add_title">Create add</string>
+    <string name="add_image_button_text">Add image</string>
+    <string name="delete_image_button_text">Delete image</string>
+    <string name="add_tags_label">Apply tags so other users can easily find your listing</string>
+    <string name="save_add_button_text">Save add</string>
+    <string name="edit_add_title">Edit add</string>
+    <string name="update_add_button_text">Update add</string>
+    <string name="item_category_label">"Category: "</string>
+    <string name="item_house_type_label">"House type: "</string>
+    <string name="item_num_rooms_label">"Rooms: "</string>
+    <string name="item_num_bathrooms_label">"Bathrooms: "</string>
+    <string name="item_orientation_label">"Orientation: "</string>
+    <string name="item_num_roommates_label">"Roommates: "</string>
+    <string name="item_roommates_gender_label">"Gender: "</string>
+    <string name="item_bathroom_type_label">"Bathroom type: "</string>
+    <string name="item_building_name_label">Building name</string>
+    <string name="item_living_building_name_label">"Building: "</string>
+    <string name="item_location_label">"Location: "</string>
+    <string name="item_square_meters_label">"Square feet: "</string>
+    <string name="item_price_label">"Price: "</string>
+    <string name="create_new_add_button_text">Create new add</string>
 
 </resources>
 

@@ -9,6 +9,9 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
 
+
+
+
         <!-- Colores secundarios -->
         <item name="colorSecondary">@color/dark_gray</item>
         <item name="colorOnSecondary">@color/white</item>

@@ -10,16 +10,26 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,8 +39,11 @@ import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import es.ucm.fdi.v3findmyroommate.LocaleUtils;
+import es.ucm.fdi.v3findmyroommate.MainActivity;
 import es.ucm.fdi.v3findmyroommate.R;
 
 
@@ -49,11 +62,12 @@ ANUNCIO, ACTIVIDAD QUE SE LANZA DESDE verAnuncio (AnuncioDetalleActivity).
 public class MisViviendasFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private Button btnCrearAnuncio;
+    private FloatingActionButton btnCrearAnuncio;
     private MisViviendasViewModel misViviendasViewModel;
     private AnunciosAdapter adapter;
 
     private int posicionCambioActual;
+    private static String publicPictureId;
     private ActivityResultLauncher<Intent> crearAnuncioLauncher;
     private ActivityResultLauncher<Intent> verAnuncioLauncher;
 
@@ -67,6 +81,7 @@ public class MisViviendasFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_mis_viviendas, container, false);
+
 
 
         misViviendasViewModel = new ViewModelProvider(this).get(MisViviendasViewModel.class);
@@ -153,7 +168,7 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_metros), anuncio.getMetros());
         intent.putExtra(this.getString(R.string.key_precio), anuncio.getPrecio());
         intent.putExtra(this.getString(R.string.key_descripcion), anuncio.getDescripcion());
-        intent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
+        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(anuncio.getImagenesUri()));
 
 
         //TAGS
@@ -161,13 +176,13 @@ public class MisViviendasFragment extends Fragment {
         intent.putExtra(this.getString(R.string.key_categoria), categoria);
 
 
-        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))) {
 
             intent.putExtra(this.getString(R.string.key_tipo_casa), anuncio.getTipoCasa());
             intent.putExtra(this.getString(R.string.key_habitaciones), anuncio.getHabitaciones());
             intent.putExtra(this.getString(R.string.key_banos), anuncio.getBanos());
             intent.putExtra(this.getString(R.string.key_exterior_interior), anuncio.getExteriorInterior());
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))) {
 
             intent.putExtra(this.getString(R.string.key_companeros), anuncio.getCompaneros());
             intent.putExtra(this.getString(R.string.key_genero), anuncio.getGenero());
@@ -236,7 +251,7 @@ public class MisViviendasFragment extends Fragment {
                                             (new GenericTypeIndicator<List<String>>() {});
 
                                     // Convierte los valores de la lista recibida a formato Uri.
-                                    List<Uri> listaImagenesFormatoUri = convierteListaStringsAListaUris(listaImagenesFormatoString);
+                                    List<String> listaImagenesFormatoUri = new ArrayList<>(listaImagenesFormatoString);
 
                                     // Introduce cada uno de los campos en un intent.
                                     Intent currentAddIntent = new Intent();
@@ -247,44 +262,48 @@ public class MisViviendasFragment extends Fragment {
                                     currentAddIntent.putExtra(this.getString(R.string.key_precio), precio);
                                     currentAddIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
                                     currentAddIntent.putExtra(this.getString(R.string.key_categoria), categoria);
-                                    currentAddIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
+                                    currentAddIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri), new ArrayList<>(listaImagenesFormatoUri));
 
-                                    if (categoria.equals(getContext().getApplicationContext().getString(
-                                            R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
+                                    if (categoria != null) {
 
-                                        String tipo_casa = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
-                                        String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.num_rooms_db_label)).getValue(String.class);
-                                        String num_banos = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.add_house_type_db_label)).getValue(String.class);
-                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.orientation_db_label)).getValue(String.class);
+                                        if (categoria.equals(getContext().getApplicationContext().getString(
+                                                R.string.house_property_type_label))) {  // Si el anuncio es de una casa.
 
-                                        // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
-                                    }
+                                            String tipo_casa = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.add_house_type_db_label)).getValue(String.class);
+                                            String num_habitaciones = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.num_rooms_db_label)).getValue(String.class);
+                                            String num_banos = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
+                                            String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.orientation_db_label)).getValue(String.class);
 
-                                    else if (categoria.equals(getContext().getApplicationContext().getString(
-                                            R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
+                                            // Guardamos los datos específicos, propios de una casa.
+                                            currentAddIntent.putExtra(this.getString(R.string.key_tipo_casa), tipo_casa);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_habitaciones), num_habitaciones);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_banos), num_banos);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                        }
 
-                                        String max_companeros = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
-                                        String genero_companeros = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.roommate_gender_db_label)).getValue(String.class);
-                                        String orientacion = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.orientation_db_label)).getValue(String.class);
-                                        String tipo_bano = secondSnapshot.child(getActivity().getApplication()
-                                                .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+                                        else if (categoria.equals(getContext().getApplicationContext().getString(
+                                                R.string.room_property_type_label))) {  // Si el anuncio es de una habitación.
 
-                                        // Guardamos los datos específicos, propios de una casa.
-                                        currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
-                                        currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
+                                            String max_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.max_num_roommates_db_label)).getValue(String.class);
+                                            String genero_companeros = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.roommate_gender_db_label)).getValue(String.class);
+                                            String orientacion = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.orientation_db_label)).getValue(String.class);
+                                            String tipo_bano = secondSnapshot.child(getActivity().getApplication()
+                                                    .getString(R.string.bathroom_type_db_label)).getValue(String.class);
+
+                                            // Guardamos los datos específicos, propios de una casa.
+                                            currentAddIntent.putExtra(this.getString(R.string.key_companeros), max_companeros);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_genero), genero_companeros);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_exterior_interior), orientacion);
+                                            currentAddIntent.putExtra(this.getString(R.string.key_tipo_bano), tipo_bano);
+                                        }
+
                                     }
 
                                     // Añade el anuncio a la lista del modelo.
@@ -345,7 +364,7 @@ public class MisViviendasFragment extends Fragment {
         databaseAddReference.child(application.getString((R.string.add_description_db_label)))
                 .setValue(nuevoAnuncio.getDescripcion());
 
-        List<String> listaImagenesAnuncioFormatoString = MisViviendasFragment.convierteListaUrisAListaStrings(nuevoAnuncio.getImagenesUri());
+        List<String> listaImagenesAnuncioFormatoString = new ArrayList<>(nuevoAnuncio.getImagenesUri());
         databaseAddReference.child(application.getString((R.string.add_uri_list_db_label)))
                 .setValue(listaImagenesAnuncioFormatoString);
 
@@ -369,6 +388,10 @@ public class MisViviendasFragment extends Fragment {
                     .setValue(nuevoAnuncio.getBanos());
 
             MisViviendasFragment.guardarOrientacion(nuevoAnuncio, application, databaseAddReference);
+
+            // Como es un valor numérico, no es necesario compararlo con otros idiomas.
+            databaseAddReference.child(application.getString(R.string.square_meters_db_label))
+                    .setValue(nuevoAnuncio.getMetros());
 
         }
 
@@ -473,15 +496,15 @@ public class MisViviendasFragment extends Fragment {
         String generoLenguajePredeterminado = "";
 
         if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                generoSeleccionado, R.string.male_label)) {
+                generoSeleccionado, R.string.man)) {
             generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.male_label);
+                    R.string.man);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
-                generoSeleccionado, R.string.female_label)) {
+                generoSeleccionado, R.string.woman)) {
             generoLenguajePredeterminado = LocaleUtils.getValueInDBLocale(application.getApplicationContext(),
-                    R.string.female_label);
+                    R.string.woman);
         }
 
         else if (LocaleUtils.doesStringMatchAnyLanguage(application.getApplicationContext(),
@@ -555,7 +578,7 @@ public class MisViviendasFragment extends Fragment {
     }
 
 
-    // Método que elminina los campos que no sean los propios de una habitación.
+    // Método que elimina los campos que no sean los propios de una habitación.
     private static void eliminarCamposPreviosTipoPropiedadHabitacion(DatabaseReference databaseAddReference,
                                                                      Application application) {
 
@@ -582,6 +605,13 @@ public class MisViviendasFragment extends Fragment {
                         .getString(R.string.num_bathrooms_db_label)).getValue(String.class);
                 if (num_bathroom != null)
                     databaseAddReference.child(application.getString(R.string.num_bathrooms_db_label))
+                            .removeValue();
+
+                // Elimina el campo de metros cuadrados.
+                String square_meters = snapshot.child(application
+                        .getString(R.string.square_meters_db_label)).getValue(String.class);
+                if (square_meters != null)
+                    databaseAddReference.child(application.getString(R.string.square_meters_db_label))
                             .removeValue();
 
             }
@@ -676,27 +706,73 @@ public class MisViviendasFragment extends Fragment {
             });
         }
     }
+
+
+
+
+
+
+
+    //-------------------------GUARDAR EN CLOUDINARY-----------------------------
+
+
+    // Function that uploads the image corresponding to the given Uri.
+    public static void uploadImage(Uri currentPhotoUri, Application application) {
+
+        // Generates and assigns a random ID to the picture.
+        MisViviendasFragment.publicPictureId = UUID.randomUUID().toString();
+        MediaManager.get().upload(currentPhotoUri).unsigned(MainActivity.UPLOAD_PRESET).option(
+               "public_id", MisViviendasFragment.publicPictureId).callback(new UploadCallback() {
+            @Override
+            public void onStart(String requestId) {
+                Log.d("Cloudinary Quickstart", "Upload start");
+            }
+
+            @Override
+            public void onProgress(String requestId, long bytes, long totalBytes) {
+                Log.d("Cloudinary Quickstart", "Upload progress");
+            }
+
+            @Override
+            public void onSuccess(String requestId, Map resultData) {
+                Log.d("Cloudinary Quickstart", "Upload success");
+                String url = (String) resultData.get("secure_url");
+                Glide.with(application).load(url).into(MainActivity.binding.mainContent.uploadedImageview);
+            }
+
+            @Override
+            public void onError(String requestId, ErrorInfo error) {
+                Log.d("Cloudinary Quickstart", "Upload failed");
+            }
+
+            @Override
+            public void onReschedule(String requestId, ErrorInfo error) {
+
+            }
+        }).dispatch();
+    }
+
+
+    // Function that returns the URL generated for that image.
+    public static String generateUrl(Application application) {
+        String currentPhotoUrl = MediaManager.get().url().generate(MisViviendasFragment.publicPictureId);
+        Glide.with(application).load(currentPhotoUrl).into(MainActivity.binding.mainContent.generatedImageview);
+        return currentPhotoUrl;
+    }
+
+
+
+
+
+
+
+    //-------------------------FUNCIONES AUXILIARES-----------------------------
     
 
-    // Función auxiliar que convierte una lista de Uris a otra de Strings
-    public static List<String> convierteListaUrisAListaStrings(List<Uri> urisList) {
-        List<String> stringsList = new ArrayList<>();
-        for (Uri uri : urisList) {
-            stringsList.add(uri.toString());
-        }
-        return stringsList;
-    }
 
 
-    // Función auxiliar que convierte una lista de Strings a otra de Uris.
-    public static List<Uri> convierteListaStringsAListaUris(List<String> stringsList) {
-        List<Uri> urisList = new ArrayList<>();
-        for (String str : stringsList) {
-            Uri newUri = Uri.parse(str);
-            urisList.add(newUri);
-        }
-        return urisList;
-    }
+
+
 
 
 }

@@ -7,11 +7,21 @@
         android:required="false" />
 
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
+
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
 
 
@@ -35,7 +45,8 @@
             android:name=".ui.home.VivCreateActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +57,7 @@
             android:name=".ui.viviendas.CrearAnuncioActivity"
             android:exported="false" />
         <activity android:name=".ui.viviendas.AnuncioDetalleActivity" />
+        <activity android:name=".ui.home.ViviendaDetalleActivity" />
         <activity android:name=".ui.viviendas.EditarAnuncioActivity" />
 
         <provider
@@ -68,11 +80,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-
-
-        <service android:name=".ExampleService" />
-
 
 
     </application>

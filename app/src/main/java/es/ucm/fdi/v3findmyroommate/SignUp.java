@@ -2,8 +2,11 @@ package es.ucm.fdi.v3findmyroommate;
 
 import static android.util.Log.e;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseAuthWebException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.PreferencesFragment.PreferenceUser;
 import es.ucm.fdi.v3findmyroommate.ui.config.ConfigPreferencesModel;
@@ -54,49 +62,122 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void createAccount(View view) {
+
         try {
-            // Obtener los datos de los campos de texto
-            String name = userNameEditText.getText().toString().trim();
-            String lastName = lastNameEditText.getText().toString().trim();
-            String email = userEmailEditText.getText().toString().trim();
-            String password = userPasswordTextEdit.getText().toString().trim();
-            String confirmPassword = userConfirmPasswordTextEdit.getText().toString().trim();
 
-            // Verifies that all fields are filled.
-            if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                // Shows error toast if there are any empty fields.
-                Toast.makeText(this, R.string.fill_all_fields_toast_text, Toast.LENGTH_SHORT).show();
-                return;
-            }
+            requestPermissions();
 
-            // Verifies that the email entered is a valid email address.
-            else if (!email.contains("@")) {
-                // Shows error toast if the email isn't valid.
-                Toast.makeText(this, R.string.invalid_email_toast_text, Toast.LENGTH_SHORT).show();
-            }
-
-            // Verifies that both passwords entered match.
-            else if (!password.equals(confirmPassword)) {
-                // Shows error toast if the passwords don't match.
-                Toast.makeText(this, R.string.passwords_dont_match_toast_text, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            else {
-                // Start next activity if the database doesn't throw any errors
-                Intent intent = new Intent(SignUp.this, PreferenceUser.class);
-                intent.putExtra("userName", name);
-                intent.putExtra("lastName", lastName);
-                intent.putExtra("userEmail", email);
-                intent.putExtra("userPassword", password);
-
-                createUserInDatabase(name, email, lastName, password, intent);
-            }
         }
         catch (Exception e) {
             e(TAG, e.getMessage());
         }
     }
+
+
+    private void abrirTrasIniciar(){
+
+        // Obtener los datos de los campos de texto
+        String name = userNameEditText.getText().toString().trim();
+        String lastName = lastNameEditText.getText().toString().trim();
+        String email = userEmailEditText.getText().toString().trim();
+        String password = userPasswordTextEdit.getText().toString().trim();
+        String confirmPassword = userConfirmPasswordTextEdit.getText().toString().trim();
+
+        // Verifies that all fields are filled.
+        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            // Shows error toast if there are any empty fields.
+            Toast.makeText(this, R.string.fill_all_fields_toast_text, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Verifies that the email entered is a valid email address.
+        else if (!email.contains("@")) {
+            // Shows error toast if the email isn't valid.
+            Toast.makeText(this, R.string.invalid_email_toast_text, Toast.LENGTH_SHORT).show();
+        }
+
+        // Verifies that both passwords entered match.
+        else if (!password.equals(confirmPassword)) {
+            // Shows error toast if the passwords don't match.
+            Toast.makeText(this, R.string.passwords_dont_match_toast_text, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        else {
+            // Start next activity if the database doesn't throw any errors
+            Intent intent = new Intent(SignUp.this, PreferenceUser.class);
+            intent.putExtra("userName", name);
+            intent.putExtra("lastName", lastName);
+            intent.putExtra("userEmail", email);
+            intent.putExtra("userPassword", password);
+
+            createUserInDatabase(name, email, lastName, password, intent);
+
+        }
+
+
+    }
+
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Lista de permisos según la versión de Android
+            List<String> permisosNecesarios = new ArrayList<>();
+
+            // Permiso de cámara (siempre requerido)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permisosNecesarios.add(android.Manifest.permission.CAMERA);
+            }
+
+            // Permiso de imágenes según la versión de Android
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else { // Android 12 y anteriores
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
+            }
+
+            // Solicitar los permisos necesarios
+            if (!permisosNecesarios.isEmpty()) {
+                requestPermissions(
+                        permisosNecesarios.toArray(new String[0]),
+                        100
+                );
+            } else {
+                abrirTrasIniciar();
+            }
+        } else {
+            abrirTrasIniciar();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Llamada a la implementación base
+        if (requestCode == 100) {
+            boolean todosPermisosConcedidos = true;
+
+            for (int resultado : grantResults) {
+                if (resultado != PackageManager.PERMISSION_GRANTED) {
+                    todosPermisosConcedidos = false;
+                    break;
+                }
+            }
+
+            if (todosPermisosConcedidos) {
+                abrirTrasIniciar();
+            } else {
+                Toast.makeText(this, getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
+
 
     public void returnLogin(View view) {
         Intent intent = new Intent(SignUp.this, MainActivity.class);

@@ -1,15 +1,13 @@
 package es.ucm.fdi.v3findmyroommate.ui.viviendas;
 
-import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -34,21 +31,33 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 import android.widget.AdapterView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import es.ucm.fdi.v3findmyroommate.MainActivity;
 import es.ucm.fdi.v3findmyroommate.R;
+
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+
+
+import android.util.Log;
+
+import java.util.Map;
+import java.util.UUID;
 
 
 public class CrearAnuncioActivity extends AppCompatActivity {
-
-
 
     private EditText editTitulo, editUbicacion, editMetros, editPrecio, editDescripcion;
     private Button btnGuardar, btnCancelar;
@@ -73,11 +82,15 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     Spinner spinnerCompaneros, spinnerGenero, spinnerExteriorInteriorHabitacion, spinnerTipoBano;
 
 
+    private String publicPictureId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio_2);
         previewPhotoUri = null;
+
+
 
 
         enlazarIdsVista();
@@ -86,7 +99,10 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
         establecerAccionesSpinners();
 
+
     }
+
+
 
 
     private void enlazarIdsVista(){
@@ -207,8 +223,23 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra(this.getString(R.string.key_metros), metros);
         resultIntent.putExtra(this.getString(R.string.key_precio), precio);
         resultIntent.putExtra(this.getString(R.string.key_descripcion), descripcion);
-        resultIntent.putParcelableArrayListExtra(this.getString(R.string.key_imagenes_uri),
-                new ArrayList<>(imagenesUri));
+
+
+        List<String> urlPicturesList = new ArrayList<>();
+
+        for (Uri currentPictureUri : this.imagenesUri) {
+
+            MisViviendasFragment.uploadImage(currentPictureUri, getApplication());
+            String currentPictureUrlStringFormat = MisViviendasFragment.generateUrl(getApplication());
+            urlPicturesList.add(currentPictureUrlStringFormat);
+
+        }
+
+        // HASTA AQUÍ ESTÁ HECHO
+        // ----------------------------------
+
+        resultIntent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri),
+                new ArrayList<>(urlPicturesList));
 
 
         //GUARDAMOS TAMBIÉN LAS ETIQUETAS
@@ -216,19 +247,20 @@ public class CrearAnuncioActivity extends AppCompatActivity {
         resultIntent.putExtra(this.getString(R.string.key_categoria), categoria);
 
         // Guardamos los datos específicos según la categoría
-        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
+        if (categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))) {
 
             resultIntent.putExtra(this.getString(R.string.key_tipo_casa), spinnerTipoCasa.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_habitaciones), spinnerHabitaciones.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_banos), spinnerBanos.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorCasa.getSelectedItem().toString());
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))) {
 
             resultIntent.putExtra(this.getString(R.string.key_companeros), spinnerCompaneros.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_genero), spinnerGenero.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_exterior_interior), spinnerExteriorInteriorHabitacion.getSelectedItem().toString());
             resultIntent.putExtra(this.getString(R.string.key_tipo_bano), spinnerTipoBano.getSelectedItem().toString());
         }
+
 
         Anuncio nuevoAnuncio = new Anuncio(this, resultIntent);
         MisViviendasFragment.guardarOActualizarAnuncioEnBD(nuevoAnuncio, this.getApplication());
@@ -301,38 +333,57 @@ public class CrearAnuncioActivity extends AppCompatActivity {
     //----------------------PERMISOS Y ACCESO A CAMARA/ALAMACENAMIENTO----------------------------------------------------------------------
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.CAMERA
-            }, 100);
-        }
-        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            }, 101);
-        }
-        else {
-            openImageSelector(); // Abre selector de imagens si los permisos ya están concedidos
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Lista de permisos según la versión de Android
+            List<String> permisosNecesarios = new ArrayList<>();
 
+            // Permiso de cámara (siempre requerido)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permisosNecesarios.add(android.Manifest.permission.CAMERA);
+            }
+
+            // Permiso de imágenes según la versión de Android
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_MEDIA_IMAGES);
+                }
+            } else { // Android 12 y anteriores
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    permisosNecesarios.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
+            }
+
+            // Solicitar los permisos necesarios
+            if (!permisosNecesarios.isEmpty()) {
+                requestPermissions(
+                        permisosNecesarios.toArray(new String[0]),
+                        100
+                );
+            } else {
+                openImageSelector();
+            }
+        } else {
+            openImageSelector();
+        }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Llamada a la implementación base
         if (requestCode == 100) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageSelector(); // Abre selector si se concede el permiso
-            } else {
-                Toast.makeText(this, this.getString(R.string.mensaje_permiso_camara_denegado), Toast.LENGTH_SHORT).show();
+            boolean todosPermisosConcedidos = true;
+
+            for (int resultado : grantResults) {
+                if (resultado != PackageManager.PERMISSION_GRANTED) {
+                    todosPermisosConcedidos = false;
+                    break;
+                }
             }
-        }
-        else if(requestCode == 101){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageSelector(); // Abre selector si se concede el permiso
+
+            if (todosPermisosConcedidos) {
+                openImageSelector();
             } else {
-                Toast.makeText(this, this.getString(R.string.mensaje_permiso_almacenamiento_denegado), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.mensaje_permisos_requeridos_denegados), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -419,12 +470,17 @@ public class CrearAnuncioActivity extends AppCompatActivity {
 
 
     private File createImageFile() throws IOException {
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
 
+        // Android 11+ verifica acceso a Scoped Storage
+        if (storageDir == null) {
+            throw new IOException("No se pudo acceder al directorio.");
+        }
+
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
+
 
 }

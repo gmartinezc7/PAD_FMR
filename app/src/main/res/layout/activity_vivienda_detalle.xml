@@ -9,28 +9,36 @@
         android:padding="16dp">
 
 
-        <RelativeLayout
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical">
 
-            <!-- Título del anuncio -->
-            <TextView
-                android:id="@+id/titulo_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:layout_alignParentStart="true"/>
+        <!-- Título del anuncio -->
+        <TextView
+            android:id="@+id/titulo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_weight="1"
+         /> 
 
-            <!-- Botón de editar alineado a la derecha -->
-            <Button
-                android:id="@+id/btn_editar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="@string/edit_button_text"/>
-        </RelativeLayout>
+        <!-- Botón de volver -->
+        <Button
+            android:id="@+id/btn_volver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:backgroundTint="?attr/colorButtonNormal"
+            android:text="@string/back_button_text" />
+    </LinearLayout>
+
+
 
         <FrameLayout
             android:id="@+id/preview_rect"
@@ -92,6 +100,7 @@
             android:text="@string/square_meters_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
+
         <TextView
             android:id="@+id/metros_text"
             android:layout_width="wrap_content"
@@ -285,15 +294,6 @@
                 android:layout_marginBottom="16dp" />
         </LinearLayout>
 
-
-        //------------------------------------------------------------------------------------------
-
-        <Button
-            android:id="@+id/btn_volver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/back_button_text"
-            android:layout_gravity="end"/>
 
     </LinearLayout>
 </ScrollView>

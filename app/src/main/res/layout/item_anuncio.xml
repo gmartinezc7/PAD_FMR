@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
-                        android:text="Vivienda: "
+                        android:text="@string/item_living_building_name_label"
                         android:backgroundTint="?attr/colorButtonNormal"
                         android:textSize="14sp" />
 
@@ -75,7 +75,7 @@
                         android:id="@+id/chipUbicacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ubicación: "
+                        android:text="@string/item_location_label"
                         android:backgroundTint="?attr/colorButtonNormal"
                         android:checkable="true"
                         android:textSize="14sp" />
@@ -84,7 +84,7 @@
                         android:id="@+id/chipMetros"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Metros Cuadrados: "
+                        android:text="@string/item_square_meters_label"
                         android:backgroundTint="?attr/colorButtonNormal"
                         android:checkable="true"
                         android:textSize="14sp" />
@@ -93,7 +93,7 @@
                         android:id="@+id/chipPrecio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Precio: "
+                        android:text="@string/item_price_label"
                         android:checkable="true"
                         android:backgroundTint="?attr/colorButtonNormal"
                         android:textSize="14sp" />

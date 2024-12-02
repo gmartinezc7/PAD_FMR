@@ -13,7 +13,7 @@ public class Vivienda implements Serializable {
     private String metr;
     private String price;
     private String description;
-    private List<Uri> imagenesUri = new ArrayList<>();
+    private List<String> imagenesUri = new ArrayList<>();
 
     // TAGS
     private String categoria;
@@ -34,7 +34,7 @@ public class Vivienda implements Serializable {
     private String ownerName;
 
     public Vivienda (){} // constructor que necesita Firebase
-    public Vivienda (String id, String name, String price, String description, String address, String metr, List<Uri> imagenes,
+    public Vivienda (String id, String name, String price, String description, String address, String metr, List<String> imagenes,
                      String categoria, String tipoCasa, String habitaciones, String banos, String exteriorInterior,
                      String companeros, String genero, String tipoBano){
         this.id = id;
@@ -62,7 +62,7 @@ public class Vivienda implements Serializable {
     public void setDescription(String description){ this.description = description; }
     public void setLocation(String address){ this.location = address; }
     public void setMetr(String metr) {this.metr = metr; }
-    public  void setImagenesUri(List<Uri> list){this.imagenesUri = list;}
+    public  void setImagenesUri(List<String> list){this.imagenesUri = list;}
 
     public void setCategoria(String categoria) { this.categoria = categoria; }
 
@@ -99,7 +99,7 @@ public class Vivienda implements Serializable {
     public String getDescription() { return this.description;}
     public String getLocation() { return this.location;}
     public String getMetr() { return this.metr; }
-    public  List<Uri> getImagenesUri() {
+    public  List<String> getImagenesUri() {
         return this.imagenesUri;
     }
     public String getCategoria() { return this.categoria;}

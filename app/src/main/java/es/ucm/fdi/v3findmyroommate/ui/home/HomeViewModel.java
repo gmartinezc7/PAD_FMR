@@ -1,6 +1,8 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleableRes;
 import androidx.lifecycle.LiveData;
@@ -14,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.ucm.fdi.v3findmyroommate.R;
 
 public class HomeViewModel extends ViewModel {
 
@@ -43,6 +47,26 @@ public class HomeViewModel extends ViewModel {
                     vivienda.setTitle(viviendas.child("title").getValue(String.class));
                     vivienda.setLocation(viviendas.child("location").getValue(String.class));
                     vivienda.setMetr(viviendas.child("square_meters").getValue(String.class));
+
+//SAM-------------------------------------------------------------------------------------------------------------------------------------
+
+
+                    // Manejo de la lista de imágenes
+                    List<String> imagenesUri = new ArrayList<>();
+
+                    for (DataSnapshot urlSnapshot : viviendas.child("uri_list").getChildren()) {
+                        String url = urlSnapshot.getValue(String.class);
+
+                            imagenesUri.add(url);
+                    }
+
+
+
+
+                    vivienda.setImagenesUri(imagenesUri);
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
                     vivienda.setPrice(viviendas.child("price").getValue(String.class));
                     vivienda.setDescription(viviendas.child("description").getValue(String.class));
                     vivienda.setCategoria(viviendas.child("property_type").getValue(String.class));
@@ -91,11 +115,11 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano){
+    public void applyFiltersViewModel (String categoria, String tipoCasa, String numhabs, String numbanos, String numComps, String genero, String orientation, String tipobano,boolean nofilters, Integer price, Integer metros){
         List<Vivienda> filtered = new ArrayList<>();
         // DEBUG
         System.out.println("SE HA LLAMADO A LA FUNCIÓN applyFiltersViewModel con los valores: ");
-        System.out.println("Filtros: " + categoria + tipoCasa + numhabs + numbanos + numComps + genero + orientation + tipobano);
+        System.out.println("Filtros: " + categoria + tipoCasa + numhabs + numbanos + numComps + genero + orientation + tipobano + price.toString() + metros.toString());
         for (Vivienda vivienda : viviendasini){
             boolean filtrosOK = true;
 
@@ -110,7 +134,7 @@ public class HomeViewModel extends ViewModel {
             }
 
             // FILTROS CATEGORIA CASA
-            if (categoria != null && categoria.equals("Home")){
+            if (categoria != null && categoria.equals("Casa")){
                 System.out.println("ES UNA CASAAAAAA");
                 System.out.println("Vivienda: " + vivienda.getId());
 
@@ -162,9 +186,23 @@ public class HomeViewModel extends ViewModel {
                 }else System.out.println("orientation Coincide");
             }
 
+            if (vivienda.getPrice() != null){
+                Integer vprecio = Integer.parseInt(vivienda.getPrice());
+                if (price > vprecio){
+                    filtrosOK = false;
+                }
+            }
 
+            if (vivienda.getMetr() != null){
+                String viviendagetmetr = vivienda.getMetr();
+                System.out.println("Viviendaprint: " + viviendagetmetr);
+                Integer vmetr = Integer.parseInt(vivienda.getMetr());
+                if (metros < vmetr && metros != -1){
+                    filtrosOK = false;
+                }
+            }
 
-            if (filtrosOK){
+            if (filtrosOK || nofilters == true){
                 filtered.add(vivienda);
                 System.out.println("FILTRADO");
                 vivienda.printVivienda();

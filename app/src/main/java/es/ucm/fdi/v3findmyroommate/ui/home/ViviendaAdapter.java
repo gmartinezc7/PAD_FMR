@@ -1,15 +1,19 @@
 package es.ucm.fdi.v3findmyroommate.ui.home;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -26,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +39,10 @@ import es.ucm.fdi.v3findmyroommate.R;
 import es.ucm.fdi.v3findmyroommate.ui.chats.Chat;
 import es.ucm.fdi.v3findmyroommate.ui.chats.ChatActivity;
 import es.ucm.fdi.v3findmyroommate.ui.chats.ChatFragment;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.Anuncio;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.AnuncioDetalleActivity;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.AnunciosAdapter;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.MisViviendasFragment;
 
 
 public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.ViviendaViewHolder> {
@@ -42,12 +51,14 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     private String userId;
     private FirebaseDatabase database;
     private Context context;
+    private HomeFragment fragment;
 
-    public ViviendaAdapter(Context context, List<Vivienda> lista){
+    public ViviendaAdapter(Context context, List<Vivienda> lista, HomeFragment fragment){
         this.context = context;
         this.listViv = lista;
+        this.fragment = fragment;
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.database = FirebaseDatabase.getInstance("https://findmyroommate-86cbe-default-rtdb.europe-west1.firebasedatabase.app/");
+        this.database = FirebaseDatabase.getInstance(context.getString(R.string.database_url));
     }
 
     @NonNull
@@ -65,6 +76,11 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         holder.description.setText(vivienda.getDescription());
         holder.price.setText(vivienda.getPrice());
         holder.metr.setText(vivienda.getMetr());
+
+        //SAM-----------------------------------------------------------------------------------------------------
+        holder.previewRect.setVisibility(View.VISIBLE);
+//-------------------------------------------------------------------------------------------------------------------
+
 
         //Usuario
         String ownerName = vivienda.getOwnerName();
@@ -89,14 +105,23 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         // categoría, pues los cargamos dependiendo de si son atributos de esa categoría o no, con
         // el siguiente método
 
-        setChipVisibility(holder.categoria, vivienda.getCategoria(),"Categoria - ");
-        setChipVisibility(holder.tipoCasa, vivienda.getTipoCasa(), "Tipo Casa - ");
-        setChipVisibility(holder.habitaciones, vivienda.getHabitaciones(), "Habitaciones - ");
-        setChipVisibility(holder.banos, vivienda.getBanos(), "Baños - ");
-        setChipVisibility(holder.exteriorInterior, vivienda.getExteriorInterior(), "Orientacion - ");
-        setChipVisibility(holder.companeros, vivienda.getCompaneros(), "Compañeros - ");
-        setChipVisibility(holder.genero, vivienda.getGenero(), "Género - ");
-        setChipVisibility(holder.tipoBano, vivienda.getTipoBano(), "Tipo Baño - ");
+        setChipVisibility(holder.categoria, vivienda.getCategoria(),
+                context.getString(R.string.item_category_label));
+        setChipVisibility(holder.tipoCasa, vivienda.getTipoCasa(),
+                context.getString(R.string.item_house_type_label));
+        setChipVisibility(holder.habitaciones, vivienda.getHabitaciones(),
+                context.getString(R.string.item_num_rooms_label));
+        setChipVisibility(holder.banos, vivienda.getBanos(),
+                context.getString(R.string.item_num_bathrooms_label));
+        setChipVisibility(holder.exteriorInterior, vivienda.getExteriorInterior(),
+                context.getString(R.string.item_orientation_label));
+        setChipVisibility(holder.companeros, vivienda.getCompaneros(),
+                context.getString(R.string.item_num_roommates_label));
+        setChipVisibility(holder.genero, vivienda.getGenero(),
+                context.getString(R.string.item_roommates_gender_label));
+        setChipVisibility(holder.tipoBano, vivienda.getTipoBano(),
+                context.getString(R.string.item_bathroom_type_label));
+
 
         String key = vivienda.getId();
         String vivKey = database.getReference("viviendas").child(String.valueOf(position)).getKey();
@@ -132,7 +157,69 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         }
 
 
+        //SAM--------------------------------------------------------------------------------------------------------------------------
+        // CONFIGURAR LA IMAGEN (CLICK) Y LA NAVEGACIÓN ENTRE ELLAS
+        setImageNavigation(holder, vivienda);
+
+
+
     }
+
+
+
+
+    //SAM---------------------------------------------------------------------------------------------------------------------------------------
+    private void setImageNavigation(ViviendaAdapter.ViviendaViewHolder holder, Vivienda vivienda) {
+        if (!vivienda.getImagenesUri().isEmpty()) { // Usamos URLs en lugar de URIs
+            holder.imagenesUri = new ArrayList<>(vivienda.getImagenesUri());
+
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
+            // Actualizar visibilidad de los botones
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+
+            // Navegar a la imagen anterior
+            holder.btnPrev.setOnClickListener(v -> navigateImage(holder, -1));
+
+            // Navegar a la siguiente imagen
+            holder.btnNext.setOnClickListener(v -> navigateImage(holder, 1));
+
+            // Click en la imagen para ver los detalles
+            holder.imageViewAnuncio.setOnClickListener(v -> showAnuncioDetail(vivienda));
+        }
+    }
+
+
+    private void navigateImage(ViviendaAdapter.ViviendaViewHolder holder, int direction) {
+        int newIndex = holder.imagenActualIndex + direction;
+        if (newIndex >= 0 && newIndex < holder.imagenesUri.size()) {
+            holder.imagenActualIndex = newIndex;
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
+            holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+            holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+
+    //IMPORTANTE !!!!!
+    private void showAnuncioDetail(Vivienda vivienda) {
+
+        this.fragment.lanzarVerAnuncio(vivienda);
+
+    }
+
+
+
+    //---------------------------------------------------------------------------------------------------------------------------------------
+
 
     @Override
     public int getItemCount() {
@@ -144,6 +231,16 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         private TextView metr;
         private ToggleButton toggleFavorito;
         private Chip categoria, tipoCasa, habitaciones, banos, exteriorInterior, companeros, genero, tipoBano;
+
+
+        //SAM-------------------------------------------------------------
+        View previewRect;
+        ImageView imageViewAnuncio;
+         List<String> imagenesUri = new ArrayList<>();
+         int imagenActualIndex = 0;
+         ImageButton btnPrev, btnNext;
+        //---------------------------------------------------------------------------
+
 
         public ViviendaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -162,6 +259,18 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             genero = itemView.findViewById(R.id.chipGenero);
             tipoBano = itemView.findViewById(R.id.chipTipoBano);
             ownerName = itemView.findViewById(R.id.owner_id);
+
+
+
+//SAM------------------------------------------------------------------------------------------
+            previewRect = itemView.findViewById(R.id.preview_rect);
+            imageViewAnuncio = itemView.findViewById(R.id.image_view_anuncio);
+            btnPrev = itemView.findViewById(R.id.btn_prev);
+            btnNext = itemView.findViewById(R.id.btn_next);
+            btnPrev.setVisibility(View.INVISIBLE);
+            btnNext.setVisibility(View.INVISIBLE);
+            //------------------------------------------------------------------------------------------
+
         }
     }
     public void updateList (List<Vivienda> newVivs){

@@ -1,5 +1,6 @@
 package es.ucm.fdi.v3findmyroommate.ui.favoritos;
 
+import android.net.Uri;
 import android.provider.ContactsContract;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,27 @@ public class MisFavoritosViewModel extends ViewModel {
                     vivienda.setTitle(viviendas.child("title").getValue(String.class));
                     vivienda.setLocation(viviendas.child("location").getValue(String.class));
                     vivienda.setMetr(viviendas.child("square_meters").getValue(String.class));
+
+
+                    //SAM-------------------------------------------------------------------------------------------------------------------------------------
+
+                    // Manejo de la lista de imágenes
+                    List<String> imagenesUri = new ArrayList<>();
+
+                    for (DataSnapshot urlSnapshot : viviendas.child("uri_list").getChildren()) {
+                        String url = urlSnapshot.getValue(String.class);
+
+                        imagenesUri.add(url);
+                    }
+
+
+
+
+                    vivienda.setImagenesUri(imagenesUri);
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+
                     vivienda.setPrice(viviendas.child("price").getValue(String.class));
                     vivienda.setDescription(viviendas.child("description").getValue(String.class));
                     vivienda.setCategoria(viviendas.child("property_type").getValue(String.class));

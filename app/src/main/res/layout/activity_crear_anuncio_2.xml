@@ -374,18 +374,17 @@
                 android:id="@+id/btn_guardar_anuncio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guardar anuncio"
-                android:backgroundTint="@color/primary_color"
-                android:textColor="@android:color/white"
+                android:text="@string/save_add_button_text"
+                android:backgroundTint="?attr/colorButtonNormal"
                 android:layout_marginEnd="16dp" />
 
             <Button
                 android:id="@+id/btn_cancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancelar"
-                android:backgroundTint="@android:color/background_dark"
-                android:textColor="@android:color/white" />
+                android:text="@string/cancel_text"
+                android:backgroundTint="?attr/colorButtonNormal"
+                />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

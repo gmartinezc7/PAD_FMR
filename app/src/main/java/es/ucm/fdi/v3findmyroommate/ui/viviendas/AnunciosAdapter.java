@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -93,7 +94,15 @@ private Context context;
     private void setImageNavigation(AnuncioViewHolder holder, Anuncio anuncio, int position) {
         if (!anuncio.getImagenesUri().isEmpty()) {
             holder.imagenesUri = new ArrayList<>(anuncio.getImagenesUri());
-            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+
+
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
+
+
             holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
 
@@ -112,7 +121,11 @@ private Context context;
         int newIndex = holder.imagenActualIndex + direction;
         if (newIndex >= 0 && newIndex < holder.imagenesUri.size()) {
             holder.imagenActualIndex = newIndex;
-            holder.imageViewAnuncio.setImageURI(holder.imagenesUri.get(holder.imagenActualIndex));
+            // Cargar la imagen actual usando Glide
+            Glide.with(holder.imageViewAnuncio.getContext())
+                    .load(holder.imagenesUri.get(holder.imagenActualIndex))
+                    .into(holder.imageViewAnuncio);
+
             holder.btnPrev.setVisibility(holder.imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             holder.btnNext.setVisibility(holder.imagenActualIndex < holder.imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
         }
@@ -168,7 +181,7 @@ private Context context;
 
         View previewRect;
         ImageView imageViewAnuncio;
-        List<Uri> imagenesUri = new ArrayList<>();
+        List<String> imagenesUri = new ArrayList<>();
         int imagenActualIndex = 0;
         ImageButton btnPrev, btnNext;
 

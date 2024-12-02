@@ -1,12 +1,10 @@
-package es.ucm.fdi.v3findmyroommate.ui.viviendas;
+package es.ucm.fdi.v3findmyroommate.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,35 +14,17 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.v3findmyroommate.R;
-import androidx.lifecycle.ViewModelProvider;
+import es.ucm.fdi.v3findmyroommate.ui.viviendas.EditarAnuncioActivity;
 
-import com.bumptech.glide.Glide;
-
-
-/*
-ACTIVIDAD UTILIZADA PARA MOSTRAR EN DETALLE LA INFORMACIÓN DEL ANUNCIO.
-NOS PERMITE VER INFORMACIÓN EXTRA QUE DESDE LA LISTA DE ANUNCIOS NO PODEMOS VER,
-COMO POR EJEMPLO LA DESCRIPCIÓN DEL ANUNCIO.
-
-TAMBIÉN TENEMOS ACCESO A "EditarAnuncioActivity" A TRAVÉS DEL BOTÓN "btnEditar"
-
-LA POSICIÓN DE ESTE BOTÓN EN ESTA VIEW ES MUY IMPORTANTE, YA QUE EXPLICA GRAN PARTE DEL FLUJO DE INFORMACIÓN
-QUE HAY EN ESTE APARTADO DE LA APLICACIÓN
-
-ESTE ES EL MOTIVO POR EL QUE SE CREA UN editarAnuncioLauncher, PARA PODER RECIBIR LOS DATOS RESULTANTES DE
-EDITAR UN ANUNCIO Y A SU VEZ, PODER PASARLOS DE VUELTA AL FRAGMENT CUANDO SE CIERRE ESTA ACTIVITY
-(RECORDAR EL "verAnuncioLauncher" DECLARADO EN "MisViviendasFragment"), PARA PODER RELAIZAR LOS CAMBIOS
-SOBRE LA LISTA DE ANUNCIOS DEL VIEWMODEL QUE TIENE EL FRAGMENT ("MisViviendasViewModel" DECLARADO EN "MisViviendasFragment").
- */
-public class AnuncioDetalleActivity extends AppCompatActivity {
+public class ViviendaDetalleActivity extends AppCompatActivity {
 
 
     //TEXTVIEWS OBLIGATORIAS
@@ -63,8 +43,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
     //BOTONES NECESARIOS, EL DE VOLVER, EDITAR  Y EL DE LAS FLECHAS PARA PASAR LAS IMAGENES
     private Button btnVolver;
-    private Button btnEditar;
-    private ImageButton btnPrev,btnNext;
+    private ImageButton btnPrev, btnNext;
 
     //STRINGS SIMPLEMENTE PARA MANEJAR LOS DATOS QUE VIENEN DE LOS INTENTS,
     // PONERLOS EN LOS TEXTVIEWS O VOLVER A METERLO EN INTENTS.
@@ -104,21 +83,19 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     LinearLayout opcionesCasa;
     LinearLayout opcionesHabitacion;
 
-    //RESULT LAUNCHER PARA RECOGER LOS DATOS TRAS TERMINAR UNA EDICIOS Y MOSTRARLOS A TIEMPO REAL
-    private ActivityResultLauncher<Intent> editarAnuncioLauncher;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_anuncio_detalle);
+        setContentView(R.layout.activity_vivienda_detalle);
 
 
         enlazarIdsVista();
 
         obtenerDatosAnuncioInicial();
 
-        iniciarResultadoEditarAnuncio();
 
         establecerAccionesBotones();
 
@@ -126,9 +103,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void enlazarIdsVista(){
+    private void enlazarIdsVista() {
 
         tituloText = findViewById(R.id.titulo_text);
         ubicacionText = findViewById(R.id.ubicacion_text);
@@ -137,7 +112,6 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
         descripcionText = findViewById(R.id.descripcion_text);
         imagenAnuncio = findViewById(R.id.imagen_anuncio);
         btnVolver = findViewById(R.id.btn_volver);
-        btnEditar = findViewById(R.id.btn_editar);
         btnPrev = findViewById(R.id.btn_prev);
         btnNext = findViewById(R.id.btn_next);
         opcionesCasa = findViewById(R.id.opciones_casa);
@@ -157,7 +131,7 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
     // OBTIENE EL ANUNCIO DEL INTENT Y RELLENA LOS TEXTVIEWS
-    private void obtenerDatosAnuncioInicial(){
+    private void obtenerDatosAnuncioInicial() {
 
         Intent intent = getIntent();
         obtenerYEstablecerDatos(intent);
@@ -165,46 +139,29 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
     }
 
 
-    //DEFINIMOS COMO SE COMPORTA AL REGRESAR LOS DATOS DE LA ACTIVIDAD DE EDITAR ANUNCIO
-    private void iniciarResultadoEditarAnuncio(){
 
-        // Inicializar el editarAnuncioLauncher
-        editarAnuncioLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Intent data = result.getData();
-                        obtenerYEstablecerDatos(data);
-                    }
-                }
-        );
 
-    }
-
-//ESTABLECEMOS LOS LISTENERS DE LOS BOTONES Y TAMBIEN LA ACCION TIPICA DE REGRESAR HACIA ATRAS CON LA FLECHA DEL PANEL DE
+    //ESTABLECEMOS LOS LISTENERS DE LOS BOTONES Y TAMBIEN LA ACCION TIPICA DE REGRESAR HACIA ATRAS CON LA FLECHA DEL PANEL DE
     //ANDROID, PARA EVITAR PROBLEMAS SI SE REGRESA CON DICHA FLECHA
-    private void establecerAccionesBotones(){
+    private void establecerAccionesBotones() {
 
         // Registrar callback para manejar la acción de retroceso
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                terminarYRegresarInfo(); // Reutilizamos el método para guardar la información
+                finish(); // Reutilizamos el método para guardar la información
             }
         });
 
-        btnVolver.setOnClickListener(v -> terminarYRegresarInfo());
-        btnEditar.setOnClickListener(v -> abrirEdicion());
+        btnVolver.setOnClickListener(v ->  finish());
 
     }
-
-
 
 
 //FUNCION AUXILIAR SIMPLEMENTE PARA MANEJAR LOS DATOS Y MOSTRARLOS, SE USA TANTO PARA EL INTENT AL ABRIR LA ACTIVIDAD
     //COMO EN EL RESULT CUANDO REGRESAN LOS DATOS DE LA ACTIVIDAD DE EDITAR.
 
-    private void obtenerYEstablecerDatos(Intent data){
+    private void obtenerYEstablecerDatos(Intent data) {
 
         this.idAnuncio = data.getStringExtra(this.getString(R.string.key_id));
         this.titulo = data.getStringExtra(this.getString(R.string.key_titulo));
@@ -217,18 +174,17 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
         tituloText.setText(titulo);
-        ubicacionText.setText( ubicacion);
-        metrosText.setText( metros);
-        precioText.setText( precio);
-        descripcionText.setText( descripcion);
-
+        ubicacionText.setText(ubicacion);
+        metrosText.setText(metros);
+        precioText.setText(precio);
+        descripcionText.setText(descripcion);
 
 
         //TAGS
         this.categoria = data.getStringExtra(this.getString(R.string.key_categoria));
         categoriaText.setText(this.categoria);
 
-        if(this.categoria.equalsIgnoreCase(this.getString(R.string.house_property_type_label))){
+        if (this.categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
 
             opcionesCasa.setVisibility(View.VISIBLE);
             opcionesHabitacion.setVisibility(View.GONE);
@@ -239,12 +195,11 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
             this.exteriorInterior = data.getStringExtra(this.getString(R.string.key_exterior_interior));
 
             tipoCasaText.setText(tipoCasa);
-            numHabitacionesText.setText( habitaciones);
+            numHabitacionesText.setText(habitaciones);
             numBanosText.setText(banos);
-            orientacionText.setText( exteriorInterior);
+            orientacionText.setText(exteriorInterior);
 
-        }
-        else if(categoria.equalsIgnoreCase(this.getString(R.string.room_property_type_label))){
+        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
 
             opcionesCasa.setVisibility(View.GONE);
             opcionesHabitacion.setVisibility(View.VISIBLE);
@@ -255,9 +210,9 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
             this.tipoBano = data.getStringExtra(this.getString(R.string.key_tipo_bano));
 
             numCompanerosText.setText(companeros);
-            generoHabitacionesText.setText( genero);
-            orientacionHabitacionText.setText( exteriorInterior);
-            tipoBanoText.setText( tipoBano);
+            generoHabitacionesText.setText(genero);
+            orientacionHabitacionText.setText(exteriorInterior);
+            tipoBanoText.setText(tipoBano);
 
         }
 
@@ -267,99 +222,38 @@ public class AnuncioDetalleActivity extends AppCompatActivity {
 
 
 
-//CUANDO SE TERMINA SE VUELVEN A METER LOS DATOS EN UN RESULT INTENT PARA QUE LOS PUEDA RECIBIR EL FRAGMENT INICIAL Y
-    //CAMBIAR LA INFORMACIÓN EN LA LISTA DEL VIEWMODEL Y ASI NO TENER QUE RECARGARLO DE LA BASE DE DATOS
-    private void terminarYRegresarInfo(){
-
-        Intent resultIntent = new Intent();
-
-        incluirDatosEnIntent (resultIntent);
 
 
-        setResult(RESULT_OK, resultIntent);
-        finish();
-
-    }
-
-
-//SE AÑADE LA INFO AL INTENT PARA ENVIARLA A EDITAR ANUNCIO Y QUE ASI EL USUARIO PUEDA OBSERVAR
-    // DE NUEVO LOS DATOS QUE TIENE ANTES DE REALIZAR NINGUNA MODIFICACION
-    private void abrirEdicion() {
-        Intent intent = new Intent(this, EditarAnuncioActivity.class);
-
-        incluirDatosEnIntent(intent);
-
-        editarAnuncioLauncher.launch(intent); // Usar el nuevo launcher
-    }
-
-
-//FUNCION AUXILIAR PARA INCLUIR LOS DATOS
-    private void incluirDatosEnIntent(Intent intent){
-
-        intent.putExtra(this.getString(R.string.key_id), idAnuncio);
-        intent.putExtra(this.getString(R.string.key_titulo), titulo);
-        intent.putExtra(this.getString(R.string.key_ubicacion), ubicacion);
-        intent.putExtra(this.getString(R.string.key_metros), metros);
-        intent.putExtra(this.getString(R.string.key_precio), precio);
-        intent.putExtra(this.getString(R.string.key_descripcion), descripcion);
-        intent.putStringArrayListExtra(this.getString(R.string.key_imagenes_uri),  new ArrayList<>(imagenesUri));
-
-
-        //TAGS
-        intent.putExtra(this.getString(R.string.key_categoria), categoria);
-
-        if (categoria.equalsIgnoreCase(this.getString(R.string.category_casa))) {
-
-            intent.putExtra(this.getString(R.string.key_tipo_casa), tipoCasa);
-            intent.putExtra(this.getString(R.string.key_habitaciones), habitaciones);
-            intent.putExtra(this.getString(R.string.key_banos), banos);
-            intent.putExtra(this.getString(R.string.key_exterior_interior), exteriorInterior);
-        } else if (categoria.equalsIgnoreCase(this.getString(R.string.category_habitacion))) {
-
-            intent.putExtra(this.getString(R.string.key_companeros), companeros);
-            intent.putExtra(this.getString(R.string.key_genero), genero);
-            intent.putExtra(this.getString(R.string.key_exterior_interior), exteriorInterior);
-            intent.putExtra(this.getString(R.string.key_tipo_bano), tipoBano);
-        }
-
-
-
-    }
-
-//DETERMINA LA VISIBILIDAD DE LAS FLECHAS DEPENDIENDO DEL NUMERO DE IMAGENES
+    //DETERMINA LA VISIBILIDAD DE LAS FLECHAS DEPENDIENDO DEL NUMERO DE IMAGENES
     //QUE HAYA EN LA LISTA Y DE LA POSICION DE LA IMAGEN QUE SE OBSERVA
     //TAMBIEN DETERMINA LA IMAGEN QUE SE VE EN EL CUADRO SEGUN EL INDICE ACTUAL
-    private void iniciarNavImagenes(){
+    private void iniciarNavImagenes() {
 
         // Cargar la imagen actual usando Glide
         Glide.with(imagenAnuncio.getContext())
                 .load(imagenesUri.get(imagenActualIndex))
                 .into(imagenAnuncio);
-
         btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
         btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);
 
 
         // Navegar hacia la imagen anterior
-        btnPrev.setOnClickListener(v -> navigateImage( -1));
+        btnPrev.setOnClickListener(v -> navigateImage(-1));
         // Navegar hacia la imagen siguiente
-        btnNext.setOnClickListener(v -> navigateImage( 1));
+        btnNext.setOnClickListener(v -> navigateImage(1));
 
 
     }
 
 
-    private void navigateImage( int direction) {
+    private void navigateImage(int direction) {
         int newIndex = imagenActualIndex + direction;
         if (newIndex >= 0 && newIndex < imagenesUri.size()) {
             imagenActualIndex = newIndex;
-
-
             // Cargar la imagen actual usando Glide
             Glide.with(imagenAnuncio.getContext())
                     .load(imagenesUri.get(imagenActualIndex))
                     .into(imagenAnuncio);
-
 
             btnPrev.setVisibility(imagenActualIndex > 0 ? View.VISIBLE : View.INVISIBLE);
             btnNext.setVisibility(imagenActualIndex < imagenesUri.size() - 1 ? View.VISIBLE : View.INVISIBLE);

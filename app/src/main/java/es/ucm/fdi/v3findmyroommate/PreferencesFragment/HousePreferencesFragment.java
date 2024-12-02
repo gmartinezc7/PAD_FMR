@@ -3,22 +3,12 @@ package es.ucm.fdi.v3findmyroommate.PreferencesFragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,9 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import es.ucm.fdi.v3findmyroommate.Lobby;
 import es.ucm.fdi.v3findmyroommate.R;
@@ -113,7 +101,7 @@ public class HousePreferencesFragment extends PropertyTypeFragment {
             Activity currentActivity = getActivity();
             if (currentActivity != null) {
                 // Uses ConfigPreferencesModel so that it updates both the shared preferences and the database values.
-                ConfigPreferencesModel.updateSelectedPreference(propertyType, getString(R.string.property_type_preference_key),
+                ConfigPreferencesModel.updateSelectedPreference(propertyType, getString(R.string.house_type_preference_key),
                         currentActivity.getApplication());
                 ConfigPreferencesModel.updateSelectedPreference(numberOfRooms, getString(R.string.num_rooms_preference_key),
                         currentActivity.getApplication());

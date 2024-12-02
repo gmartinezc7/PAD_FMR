@@ -54,7 +54,7 @@ public class LocaleUtils {
         Resources initialResources = context.getResources();
 
         for (Locale locale : getLocalesList()) {
-            if (locale.equals(new Locale("es"))) {
+            if (locale.equals(new Locale(initialResources.getString(R.string.DB_language_shortcut)))) {
                 Configuration config = new Configuration(initialResources.getConfiguration());
                 config.setLocale(locale);
 
@@ -72,21 +72,6 @@ public class LocaleUtils {
             }
         }
         return result;
-/*
-        // Gets the default locale.
-        Locale defaultLocale = Locale.getDefault();
-
-        // Creates a configuration for the default locale.
-        Configuration config = new Configuration(context.getResources().getConfiguration());
-        config.setLocale(defaultLocale);
-
-        // Creates a context with the updated configuration.
-        Context localizedContext = context.createConfigurationContext(config);
-
-        // Fetches the string value using the default locale.
-        return localizedContext.getResources().getString(keyId);
-
- */
     }
 
 

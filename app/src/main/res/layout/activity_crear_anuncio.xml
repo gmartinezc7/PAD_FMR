@@ -13,7 +13,7 @@
             android:id="@+id/titulo_crear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Crear Anuncio"
+            android:text="@string/create_add_title"
             android:textSize="20sp"
             android:layout_marginBottom="16dp"
             android:gravity="center"/>
@@ -22,35 +22,35 @@
             android:id="@+id/create_titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Título del anuncio"
+            android:hint="@string/add_title_label"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/create_ubicacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ubicación"
+            android:hint="@string/location_label"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/create_metros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Metros cuadrados"
+            android:hint="@string/square_meters_label"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/create_precio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Precio"
+            android:hint="@string/price_label"
             android:inputType="numberDecimal" />
 
         <EditText
             android:id="@+id/create_descripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descripción del anuncio"
+            android:hint="@string/description_label"
             android:inputType="textMultiLine"
             android:minLines="5"
             android:gravity="top"
@@ -69,7 +69,7 @@
                 android:id="@+id/btn_seleccionar_imagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Añadir Imagen"
+                android:text="@string/add_image_button_text"
                 android:layout_marginEnd="16dp" />
 
 
@@ -77,7 +77,7 @@
                 android:id="@+id/btn_eliminar_imagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eliminar Imagen"
+                android:text="@string/delete_image_button_text"
                 android:layout_marginEnd="16dp" />
 
         </LinearLayout>
@@ -133,7 +133,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente"
+            android:text="@string/add_tags_label"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -143,7 +143,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Categoría"
+            android:text="@string/category_label"
             android:textSize="12sp"
             android:layout_marginBottom="5dp" />
 
@@ -166,7 +166,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Casa"
+                android:text="@string/house_type_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -181,7 +181,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Habitaciones"
+                android:text="@string/room_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -197,7 +197,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Baños"
+                android:text="@string/bathroom_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -212,7 +212,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Orientación (Interior/Exterior)"
+                android:text="@string/orientation_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -239,7 +239,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número de Compañeros"
+                android:text="@string/roommate_number_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -254,7 +254,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Género de los Habitantes"
+                android:text="@string/roommate_gender_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
 
@@ -270,7 +270,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Orientación (Interior/Exterior)"
+                android:text="@string/orientation_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
             <Spinner
@@ -284,7 +284,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Baño"
+                android:text="@string/bathroom_type_label"
                 android:textSize="12sp"
                 android:layout_marginBottom="5dp" />
             <Spinner
@@ -315,7 +315,7 @@
                 android:id="@+id/btn_guardar_anuncio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guardar anuncio"
+                android:text="@string/save_add_button_text"
                 android:layout_marginEnd="16dp" />
 
             <!-- Botón Cancelar -->
@@ -323,7 +323,7 @@
                 android:id="@+id/btn_cancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancelar" />
+                android:text="@string/cancel_text" />
         </LinearLayout>
 
     </LinearLayout>

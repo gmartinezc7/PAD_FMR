@@ -19,6 +19,7 @@
     <string name="already_have_an_acount">¿Ya tienes una cuenta?</string>
     <string name="create_account_message">¡Ya casi estás! Solo crea tu nueva cuenta ahora, y estarás un paso más cerca de descubrir la vivienda perfecta que siempre has querido.</string>
     <string name="create_account">Crear cuenta</string>
+
     <!--Texto Chats -->
 
     <string name="personal_information_message">Dinos más acerca de ti</string>
@@ -55,7 +56,7 @@
     <string name="fill_all_fields_toast_text">Completa todos los campos</string>
     <string name="username_preference_dialog_text">Introduce tu nuevo nombre de usuario</string>
     <string name="email_preference_dialog_text">Introduce tu nuevo correo electrónico</string>
-    <string name="house_preferences">Características de la casa</string>
+    <string name="house_preferences_title">Preferencias de casa</string>
     <string name="male_label">Hombre</string>
     <string name="female_label">Mujer</string>
     <string name="young_adult_age_label" translatable="false">18-25</string>
@@ -124,7 +125,7 @@
     </string-array>
     <string-array name="tipo_casa_array">
         <item>Apartamento</item>
-        <item>Casa</item>
+        <item>Casa independiente</item>
     </string-array>
     <string-array name="habitaciones_array">
         <item>1</item>
@@ -221,6 +222,9 @@
 
     <string name= "mensaje_permiso_camara_denegado">Permiso de cámara no concedido</string>
     <string name= "mensaje_permiso_almacenamiento_denegado">Permiso de almacenamiento no concedido</string>
+    <string name= "mensaje_permisos_requeridos_denegados">Required permissions denied</string>
+
+
     <string name= "mensaje_error_crear_imagen">Error al crear archivo de imagen</string>
     <string name= "mensaje_error_encontrar_camara">No se encontró aplicación de cámara</string>
     <string name= "mensaje_no_se_selecciono_imagen">No se seleccionó ninguna imagen</string>
@@ -235,11 +239,11 @@
     <string name="shared">Compartido</string>
     <string name="man">Hombre</string>
     <string name="woman">Mujer</string>
-    <string name="both">Ambos</string>
+    <string name="both">Mixto</string>
     <string name="select_number_of_bathrooms">Selecciona el Número de Baños</string>
     <string name="select_orientation">Selecciona Orientation</string>
     <string name="apartment_house_type">Apartamento</string>
-    <string name="house_house_type">Casa</string>
+    <string name="house_house_type">Casa independiente</string>
     <string name="interior_orientation">Interior</string>
     <string name="exterior_orientation">Exterior</string>
     <string name="private_bathroom_type">Privado</string>
@@ -258,6 +262,49 @@
     <string name="select_num_bathrooms_title">Selecciona el número de baños</string>
     <string name="select_house_orientation_title">Seleciona la orientación</string>
     <string name="enter_square_meters_hint">Introduce los metros cuadrados</string>
-
+    <string name="contact_owner">Contactar dueño</string>
+    <string name="DB_language_shortcut" translatable="false">es</string>
+    <string name="house_type_preference_key" translatable="false">house_type</string>
+    <string name="my_favs_title">MIS FAVORITOS</string>
+    <string name="back_button_text">Volver</string>
+    <string name="image_description_label">Imagen del anuncio</string>
+    <string name="location_label">Ubicación</string>
+    <string name="square_meters_label">Metros cuadrados</string>
+    <string name="price_label">Precio</string>
+    <string name="description_label">Descripción</string>
+    <string name="category_label">Categoría</string>
+    <string name="house_type_label">Tipo de casa</string>
+    <string name="room_number_label">Número de habitaciones</string>
+    <string name="bathroom_number_label">Número de baños</string>
+    <string name="orientation_label">Orientación (Interior/Exterior)</string>
+    <string name="roommate_number_label">Número de compañeros</string>
+    <string name="roommate_gender_label">Género de los compañeros</string>
+    <string name="bathroom_type_label">Tipo de baño</string>
+    <string name="edit_button_text">Editar</string>
+    <string name="my_adds_title">MIS ANUNCIOS</string>
+    <string name="add_title_label">Título del anuncio</string>
+    <string name="create_add_title">Crear anuncio</string>
+    <string name="add_image_button_text">Añadir imagen</string>
+    <string name="delete_image_button_text">Eliminar imagen</string>
+    <string name="add_tags_label">Aplica etiquetas para que otros usuarios encuentren tu anuncio fácilmente</string>
+    <string name="save_add_button_text">Guardar anuncio</string>
+    <string name="edit_add_title">Editar anuncio</string>
+    <string name="update_add_button_text">Actualizar anuncio</string>
+    <string name="item_category_label">"Categoría: "</string>
+    <string name="item_house_type_label">"Tipo de casa: "</string>
+    <string name="item_num_rooms_label">"Habitaciones: "</string>
+    <string name="item_num_bathrooms_label">"Baños: "</string>
+    <string name="item_orientation_label">"Orientación: "</string>
+    <string name="item_num_roommates_label">"Compañeros: "</string>
+    <string name="item_roommates_gender_label">"Género: "</string>
+    <string name="item_bathroom_type_label">"Tipo de baño: "</string>
+    <string name="item_building_name_label">Nombre de la vivienda</string>
+    <string name="item_living_building_name_label">Vivienda:</string>
+    <string name="item_location_label">"Ubicación: "</string>
+    <string name="item_square_meters_label">"Metros cuadrados: "</string>
+    <string name="item_price_label">"Precio: "</string>
+    <string name="create_new_add_button_text">Crear nuevo anuncio</string>
+    <string name="cloudinary_api_key" translatable="false">357912162435366</string>
+    <string name="cloudinary_api_secret_key" translatable="false">PLFjYDRSKfqB2m5Ul587GCkngq4</string>
 
 </resources>
