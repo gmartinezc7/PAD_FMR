@@ -115,44 +115,51 @@ public class ChatsFragment extends Fragment {
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
                     Map<String, Object> chatData = (Map<String, Object>) dataSnapshot.getValue();
-                    String lastMessage = (String) chatData.get("lastMessage");
-                    Long timestamp = (Long) chatData.get("timestamp");
-                    Map<String, Object> participants = (Map<String, Object>) chatData.get("participants");
-                    Map<String, Object> messagesData = (Map<String, Object>) chatData.get("messages");
+
+                    // Verificar que los datos necesarios estén presentes
+                    String lastMessage = chatData.containsKey("lastMessage") ? (String) chatData.get("lastMessage") : "No hay mensajes";
+                    Long timestamp = chatData.containsKey("timestamp") ? (Long) chatData.get("timestamp") : System.currentTimeMillis();
+
+                    // Validación para "participants"
+                    Map<String, Object> participants = chatData.containsKey("participants") ? (Map<String, Object>) chatData.get("participants") : new HashMap<>();
+
+                    // Validación para "messages"
+                    Map<String, Object> messagesData = chatData.containsKey("messages") ? (Map<String, Object>) chatData.get("messages") : new HashMap<>();
 
                     boolean hasUnreadMessages = false;
 
                     String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    //Verificar si hay mensajes no leídos
+                    // Verificar si hay mensajes no leídos
                     for (Map.Entry<String, Object> entry : messagesData.entrySet()) {
                         String messageId = entry.getKey();
                         Map<String, Object> message = (Map<String, Object>) entry.getValue();
 
                         Boolean isSeen = (Boolean) message.get("visto");
-
                         String senderId = (String) message.get("senderId");
 
+                        // Saltar los mensajes enviados por el usuario actual
                         if (senderId != null && senderId.equals(currentUserId)) {
                             continue;
                         }
 
-                        //Si no existe el campo visto se asume que esta visto
+                        // Si no existe el campo "visto", asumir que es "visto"
                         if (isSeen == null) {
                             message.put("visto", true);
                             chatRef.child("messages").child(messageId).child("visto").setValue(true);
                             isSeen = true;
                         }
 
-                        //Verificar  si el mensaje no ha sido visto
-                        if (!isSeen) {
+                        // Verificar si el mensaje no ha sido visto
+                        if (isSeen != null && !isSeen) {
                             hasUnreadMessages = true;
                             break;
                         }
                     }
 
+                    // Crear el objeto Chat
                     Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
                     assignUsernames(participants, chat);
 
@@ -166,6 +173,7 @@ public class ChatsFragment extends Fragment {
                     }
 
                     chatList.add(chat);
+                    chatAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -175,7 +183,6 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
-
 
     private void assignUsernames(Map<String, Object> participants, Chat chat) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -209,17 +216,24 @@ public class ChatsFragment extends Fragment {
 
     private void sendUnreadMessagesNotification(Chat chat) {
         boolean hasUnreadMessages = false;
-        //Comprobar que los mensajes estan leidos
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //Comprobacion mensajes vistos
         for (Map.Entry<String, Object> entry : chat.getMessagesData().entrySet()) {
             Map<String, Object> message = (Map<String, Object>) entry.getValue();
             Boolean isSeen = (Boolean) message.get("visto");
+            String senderId = (String) message.get("senderId");
+
+            if (senderId != null && senderId.equals(currentUserId)) {
+                continue;
+            }
+
             if (isSeen == null || !isSeen) {
                 hasUnreadMessages = true;
                 break;
             }
         }
 
-        //Enviar notificacion si hay mensajes no vistos
         if (hasUnreadMessages) {
             String chatId = chat.getChatId();
             String otherUsername = chat.getOtherUsername();
@@ -249,6 +263,7 @@ public class ChatsFragment extends Fragment {
             notificationManager.notify(chatId.hashCode(), builder.build());
         }
     }
+
 
     //TODO refactorizar
     private void createNewChat(List<String> participantIds, String messageText) {
