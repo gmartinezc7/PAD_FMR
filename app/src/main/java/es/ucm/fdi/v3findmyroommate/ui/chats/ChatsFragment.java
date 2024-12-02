@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import es.ucm.fdi.v3findmyroommate.R;
-//import es.ucm.fdi.v3findmyroommate.ui.config.ConfigEditTextPreferencesFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class ChatsFragment extends Fragment {
                 bundle.putSerializable("chat", chat);
                 chatFragment.setArguments(bundle);
 
-                // Ocultar RecyclerView y mostrar el contenedor del fragmento
+                //Ocultar RecyclerView y mostrar el contenedor del fragmento
                 recyclerView.setVisibility(View.GONE);
                 View container = getView().findViewById(R.id.chatFragmentContainer);
                 if (container != null) {
@@ -117,7 +116,6 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Procesar los datos del chat
                     Map<String, Object> chatData = (Map<String, Object>) dataSnapshot.getValue();
                     String lastMessage = (String) chatData.get("lastMessage");
                     Long timestamp = (Long) chatData.get("timestamp");
@@ -128,7 +126,7 @@ public class ChatsFragment extends Fragment {
 
                     String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    // Verificar si hay mensajes no leídos
+                    //Verificar si hay mensajes no leídos
                     for (Map.Entry<String, Object> entry : messagesData.entrySet()) {
                         String messageId = entry.getKey();
                         Map<String, Object> message = (Map<String, Object>) entry.getValue();
@@ -141,30 +139,27 @@ public class ChatsFragment extends Fragment {
                             continue;
                         }
 
+                        //Si no existe el campo visto se asume que esta visto
                         if (isSeen == null) {
-                            // Si el campo "visto" es nulo, agregarlo a la base de datos como "true"
                             message.put("visto", true);
                             chatRef.child("messages").child(messageId).child("visto").setValue(true);
                             isSeen = true;
                         }
 
-                        // Verificar si el mensaje no ha sido visto por otros
+                        //Verificar  si el mensaje no ha sido visto
                         if (!isSeen) {
                             hasUnreadMessages = true;
                             break;
                         }
                     }
 
-                    // Crear y añadir el chat a la lista
                     Chat chat = new Chat(chatId, messagesData, participants, lastMessage, timestamp);
                     assignUsernames(participants, chat);
 
-
-                    // Enviar notificación si hay mensajes no leídos
+                    //Enviar notificación si hay mensajes no vistos
                     if (hasUnreadMessages) {
                         for (String participantId : participants.keySet()) {
                             if (!participantId.equals(currentUserId)) {
-
                                 sendUnreadMessagesNotification(chat);
                             }
                         }
@@ -184,8 +179,8 @@ public class ChatsFragment extends Fragment {
 
     private void assignUsernames(Map<String, Object> participants, Chat chat) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        AtomicInteger participantsLoaded = new AtomicInteger(0); // Usamos AtomicInteger para contar
-
+        //Uso atomic para que tenga todos los datos al termina la función
+        AtomicInteger participantsLoaded = new AtomicInteger(0);
         for (String participantId : participants.keySet()) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId);
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -198,17 +193,12 @@ public class ChatsFragment extends Fragment {
                         } else {
                             chat.setOtherUsername(username);
                         }
-
-                        // Incrementar el contador de participantes cargados
                         if (participantsLoaded.incrementAndGet() == participants.size()) {
-                            // Solo enviamos la notificación cuando todos los participantes hayan sido cargados
                             chatAdapter.notifyDataSetChanged();
-                            // Ahora podemos enviar la notificación
-                            sendUnreadMessagesNotification(chat);  // Pasamos el chat completo
+                            sendUnreadMessagesNotification(chat);
                         }
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Log.e("FirebaseError", "Error al obtener el usuario: " + error.getMessage());
@@ -219,17 +209,17 @@ public class ChatsFragment extends Fragment {
 
     private void sendUnreadMessagesNotification(Chat chat) {
         boolean hasUnreadMessages = false;
+        //Comprobar que los mensajes estan leidos
         for (Map.Entry<String, Object> entry : chat.getMessagesData().entrySet()) {
             Map<String, Object> message = (Map<String, Object>) entry.getValue();
             Boolean isSeen = (Boolean) message.get("visto");
-
             if (isSeen == null || !isSeen) {
                 hasUnreadMessages = true;
                 break;
             }
         }
 
-        // Enviar notificación si hay mensajes no leídos
+        //Enviar notificacion si hay mensajes no vistos
         if (hasUnreadMessages) {
             String chatId = chat.getChatId();
             String otherUsername = chat.getOtherUsername();
@@ -260,7 +250,7 @@ public class ChatsFragment extends Fragment {
         }
     }
 
-
+    //TODO refactorizar
     private void createNewChat(List<String> participantIds, String messageText) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String chatId = FirebaseDatabase.getInstance().getReference("chats").push().getKey();
@@ -269,11 +259,11 @@ public class ChatsFragment extends Fragment {
         chatData.put("lastMessage", messageText);
         chatData.put("timestamp", System.currentTimeMillis());
 
-        //Guardar el chat en Firebase
+        //Guardar el chat
         DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId);
         chatRef.setValue(chatData);
 
-        //Añadir el chat a cada usuario
+        //Añadir el chat a los 2 usuario
         for (String participantId : participantIds) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(participantId).child("chats");
             userRef.child(chatId).setValue(true);

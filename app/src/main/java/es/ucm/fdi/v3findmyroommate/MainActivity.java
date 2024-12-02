@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         signUP.setOnClickListener(view -> openSignUPView());
 
-        //Notificaciones
+
 
         //Pedir permiso para Notificaciones
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
+        //Token para inapp-messaging pero no se usa
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -160,27 +161,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, SignUp.class);
         startActivity(intent);
     }
-
-    public void sendNotification(Context context, String messageText, String senderName) {
-        String channelId = "chat_channel_id";
-        String channelName = "Chat Notifications";
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        Notification notification = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("Nuevo mensaje de " + senderName)
-                .setContentText(messageText)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .build();
-
-        notificationManager.notify(1, notification);
-    }
-
 
 }

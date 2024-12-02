@@ -48,7 +48,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Cargar el chat y pasar al fragmento
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     openChatFragment(chat);
                 } else {

@@ -50,7 +50,6 @@ public class ChatFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 
-        // Obtener el chat pasado como argumento
         Bundle args = getArguments();
         if (args != null) {
             Chat chat = (Chat) args.getSerializable("chat");
@@ -61,14 +60,14 @@ public class ChatFragment extends Fragment {
             }
         }
 
-        // Si no se ha cargado el chat correctamente
+        //Si no se ha cargado el chat correctamente
         if (chatId == null) {
             Toast.makeText(getContext(), "No se pudo cargar el chat", Toast.LENGTH_SHORT).show();
             getParentFragmentManager().popBackStack();
             return root;
         }
 
-        // aConfigurción de la vista
+        //Configurción de la vista
         recyclerView = root.findViewById(R.id.recyclerViewMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -79,11 +78,11 @@ public class ChatFragment extends Fragment {
         messageEditText = root.findViewById(R.id.inputMessage);
         sendMessageButton = root.findViewById(R.id.buttonSend);
 
-        // Referencia a los mensajes del chat
+        //Cargar mensages
         chatMessagesRef = FirebaseDatabase.getInstance().getReference("chats").child(chatId).child("messages");
         loadMessages();
 
-        // Enviar mensaje cuando el botón es presionado
+        //Boton de enviar mensaje
         sendMessageButton.setOnClickListener(v -> {
             String messageText = messageEditText.getText().toString().trim();
             if (!messageText.isEmpty()) {
@@ -140,14 +139,12 @@ public class ChatFragment extends Fragment {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         long timestamp = System.currentTimeMillis();
 
-        //Crear el mensaje con 'visto' inicialmente en false
+        //Crear el mensaje con visto = false
         Message newMessage = new Message(String.valueOf(timestamp), currentUserId, messageText, timestamp, false);
-
-        //Agregar el mensaje a la base de datos
         chatMessagesRef.child(String.valueOf(timestamp)).setValue(newMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        //Actualizar el último mensaje en el chat
+                        //Actualizar el último mensaje y tiemstamp de chat
                         Map<String, Object> chatUpdates = new HashMap<>();
                         chatUpdates.put("lastMessage", messageText);
                         chatUpdates.put("timestamp", timestamp);
