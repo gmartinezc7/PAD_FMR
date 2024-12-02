@@ -171,7 +171,7 @@ public class ChatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Toolbar
         Toolbar toolbar = view.findViewById(R.id.toolbarChat);
-        toolbar.setNavigationIcon(R.drawable.ic_back_botton);
+        toolbar.setNavigationIcon(R.drawable.ic_flecha_izquierda);
         toolbar.setNavigationOnClickListener(v -> {
             //Volver atrás
             Navigation.findNavController(view).navigateUp();

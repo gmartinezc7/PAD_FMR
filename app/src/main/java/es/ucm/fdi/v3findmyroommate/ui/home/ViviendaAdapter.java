@@ -238,9 +238,9 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         //SAM-------------------------------------------------------------
         View previewRect;
         ImageView imageViewAnuncio;
-         List<String> imagenesUri = new ArrayList<>();
-         int imagenActualIndex = 0;
-         ImageButton btnPrev, btnNext;
+        List<String> imagenesUri = new ArrayList<>();
+        int imagenActualIndex = 0;
+        ImageButton btnPrev, btnNext;
         //---------------------------------------------------------------------------
 
 
@@ -293,14 +293,13 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
     private void openChatWithOwner(String ownerId) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("chats");
-
-        // Buscar chat entre los usuarios
+        //Buscar chat entre los usuarios
         chatsRef.orderByChild("participants/" + currentUserId).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String chatId = null;
 
-                // Verificar si ya existe un chat con ambos usuarios
+                //Verificar si ya existe chat
                 for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
                     if (chatSnapshot.child("participants").hasChild(ownerId)) {
                         chatId = chatSnapshot.getKey();
@@ -309,7 +308,7 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
                 }
 
                 if (chatId == null) {
-                    // Crear un nuevo chat si no existe
+                    //Crear un nuevo
                     chatId = chatsRef.push().getKey();
                     if (chatId != null) {
                         Map<String, Object> chatData = new HashMap<>();
@@ -319,19 +318,17 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
                         Map<String, Boolean> participants = new HashMap<>();
                         participants.put(currentUserId, true);
                         participants.put(ownerId, true);
-
                         chatData.put("participants", participants);
-
                         chatsRef.child(chatId).setValue(chatData);
 
-                        // Agregar el chat a la lista de chats de ambos usuarios
+                        //Agregar el chat a la lista de chats de ambos usuarios
                         DatabaseReference userChatsRef = FirebaseDatabase.getInstance().getReference("users");
                         userChatsRef.child(currentUserId).child("chats").child(chatId).setValue(true);
                         userChatsRef.child(ownerId).child("chats").child(chatId).setValue(true);
                     }
                 }
 
-                // Abrir el fragmento de chat
+                //Abrir el chat
                 openChatFragment(chatId, ownerId);
             }
 
@@ -347,13 +344,12 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
         Chat chat = new Chat(chatId, null, null, "", System.currentTimeMillis());
         chat.setOtherUsername(ownerId);
 
-        // Crea el ChatFragment y pasa los argumentos
+        //Crear el ChatFragment
         ChatFragment chatFragment = new ChatFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("chat", chat);
         chatFragment.setArguments(bundle);
 
-        // Usa el NavController para navegar
         if (context instanceof FragmentActivity) {
             NavController navController = Navigation.findNavController((FragmentActivity) context, R.id.nav_host_fragment_activity_lobby);
             navController.navigate(R.id.chatFragment, bundle);
@@ -361,8 +357,5 @@ public class ViviendaAdapter extends RecyclerView.Adapter<ViviendaAdapter.Vivien
             Log.e("ViviendaAdapter", "Contexto no válido para abrir el fragmento");
         }
     }
-
-
-
 
 }
