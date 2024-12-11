@@ -6,5 +6,5 @@ Collaborators:
 - Hamza Triki
 - Gonzalo Martinez
 - Roi Lopez
-- Juanjo ...
+- Juan José Encina
 - Samuel Martínez
